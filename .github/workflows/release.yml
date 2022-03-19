@@ -35,6 +35,11 @@ jobs:
         with:
           flutter-version: '2.10.0'
 
+      - uses: dart-lang/setup-dart@v1
+      - name: Dart pub get
+        run: dart pub get
+      - name: Dart analysis
+        run: dart analyze
       - name: Run Flutter pub get
         run: flutter pub get
       - name: Run test
