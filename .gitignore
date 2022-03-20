@@ -50,3 +50,10 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+# Firebase Local Emulator
+firebase.json
+firebase-debug.json
+database.rules.json
+database-debug.log
+.firebaserc
