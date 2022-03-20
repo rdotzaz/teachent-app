@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:teachent_app/common/consts.dart' show NameConsts;
+import 'package:mobile_web_view/mobile_web_view.dart';
 import 'package:teachent_app/controller/pages/splash_page_controller.dart';
-import 'package:teachent_app/view/pages/pages.dart';
+import 'package:teachent_app/view/widgets/splash_progress.dart';
+
+import '../widgets/splash_name.dart';
 
 /// First page after launching app
 /// Displaying logo and loading requiered componentes
@@ -12,24 +14,35 @@ class SplashPage extends StatefulWidget {
   State<SplashPage> createState() => _SplashPageState();
 }
 
-class _SplashPageState extends GenericState<SplashPage> {
-  _SplashPageState() : super(SplashPageController());
+class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
+  final SplashPageController splashPageController = SplashPageController();
+
+  @override
+  void initState() {
+    splashPageController.init();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    splashPageController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: Colors.black,
-      child: Center(
-        child: Column(
-          children: [
-            const Text(
-              NameConsts.appName,
-              style: TextStyle(color: Colors.yellow, fontSize: 20),
-            ),
-            Container(
-              color: Colors.green,
-            )
-          ],
+    return MobileWebView(
+      // Only for testing purposes
+      child: Container(
+        color: Colors.white,
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: const [
+              SplashNameWidget(),
+              SplashProgressIndicatorWidget()
+            ],
+          ),
         ),
       ),
     );

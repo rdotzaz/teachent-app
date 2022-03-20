@@ -2,10 +2,10 @@ import 'package:teachent_app/controller/controller.dart';
 
 class SplashPageController extends BasePageController {
   @override
-  void dispose() {}
+  void init() {}
 
   @override
-  void init() {}
+  void dispose() {}
 
   @override
   void switchPage() {}

@@ -102,6 +102,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.7.0"
+  mobile_web_view:
+    dependency: "direct main"
+    description:
+      name: mobile_web_view
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.2.0-nullsafety.0"
   path:
     dependency: transitive
     description:
