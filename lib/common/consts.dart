@@ -13,3 +13,9 @@ class DatabaseObjectName {
   static const reports = 'reports';
   static const reviews = 'reviews';
 }
+
+class DatabaseConsts {
+  static const emulatorPort = 8080;
+  static const androidFirebaseHost = '10.0.0.2';
+  static const webFirebaseHost = 'localhost';
+}
