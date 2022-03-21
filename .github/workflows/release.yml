@@ -1,0 +1,49 @@
+# This is a basic workflow to help you get started with Actions
+
+name: Flutter Release Check (Android)
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push or pull request events but only for the main branch
+  push:
+    branches:
+      - release/*
+  pull_request:
+    branches:
+      - release/*
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  build:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v2
+
+      - name: Start action
+        run: echo Starting verification
+
+      - name: Flutter action by https://github.com/subosito/flutter-action
+        uses: subosito/flutter-action@v2.3.0
+        with:
+          flutter-version: '2.10.0'
+
+      - uses: dart-lang/setup-dart@v1
+      - name: Dart pub get
+        run: dart pub get
+      - name: Dart analysis
+        run: dart analyze
+      - name: Run Flutter pub get
+        run: flutter pub get
+      - name: Run test
+        run: flutter test
+      - name: Build in release mode
+        run: flutter build apk
+      - run: flutter build apkbundle

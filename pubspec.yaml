@@ -13,6 +13,7 @@ dependencies:
   firebase_database: ^9.0.8
   flutter:
     sdk: flutter
+  mobile_web_view: ^0.2.0-nullsafety.0
 
 dev_dependencies:
   flutter_lints: ^1.0.0
