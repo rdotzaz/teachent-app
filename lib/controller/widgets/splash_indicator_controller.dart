@@ -10,7 +10,7 @@ class SplashProgressIndicatorController extends BaseController {
     animationController = AnimationController(
         vsync: tickerProvider, duration: const Duration(seconds: 2))
       ..addListener(refresh);
-    animationController.repeat(reverse: false);
+    animationController.repeat(reverse: true);
   }
 
   @override

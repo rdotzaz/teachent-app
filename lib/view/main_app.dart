@@ -1,4 +1,6 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:mobile_web_view/mobile_web_view.dart';
 import 'package:teachent_app/common/consts.dart' show NameConsts;
 import 'package:teachent_app/view/pages/splash_page.dart';
 
@@ -9,9 +11,15 @@ class TeachentApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
       title: NameConsts.appName,
-      home: SplashPage(),
+      home: homeWidget(),
     );
+  }
+
+  Widget homeWidget() {
+    return defaultTargetPlatform == TargetPlatform.android
+        ? const SplashPage()
+        : const MobileWebView(child: SplashPage());
   }
 }

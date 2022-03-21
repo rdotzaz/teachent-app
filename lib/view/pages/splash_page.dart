@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:mobile_web_view/mobile_web_view.dart';
 import 'package:teachent_app/controller/pages/splash_page_controller.dart';
 import 'package:teachent_app/view/widgets/splash_progress.dart';
 
@@ -31,18 +30,12 @@ class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    return MobileWebView(
-      // Only for testing purposes
-      child: Container(
-        color: Colors.white,
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: const [
-              SplashNameWidget(),
-              SplashProgressIndicatorWidget()
-            ],
-          ),
+    return Container(
+      color: Colors.white,
+      child: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: const [SplashNameWidget(), SplashProgressIndicatorWidget()],
         ),
       ),
     );
