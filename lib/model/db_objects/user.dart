@@ -1,4 +1,5 @@
-import 'package:teachent_app/common/consts.dart' show DatabaseObjectName;
+import 'package:teachent_app/common/consts.dart'
+    show DatabaseConsts, DatabaseObjectName;
 import 'package:teachent_app/model/db_objects/db_object.dart';
 
 class User extends DatabaseObject {
@@ -7,6 +8,8 @@ class User extends DatabaseObject {
   final String password;
 
   User(this.userId, this.login, this.password);
+
+  User.noKey(this.login, this.password) : userId = DatabaseConsts.emptyKey;
 
   factory User.fromMap(String key, Map<String, dynamic> map) {
     return User(key, map['login'] ?? '', map['password'] ?? '');
@@ -20,11 +23,6 @@ class User extends DatabaseObject {
 
   @override
   Map<String, dynamic> toMap() {
-    final map = <String, String>{};
-
-    map.addAll({'login': login});
-    map.addAll({'password': password});
-
-    return map;
+    return {'login': login, 'password': password};
   }
 }

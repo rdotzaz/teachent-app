@@ -57,4 +57,4 @@ firebase-debug.json
 database.rules.json
 database-debug.log
 .firebaserc
-lib/firebase_options.dart
+lib/common/firebase_options.dart

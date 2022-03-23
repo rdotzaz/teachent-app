@@ -1,4 +1,5 @@
-import 'package:teachent_app/common/consts.dart' show DatabaseObjectName;
+import 'package:teachent_app/common/consts.dart'
+    show DatabaseConsts, DatabaseObjectName;
 import 'package:teachent_app/model/db_objects/db_object.dart';
 
 import '../objects/place.dart';
@@ -27,6 +28,10 @@ class LessonDate extends DatabaseObject {
       this.price,
       this.tools,
       this.places);
+
+  LessonDate.noKey(this.teacherId, this.studentId, this.isFree, this.weekday,
+      this.hourTime, this.isCycled, this.price, this.tools, this.places)
+      : lessonDateId = DatabaseConsts.emptyKey;
 
   @override
   String get collectionName => DatabaseObjectName.lessonDates;

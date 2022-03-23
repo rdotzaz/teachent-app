@@ -8,4 +8,6 @@ abstract class DatabaseObject {
 
   Map<String, dynamic> toMap();
   String toJson() => json.encode(toMap());
+
+  static KeyId emptyKey = '';
 }

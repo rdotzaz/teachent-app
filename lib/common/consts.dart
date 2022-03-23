@@ -18,4 +18,6 @@ class DatabaseConsts {
   static const emulatorPort = 9000;
   static const androidFirebaseHost = '10.0.0.2';
   static const webFirebaseHost = 'localhost';
+
+  static const emptyKey = '';
 }
