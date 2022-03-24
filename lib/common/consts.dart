@@ -20,6 +20,7 @@ class DatabaseConsts {
   static const webFirebaseHost = 'localhost';
 
   static const emptyKey = '';
+  static const emptyField = '';
 }
 
 class HiveConsts {

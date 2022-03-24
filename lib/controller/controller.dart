@@ -8,7 +8,3 @@ abstract class BaseController {
   void init() {}
   void dispose() {}
 }
-
-abstract class BasePageController extends BaseController {
-  void switchPage();
-}

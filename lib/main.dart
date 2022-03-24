@@ -1,12 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:teachent_app/database/database.dart';
-import 'package:teachent_app/view/main_app.dart';
+import 'package:teachent_app/view/teachent_app.dart';
 
-void main() {
-  startApplication();
-}
-
-void startApplication() async {
+void main() async {
   await MainDatabase(DBMode.testing).init();
   runApp(const TeachentApp());
 }

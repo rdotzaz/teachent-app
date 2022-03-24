@@ -1,28 +1,27 @@
-import 'package:teachent_app/common/consts.dart'
-    show DatabaseConsts, DatabaseObjectName;
+import 'package:teachent_app/common/consts.dart';
 import 'package:teachent_app/model/db_objects/db_object.dart';
 
 class User extends DatabaseObject {
-  final KeyId userId;
-  final String login;
+  final KeyId login;
+  final bool isDarkMode;
   final String password;
 
-  User(this.userId, this.login, this.password);
+  User(this.login, this.isDarkMode, this.password);
+  User.noMode(this.login, this.password) : isDarkMode = false;
 
-  User.noKey(this.login, this.password) : userId = DatabaseConsts.emptyKey;
-
-  factory User.fromMap(String key, Map<String, dynamic> map) {
-    return User(key, map['login'] ?? '', map['password'] ?? '');
+  factory User.fromMap(Map<String, dynamic> map) {
+    return User(
+        map['login'] ?? '', map['isDarkMode'] ?? false, map['password'] ?? '');
   }
 
   @override
   String get collectionName => DatabaseObjectName.users;
 
   @override
-  KeyId get key => userId;
+  KeyId get key => login;
 
   @override
   Map<String, dynamic> toMap() {
-    return {'login': login, 'password': password};
+    return {'isDarkMode': isDarkMode, 'password': password};
   }
 }
