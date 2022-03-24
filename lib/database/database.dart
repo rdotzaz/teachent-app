@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:teachent_app/database/adapters/firebase_adapter.dart';
+import 'package:teachent_app/database/methods/configuration_methods.dart';
 import 'package:teachent_app/database/methods/student_methods.dart';
 import 'package:teachent_app/database/methods/teacher_methods.dart';
 
@@ -21,13 +22,17 @@ abstract class IDatabase {
 }
 
 class MainDatabase extends IDatabase
-    with UserDatabaseMethods, TeacherDatabaseMethods, StudentDatabaseMethods {
+    with
+        AppConfigartionMethods,
+        UserDatabaseMethods,
+        TeacherDatabaseMethods,
+        StudentDatabaseMethods {
   MainDatabase(DBMode dbMode) : super(dbMode);
 
   @override
   Future<void> init() async {
     await FirebaseRealTimeDatabaseAdapter.init(dbMode);
-    HiveDatabaseAdapter.init();
+    await HiveDatabaseAdapter.init();
   }
 
   @override

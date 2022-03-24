@@ -21,3 +21,10 @@ class DatabaseConsts {
 
   static const emptyKey = '';
 }
+
+class HiveConsts {
+  static const hiveConfigBox = 'config';
+  static const userId = 'userId';
+  static const userMode = 'mode';
+  static const themeMode = 'themeMode';
+}
