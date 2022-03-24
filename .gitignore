@@ -30,6 +30,7 @@
 .pub-cache/
 .pub/
 /build/
+pubspec.lock
 
 # Windows is not supported
 /windows
@@ -57,3 +58,4 @@ firebase-debug.json
 database.rules.json
 database-debug.log
 .firebaserc
+lib/common/firebase_options.dart
