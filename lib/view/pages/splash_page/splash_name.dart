@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../common/consts.dart';
+import '../../../common/consts.dart';
 
 class SplashNameWidget extends StatelessWidget {
   const SplashNameWidget({

@@ -4,8 +4,15 @@ import '../../model/db_objects/db_object.dart';
 import '../../model/db_objects/user.dart';
 
 mixin UserDatabaseMethods {
+  /// Method returns userId when login and password are correct
+  /// Otherwise returns DatabseConsts.emptyKey
+  Future<KeyId> checkLoginAndPassword(String login, String password) async {
+    return await FirebaseRealTimeDatabaseAdapter
+        .findUserByLoginAndCheckPassword(login, password);
+  }
+
   void addUser(User user) {
-    FirebaseRealTimeDatabaseAdapter.addUser(user.toMap(), user.collectionName);
+    FirebaseRealTimeDatabaseAdapter.addUser(user.key, user.toMap());
   }
 
   void update(KeyId userId) {}

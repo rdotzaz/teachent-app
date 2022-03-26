@@ -20,9 +20,9 @@ class HiveDatabaseAdapter {
     if (!configBox.isOpen) {
       return false;
     }
-    return configBox.get(HiveConsts.userId) &&
-        configBox.get(HiveConsts.themeMode) &&
-        configBox.get(HiveConsts.userMode);
+    return configBox.get(HiveConsts.userId) != null &&
+        configBox.get(HiveConsts.themeMode) != null &&
+        configBox.get(HiveConsts.userMode) != null;
   }
 
   static void putConfiguration(DBValues values) {

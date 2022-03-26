@@ -1,10 +1,11 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/foundation.dart';
+import 'package:teachent_app/common/algorithms.dart';
 import 'package:teachent_app/common/firebase_options.dart'; // ignore: uri_does_not_exist
 import 'package:teachent_app/database/database.dart';
 
-import '../../common/consts.dart' show DatabaseConsts;
+import '../../common/consts.dart' show DatabaseConsts, DatabaseObjectName;
 
 class FirebaseRealTimeDatabaseAdapter {
   static Future<void> init(DBMode dbMode) async {
@@ -31,12 +32,40 @@ class FirebaseRealTimeDatabaseAdapter {
     }
   }
 
-  static void addUser(DBValues userValues, String collectionName) async {
+  static void addUser(String keyId, DBValues userValues) async {
     DatabaseReference databaseReference =
-        FirebaseDatabase.instance.ref().child(collectionName);
-    final newKeyId = databaseReference.push().key;
+        FirebaseDatabase.instance.ref().child(DatabaseObjectName.users);
 
-    await databaseReference.child(newKeyId!).set(userValues);
+    await databaseReference.child(keyId).set(userValues);
+  }
+
+  static Future<String> findUserByLoginAndCheckPassword(
+      String login, String password) async {
+    var databaseReference =
+        FirebaseDatabase.instance.ref('${DatabaseObjectName.users}/$login');
+
+    var event = await databaseReference.once();
+    var isKeyExists = event.snapshot.exists;
+    var foundEventValue = event.snapshot.value;
+
+    if (!isKeyExists) {
+      return DatabaseConsts.emptyKey;
+    }
+
+    if (foundEventValue == null) {
+      return DatabaseConsts.emptyKey;
+    }
+
+    String encryptedPassword =
+        (foundEventValue as DBValues)['password'] ?? DatabaseConsts.emptyField;
+
+    if (encryptedPassword == DatabaseConsts.emptyField) {
+      return DatabaseConsts.emptyKey;
+    }
+
+    var comparsionResult = isPasswordCorrect(password, encryptedPassword);
+
+    return login;
   }
 
   static void clear() {}

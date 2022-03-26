@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:teachent_app/controller/pages/splash_page_controller.dart';
-import 'package:teachent_app/view/widgets/splash_progress.dart';
+import 'package:teachent_app/controller/pages/splash_page/splash_page_controller.dart';
+import 'package:teachent_app/view/pages/splash_page/splash_progress.dart';
 
-import '../widgets/splash_name.dart';
+import 'splash_name.dart';
 
 /// First page after launching app
 /// Displaying logo and loading requiered componentes
@@ -19,6 +19,7 @@ class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
   @override
   void initState() {
     splashPageController.init();
+    splashPageController.nextPage(context);
     super.initState();
   }
 
@@ -35,7 +36,10 @@ class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
       child: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: const [SplashNameWidget(), SplashProgressIndicatorWidget()],
+          children: const [
+            SplashNameWidget(),
+            SplashProgressIndicatorWidget(),
+          ],
         ),
       ),
     );
