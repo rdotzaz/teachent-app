@@ -1,5 +1,3 @@
-import 'dart:developer' as dev;
-
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/foundation.dart';
@@ -45,18 +43,16 @@ class FirebaseRealTimeDatabaseAdapter {
       String login, String password) async {
     var databaseReference =
         FirebaseDatabase.instance.ref('${DatabaseObjectName.users}/$login');
-    var foundKey = databaseReference.key;
 
-    if (foundKey == null) {
-      dev.log('[FirebaseAdapter] Login doesn\'t exist');
+    var event = await databaseReference.once();
+    var isKeyExists = event.snapshot.exists;
+    var foundEventValue = event.snapshot.value;
+
+    if (!isKeyExists) {
       return DatabaseConsts.emptyKey;
     }
 
-    var event = await databaseReference.once();
-    var foundEventValue = event.snapshot.value;
-
     if (foundEventValue == null) {
-      dev.log('[FirebaseAdapter] Login exists, but with empty body');
       return DatabaseConsts.emptyKey;
     }
 
@@ -64,7 +60,6 @@ class FirebaseRealTimeDatabaseAdapter {
         (foundEventValue as DBValues)['password'] ?? DatabaseConsts.emptyField;
 
     if (encryptedPassword == DatabaseConsts.emptyField) {
-      dev.log('[FirebaseAdapter] Login exists, but without password');
       return DatabaseConsts.emptyKey;
     }
 

@@ -1,9 +1,9 @@
-import 'dart:developer' as dev;
-
 import 'package:flutter/material.dart';
 import 'package:teachent_app/common/consts.dart';
 import 'package:teachent_app/controller/controller.dart';
-import 'package:teachent_app/view/pages/login_page/custom_button.dart';
+import 'package:teachent_app/view/widgets/custom_button.dart';
+
+import '../../../view/pages/profile_select_page/profile_select_page.dart';
 
 class LoginFormController extends BaseController {
   final _loginFormKey = GlobalKey<FormState>();
@@ -13,19 +13,21 @@ class LoginFormController extends BaseController {
   GlobalKey<FormState> get key => _loginFormKey;
 
   String? validateLogin(String? login) {
-    return login;
+    var isEmpty = login?.isEmpty ?? true;
+    return isEmpty ? 'Login cannot be empty' : null;
   }
 
   String? validatePassword(String? password) {
-    return password;
+    var isEmpty = password?.isEmpty ?? true;
+    return isEmpty ? 'Login cannot be empty' : null;
   }
 
-  void setLogin(String? login) {
-    login = login ?? '';
+  void setLogin(String? loginToSet) {
+    login = loginToSet ?? '';
   }
 
-  void setPassword(String? password) {
-    password = password ?? '';
+  void setPassword(String? passwordToSet) {
+    password = passwordToSet ?? '';
   }
 
   Future<void> buttonValidator(BuildContext context) async {
@@ -38,17 +40,18 @@ class LoginFormController extends BaseController {
           await dataManager.database.checkLoginAndPassword(login, password);
 
       if (userId == DatabaseConsts.emptyKey) {
-        dev.log('[LoginFormController] Login validation failed');
+        showErrorMessage(context, 'Login has not been found');
       } else {
-        dev.log('[LoginFormController] Login validation passed');
+        // TODO
+        // Go to Home page
       }
       return;
     }
 
-    showErrorMessage(context);
+    showErrorMessage(context, 'Validation failed');
   }
 
-  void showErrorMessage(BuildContext context) {
+  void showErrorMessage(BuildContext context, String info) {
     showModalBottomSheet(
         context: context,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
@@ -60,20 +63,29 @@ class LoginFormController extends BaseController {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   const Padding(
-                    padding: EdgeInsets.all(8.0),
+                      padding: EdgeInsets.all(8.0),
+                      child: Icon(Icons.error_outline,
+                          color: Colors.red, size: 75)),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
                     child: Text(
-                      'Fail',
-                      style: TextStyle(fontSize: 32),
+                      info,
+                      style: const TextStyle(fontSize: 16),
                     ),
                   ),
                   CustomButton(
                       text: 'Ok',
-                      fontSize: 18,
+                      fontSize: 16,
                       onPressed: () {
                         Navigator.of(context).pop();
                       })
                 ],
               ));
         });
+  }
+
+  void goToSignUpPage(BuildContext context) {
+    Navigator.of(context)
+        .push(MaterialPageRoute(builder: (_) => ProfileSelectPage()));
   }
 }

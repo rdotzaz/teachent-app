@@ -3,7 +3,7 @@ import 'package:teachent_app/controller/pages/login_page/login_form_controller.d
 import 'package:teachent_app/view/pages/login_page/header_clipper.dart';
 
 import '../../widgets/black_input_decorator.dart';
-import 'custom_button.dart';
+import '../../widgets/custom_button.dart';
 
 class LoginPage extends StatelessWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -93,9 +93,7 @@ class _LoginFormState extends State<LoginForm> {
       child: TextFormField(
         keyboardType: TextInputType.text,
         validator: (login) => _loginFormController.validateLogin(login),
-        onSaved: (login) {
-          _loginFormController.setLogin(login);
-        },
+        onChanged: (login) => _loginFormController.setLogin(login),
         decoration: blackInputDecorator('Log in'),
       ),
     );
@@ -119,9 +117,7 @@ class _LoginFormState extends State<LoginForm> {
         keyboardType: TextInputType.text,
         validator: (password) =>
             _loginFormController.validatePassword(password),
-        onSaved: (password) {
-          _loginFormController.setPassword(password);
-        },
+        onChanged: (password) => _loginFormController.setPassword(password),
         decoration: blackInputDecorator('Password'),
       ),
     );
@@ -133,9 +129,7 @@ class _LoginFormState extends State<LoginForm> {
         child: CustomButton(
           text: 'Log in',
           fontSize: 28,
-          onPressed: () {
-            _loginFormController.buttonValidator(context);
-          },
+          onPressed: () => _loginFormController.buttonValidator(context),
         ));
   }
 
@@ -155,7 +149,7 @@ class _LoginFormState extends State<LoginForm> {
         child: CustomButton(
           text: 'Sign up',
           fontSize: 16,
-          onPressed: () {},
+          onPressed: () => _loginFormController.goToSignUpPage(context),
         ));
   }
 }
