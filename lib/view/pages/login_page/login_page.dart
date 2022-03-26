@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:teachent_app/controller/pages/login_page/login_form_controller.dart';
+import 'package:teachent_app/view/pages/login_page/header_clipper.dart';
+
+import '../../widgets/black_input_decorator.dart';
+import 'custom_button.dart';
 
 class LoginPage extends StatelessWidget {
   const LoginPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(title: const Text('Log in'), shadowColor: Colors.grey),
-        body: const LoginForm());
+    return const Scaffold(resizeToAvoidBottomInset: false, body: LoginForm());
   }
 }
 
@@ -24,13 +26,65 @@ class _LoginFormState extends State<LoginForm> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-        padding: const EdgeInsets.all(10.0),
-        child: Form(
-            key: _loginFormController.key,
-            child: Column(
-              children: [loginTextField(), passwordTextField(), submitButton()],
-            )));
+    final windowSize = MediaQuery.of(context).size;
+
+    return Form(
+        key: _loginFormController.key,
+        child: Column(
+          children: [
+            loginHeader(windowSize.height),
+            Padding(
+              padding: const EdgeInsets.all(12.0),
+              child: Column(
+                children: [
+                  loginLabel(),
+                  loginTextField(),
+                  passwordLabel(),
+                  passwordTextField(),
+                  submitButton()
+                ],
+              ),
+            ),
+            Expanded(
+                child: Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [signUpLabel(), signUpButton()],
+            ))
+          ],
+        ));
+  }
+
+  Stack loginHeader(double height) {
+    return Stack(
+      alignment: AlignmentDirectional.bottomStart,
+      children: [
+        ClipPath(
+          clipper: LoginHeaderClipper(),
+          child: Container(
+            height: height / 4,
+            color: Colors.grey,
+          ),
+        ),
+        const Padding(
+          padding: EdgeInsets.all(25.0),
+          child: Text(
+            'Log in',
+            style: TextStyle(fontSize: 28, color: Colors.white),
+          ),
+        )
+      ],
+    );
+  }
+
+  Container loginLabel() {
+    return Container(
+      alignment: Alignment.centerLeft,
+      padding: const EdgeInsets.all(5.0),
+      child: const Text(
+        'Login',
+        style: TextStyle(fontSize: 18, color: Colors.black),
+      ),
+    );
   }
 
   Padding loginTextField() {
@@ -42,10 +96,18 @@ class _LoginFormState extends State<LoginForm> {
         onSaved: (login) {
           _loginFormController.setLogin(login);
         },
-        decoration: const InputDecoration(
-            border: OutlineInputBorder(),
-            labelText: 'Login',
-            hintText: 'Login field'),
+        decoration: blackInputDecorator('Log in'),
+      ),
+    );
+  }
+
+  Container passwordLabel() {
+    return Container(
+      alignment: Alignment.centerLeft,
+      padding: const EdgeInsets.all(5.0),
+      child: const Text(
+        'Password',
+        style: TextStyle(fontSize: 18, color: Colors.black),
       ),
     );
   }
@@ -60,26 +122,40 @@ class _LoginFormState extends State<LoginForm> {
         onSaved: (password) {
           _loginFormController.setPassword(password);
         },
-        decoration: const InputDecoration(
-            border: OutlineInputBorder(),
-            labelText: 'Password',
-            hintText: 'Password field'),
+        decoration: blackInputDecorator('Password'),
       ),
     );
   }
 
   Padding submitButton() {
     return Padding(
-      padding: const EdgeInsets.all(10.0),
-      child: ElevatedButton(
-        child: const Text('Log in'),
-        onPressed: () async {
-          await _loginFormController.buttonValidator(context);
-        },
-        style: ButtonStyle(
-            shape: MaterialStateProperty.all(RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(15.0)))),
+        padding: const EdgeInsets.all(12.0),
+        child: CustomButton(
+          text: 'Log in',
+          fontSize: 28,
+          onPressed: () {
+            _loginFormController.buttonValidator(context);
+          },
+        ));
+  }
+
+  Widget signUpLabel() {
+    return Container(
+      padding: const EdgeInsets.all(5.0),
+      child: const Text(
+        'Don\'t have an account?',
+        style: TextStyle(fontSize: 14, color: Colors.black),
       ),
     );
+  }
+
+  Widget signUpButton() {
+    return Padding(
+        padding: const EdgeInsets.fromLTRB(0, 10, 0, 30),
+        child: CustomButton(
+          text: 'Sign up',
+          fontSize: 16,
+          onPressed: () {},
+        ));
   }
 }

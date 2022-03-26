@@ -19,6 +19,7 @@ class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
   @override
   void initState() {
     splashPageController.init();
+    splashPageController.nextPage(context);
     super.initState();
   }
 
@@ -35,16 +36,9 @@ class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
       child: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const SplashNameWidget(),
-            const SplashProgressIndicatorWidget(),
-            FutureBuilder<void>(
-              future: splashPageController.someLogic(),
-              builder: (context, snapshot) {
-                splashPageController.nextPage(context, snapshot);
-                return Container();
-              },
-            )
+          children: const [
+            SplashNameWidget(),
+            SplashProgressIndicatorWidget(),
           ],
         ),
       ),

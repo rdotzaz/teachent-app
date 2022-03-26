@@ -17,15 +17,11 @@ class SplashPageController extends BaseController {
   }
 
   Future<void> someLogic() async {
-    await Future.delayed(const Duration(seconds: 2));
+    await Future.delayed(const Duration(seconds: 3));
   }
 
-  void nextPage(BuildContext context, AsyncSnapshot snapshot) {
-    var connectionState = snapshot.connectionState;
-
-    if (connectionState == ConnectionState.waiting) {
-      return;
-    }
+  void nextPage(BuildContext context) async {
+    await someLogic();
 
     Navigator.of(context).pushReplacement(MaterialPageRoute(
         builder: (context) =>

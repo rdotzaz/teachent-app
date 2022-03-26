@@ -48,6 +48,7 @@ class FirebaseRealTimeDatabaseAdapter {
     var foundKey = databaseReference.key;
 
     if (foundKey == null) {
+      dev.log('[FirebaseAdapter] Login doesn\'t exist');
       return DatabaseConsts.emptyKey;
     }
 
@@ -60,8 +61,7 @@ class FirebaseRealTimeDatabaseAdapter {
     }
 
     String encryptedPassword =
-        (foundEventValue as Map<String, dynamic>)['password'] ??
-            DatabaseConsts.emptyField;
+        (foundEventValue as DBValues)['password'] ?? DatabaseConsts.emptyField;
 
     if (encryptedPassword == DatabaseConsts.emptyField) {
       dev.log('[FirebaseAdapter] Login exists, but without password');
@@ -70,7 +70,7 @@ class FirebaseRealTimeDatabaseAdapter {
 
     var comparsionResult = isPasswordCorrect(password, encryptedPassword);
 
-    return DatabaseConsts.emptyKey;
+    return login;
   }
 
   static void clear() {}

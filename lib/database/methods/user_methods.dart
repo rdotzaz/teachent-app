@@ -7,10 +7,8 @@ mixin UserDatabaseMethods {
   /// Method returns userId when login and password are correct
   /// Otherwise returns DatabseConsts.emptyKey
   Future<KeyId> checkLoginAndPassword(String login, String password) async {
-    var keyId =
-        await FirebaseRealTimeDatabaseAdapter.findUserByLoginAndCheckPassword(
-            login, password);
-    return keyId;
+    return await FirebaseRealTimeDatabaseAdapter
+        .findUserByLoginAndCheckPassword(login, password);
   }
 
   void addUser(User user) {

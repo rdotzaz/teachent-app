@@ -4,14 +4,17 @@ import 'package:teachent_app/model/db_objects/db_object.dart';
 class User extends DatabaseObject {
   final KeyId login;
   final bool isDarkMode;
+  final bool isTeacher;
   final String password;
 
-  User(this.login, this.isDarkMode, this.password);
-  User.noMode(this.login, this.password) : isDarkMode = false;
+  User(this.login, this.isDarkMode, this.isTeacher, this.password);
+  User.noMode(this.login, this.password)
+      : isDarkMode = false,
+        isTeacher = false;
 
   factory User.fromMap(Map<String, dynamic> map) {
-    return User(
-        map['login'] ?? '', map['isDarkMode'] ?? false, map['password'] ?? '');
+    return User(map['login'] ?? '', map['isDarkMode'] ?? false,
+        map['isTeacher'] ?? false, map['password'] ?? '');
   }
 
   @override
@@ -22,6 +25,10 @@ class User extends DatabaseObject {
 
   @override
   Map<String, dynamic> toMap() {
-    return {'isDarkMode': isDarkMode, 'password': password};
+    return {
+      'isDarkMode': isDarkMode,
+      'isTeacher': isTeacher,
+      'password': password
+    };
   }
 }
