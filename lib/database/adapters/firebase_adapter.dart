@@ -23,10 +23,15 @@ class FirebaseRealTimeDatabaseAdapter {
         ? androidFirebaseOption // ignore: undefined_identifier
         : webFirebaseOption; // ignore: undefined_identifier
 
-    await Firebase.initializeApp(options: firebaseOptions);
+    if (defaultTargetPlatform == TargetPlatform.android) {
+      await Firebase.initializeApp();
+    } else {
+      await Firebase.initializeApp(options: firebaseOptions);
+    }
 
     if (dbMode == DBMode.testing) {
       var databaseHost = _getHost(dbMode);
+      print('[Host] $databaseHost');
       FirebaseDatabase.instance
           .useDatabaseEmulator(databaseHost, DatabaseConsts.emulatorPort);
     }
@@ -41,18 +46,24 @@ class FirebaseRealTimeDatabaseAdapter {
 
   static Future<String> findUserByLoginAndCheckPassword(
       String login, String password) async {
+    //FirebaseDatabase.instance.setLoggingEnabled(true);
+    print('[FirebaseAdapter] findUserByLogin');
     var databaseReference =
         FirebaseDatabase.instance.ref('${DatabaseObjectName.users}/$login');
 
+    print('Before once. ${databaseReference.key}');
     var event = await databaseReference.once();
+    print('After once');
     var isKeyExists = event.snapshot.exists;
     var foundEventValue = event.snapshot.value;
 
     if (!isKeyExists) {
+      print('[FirebaseAdapter] No login found');
       return DatabaseConsts.emptyKey;
     }
 
     if (foundEventValue == null) {
+      print('[FirebaseAdapter] No body found');
       return DatabaseConsts.emptyKey;
     }
 
@@ -60,6 +71,7 @@ class FirebaseRealTimeDatabaseAdapter {
         (foundEventValue as DBValues)['password'] ?? DatabaseConsts.emptyField;
 
     if (encryptedPassword == DatabaseConsts.emptyField) {
+      print('[FirebaseAdapter] No password found');
       return DatabaseConsts.emptyKey;
     }
 

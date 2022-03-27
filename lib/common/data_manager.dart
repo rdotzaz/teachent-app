@@ -8,7 +8,7 @@ class DataManagerCreator {
 
   static DataManager create() {
     if (_dataManager == null) {
-      var database = MainDatabase(DBMode.testing);
+      var database = MainDatabase();
       _dataManager = DataManager(database);
     }
     dev.log('[DataManagerCreator] Create DataManager object');

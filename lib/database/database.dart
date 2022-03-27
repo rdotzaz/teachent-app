@@ -12,12 +12,7 @@ typedef DBValues = Map<String, dynamic>;
 enum DBMode { testing, release }
 
 abstract class IDatabase {
-  @protected
-  final DBMode dbMode;
-
-  IDatabase(this.dbMode);
-
-  Future<void> init();
+  Future<void> init(DBMode dbMode);
   void clear();
 }
 
@@ -27,10 +22,8 @@ class MainDatabase extends IDatabase
         UserDatabaseMethods,
         TeacherDatabaseMethods,
         StudentDatabaseMethods {
-  MainDatabase(DBMode dbMode) : super(dbMode);
-
   @override
-  Future<void> init() async {
+  Future<void> init(DBMode dbMode) async {
     await FirebaseRealTimeDatabaseAdapter.init(dbMode);
     await HiveDatabaseAdapter.init();
   }
