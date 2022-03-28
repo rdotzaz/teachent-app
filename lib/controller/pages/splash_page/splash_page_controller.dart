@@ -4,6 +4,7 @@ import 'dart:developer' as dev;
 import 'package:teachent_app/controller/controller.dart';
 import 'package:teachent_app/view/pages/home_page/home_page.dart';
 import 'package:teachent_app/view/pages/login_page/login_page.dart';
+import 'package:teachent_app/view/pages/teacher_creation_page.dart/teacher_creation_page.dart';
 
 class SplashPageController extends BaseController {
   bool isAppConfigAlreadyExists = true;
@@ -24,7 +25,8 @@ class SplashPageController extends BaseController {
     await someLogic();
 
     Navigator.of(context).pushReplacement(MaterialPageRoute(
-        builder: (context) =>
-            isAppConfigAlreadyExists ? const HomePage() : const LoginPage()));
+        builder: (context) => isAppConfigAlreadyExists
+            ? const HomePage()
+            : TeacherCreationPage()));
   }
 }

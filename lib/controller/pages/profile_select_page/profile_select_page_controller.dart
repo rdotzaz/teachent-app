@@ -7,7 +7,7 @@ class ProfileSelectPageController extends BaseController {
   void goToAcocuntCreationPage<Page extends Widget>(BuildContext context) {
     Navigator.of(context).push(MaterialPageRoute(builder: (_) {
       if (Page is TeacherCreationPage) {
-        return const TeacherCreationPage();
+        return TeacherCreationPage();
       } else {
         return const StudentCreationPage();
       }

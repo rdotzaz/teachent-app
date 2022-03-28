@@ -4,12 +4,14 @@ class CustomButton extends StatelessWidget {
   final String text;
   final double fontSize;
   final void Function() onPressed;
-  const CustomButton({
-    Key? key,
-    required this.text,
-    required this.fontSize,
-    required this.onPressed,
-  }) : super(key: key);
+  Color buttonColor;
+  CustomButton(
+      {Key? key,
+      required this.text,
+      required this.fontSize,
+      required this.onPressed,
+      this.buttonColor = Colors.grey})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +24,7 @@ class CustomButton extends StatelessWidget {
           )),
       onPressed: onPressed,
       style: ButtonStyle(
-          backgroundColor: MaterialStateProperty.all(Colors.grey),
+          backgroundColor: MaterialStateProperty.all(buttonColor),
           shape: MaterialStateProperty.all(RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(15.0)))),
     );
