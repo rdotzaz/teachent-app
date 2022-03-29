@@ -1,6 +1,6 @@
 import 'package:flutter/rendering.dart';
 
-class TeacherCreationHeaderClipper extends CustomClipper<Path> {
+class CreationHeaderClipper extends CustomClipper<Path> {
   @override
   Path getClip(Size size) {
     Path path = Path()..lineTo(size.width, 0);

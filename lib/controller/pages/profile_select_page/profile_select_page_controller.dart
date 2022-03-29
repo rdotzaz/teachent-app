@@ -9,7 +9,7 @@ class ProfileSelectPageController extends BaseController {
       if (Page is TeacherCreationPage) {
         return TeacherCreationPage();
       } else {
-        return const StudentCreationPage();
+        return StudentCreationPage();
       }
     }));
   }

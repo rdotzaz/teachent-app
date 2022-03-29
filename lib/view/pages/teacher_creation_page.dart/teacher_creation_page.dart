@@ -11,7 +11,7 @@ import 'package:teachent_app/view/pages/teacher_creation_page.dart/topic_sub_pag
 import 'package:teachent_app/view/widgets/custom_button.dart';
 
 import 'name_sub_page.dart';
-import 'header_clipper.dart';
+import '../../widgets/header_clipper.dart';
 import '../../../controller/pages/teacher_creation/bloc/topic_bloc.dart';
 
 class TeacherCreationPage extends StatelessWidget {
@@ -50,7 +50,7 @@ class TeacherCreationPage extends StatelessWidget {
     return Stack(
       children: [
         ClipPath(
-            clipper: TeacherCreationHeaderClipper(),
+            clipper: CreationHeaderClipper(),
             child: Container(height: height / 8, color: Colors.blue)),
         BlocBuilder<TeacherCreationBloc, int>(builder: (_, __) {
           return Padding(

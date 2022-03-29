@@ -1,5 +1,6 @@
 class EducationLevel {
-  final String level;
+  final String name;
+  bool marked;
 
-  EducationLevel(this.level);
+  EducationLevel(this.name, this.marked);
 }

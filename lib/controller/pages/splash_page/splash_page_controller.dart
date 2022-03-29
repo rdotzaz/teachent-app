@@ -25,8 +25,7 @@ class SplashPageController extends BaseController {
     await someLogic();
 
     Navigator.of(context).pushReplacement(MaterialPageRoute(
-        builder: (context) => isAppConfigAlreadyExists
-            ? const HomePage()
-            : TeacherCreationPage()));
+        builder: (context) =>
+            isAppConfigAlreadyExists ? const HomePage() : const LoginPage()));
   }
 }
