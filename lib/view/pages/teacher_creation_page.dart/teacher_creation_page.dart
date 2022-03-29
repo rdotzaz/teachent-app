@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:teachent_app/controller/pages/teacher_creation/other_topic_bloc.dart';
 import 'package:teachent_app/controller/pages/teacher_creation/teacher_creation_bloc.dart';
 import 'package:teachent_app/controller/pages/teacher_creation/teacher_creation_page_controller.dart';
 import 'package:teachent_app/view/pages/teacher_creation_page.dart/topic_sub_page.dart';
@@ -7,7 +8,7 @@ import 'package:teachent_app/view/widgets/custom_button.dart';
 
 import 'name_sub_page.dart';
 import 'header_clipper.dart';
-import 'topic_bloc.dart';
+import '../../../controller/pages/teacher_creation/topic_bloc.dart';
 
 class TeacherCreationPage extends StatelessWidget {
   TeacherCreationPage({Key? key}) : super(key: key);
@@ -24,6 +25,8 @@ class TeacherCreationPage extends StatelessWidget {
                   TeacherCreationBloc(_teacherCreationPageController)),
           BlocProvider(
               create: (_) => TopicBloc(_teacherCreationPageController)),
+          BlocProvider(
+              create: (_) => OtherTopicBloc(_teacherCreationPageController))
         ],
         child: Scaffold(
           body: Column(
@@ -55,6 +58,7 @@ class TeacherCreationPage extends StatelessWidget {
   Widget teacherFormView() {
     return Expanded(
       child: PageView(
+        physics: const NeverScrollableScrollPhysics(),
         controller: _teacherCreationPageController.pageController,
         pageSnapping: false,
         children: [

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:teachent_app/controller/controller.dart';
+import 'package:teachent_app/controller/pages/teacher_creation/topic_bloc.dart';
 import 'package:teachent_app/model/objects/place.dart';
 import 'package:teachent_app/model/objects/tool.dart';
 import 'package:teachent_app/model/objects/topic.dart';
@@ -23,14 +24,15 @@ class TeacherCreationPageController extends BaseController {
     'Computer Science',
     'English',
     'Spanish',
-    'Geography',
-    'Biology',
-    'Chemistry'
+    'Geography'
   ];
 
   final _pageViewController = PageController();
+  final _topicTextFieldController = TextEditingController();
 
   PageController get pageController => _pageViewController;
+  TextEditingController get topicTextFieldController =>
+      _topicTextFieldController;
   String get headerName => _headerNames[_pageNumber];
 
   final _nameSubPageKey = GlobalKey<FormState>();
@@ -65,5 +67,15 @@ class TeacherCreationPageController extends BaseController {
 
   bool validateFields() {
     return _nameSubPageKey.currentState?.validate() ?? false;
+  }
+
+  String getOtherTopicText() {
+    var text = _topicTextFieldController.value.text;
+    _topicTextFieldController.clear();
+    return text;
+  }
+
+  void addTopicToList(Topic topic) {
+    tempAllTopics.add(topic.topicName);
   }
 }

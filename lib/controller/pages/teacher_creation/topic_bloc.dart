@@ -3,7 +3,7 @@ import 'package:teachent_app/controller/pages/teacher_creation/teacher_creation_
 
 abstract class BaseTopicEvent {}
 
-class RefreshEvent extends BaseTopicEvent {}
+class AddNewTopic extends BaseTopicEvent {}
 
 class ToggleTopicEvent extends BaseTopicEvent {
   final int index;
@@ -17,6 +17,11 @@ class TopicBloc extends Bloc<BaseTopicEvent, List<bool>> {
             _teacherCreationPageController.tempAllTopics.length, false)) {
     on<ToggleTopicEvent>((event, emit) {
       state[event.index] = !state[event.index];
+      emit(List<bool>.from(state));
+    });
+
+    on<AddNewTopic>((_, emit) {
+      state.add(true);
       emit(List<bool>.from(state));
     });
   }
