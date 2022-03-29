@@ -1,14 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:teachent_app/controller/pages/teacher_creation/other_topic_bloc.dart';
-import 'package:teachent_app/controller/pages/teacher_creation/teacher_creation_bloc.dart';
+import 'package:teachent_app/controller/pages/teacher_creation/bloc/other_topic_bloc.dart';
+import 'package:teachent_app/controller/pages/teacher_creation/bloc/place_bloc.dart';
+import 'package:teachent_app/controller/pages/teacher_creation/bloc/teacher_creation_bloc.dart';
+import 'package:teachent_app/controller/pages/teacher_creation/bloc/tool_bloc.dart';
+import 'package:teachent_app/controller/pages/teacher_creation/bloc/work_mode_bloc.dart';
 import 'package:teachent_app/controller/pages/teacher_creation/teacher_creation_page_controller.dart';
+import 'package:teachent_app/view/pages/teacher_creation_page.dart/place_sub_page.dart';
 import 'package:teachent_app/view/pages/teacher_creation_page.dart/topic_sub_page.dart';
 import 'package:teachent_app/view/widgets/custom_button.dart';
 
 import 'name_sub_page.dart';
 import 'header_clipper.dart';
-import '../../../controller/pages/teacher_creation/topic_bloc.dart';
+import '../../../controller/pages/teacher_creation/bloc/topic_bloc.dart';
 
 class TeacherCreationPage extends StatelessWidget {
   TeacherCreationPage({Key? key}) : super(key: key);
@@ -26,7 +30,10 @@ class TeacherCreationPage extends StatelessWidget {
           BlocProvider(
               create: (_) => TopicBloc(_teacherCreationPageController)),
           BlocProvider(
-              create: (_) => OtherTopicBloc(_teacherCreationPageController))
+              create: (_) => OtherTopicBloc(_teacherCreationPageController)),
+          BlocProvider(create: (_) => WorkModeBloc()),
+          BlocProvider(create: (_) => ToolBloc(_teacherCreationPageController)),
+          BlocProvider(create: (_) => PlaceBloc(_teacherCreationPageController))
         ],
         child: Scaffold(
           body: Column(
@@ -64,9 +71,7 @@ class TeacherCreationPage extends StatelessWidget {
         children: [
           nameSubPage(_teacherCreationPageController),
           topicSubPage(_teacherCreationPageController),
-          Container(
-            child: const Center(child: Text('Third page')),
-          ),
+          placeSubPage(_teacherCreationPageController)
         ],
       ),
     );

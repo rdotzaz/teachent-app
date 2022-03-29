@@ -1,5 +1,6 @@
 class Tool {
-  final String toolName;
+  final String name;
+  bool marked;
 
-  Tool(this.toolName);
+  Tool(this.name, this.marked);
 }

@@ -1,6 +1,6 @@
 import 'package:bloc/bloc.dart';
 
-import 'teacher_creation_page_controller.dart';
+import '../teacher_creation_page_controller.dart';
 
 abstract class BaseTeacherEvent {}
 

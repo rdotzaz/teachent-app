@@ -1,5 +1,6 @@
 class Topic {
-  final String topicName;
+  final String name;
+  bool marked;
 
-  Topic(this.topicName);
+  Topic(this.name, this.marked);
 }

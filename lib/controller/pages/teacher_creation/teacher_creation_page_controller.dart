@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:teachent_app/controller/controller.dart';
-import 'package:teachent_app/controller/pages/teacher_creation/topic_bloc.dart';
-import 'package:teachent_app/model/objects/place.dart';
-import 'package:teachent_app/model/objects/tool.dart';
 import 'package:teachent_app/model/objects/topic.dart';
+import 'package:teachent_app/model/objects/tool.dart';
+import 'package:teachent_app/model/objects/place.dart';
 
 class TeacherCreationPageController extends BaseController {
   String name = '';
   String description = '';
-  List<Topic> topics = [];
-  List<Tool> tools = [];
-  List<Place> places = [];
+  Set<String> topics = {};
+  Set<String> tools = {};
+  Set<String> places = {};
 
   int _pageNumber = 0;
 
@@ -19,12 +18,23 @@ class TeacherCreationPageController extends BaseController {
     'In what topics do you feel well?',
     'How\'d you like to work?'
   ];
-  final tempAllTopics = [
-    'Math',
-    'Computer Science',
-    'English',
-    'Spanish',
-    'Geography'
+
+  final allTopics = [
+    Topic('Math', false),
+    Topic('Computer Science', false),
+    Topic('English', false),
+    Topic('Spanish', false),
+    Topic('Geography', false)
+  ];
+
+  final allTools = [Tool('Discord', false), Tool('Microsoft Teams', false)];
+
+  final allPlaces = [
+    Place('Wroclaw', false),
+    Place('Warsaw', false),
+    Place('Krakow', false),
+    Place('Berlin', false),
+    Place('London', false)
   ];
 
   final _pageViewController = PageController();
@@ -75,7 +85,15 @@ class TeacherCreationPageController extends BaseController {
     return text;
   }
 
-  void addTopicToList(Topic topic) {
-    tempAllTopics.add(topic.topicName);
+  void addToAllTopics(Topic topic) {
+    allTopics.add(topic);
+  }
+
+  void addToAllTools(Tool tool) {
+    allTools.add(tool);
+  }
+
+  void addToAllPlaces(Place place) {
+    allPlaces.add(place);
   }
 }

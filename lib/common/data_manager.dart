@@ -26,5 +26,5 @@ class DataManager {
 
   AppConfiguration? get appConfiguration => _appConfiguration;
 
-  set appConfiguration(value) => _appConfiguration = value;
+  set appConfiguration(configuration) => _appConfiguration = configuration;
 }

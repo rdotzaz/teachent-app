@@ -1,5 +1,6 @@
 class Place {
-  final String placeName;
+  final String name;
+  bool marked;
 
-  Place(this.placeName);
+  Place(this.name, this.marked);
 }

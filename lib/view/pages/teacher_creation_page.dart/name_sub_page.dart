@@ -58,8 +58,8 @@ Padding descriptionTextField(TeacherCreationPageController teacherController) {
       minLines: 3,
       maxLines: 4,
       keyboardType: TextInputType.text,
-      validator: (name) => null,
-      onChanged: (name) => teacherController.setName(name),
+      validator: (description) => null,
+      onChanged: (description) => teacherController.setDescription(description),
       decoration: blackInputDecorator('Description'),
     ),
   );

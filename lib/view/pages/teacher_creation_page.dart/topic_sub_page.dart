@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:teachent_app/controller/pages/teacher_creation/other_topic_bloc.dart';
+import 'package:teachent_app/controller/pages/teacher_creation/bloc/other_topic_bloc.dart';
 import 'package:teachent_app/controller/pages/teacher_creation/teacher_creation_page_controller.dart';
-import 'package:teachent_app/controller/pages/teacher_creation/topic_bloc.dart';
+import 'package:teachent_app/controller/pages/teacher_creation/bloc/topic_bloc.dart';
 import 'package:teachent_app/model/objects/topic.dart';
 import 'package:teachent_app/view/widgets/custom_button.dart';
 
 Widget topicSubPage(TeacherCreationPageController teacherController) {
-  return BlocBuilder<TopicBloc, List<bool>>(builder: (_, stateList) {
+  return BlocBuilder<TopicBloc, List<Topic>>(builder: (_, stateList) {
     return Padding(
         padding: const EdgeInsets.all(25.0),
         child: Column(
@@ -16,19 +16,19 @@ Widget topicSubPage(TeacherCreationPageController teacherController) {
               child: ListView.builder(
                   shrinkWrap: true,
                   physics: const BouncingScrollPhysics(),
-                  itemCount: teacherController.tempAllTopics.length,
+                  itemCount: stateList.length,
                   itemBuilder: (context, index) {
                     return Padding(
                         padding: const EdgeInsets.symmetric(vertical: 5.0),
                         child: CustomButton(
-                            text: teacherController.tempAllTopics[index],
+                            text: stateList[index].name,
                             fontSize: 16,
                             onPressed: () {
                               context
                                   .read<TopicBloc>()
                                   .add(ToggleTopicEvent(index));
                             },
-                            buttonColor: stateList[index]
+                            buttonColor: stateList[index].marked
                                 ? Colors.blue
                                 : Colors.blue[100]!));
                   }),
@@ -77,10 +77,9 @@ class OtherTopicLayout extends StatelessWidget {
               text: 'Add',
               fontSize: 14,
               onPressed: () {
-                _teacherController.addTopicToList(
-                    Topic(_teacherController.getOtherTopicText()));
+                var topicName = _teacherController.getOtherTopicText();
                 context.read<OtherTopicBloc>().add(UnclickOtherTopicEvent());
-                context.read<TopicBloc>().add(AddNewTopic());
+                context.read<TopicBloc>().add(AddNewTopic(topicName));
               },
               buttonColor: Colors.blue),
         )
