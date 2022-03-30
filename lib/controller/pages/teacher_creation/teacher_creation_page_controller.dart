@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:teachent_app/controller/controller.dart';
+import 'package:teachent_app/controller/pages/teacher_creation/bloc/place_bloc.dart';
+import 'package:teachent_app/controller/pages/teacher_creation/bloc/tool_bloc.dart';
+import 'package:teachent_app/controller/pages/teacher_creation/bloc/topic_bloc.dart';
 import 'package:teachent_app/model/objects/topic.dart';
 import 'package:teachent_app/model/objects/tool.dart';
 import 'package:teachent_app/model/objects/place.dart';
@@ -11,6 +14,10 @@ class TeacherCreationPageController extends BaseController {
   Set<String> tools = {};
   Set<String> places = {};
 
+  late TopicBloc topicBloc;
+  late ToolBloc toolBloc;
+  late PlaceBloc placeBloc;
+
   int _pageNumber = 0;
 
   final _headerNames = [
@@ -19,23 +26,50 @@ class TeacherCreationPageController extends BaseController {
     'How\'d you like to work?'
   ];
 
-  final allTopics = [
-    Topic('Math', false),
-    Topic('Computer Science', false),
-    Topic('English', false),
-    Topic('Spanish', false),
-    Topic('Geography', false)
-  ];
+  final List<Topic> _allTopics = [];
 
-  final allTools = [Tool('Discord', false), Tool('Microsoft Teams', false)];
+  final List<Tool> _allTools = [];
 
-  final allPlaces = [
-    Place('Wroclaw', false),
-    Place('Warsaw', false),
-    Place('Krakow', false),
-    Place('Berlin', false),
-    Place('London', false)
-  ];
+  final List<Place> _allPlaces = [];
+
+  @override
+  void init() {
+    topicBloc = TopicBloc(this);
+    toolBloc = ToolBloc(this);
+    placeBloc = PlaceBloc(this);
+
+    topicBloc.add(LoadAllTopicsEvent());
+    toolBloc.add(LoadAllToolsEvent());
+    placeBloc.add(LoadAllPlacesEvent());
+  }
+
+  @override
+  void dispose() {
+    _pageViewController.dispose();
+    _topicTextFieldController.dispose();
+  }
+
+  Future<void> initTopics() async {
+    var topics = await dataManager.database.getAvailableTopics();
+    _allTopics.addAll(topics);
+    _allTopics.sort((t1, t2) => t1.name.compareTo(t2.name));
+  }
+
+  Future<void> initTools() async {
+    var tools = await dataManager.database.getAvailableTools();
+    _allTools.addAll(tools);
+    _allTools.sort((t1, t2) => t1.name.compareTo(t2.name));
+  }
+
+  Future<void> initPlaces() async {
+    var places = await dataManager.database.getAvailablePlaces();
+    _allPlaces.addAll(places);
+    _allPlaces.sort((p1, p2) => p1.name.compareTo(p2.name));
+  }
+
+  List<Topic> get topicList => _allTopics;
+  List<Tool> get toolList => _allTools;
+  List<Place> get placeList => _allPlaces;
 
   final _pageViewController = PageController();
   final _topicTextFieldController = TextEditingController();
@@ -86,14 +120,17 @@ class TeacherCreationPageController extends BaseController {
   }
 
   void addToAllTopics(Topic topic) {
-    allTopics.add(topic);
+    _allTopics.add(topic);
+    _allTopics.sort((t1, t2) => t1.name.compareTo(t2.name));
   }
 
   void addToAllTools(Tool tool) {
-    allTools.add(tool);
+    _allTools.add(tool);
+    _allTools.sort((t1, t2) => t1.name.compareTo(t2.name));
   }
 
   void addToAllPlaces(Place place) {
-    allPlaces.add(place);
+    _allPlaces.add(place);
+    _allPlaces.sort((p1, p2) => p1.name.compareTo(p2.name));
   }
 }

@@ -4,6 +4,8 @@ import 'package:teachent_app/model/objects/place.dart';
 
 abstract class BasePlaceEvent {}
 
+class LoadAllPlacesEvent extends BasePlaceEvent {}
+
 class TogglePlaceEvent extends BasePlaceEvent {
   final int index;
 
@@ -18,11 +20,16 @@ class AddNewPlace extends BasePlaceEvent {
 
 class PlaceBloc extends Bloc<BasePlaceEvent, List<Place>> {
   PlaceBloc(TeacherCreationPageController _teacherCreationPageController)
-      : super(_teacherCreationPageController.allPlaces) {
+      : super(_teacherCreationPageController.placeList) {
+    on<LoadAllPlacesEvent>((event, emit) async {
+      await _teacherCreationPageController.initPlaces();
+      emit(_teacherCreationPageController.placeList);
+    });
+
     on<TogglePlaceEvent>((event, emit) {
       if (state[event.index].marked) {
         state[event.index].marked = false;
-        _teacherCreationPageController.places.remove(state[event.index]);
+        _teacherCreationPageController.places.remove(state[event.index].name);
       } else {
         state[event.index].marked = true;
         _teacherCreationPageController.places.add(state[event.index].name);
@@ -34,7 +41,7 @@ class PlaceBloc extends Bloc<BasePlaceEvent, List<Place>> {
       var newPlace = Place(event.name, true);
       state.add(newPlace);
       _teacherCreationPageController.places.add(newPlace.name);
-      _teacherCreationPageController.allPlaces.add(newPlace);
+      _teacherCreationPageController.addToAllPlaces(newPlace);
       emit(List<Place>.from(state));
     });
   }

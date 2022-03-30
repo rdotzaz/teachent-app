@@ -40,7 +40,7 @@ class ProfileSelectPage extends StatelessWidget {
                 color: Colors.blue,
                 onPressed: () {
                   _profileSelectPageController
-                      .goToAcocuntCreationPage<TeacherCreationPage>(context);
+                      .goToAcocuntTeacherCreationPage(context);
                 }),
             ProfileButton(
                 profile: 'Student',
@@ -48,7 +48,7 @@ class ProfileSelectPage extends StatelessWidget {
                 color: Colors.red,
                 onPressed: () {
                   _profileSelectPageController
-                      .goToAcocuntCreationPage<StudentCreationPage>(context);
+                      .goToAcocuntStudentCreationPage(context);
                 })
           ],
         ));

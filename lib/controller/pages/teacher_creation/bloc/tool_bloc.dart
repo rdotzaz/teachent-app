@@ -4,6 +4,8 @@ import 'package:teachent_app/model/objects/tool.dart';
 
 abstract class BaseToolEvent {}
 
+class LoadAllToolsEvent extends BaseToolEvent {}
+
 class ToggleToolEvent extends BaseToolEvent {
   final int index;
 
@@ -18,7 +20,12 @@ class AddNewTool extends BaseToolEvent {
 
 class ToolBloc extends Bloc<BaseToolEvent, List<Tool>> {
   ToolBloc(TeacherCreationPageController _teacherCreationPageController)
-      : super(_teacherCreationPageController.allTools) {
+      : super(_teacherCreationPageController.toolList) {
+    on<LoadAllToolsEvent>((event, emit) async {
+      await _teacherCreationPageController.initTools();
+      emit(_teacherCreationPageController.toolList);
+    });
+
     on<ToggleToolEvent>((event, emit) {
       if (state[event.index].marked) {
         state[event.index].marked = false;
@@ -34,7 +41,7 @@ class ToolBloc extends Bloc<BaseToolEvent, List<Tool>> {
       var newTool = Tool(event.name, true);
       state.add(newTool);
       _teacherCreationPageController.tools.add(newTool.name);
-      _teacherCreationPageController.allTools.add(newTool);
+      _teacherCreationPageController.addToAllTools(newTool);
       emit(List<Tool>.from(state));
     });
   }

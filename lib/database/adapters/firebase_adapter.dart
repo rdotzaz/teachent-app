@@ -80,5 +80,33 @@ class FirebaseRealTimeDatabaseAdapter {
     return login;
   }
 
+  static Future<DBValues<bool>> getAvailableObjects(
+      String collectionName) async {
+    var databaseReference = FirebaseDatabase.instance.ref(collectionName);
+
+    var event = await databaseReference.once();
+    var isKeyExists = event.snapshot.exists;
+    var foundValues = event.snapshot.value as Map<String, dynamic>;
+
+    if (!isKeyExists) {
+      print('[FirebaseAdapter] Key $collectionName does not exist');
+      return {};
+    }
+
+    if (foundValues.isEmpty) {
+      print('[FirebaseAdapter] No $collectionName available');
+      return {};
+    }
+    return {
+      for (var entry in foundValues.entries) entry.key: (entry.value as bool)
+    };
+  }
+
+  static Future<void> addObjects(String collectionName, DBValues values) async {
+    var databaseReference = FirebaseDatabase.instance.ref(collectionName);
+
+    await databaseReference.update(values);
+  }
+
   static void clear() {}
 }

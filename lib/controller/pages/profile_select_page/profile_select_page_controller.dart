@@ -4,13 +4,13 @@ import 'package:teachent_app/view/pages/student_creation_page/student_creation_p
 import 'package:teachent_app/view/pages/teacher_creation_page.dart/teacher_creation_page.dart';
 
 class ProfileSelectPageController extends BaseController {
-  void goToAcocuntCreationPage<Page extends Widget>(BuildContext context) {
-    Navigator.of(context).push(MaterialPageRoute(builder: (_) {
-      if (Page is TeacherCreationPage) {
-        return TeacherCreationPage();
-      } else {
-        return StudentCreationPage();
-      }
-    }));
+  void goToAcocuntTeacherCreationPage(BuildContext context) {
+    Navigator.of(context)
+        .push(MaterialPageRoute(builder: (_) => const TeacherCreationPage()));
+  }
+
+  void goToAcocuntStudentCreationPage(BuildContext context) {
+    Navigator.of(context)
+        .push(MaterialPageRoute(builder: (_) => StudentCreationPage()));
   }
 }

@@ -7,7 +7,7 @@ import 'package:teachent_app/model/objects/topic.dart';
 import 'package:teachent_app/view/widgets/custom_button.dart';
 
 Widget topicSubPage(TeacherCreationPageController teacherController) {
-  return BlocBuilder<TopicBloc, List<Topic>>(builder: (_, stateList) {
+  return BlocBuilder<TopicBloc, List<Topic>>(builder: (_, topics) {
     return Padding(
         padding: const EdgeInsets.all(25.0),
         child: Column(
@@ -16,19 +16,19 @@ Widget topicSubPage(TeacherCreationPageController teacherController) {
               child: ListView.builder(
                   shrinkWrap: true,
                   physics: const BouncingScrollPhysics(),
-                  itemCount: stateList.length,
+                  itemCount: topics.length,
                   itemBuilder: (context, index) {
                     return Padding(
                         padding: const EdgeInsets.symmetric(vertical: 5.0),
                         child: CustomButton(
-                            text: stateList[index].name,
+                            text: topics[index].name,
                             fontSize: 16,
                             onPressed: () {
                               context
                                   .read<TopicBloc>()
                                   .add(ToggleTopicEvent(index));
                             },
-                            buttonColor: stateList[index].marked
+                            buttonColor: topics[index].marked
                                 ? Colors.blue
                                 : Colors.blue[100]!));
                   }),

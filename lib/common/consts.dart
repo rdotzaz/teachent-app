@@ -12,6 +12,10 @@ class DatabaseObjectName {
   static const lessons = 'lessons';
   static const reports = 'reports';
   static const reviews = 'reviews';
+  static const topics = 'topics';
+  static const tools = 'tools';
+  static const places = 'places';
+  static const levels = 'levels';
 }
 
 class DatabaseConsts {

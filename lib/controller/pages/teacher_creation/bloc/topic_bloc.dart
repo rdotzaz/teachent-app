@@ -4,6 +4,8 @@ import 'package:teachent_app/model/objects/topic.dart';
 
 abstract class BaseTopicEvent {}
 
+class LoadAllTopicsEvent extends BaseTopicEvent {}
+
 class AddNewTopic extends BaseTopicEvent {
   final String name;
 
@@ -18,7 +20,12 @@ class ToggleTopicEvent extends BaseTopicEvent {
 
 class TopicBloc extends Bloc<BaseTopicEvent, List<Topic>> {
   TopicBloc(TeacherCreationPageController _teacherCreationPageController)
-      : super(_teacherCreationPageController.allTopics) {
+      : super(_teacherCreationPageController.topicList) {
+    on<LoadAllTopicsEvent>((event, emit) async {
+      await _teacherCreationPageController.initTopics();
+      emit(_teacherCreationPageController.topicList);
+    });
+
     on<ToggleTopicEvent>((event, emit) {
       if (state[event.index].marked) {
         state[event.index].marked = false;
@@ -34,7 +41,7 @@ class TopicBloc extends Bloc<BaseTopicEvent, List<Topic>> {
       var newTopic = Topic(event.name, true);
       state.add(newTopic);
       _teacherCreationPageController.topics.add(newTopic.name);
-      _teacherCreationPageController.allTopics.add(newTopic);
+      _teacherCreationPageController.addToAllTopics(newTopic);
       emit(List<Topic>.from(state));
     });
   }

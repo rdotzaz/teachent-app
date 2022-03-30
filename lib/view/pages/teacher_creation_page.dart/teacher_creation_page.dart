@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:teachent_app/controller/pages/teacher_creation/bloc/other_topic_bloc.dart';
-import 'package:teachent_app/controller/pages/teacher_creation/bloc/place_bloc.dart';
 import 'package:teachent_app/controller/pages/teacher_creation/bloc/teacher_creation_bloc.dart';
-import 'package:teachent_app/controller/pages/teacher_creation/bloc/tool_bloc.dart';
 import 'package:teachent_app/controller/pages/teacher_creation/bloc/work_mode_bloc.dart';
 import 'package:teachent_app/controller/pages/teacher_creation/teacher_creation_page_controller.dart';
 import 'package:teachent_app/view/pages/teacher_creation_page.dart/place_sub_page.dart';
@@ -12,12 +10,22 @@ import 'package:teachent_app/view/widgets/custom_button.dart';
 
 import 'name_sub_page.dart';
 import '../../widgets/header_clipper.dart';
-import '../../../controller/pages/teacher_creation/bloc/topic_bloc.dart';
 
-class TeacherCreationPage extends StatelessWidget {
-  TeacherCreationPage({Key? key}) : super(key: key);
+class TeacherCreationPage extends StatefulWidget {
+  const TeacherCreationPage({Key? key}) : super(key: key);
 
+  @override
+  State<TeacherCreationPage> createState() => _TeacherCreationPageState();
+}
+
+class _TeacherCreationPageState extends State<TeacherCreationPage> {
   final _teacherCreationPageController = TeacherCreationPageController();
+
+  @override
+  void initState() {
+    super.initState();
+    _teacherCreationPageController.init();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -27,13 +35,12 @@ class TeacherCreationPage extends StatelessWidget {
           BlocProvider(
               create: (_) =>
                   TeacherCreationBloc(_teacherCreationPageController)),
-          BlocProvider(
-              create: (_) => TopicBloc(_teacherCreationPageController)),
+          BlocProvider(create: (_) => _teacherCreationPageController.topicBloc),
           BlocProvider(
               create: (_) => OtherTopicBloc(_teacherCreationPageController)),
           BlocProvider(create: (_) => WorkModeBloc()),
-          BlocProvider(create: (_) => ToolBloc(_teacherCreationPageController)),
-          BlocProvider(create: (_) => PlaceBloc(_teacherCreationPageController))
+          BlocProvider(create: (_) => _teacherCreationPageController.toolBloc),
+          BlocProvider(create: (_) => _teacherCreationPageController.placeBloc)
         ],
         child: Scaffold(
           body: Column(
