@@ -8,10 +8,21 @@ import 'package:teachent_app/view/pages/student_creation_page/name_student_sub_p
 import 'package:teachent_app/view/widgets/custom_button.dart';
 import 'package:teachent_app/view/widgets/header_clipper.dart';
 
-class StudentCreationPage extends StatelessWidget {
-  StudentCreationPage({Key? key}) : super(key: key);
+class StudentCreationPage extends StatefulWidget {
+  const StudentCreationPage({Key? key}) : super(key: key);
 
+  @override
+  State<StudentCreationPage> createState() => _StudentCreationPageState();
+}
+
+class _StudentCreationPageState extends State<StudentCreationPage> {
   final _studentCreationPageController = StudentCreationPageController();
+
+  @override
+  void initState() {
+    super.initState();
+    _studentCreationPageController.init();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +33,9 @@ class StudentCreationPage extends StatelessWidget {
               create: (_) =>
                   StudentCreationBloc(_studentCreationPageController)),
           BlocProvider(
-              create: (_) => EducationLevelBloc(_studentCreationPageController))
+              create: (_) => EducationLevelBloc(_studentCreationPageController)),
+          BlocProvider(
+              create: (_) => _studentCreationPageController.loadLevelsBloc)
         ],
         child: Scaffold(
           body: Column(

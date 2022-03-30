@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'dart:developer' as dev;
 
 import 'package:teachent_app/controller/controller.dart';
+import 'package:teachent_app/model/objects/education_level.dart';
 import 'package:teachent_app/model/objects/topic.dart';
 import 'package:teachent_app/model/objects/tool.dart';
 import 'package:teachent_app/model/objects/place.dart';
@@ -37,9 +38,17 @@ class SplashPageController extends BaseController {
       Place('Berlin', false),
       Place('London', false)
     ];
+
+    final educationLevels = [
+      EducationLevel('Primiary', false),
+      EducationLevel('High School', false),
+      EducationLevel('University', false)
+    ];
+
     await dataManager.database.addTopics(allTopics);
     await dataManager.database.addTools(allTools);
     await dataManager.database.addPlaces(allPlaces);
+    await dataManager.database.addLevels(educationLevels);
 
     await Future.delayed(const Duration(seconds: 3));
   }

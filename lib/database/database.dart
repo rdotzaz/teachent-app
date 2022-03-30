@@ -1,5 +1,6 @@
 import 'package:teachent_app/database/adapters/firebase_adapter.dart';
 import 'package:teachent_app/database/methods/configuration_methods.dart';
+import 'package:teachent_app/database/methods/education_level_methods.dart';
 import 'package:teachent_app/database/methods/place_methods.dart';
 import 'package:teachent_app/database/methods/student_methods.dart';
 import 'package:teachent_app/database/methods/teacher_methods.dart';
@@ -26,7 +27,8 @@ class MainDatabase extends IDatabase
         StudentDatabaseMethods,
         TopicDatabaseMethods,
         ToolsDatabaseMethods,
-        PlaceDatabaseMethods {
+        PlaceDatabaseMethods,
+        EducationLevelDatabaseMethods {
   @override
   Future<void> init(DBMode dbMode) async {
     await FirebaseRealTimeDatabaseAdapter.init(dbMode);

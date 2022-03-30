@@ -21,14 +21,14 @@ class StudentCreationBloc extends Bloc<BaseStudentEvent, int> {
       if (state == 1) {
         return;
       }
-      /*
+      
       if (state == 0) {
         var isValidated = controller.validateFields();
         if (!isValidated) {
           return;
         }
       }
-      */
+      
       controller.moveToPage(state + 1);
       emit(state + 1);
     });
