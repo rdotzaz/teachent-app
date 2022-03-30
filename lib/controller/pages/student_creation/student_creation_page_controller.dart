@@ -2,11 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:teachent_app/controller/controller.dart';
 import 'package:teachent_app/controller/pages/student_creation/bloc/load_levels_bloc.dart';
 import 'package:teachent_app/model/objects/education_level.dart';
+import 'package:teachent_app/model/db_objects/student.dart';
+import 'package:teachent_app/view/pages/account_creation_page/account_creation_page.dart';
 
 class StudentCreationPageController extends BaseController {
   String name = '';
   String educationLevel = '';
-  String place = '';
 
   int _pageNumber = 0;
   final _pageViewController = PageController();
@@ -58,5 +59,11 @@ class StudentCreationPageController extends BaseController {
 
   void setName(String? nameToSet) {
     name = nameToSet ?? '';
+  }
+
+  void goToLoginCreationPage(BuildContext context) {
+    var student = Student.noKey(name, EducationLevel(educationLevel, true), [], []);
+    Navigator.of(context).pushReplacement(
+        MaterialPageRoute(builder: (_) => AccountCreationPage(student)));
   }
 }

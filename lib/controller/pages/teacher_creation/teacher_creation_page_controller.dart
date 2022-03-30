@@ -3,9 +3,11 @@ import 'package:teachent_app/controller/controller.dart';
 import 'package:teachent_app/controller/pages/teacher_creation/bloc/place_bloc.dart';
 import 'package:teachent_app/controller/pages/teacher_creation/bloc/tool_bloc.dart';
 import 'package:teachent_app/controller/pages/teacher_creation/bloc/topic_bloc.dart';
+import 'package:teachent_app/model/db_objects/teacher.dart';
 import 'package:teachent_app/model/objects/topic.dart';
 import 'package:teachent_app/model/objects/tool.dart';
 import 'package:teachent_app/model/objects/place.dart';
+import 'package:teachent_app/view/pages/account_creation_page/account_creation_page.dart';
 import 'package:teachent_app/view/widgets/status_bottom_sheet.dart';
 
 class TeacherCreationPageController extends BaseController {
@@ -177,5 +179,17 @@ class TeacherCreationPageController extends BaseController {
   void addToAllPlaces(Place place) {
     _allPlaces.add(place);
     _allPlaces.sort((p1, p2) => p1.name.compareTo(p2.name));
+  }
+
+  void goToLoginCreationPage(BuildContext context) {
+    var teacher = Teacher.noKey(
+        name,
+        description,
+        topics.map((name) => Topic(name, true)).toList(),
+        tools.map((name) => Tool(name, true)).toList(),
+        places.map((name) => Place(name, true)).toList(),
+        -1, [], []);
+    Navigator.of(context).pushReplacement(
+        MaterialPageRoute(builder: (_) => AccountCreationPage(teacher)));
   }
 }

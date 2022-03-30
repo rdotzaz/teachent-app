@@ -115,19 +115,17 @@ class _TeacherCreationPageState extends State<TeacherCreationPage> {
   Widget nextButton() {
     return BlocBuilder<TeacherCreationBloc, int>(
         builder: (context, pageNumber) {
-      return Visibility(
-        visible: pageNumber < 2,
-        maintainSize: true,
-        maintainAnimation: true,
-        maintainState: true,
-        child: CustomButton(
-            text: 'Next',
-            fontSize: 18,
-            buttonColor: Colors.blue,
-            onPressed: () => context
-                .read<TeacherCreationBloc>()
-                .add(SwitchToNextPageEvent())),
-      );
+      return CustomButton(
+          text: pageNumber == 2 ? 'Done' : 'Next',
+          fontSize: 18,
+          buttonColor: Colors.blue,
+          onPressed: () {
+            if (pageNumber == 2) {
+              _teacherCreationPageController.goToLoginCreationPage(context);
+            } else {
+              context.read<TeacherCreationBloc>().add(SwitchToNextPageEvent());
+            }
+          });
     });
   }
 }

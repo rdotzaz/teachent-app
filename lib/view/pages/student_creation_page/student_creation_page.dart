@@ -33,7 +33,8 @@ class _StudentCreationPageState extends State<StudentCreationPage> {
               create: (_) =>
                   StudentCreationBloc(_studentCreationPageController)),
           BlocProvider(
-              create: (_) => EducationLevelBloc(_studentCreationPageController)),
+              create: (_) =>
+                  EducationLevelBloc(_studentCreationPageController)),
           BlocProvider(
               create: (_) => _studentCreationPageController.loadLevelsBloc)
         ],
@@ -109,19 +110,17 @@ class _StudentCreationPageState extends State<StudentCreationPage> {
   Widget nextButton() {
     return BlocBuilder<StudentCreationBloc, int>(
         builder: (context, pageNumber) {
-      return Visibility(
-        visible: pageNumber < 1,
-        maintainSize: true,
-        maintainAnimation: true,
-        maintainState: true,
-        child: CustomButton(
-            text: 'Next',
-            fontSize: 18,
-            buttonColor: Colors.red,
-            onPressed: () => context
-                .read<StudentCreationBloc>()
-                .add(SwitchToNextPageEvent())),
-      );
+      return CustomButton(
+          text: pageNumber == 0 ? 'Next' : 'Done',
+          fontSize: 18,
+          buttonColor: Colors.red,
+          onPressed: () {
+            if (pageNumber == 0) {
+              context.read<StudentCreationBloc>().add(SwitchToNextPageEvent());
+            } else {
+              _studentCreationPageController.goToLoginCreationPage(context);
+            }
+          });
     });
   }
 }
