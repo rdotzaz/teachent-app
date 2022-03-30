@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:teachent_app/controller/pages/teacher_creation/teacher_creation_page_controller.dart';
 import 'package:teachent_app/model/objects/place.dart';
@@ -12,10 +13,11 @@ class TogglePlaceEvent extends BasePlaceEvent {
   TogglePlaceEvent(this.index);
 }
 
-class AddNewPlace extends BasePlaceEvent {
+class AddNewPlaceEvent extends BasePlaceEvent {
   final String name;
+  final BuildContext context;
 
-  AddNewPlace(this.name);
+  AddNewPlaceEvent(this.name, this.context);
 }
 
 class PlaceBloc extends Bloc<BasePlaceEvent, List<Place>> {
@@ -37,8 +39,17 @@ class PlaceBloc extends Bloc<BasePlaceEvent, List<Place>> {
       emit(List<Place>.from(state));
     });
 
-    on<AddNewPlace>((event, emit) {
+    on<AddNewPlaceEvent>((event, emit) {
       var newPlace = Place(event.name, true);
+      var isExists =
+          _teacherCreationPageController.containsPlaceInAll(newPlace);
+
+      if (isExists) {
+        _teacherCreationPageController.showErrorMessage(
+            event.context, 'Such place is already exists');
+        return;
+      }
+
       state.add(newPlace);
       _teacherCreationPageController.places.add(newPlace.name);
       _teacherCreationPageController.addToAllPlaces(newPlace);

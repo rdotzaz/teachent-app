@@ -23,7 +23,7 @@ Widget placeSubPage(TeacherCreationPageController teacherController) {
                 },
                 color: Colors.blue[100]!,
                 enabledColor: Colors.blue,
-                isEnabled: value == 1),
+                isEnabled: value == 1 || value == 3),
             EnabledButton(
                 text: 'Remote',
                 icon: Icons.computer,
@@ -32,21 +32,21 @@ Widget placeSubPage(TeacherCreationPageController teacherController) {
                 },
                 color: Colors.blue[100]!,
                 enabledColor: Colors.blue,
-                isEnabled: value == 2)
+                isEnabled: value == 2 || value == 4)
           ]),
-          body(value)
+          body(value),
+          AddButtonWidget(teacherController: teacherController, value: value)
         ]));
   });
 }
 
 Widget body(int value) {
-  if (value == 0) {
-    return emptyBodyWidget();
-  } else if (value == 1) {
+  if (value == 1 || value == 3) {
     return placeListWidget();
-  } else {
+  } else if (value == 2 || value == 4) {
     return toolListWidget();
   }
+  return emptyBodyWidget();
 }
 
 Widget emptyBodyWidget() {
@@ -97,4 +97,60 @@ Widget toolListWidget() {
                           : Colors.blue[100]!));
             }));
   });
+}
+
+class AddButtonWidget extends StatelessWidget {
+  final int value;
+  final TeacherCreationPageController teacherController;
+  const AddButtonWidget(
+      {Key? key, required this.teacherController, required this.value})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final isEnabled = value != 0;
+    final isEditBox = value == 3 || value == 4;
+    final buttonName = value == 1 ? 'place' : 'tool';
+
+    if (isEditBox) {
+      return Row(
+        children: [
+          Expanded(
+              child: TextField(
+                  controller: teacherController.objectTextFieldController)),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10),
+            child: CustomButton(
+                text: 'Add',
+                fontSize: 14,
+                onPressed: () {
+                  var objectName = teacherController.getOtherObjectText();
+                  if (value == 3) {
+                    context
+                        .read<PlaceBloc>()
+                        .add(AddNewPlaceEvent(objectName, context));
+                  } else {
+                    context
+                        .read<ToolBloc>()
+                        .add(AddNewToolEvent(objectName, context));
+                  }
+                  context.read<WorkModeBloc>().add(UnClickAddingObjectEvent());
+                },
+                buttonColor: Colors.blue),
+          )
+        ],
+      );
+    } else {
+      return Container(
+          height: 80,
+          padding: const EdgeInsets.all(15.0),
+          child: CustomButton(
+              text: 'Add other $buttonName',
+              fontSize: 14,
+              isEnabled: isEnabled,
+              onPressed: () {
+                context.read<WorkModeBloc>().add(AddingObjectEvent());
+              }));
+    }
+  }
 }

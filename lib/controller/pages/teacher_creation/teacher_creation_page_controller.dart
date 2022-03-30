@@ -6,6 +6,7 @@ import 'package:teachent_app/controller/pages/teacher_creation/bloc/topic_bloc.d
 import 'package:teachent_app/model/objects/topic.dart';
 import 'package:teachent_app/model/objects/tool.dart';
 import 'package:teachent_app/model/objects/place.dart';
+import 'package:teachent_app/view/widgets/status_bottom_sheet.dart';
 
 class TeacherCreationPageController extends BaseController {
   String name = '';
@@ -73,10 +74,13 @@ class TeacherCreationPageController extends BaseController {
 
   final _pageViewController = PageController();
   final _topicTextFieldController = TextEditingController();
+  final _objectTextFieldController = TextEditingController();
 
   PageController get pageController => _pageViewController;
   TextEditingController get topicTextFieldController =>
       _topicTextFieldController;
+  TextEditingController get objectTextFieldController =>
+      _objectTextFieldController;
   String get headerName => _headerNames[_pageNumber];
 
   final _nameSubPageKey = GlobalKey<FormState>();
@@ -117,6 +121,47 @@ class TeacherCreationPageController extends BaseController {
     var text = _topicTextFieldController.value.text;
     _topicTextFieldController.clear();
     return text;
+  }
+
+  String getOtherObjectText() {
+    var text = _objectTextFieldController.value.text;
+    _objectTextFieldController.clear();
+    return text;
+  }
+
+  void showErrorMessage(BuildContext context, String info) {
+    showModalBottomSheet(
+        context: context,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(35)),
+        builder: (_) =>
+            StatusBottomSheet(info: info, status: BottomSheetStatus.error));
+  }
+
+  bool containsTopicInAll(Topic topic) {
+    for (final t in _allTopics) {
+      if (t.name == topic.name) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  bool containsToolInAll(Tool tool) {
+    for (final t in _allTools) {
+      if (t.name == tool.name) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  bool containsPlaceInAll(Place place) {
+    for (final p in _allPlaces) {
+      if (p.name == place.name) {
+        return true;
+      }
+    }
+    return false;
   }
 
   void addToAllTopics(Topic topic) {

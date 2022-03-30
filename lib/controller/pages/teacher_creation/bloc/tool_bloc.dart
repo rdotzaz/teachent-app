@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:teachent_app/controller/pages/teacher_creation/teacher_creation_page_controller.dart';
 import 'package:teachent_app/model/objects/tool.dart';
@@ -12,10 +13,11 @@ class ToggleToolEvent extends BaseToolEvent {
   ToggleToolEvent(this.index);
 }
 
-class AddNewTool extends BaseToolEvent {
+class AddNewToolEvent extends BaseToolEvent {
   final String name;
+  final BuildContext context;
 
-  AddNewTool(this.name);
+  AddNewToolEvent(this.name, this.context);
 }
 
 class ToolBloc extends Bloc<BaseToolEvent, List<Tool>> {
@@ -37,8 +39,16 @@ class ToolBloc extends Bloc<BaseToolEvent, List<Tool>> {
       emit(List<Tool>.from(state));
     });
 
-    on<AddNewTool>((event, emit) {
+    on<AddNewToolEvent>((event, emit) {
       var newTool = Tool(event.name, true);
+      var isExists = _teacherCreationPageController.containsToolInAll(newTool);
+
+      if (isExists) {
+        _teacherCreationPageController.showErrorMessage(
+            event.context, 'Such tool is already exists');
+        return;
+      }
+
       state.add(newTool);
       _teacherCreationPageController.tools.add(newTool.name);
       _teacherCreationPageController.addToAllTools(newTool);

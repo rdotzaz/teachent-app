@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:teachent_app/controller/pages/teacher_creation/teacher_creation_page_controller.dart';
 import 'package:teachent_app/model/objects/topic.dart';
@@ -8,8 +9,9 @@ class LoadAllTopicsEvent extends BaseTopicEvent {}
 
 class AddNewTopic extends BaseTopicEvent {
   final String name;
+  final BuildContext context;
 
-  AddNewTopic(this.name);
+  AddNewTopic(this.name, this.context);
 }
 
 class ToggleTopicEvent extends BaseTopicEvent {
@@ -39,6 +41,15 @@ class TopicBloc extends Bloc<BaseTopicEvent, List<Topic>> {
 
     on<AddNewTopic>((event, emit) {
       var newTopic = Topic(event.name, true);
+      var isExists =
+          _teacherCreationPageController.containsTopicInAll(newTopic);
+
+      if (isExists) {
+        _teacherCreationPageController.showErrorMessage(
+            event.context, 'Such topic is already exists');
+        return;
+      }
+
       state.add(newTopic);
       _teacherCreationPageController.topics.add(newTopic.name);
       _teacherCreationPageController.addToAllTopics(newTopic);

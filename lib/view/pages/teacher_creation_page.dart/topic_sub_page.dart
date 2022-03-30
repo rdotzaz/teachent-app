@@ -79,7 +79,7 @@ class OtherTopicLayout extends StatelessWidget {
               onPressed: () {
                 var topicName = _teacherController.getOtherTopicText();
                 context.read<OtherTopicBloc>().add(UnclickOtherTopicEvent());
-                context.read<TopicBloc>().add(AddNewTopic(topicName));
+                context.read<TopicBloc>().add(AddNewTopic(topicName, context));
               },
               buttonColor: Colors.blue),
         )
