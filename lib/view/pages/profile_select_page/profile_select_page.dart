@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:teachent_app/common/consts.dart';
 import 'package:teachent_app/controller/pages/profile_select_page/profile_select_page_controller.dart';
 import 'package:teachent_app/view/pages/student_creation_page/student_creation_page.dart';
 
@@ -23,7 +24,7 @@ class ProfileSelectPage extends StatelessWidget {
     return const Padding(
         padding: EdgeInsets.all(12.0),
         child: Text(
-          'Select account profile',
+          ProfilePageConsts.selectProfile,
           style: TextStyle(fontSize: 28),
         ));
   }
@@ -35,7 +36,7 @@ class ProfileSelectPage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             ProfileButton(
-                profile: 'Teacher',
+                profile: ProfilePageConsts.teacher,
                 icon: Icons.person,
                 color: Colors.blue,
                 onPressed: () {
@@ -43,7 +44,7 @@ class ProfileSelectPage extends StatelessWidget {
                       .goToAcocuntTeacherCreationPage(context);
                 }),
             ProfileButton(
-                profile: 'Student',
+                profile: ProfilePageConsts.student,
                 icon: Icons.person,
                 color: Colors.red,
                 onPressed: () {

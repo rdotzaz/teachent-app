@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:teachent_app/common/consts.dart';
 import 'package:teachent_app/controller/pages/teacher_creation/bloc/other_topic_bloc.dart';
 import 'package:teachent_app/controller/pages/teacher_creation/bloc/teacher_creation_bloc.dart';
 import 'package:teachent_app/controller/pages/teacher_creation/bloc/work_mode_bloc.dart';
@@ -21,7 +22,7 @@ class TeacherCreationPage extends StatefulWidget {
 class _TeacherCreationPageState extends State<TeacherCreationPage> {
   final _teacherCreationPageController = TeacherCreationPageController();
 
-  @override
+@override
   void initState() {
     super.initState();
     _teacherCreationPageController.init();
@@ -97,12 +98,12 @@ class _TeacherCreationPageState extends State<TeacherCreationPage> {
     return BlocBuilder<TeacherCreationBloc, int>(
         builder: (context, pageNumber) {
       return Visibility(
-        visible: pageNumber > 0,
+        visible: pageNumber > TeacherCreationPageConsts.namePageNumber,
         maintainSize: true,
         maintainAnimation: true,
         maintainState: true,
         child: CustomButton(
-            text: 'Back',
+            text: TeacherCreationPageConsts.back,
             fontSize: 18,
             buttonColor: Colors.blue,
             onPressed: () => context
@@ -116,7 +117,9 @@ class _TeacherCreationPageState extends State<TeacherCreationPage> {
     return BlocBuilder<TeacherCreationBloc, int>(
         builder: (context, pageNumber) {
       return CustomButton(
-          text: pageNumber == 2 ? 'Done' : 'Next',
+          text: pageNumber == TeacherCreationPageConsts.placePageNumber ? 
+            TeacherCreationPageConsts.done :
+            TeacherCreationPageConsts.next,
           fontSize: 18,
           buttonColor: Colors.blue,
           onPressed: () {

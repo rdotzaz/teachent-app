@@ -14,12 +14,12 @@ class LoginFormController extends BaseController {
 
   String? validateLogin(String? login) {
     var isEmpty = login?.isEmpty ?? true;
-    return isEmpty ? 'Login cannot be empty' : null;
+    return isEmpty ? LoginPageConsts.loginError : null;
   }
 
   String? validatePassword(String? password) {
     var isEmpty = password?.isEmpty ?? true;
-    return isEmpty ? 'Password cannot be empty' : null;
+    return isEmpty ? LoginPageConsts.passwordError : null;
   }
 
   void setLogin(String? loginToSet) {
@@ -40,7 +40,7 @@ class LoginFormController extends BaseController {
           await dataManager.database.checkLoginAndPassword(login, password);
 
       if (userId == DatabaseConsts.emptyKey) {
-        showErrorMessage(context, 'Login has not been found');
+        showErrorMessage(context, LoginPageConsts.loginNotFound);
       } else {
         // TODO
         // Go to Home page
@@ -48,7 +48,7 @@ class LoginFormController extends BaseController {
       return;
     }
 
-    showErrorMessage(context, 'Validation failed');
+    showErrorMessage(context, LoginPageConsts.validationFailed);
   }
 
   void showErrorMessage(BuildContext context, String info) {

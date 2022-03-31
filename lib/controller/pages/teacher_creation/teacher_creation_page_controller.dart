@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:teachent_app/common/consts.dart';
 import 'package:teachent_app/controller/controller.dart';
 import 'package:teachent_app/controller/pages/teacher_creation/bloc/place_bloc.dart';
 import 'package:teachent_app/controller/pages/teacher_creation/bloc/tool_bloc.dart';
@@ -23,11 +24,7 @@ class TeacherCreationPageController extends BaseController {
 
   int _pageNumber = 0;
 
-  final _headerNames = [
-    'What\'s your name?',
-    'In what topics do you feel well?',
-    'How\'d you like to work?'
-  ];
+  final _headerNames = TeacherCreationPageConsts.headers;
 
   final List<Topic> _allTopics = [];
 
@@ -98,11 +95,11 @@ class TeacherCreationPageController extends BaseController {
   String? validateName(String? name) {
     var isEmpty = name?.isEmpty ?? true;
     if (isEmpty) {
-      return 'Name cannot be empty';
+      return TeacherCreationPageConsts.nameEmptyError;
     }
     var length = name?.length ?? 0;
-    if (length < 5) {
-      return 'Name length must be greater than 4';
+    if (length < TeacherCreationPageConsts.nameLengthTreshold) {
+      return TeacherCreationPageConsts.nameLengthError;
     }
     return null;
   }
@@ -182,13 +179,24 @@ class TeacherCreationPageController extends BaseController {
   }
 
   void goToLoginCreationPage(BuildContext context) {
+    if (topics.isEmpty) {
+      showErrorMessage(context, TeacherCreationPageConsts.noTopicSelected);
+      return;
+    }
+    else if (tools.isEmpty && places.isEmpty) {
+      showErrorMessage(
+        context, TeacherCreationPageConsts.toolOrPlaceError);
+      return;
+    }
+
     var teacher = Teacher.noKey(
         name,
         description,
         topics.map((name) => Topic(name, true)).toList(),
         tools.map((name) => Tool(name, true)).toList(),
         places.map((name) => Place(name, true)).toList(),
-        -1, [], []);
+        TeacherConsts.emptyRate, [], []);
+  
     Navigator.of(context).pushReplacement(
         MaterialPageRoute(builder: (_) => AccountCreationPage(teacher)));
   }

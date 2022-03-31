@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:teachent_app/common/consts.dart';
 import 'package:teachent_app/controller/pages/student_creation/bloc/education_level_bloc.dart';
 import 'package:teachent_app/controller/pages/student_creation/bloc/student_creation_bloc.dart';
 import 'package:teachent_app/controller/pages/student_creation/student_creation_page_controller.dart';
@@ -92,12 +93,12 @@ class _StudentCreationPageState extends State<StudentCreationPage> {
     return BlocBuilder<StudentCreationBloc, int>(
         builder: (context, pageNumber) {
       return Visibility(
-        visible: pageNumber > 0,
+        visible: pageNumber > StudentCreationPageConsts.namePageNumber,
         maintainSize: true,
         maintainAnimation: true,
         maintainState: true,
         child: CustomButton(
-            text: 'Back',
+            text: StudentCreationPageConsts.back,
             fontSize: 18,
             buttonColor: Colors.red,
             onPressed: () => context
@@ -111,11 +112,12 @@ class _StudentCreationPageState extends State<StudentCreationPage> {
     return BlocBuilder<StudentCreationBloc, int>(
         builder: (context, pageNumber) {
       return CustomButton(
-          text: pageNumber == 0 ? 'Next' : 'Done',
+          text: pageNumber == StudentCreationPageConsts.namePageNumber ?
+            StudentCreationPageConsts.next : StudentCreationPageConsts.done,
           fontSize: 18,
           buttonColor: Colors.red,
           onPressed: () {
-            if (pageNumber == 0) {
+            if (pageNumber == StudentCreationPageConsts.namePageNumber) {
               context.read<StudentCreationBloc>().add(SwitchToNextPageEvent());
             } else {
               _studentCreationPageController.goToLoginCreationPage(context);

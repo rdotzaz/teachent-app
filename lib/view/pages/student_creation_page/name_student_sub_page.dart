@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:teachent_app/common/consts.dart';
 import 'package:teachent_app/controller/pages/student_creation/student_creation_page_controller.dart';
 import 'package:teachent_app/view/widgets/black_input_decorator.dart';
 
@@ -20,7 +21,7 @@ Container nameLabel(StudentCreationPageController studentController) {
     alignment: Alignment.centerLeft,
     padding: const EdgeInsets.all(5.0),
     child: const Text(
-      'Name',
+      StudentCreationPageConsts.name,
       style: TextStyle(fontSize: 18, color: Colors.black),
     ),
   );
@@ -33,7 +34,7 @@ Padding nameTextField(StudentCreationPageController studentController) {
       keyboardType: TextInputType.text,
       validator: (name) => studentController.validateName(name),
       onChanged: (name) => studentController.setName(name),
-      decoration: blackInputDecorator('Name'),
+      decoration: blackInputDecorator(StudentCreationPageConsts.name),
     ),
   );
 }

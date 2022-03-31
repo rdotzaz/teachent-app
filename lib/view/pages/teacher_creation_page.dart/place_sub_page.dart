@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:teachent_app/common/consts.dart';
 import 'package:teachent_app/controller/pages/teacher_creation/bloc/place_bloc.dart';
 import 'package:teachent_app/controller/pages/teacher_creation/bloc/tool_bloc.dart';
 import 'package:teachent_app/controller/pages/teacher_creation/bloc/work_mode_bloc.dart';
@@ -16,23 +17,25 @@ Widget placeSubPage(TeacherCreationPageController teacherController) {
         child: Column(mainAxisAlignment: MainAxisAlignment.start, children: [
           Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
             EnabledButton(
-                text: 'In place',
+                text: TeacherCreationPageConsts.inPlace,
                 icon: Icons.home,
                 onPressed: () {
                   context.read<WorkModeBloc>().add(HomeWorkModeEvent());
                 },
                 color: Colors.blue[100]!,
                 enabledColor: Colors.blue,
-                isEnabled: value == 1 || value == 3),
+                isEnabled: value == WorkModeConsts.place
+                  || value == WorkModeConsts.placeWithAdding),
             EnabledButton(
-                text: 'Remote',
+                text: TeacherCreationPageConsts.remote,
                 icon: Icons.computer,
                 onPressed: () {
                   context.read<WorkModeBloc>().add(RemoteWorkModeEvent());
                 },
                 color: Colors.blue[100]!,
                 enabledColor: Colors.blue,
-                isEnabled: value == 2 || value == 4)
+                isEnabled: value == WorkModeConsts.remote
+                  || value == WorkModeConsts.remoteWithAdding)
           ]),
           body(value),
           AddButtonWidget(teacherController: teacherController, value: value)
@@ -41,9 +44,11 @@ Widget placeSubPage(TeacherCreationPageController teacherController) {
 }
 
 Widget body(int value) {
-  if (value == 1 || value == 3) {
+  if (value == WorkModeConsts.place
+    || value == WorkModeConsts.placeWithAdding) {
     return placeListWidget();
-  } else if (value == 2 || value == 4) {
+  } else if (value == WorkModeConsts.remote
+    || value == WorkModeConsts.remoteWithAdding) {
     return toolListWidget();
   }
   return emptyBodyWidget();
@@ -108,9 +113,11 @@ class AddButtonWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isEnabled = value != 0;
-    final isEditBox = value == 3 || value == 4;
-    final buttonName = value == 1 ? 'place' : 'tool';
+    final isEnabled = value != WorkModeConsts.none;
+    final isEditBox = value == WorkModeConsts.placeWithAdding
+      || value == WorkModeConsts.remoteWithAdding;
+    final buttonName = value == WorkModeConsts.place ?
+      TeacherCreationPageConsts.place : TeacherCreationPageConsts.tool;
 
     if (isEditBox) {
       return Row(
@@ -121,7 +128,7 @@ class AddButtonWidget extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 10),
             child: CustomButton(
-                text: 'Add',
+                text: TeacherCreationPageConsts.add,
                 fontSize: 14,
                 onPressed: () {
                   var objectName = teacherController.getOtherObjectText();
@@ -145,7 +152,7 @@ class AddButtonWidget extends StatelessWidget {
           height: 80,
           padding: const EdgeInsets.all(15.0),
           child: CustomButton(
-              text: 'Add other $buttonName',
+              text: TeacherCreationPageConsts.addOther(buttonName),
               fontSize: 14,
               isEnabled: isEnabled,
               onPressed: () {

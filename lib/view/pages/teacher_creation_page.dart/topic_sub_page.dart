@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:teachent_app/common/consts.dart';
 import 'package:teachent_app/controller/pages/teacher_creation/bloc/other_topic_bloc.dart';
 import 'package:teachent_app/controller/pages/teacher_creation/teacher_creation_page_controller.dart';
 import 'package:teachent_app/controller/pages/teacher_creation/bloc/topic_bloc.dart';
@@ -52,7 +53,7 @@ class OtherTopicButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CustomButton(
-        text: 'Add other topic',
+        text: TeacherCreationPageConsts.addOtherTopic,
         fontSize: 14,
         onPressed: () {
           context.read<OtherTopicBloc>().add(ClickOtherTopicEvent());
@@ -74,7 +75,7 @@ class OtherTopicLayout extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 10),
           child: CustomButton(
-              text: 'Add',
+              text: TeacherCreationPageConsts.add,
               fontSize: 14,
               onPressed: () {
                 var topicName = _teacherController.getOtherTopicText();

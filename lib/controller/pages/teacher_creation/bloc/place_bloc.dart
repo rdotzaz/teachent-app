@@ -46,7 +46,7 @@ class PlaceBloc extends Bloc<BasePlaceEvent, List<Place>> {
 
       if (isExists) {
         _teacherCreationPageController.showErrorMessage(
-            event.context, 'Such place is already exists');
+            event.context, TeacherCreationPageConsts.placeExists);
         return;
       }
 

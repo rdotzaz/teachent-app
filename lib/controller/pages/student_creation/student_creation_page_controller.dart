@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:teachent_app/common/consts.dart';
 import 'package:teachent_app/controller/controller.dart';
 import 'package:teachent_app/controller/pages/student_creation/bloc/load_levels_bloc.dart';
 import 'package:teachent_app/model/objects/education_level.dart';
 import 'package:teachent_app/model/db_objects/student.dart';
 import 'package:teachent_app/view/pages/account_creation_page/account_creation_page.dart';
+import 'package:teachent_app/view/widgets/status_bottom_sheet.dart'
 
 class StudentCreationPageController extends BaseController {
   String name = '';
@@ -29,9 +31,10 @@ class StudentCreationPageController extends BaseController {
   Future<void> initLevels() async {
     var levels = await dataManager.database.getAvailableEducationLevel();
     educationLevels.addAll(levels);
+    educationLevels.add(StudentConsts.levelNotSpecified);
   }
 
-  final _headerNames = ['What\'s your name?', 'Choose your education level'];
+  final _headerNames = StudentCreationPageConsts.headers;
 
   String get headerName => _headerNames[_pageNumber];
 
@@ -48,11 +51,11 @@ class StudentCreationPageController extends BaseController {
   String? validateName(String? name) {
     var isEmpty = name?.isEmpty ?? true;
     if (isEmpty) {
-      return 'Name cannot be empty';
+      return StudentCreationPageConsts.nameEmptyError;
     }
     var length = name?.length ?? 0;
-    if (length < 5) {
-      return 'Name length must be greater than 4';
+    if (length < StudentCreationPageConsts.nameLengthTreshold) {
+      return StudentCreationPageConsts.nameLengthError;
     }
     return null;
   }
@@ -61,8 +64,22 @@ class StudentCreationPageController extends BaseController {
     name = nameToSet ?? '';
   }
 
+  void showErrorMessage(BuildContext context, String info) {
+    showModalBottomSheet(
+        context: context,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(35)),
+        builder: (_) =>
+            StatusBottomSheet(info: info, status: BottomSheetStatus.error));
+  }
+
   void goToLoginCreationPage(BuildContext context) {
-    var student = Student.noKey(name, EducationLevel(educationLevel, true), [], []);
+    if (educationLevel == '') {
+      showErrorMessage(context, StudentCreationPageConsts.noLevelError);
+    }
+
+    var student = Student.noKey(
+      name,
+      EducationLevel(educationLevel, true), [], []);
     Navigator.of(context).pushReplacement(
         MaterialPageRoute(builder: (_) => AccountCreationPage(student)));
   }
