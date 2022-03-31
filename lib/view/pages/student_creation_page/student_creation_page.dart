@@ -26,6 +26,12 @@ class _StudentCreationPageState extends State<StudentCreationPage> {
   }
 
   @override
+  void dispose() {
+    _studentCreationPageController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final windowSize = MediaQuery.of(context).size;
     return MultiBlocProvider(

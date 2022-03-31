@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:teachent_app/common/consts.dart';
 import 'package:teachent_app/controller/controller.dart';
+import 'package:teachent_app/view/pages/welcome_page/welcome_page.dart';
 import 'package:teachent_app/view/widgets/status_bottom_sheet.dart';
 
 import '../../../view/pages/profile_select_page/profile_select_page.dart';
@@ -42,8 +43,8 @@ class LoginFormController extends BaseController {
       if (userId == DatabaseConsts.emptyKey) {
         showErrorMessage(context, LoginPageConsts.loginNotFound);
       } else {
-        // TODO
-        // Go to Home page
+        Navigator.of(context)
+          .push(MaterialPageRoute(builder: (_) => const WelcomePage()));
       }
       return;
     }

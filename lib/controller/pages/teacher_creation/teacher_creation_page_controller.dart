@@ -45,6 +45,9 @@ class TeacherCreationPageController extends BaseController {
 
   @override
   void dispose() {
+    topicBloc.close();
+    toolBloc.close();
+    placeBloc.close();
     _pageViewController.dispose();
     _topicTextFieldController.dispose();
   }

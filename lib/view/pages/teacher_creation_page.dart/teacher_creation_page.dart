@@ -22,10 +22,16 @@ class TeacherCreationPage extends StatefulWidget {
 class _TeacherCreationPageState extends State<TeacherCreationPage> {
   final _teacherCreationPageController = TeacherCreationPageController();
 
-@override
+  @override
   void initState() {
     super.initState();
     _teacherCreationPageController.init();
+  }
+
+  @override
+  void dispose() {
+    _teacherCreationPageController.dispose();
+    super.dispose();
   }
 
   @override

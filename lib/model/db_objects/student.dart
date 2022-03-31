@@ -5,7 +5,7 @@ import 'package:teachent_app/model/db_objects/db_object.dart';
 import '../objects/education_level.dart';
 
 class Student extends DatabaseObject {
-  final KeyId userId;
+  KeyId userId = DatabaseConsts.emptyKey;
   final String name;
   final EducationLevel educationLevel;
   final List<KeyId> requests;
@@ -15,8 +15,7 @@ class Student extends DatabaseObject {
       this.requests, this.lessonDates);
 
   Student.noKey(this.name, this.educationLevel, this.requests,
-      this.lessonDates)
-      : userId = DatabaseConsts.emptyKey;
+      this.lessonDates);
 
   @override
   String get collectionName => DatabaseObjectName.students;
@@ -26,7 +25,11 @@ class Student extends DatabaseObject {
 
   @override
   Map<String, dynamic> toMap() {
-    final map = <String, String>{};
-    return map;
+    return {
+      'name': name,
+      'educationLevel': educationLevel,
+      'requests': {for (var request in requests) request: true},
+      'lessonDates': {for (var date in lessonDates) date: true}
+    };
   }
 }

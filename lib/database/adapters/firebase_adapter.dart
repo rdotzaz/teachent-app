@@ -37,13 +37,6 @@ class FirebaseRealTimeDatabaseAdapter {
     }
   }
 
-  static void addUser(String keyId, DBValues userValues) async {
-    DatabaseReference databaseReference =
-        FirebaseDatabase.instance.ref().child(DatabaseObjectName.users);
-
-    await databaseReference.child(keyId).set(userValues);
-  }
-
   static Future<String> findUserByLoginAndCheckPassword(
       String login, String password) async {
     //FirebaseDatabase.instance.setLoggingEnabled(true);
@@ -77,6 +70,9 @@ class FirebaseRealTimeDatabaseAdapter {
 
     var comparsionResult = isPasswordCorrect(password, encryptedPassword);
 
+    if (!comparsionResult) {
+      return DatabaseConsts.emptyKey;
+    }
     return login;
   }
 
@@ -100,6 +96,26 @@ class FirebaseRealTimeDatabaseAdapter {
     return {
       for (var entry in foundValues.entries) entry.key: (entry.value as bool)
     };
+  }
+
+  static Future<bool> addDatabaseObject(
+      String collectionName, String keyId, DBValues userValues) async {
+    DatabaseReference databaseReference =
+        FirebaseDatabase.instance.ref().child(collectionName);
+
+    var possibleExistedKeyRef = databaseReference.child(keyId);
+
+    var event = await possibleExistedKeyRef.once();
+    var isKeyExists = event.snapshot.exists;
+
+    if (isKeyExists) {
+      print('[FirebaseAdapter] User is already exists');
+      return false;
+    }
+
+    /// [TODO] RESOLVE PRINTED EXCEPTION HERE
+    await databaseReference.update({keyId: userValues});
+    return true;
   }
 
   static Future<void> addObjects(String collectionName, DBValues values) async {

@@ -58,6 +58,7 @@ class TeacherCreationPageConsts {
   static const back = 'Back';
   static const next = 'Next';
   static const done = 'Done';
+  static const name = 'Name';
   static const description = 'Description';
   static const descriptionLabel = 'Few words about you...';
   static const namePageNumber = 0;
@@ -69,7 +70,7 @@ class TeacherCreationPageConsts {
   static const remote = 'Remote';
   static const place = 'place';
   static const tool = 'tool';
-  static const addOther(String name) => 'Add other $name';
+  static String addOther(String name) => 'Add other $name';
 
   static const headers = [
     'What\'s your name?',
@@ -110,6 +111,10 @@ class StudentCreationPageConsts {
 
   static const headers = ['What\'s your name?', 'Choose your education level'];
 
+}
+
+class AccountCreationPageConsts {
+  static const header = 'Almost done...';
 }
 
 class StudentConsts {

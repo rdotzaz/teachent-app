@@ -7,7 +7,7 @@ import '../objects/tool.dart';
 import '../objects/topic.dart';
 
 class Teacher extends DatabaseObject {
-  final KeyId userId;
+  KeyId userId = DatabaseConsts.emptyKey;
   final String name;
   final String description;
   final List<Topic> topics;
@@ -21,8 +21,7 @@ class Teacher extends DatabaseObject {
       this.places, this.averageRate, this.requests, this.lessonDates);
 
   Teacher.noKey(this.name, this.description, this.topics, this.tools,
-      this.places, this.averageRate, this.requests, this.lessonDates)
-      : userId = DatabaseConsts.emptyKey;
+      this.places, this.averageRate, this.requests, this.lessonDates);
 
   @override
   String get collectionName => DatabaseObjectName.teachers;
@@ -32,7 +31,15 @@ class Teacher extends DatabaseObject {
 
   @override
   Map<String, dynamic> toMap() {
-    final map = <String, String>{};
-    return map;
+    return {
+      'name': name,
+      'description': description,
+      'topics': {for (var topic in topics) topic.name: true},
+      'tools': {for (var tool in tools) tool.name: true},
+      'places': {for (var place in places) place.name: true},
+      'averageRate': averageRate,
+      'requests': {for (var key in requests) key: true},
+      'lessonDates': {for (var date in lessonDates) date: true}
+    };
   }
 }

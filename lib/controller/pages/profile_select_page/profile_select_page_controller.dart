@@ -11,6 +11,6 @@ class ProfileSelectPageController extends BaseController {
 
   void goToAcocuntStudentCreationPage(BuildContext context) {
     Navigator.of(context)
-        .push(MaterialPageRoute(builder: (_) => StudentCreationPage()));
+        .push(MaterialPageRoute(builder: (_) => const StudentCreationPage()));
   }
 }

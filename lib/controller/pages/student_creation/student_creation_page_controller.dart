@@ -5,7 +5,7 @@ import 'package:teachent_app/controller/pages/student_creation/bloc/load_levels_
 import 'package:teachent_app/model/objects/education_level.dart';
 import 'package:teachent_app/model/db_objects/student.dart';
 import 'package:teachent_app/view/pages/account_creation_page/account_creation_page.dart';
-import 'package:teachent_app/view/widgets/status_bottom_sheet.dart'
+import 'package:teachent_app/view/widgets/status_bottom_sheet.dart';
 
 class StudentCreationPageController extends BaseController {
   String name = '';
@@ -28,10 +28,16 @@ class StudentCreationPageController extends BaseController {
     loadLevelsBloc.add(LoadAllLevelsEvent());
   }
 
+  @override
+  void dispose() {
+    loadLevelsBloc.close();
+  }
+
   Future<void> initLevels() async {
     var levels = await dataManager.database.getAvailableEducationLevel();
     educationLevels.addAll(levels);
-    educationLevels.add(StudentConsts.levelNotSpecified);
+    educationLevels.add(
+      EducationLevel(StudentConsts.levelNotSpecified, false));
   }
 
   final _headerNames = StudentCreationPageConsts.headers;
