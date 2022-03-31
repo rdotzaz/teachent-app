@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:teachent_app/common/consts.dart';
 import 'package:teachent_app/controller/controller.dart';
-import 'package:teachent_app/view/widgets/custom_button.dart';
+import 'package:teachent_app/view/pages/welcome_page/welcome_page.dart';
+import 'package:teachent_app/view/widgets/status_bottom_sheet.dart';
 
 import '../../../view/pages/profile_select_page/profile_select_page.dart';
 
@@ -14,12 +15,12 @@ class LoginFormController extends BaseController {
 
   String? validateLogin(String? login) {
     var isEmpty = login?.isEmpty ?? true;
-    return isEmpty ? 'Login cannot be empty' : null;
+    return isEmpty ? LoginPageConsts.loginError : null;
   }
 
   String? validatePassword(String? password) {
     var isEmpty = password?.isEmpty ?? true;
-    return isEmpty ? 'Login cannot be empty' : null;
+    return isEmpty ? LoginPageConsts.passwordError : null;
   }
 
   void setLogin(String? loginToSet) {
@@ -40,48 +41,23 @@ class LoginFormController extends BaseController {
           await dataManager.database.checkLoginAndPassword(login, password);
 
       if (userId == DatabaseConsts.emptyKey) {
-        showErrorMessage(context, 'Login has not been found');
+        showErrorMessage(context, LoginPageConsts.loginNotFound);
       } else {
-        // TODO
-        // Go to Home page
+        Navigator.of(context)
+          .push(MaterialPageRoute(builder: (_) => const WelcomePage()));
       }
       return;
     }
 
-    showErrorMessage(context, 'Validation failed');
+    showErrorMessage(context, LoginPageConsts.validationFailed);
   }
 
   void showErrorMessage(BuildContext context, String info) {
     showModalBottomSheet(
         context: context,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
-        builder: (context) {
-          final windowSize = MediaQuery.of(context).size;
-          return SizedBox(
-              height: windowSize.height / 3,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Padding(
-                      padding: EdgeInsets.all(8.0),
-                      child: Icon(Icons.error_outline,
-                          color: Colors.red, size: 75)),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text(
-                      info,
-                      style: const TextStyle(fontSize: 16),
-                    ),
-                  ),
-                  CustomButton(
-                      text: 'Ok',
-                      fontSize: 16,
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      })
-                ],
-              ));
-        });
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(35)),
+        builder: (_) =>
+            StatusBottomSheet(info: info, status: BottomSheetStatus.error));
   }
 
   void goToSignUpPage(BuildContext context) {

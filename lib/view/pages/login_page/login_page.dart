@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:teachent_app/common/consts.dart';
 import 'package:teachent_app/controller/pages/login_page/login_form_controller.dart';
 import 'package:teachent_app/view/pages/login_page/header_clipper.dart';
 
@@ -68,7 +69,7 @@ class _LoginFormState extends State<LoginForm> {
         const Padding(
           padding: EdgeInsets.all(25.0),
           child: Text(
-            'Log in',
+            LoginPageConsts.logIn,
             style: TextStyle(fontSize: 28, color: Colors.white),
           ),
         )
@@ -81,7 +82,7 @@ class _LoginFormState extends State<LoginForm> {
       alignment: Alignment.centerLeft,
       padding: const EdgeInsets.all(5.0),
       child: const Text(
-        'Login',
+        LoginPageConsts.login,
         style: TextStyle(fontSize: 18, color: Colors.black),
       ),
     );
@@ -94,7 +95,7 @@ class _LoginFormState extends State<LoginForm> {
         keyboardType: TextInputType.text,
         validator: (login) => _loginFormController.validateLogin(login),
         onChanged: (login) => _loginFormController.setLogin(login),
-        decoration: blackInputDecorator('Log in'),
+        decoration: blackInputDecorator(LoginPageConsts.logIn),
       ),
     );
   }
@@ -104,7 +105,7 @@ class _LoginFormState extends State<LoginForm> {
       alignment: Alignment.centerLeft,
       padding: const EdgeInsets.all(5.0),
       child: const Text(
-        'Password',
+        LoginPageConsts.password,
         style: TextStyle(fontSize: 18, color: Colors.black),
       ),
     );
@@ -118,7 +119,7 @@ class _LoginFormState extends State<LoginForm> {
         validator: (password) =>
             _loginFormController.validatePassword(password),
         onChanged: (password) => _loginFormController.setPassword(password),
-        decoration: blackInputDecorator('Password'),
+        decoration: blackInputDecorator(LoginPageConsts.password),
       ),
     );
   }
@@ -127,7 +128,7 @@ class _LoginFormState extends State<LoginForm> {
     return Padding(
         padding: const EdgeInsets.all(12.0),
         child: CustomButton(
-          text: 'Log in',
+          text: LoginPageConsts.logIn,
           fontSize: 28,
           onPressed: () => _loginFormController.buttonValidator(context),
         ));
@@ -137,7 +138,7 @@ class _LoginFormState extends State<LoginForm> {
     return Container(
       padding: const EdgeInsets.all(5.0),
       child: const Text(
-        'Don\'t have an account?',
+        LoginPageConsts.signUpQuery,
         style: TextStyle(fontSize: 14, color: Colors.black),
       ),
     );
@@ -147,7 +148,7 @@ class _LoginFormState extends State<LoginForm> {
     return Padding(
         padding: const EdgeInsets.fromLTRB(0, 10, 0, 30),
         child: CustomButton(
-          text: 'Sign up',
+          text: LoginPageConsts.signUp,
           fontSize: 16,
           onPressed: () => _loginFormController.goToSignUpPage(context),
         ));

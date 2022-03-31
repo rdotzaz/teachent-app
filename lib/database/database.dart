@@ -1,23 +1,21 @@
-import 'package:flutter/material.dart';
 import 'package:teachent_app/database/adapters/firebase_adapter.dart';
 import 'package:teachent_app/database/methods/configuration_methods.dart';
+import 'package:teachent_app/database/methods/education_level_methods.dart';
+import 'package:teachent_app/database/methods/place_methods.dart';
 import 'package:teachent_app/database/methods/student_methods.dart';
 import 'package:teachent_app/database/methods/teacher_methods.dart';
+import 'package:teachent_app/database/methods/tool_methods.dart';
+import 'package:teachent_app/database/methods/topic_methods.dart';
 
 import 'methods/user_methods.dart';
 import 'adapters/hive_adapter.dart';
 
-typedef DBValues = Map<String, dynamic>;
+typedef DBValues<Value> = Map<String, Value>;
 
 enum DBMode { testing, release }
 
 abstract class IDatabase {
-  @protected
-  final DBMode dbMode;
-
-  IDatabase(this.dbMode);
-
-  Future<void> init();
+  Future<void> init(DBMode dbMode);
   void clear();
 }
 
@@ -26,11 +24,13 @@ class MainDatabase extends IDatabase
         AppConfigartionMethods,
         UserDatabaseMethods,
         TeacherDatabaseMethods,
-        StudentDatabaseMethods {
-  MainDatabase(DBMode dbMode) : super(dbMode);
-
+        StudentDatabaseMethods,
+        TopicDatabaseMethods,
+        ToolsDatabaseMethods,
+        PlaceDatabaseMethods,
+        EducationLevelDatabaseMethods {
   @override
-  Future<void> init() async {
+  Future<void> init(DBMode dbMode) async {
     await FirebaseRealTimeDatabaseAdapter.init(dbMode);
     await HiveDatabaseAdapter.init();
   }

@@ -8,7 +8,7 @@ class DataManagerCreator {
 
   static DataManager create() {
     if (_dataManager == null) {
-      var database = MainDatabase(DBMode.testing);
+      var database = MainDatabase();
       _dataManager = DataManager(database);
     }
     dev.log('[DataManagerCreator] Create DataManager object');
@@ -26,5 +26,5 @@ class DataManager {
 
   AppConfiguration? get appConfiguration => _appConfiguration;
 
-  set appConfiguration(value) => _appConfiguration = value;
+  set appConfiguration(configuration) => _appConfiguration = configuration;
 }

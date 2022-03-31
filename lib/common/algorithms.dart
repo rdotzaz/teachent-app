@@ -1,3 +1,4 @@
+/// [TODO] NEED TO USE CRYPTOGRAPHY PACKAGE 
 bool isPasswordCorrect(String password, Object hash) {
-  return false;
+  return password == (hash as String);
 }

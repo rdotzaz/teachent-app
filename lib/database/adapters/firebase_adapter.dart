@@ -23,36 +23,40 @@ class FirebaseRealTimeDatabaseAdapter {
         ? androidFirebaseOption // ignore: undefined_identifier
         : webFirebaseOption; // ignore: undefined_identifier
 
-    await Firebase.initializeApp(options: firebaseOptions);
+    if (defaultTargetPlatform == TargetPlatform.android) {
+      await Firebase.initializeApp();
+    } else {
+      await Firebase.initializeApp(options: firebaseOptions);
+    }
 
     if (dbMode == DBMode.testing) {
       var databaseHost = _getHost(dbMode);
+      print('[Host] $databaseHost');
       FirebaseDatabase.instance
           .useDatabaseEmulator(databaseHost, DatabaseConsts.emulatorPort);
     }
   }
 
-  static void addUser(String keyId, DBValues userValues) async {
-    DatabaseReference databaseReference =
-        FirebaseDatabase.instance.ref().child(DatabaseObjectName.users);
-
-    await databaseReference.child(keyId).set(userValues);
-  }
-
   static Future<String> findUserByLoginAndCheckPassword(
       String login, String password) async {
+    //FirebaseDatabase.instance.setLoggingEnabled(true);
+    print('[FirebaseAdapter] findUserByLogin');
     var databaseReference =
         FirebaseDatabase.instance.ref('${DatabaseObjectName.users}/$login');
 
+    print('Before once. ${databaseReference.key}');
     var event = await databaseReference.once();
+    print('After once');
     var isKeyExists = event.snapshot.exists;
     var foundEventValue = event.snapshot.value;
 
     if (!isKeyExists) {
+      print('[FirebaseAdapter] No login found');
       return DatabaseConsts.emptyKey;
     }
 
     if (foundEventValue == null) {
+      print('[FirebaseAdapter] No body found');
       return DatabaseConsts.emptyKey;
     }
 
@@ -60,12 +64,64 @@ class FirebaseRealTimeDatabaseAdapter {
         (foundEventValue as DBValues)['password'] ?? DatabaseConsts.emptyField;
 
     if (encryptedPassword == DatabaseConsts.emptyField) {
+      print('[FirebaseAdapter] No password found');
       return DatabaseConsts.emptyKey;
     }
 
     var comparsionResult = isPasswordCorrect(password, encryptedPassword);
 
+    if (!comparsionResult) {
+      return DatabaseConsts.emptyKey;
+    }
     return login;
+  }
+
+  static Future<DBValues<bool>> getAvailableObjects(
+      String collectionName) async {
+    var databaseReference = FirebaseDatabase.instance.ref(collectionName);
+
+    var event = await databaseReference.once();
+    var isKeyExists = event.snapshot.exists;
+    var foundValues = event.snapshot.value as Map<String, dynamic>;
+
+    if (!isKeyExists) {
+      print('[FirebaseAdapter] Key $collectionName does not exist');
+      return {};
+    }
+
+    if (foundValues.isEmpty) {
+      print('[FirebaseAdapter] No $collectionName available');
+      return {};
+    }
+    return {
+      for (var entry in foundValues.entries) entry.key: (entry.value as bool)
+    };
+  }
+
+  static Future<bool> addDatabaseObject(
+      String collectionName, String keyId, DBValues userValues) async {
+    DatabaseReference databaseReference =
+        FirebaseDatabase.instance.ref().child(collectionName);
+
+    var possibleExistedKeyRef = databaseReference.child(keyId);
+
+    var event = await possibleExistedKeyRef.once();
+    var isKeyExists = event.snapshot.exists;
+
+    if (isKeyExists) {
+      print('[FirebaseAdapter] User is already exists');
+      return false;
+    }
+
+    /// [TODO] RESOLVE PRINTED EXCEPTION HERE
+    await databaseReference.update({keyId: userValues});
+    return true;
+  }
+
+  static Future<void> addObjects(String collectionName, DBValues values) async {
+    var databaseReference = FirebaseDatabase.instance.ref(collectionName);
+
+    await databaseReference.update(values);
   }
 
   static void clear() {}
