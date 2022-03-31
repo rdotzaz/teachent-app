@@ -21,6 +21,8 @@ class SplashPageController extends BaseController {
   }
 
   Future<void> someLogic() async {
+    /// [TODO] Arrays only for testing purposes.
+    /// ------------------------------------------------------------------
     final allTopics = [
       Topic('Math', false),
       Topic('Computer Science', false),
@@ -50,6 +52,7 @@ class SplashPageController extends BaseController {
     await dataManager.database.addPlaces(allPlaces);
     await dataManager.database.addLevels(educationLevels);
 
+    /// --------------------------------------------------------------------
     await Future.delayed(const Duration(seconds: 3));
   }
 
