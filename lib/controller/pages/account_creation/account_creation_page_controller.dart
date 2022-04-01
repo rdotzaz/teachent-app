@@ -33,9 +33,7 @@ class AccountCreationPageController extends BaseController {
   }
 
   @override
-  void dispose() {
-
-  }
+  void dispose() {}
 
   String get profileName => teacher != null ? 'Teacher' : 'Student';
   String get name {
@@ -89,10 +87,14 @@ class AccountCreationPageController extends BaseController {
       await addPossibleMissingObjects();
       await addUserToDatabase();
       await addTeacherOrStudentToDatabase();
-      
-      Navigator.of(context).pushReplacement(MaterialPageRoute(
-        builder: (_) => const WelcomePage()
-      ));
+
+      Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (_) {
+        if (teacher != null) {
+          return WelcomePage(dbObject: teacher!);
+        } else {
+          return WelcomePage(dbObject: student!);
+        }
+      }));
     }
   }
 

@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-import 'dart:developer' as dev;
 
 import 'package:teachent_app/controller/controller.dart';
 import 'package:teachent_app/model/objects/education_level.dart';
 import 'package:teachent_app/model/objects/topic.dart';
 import 'package:teachent_app/model/objects/tool.dart';
 import 'package:teachent_app/model/objects/place.dart';
-import 'package:teachent_app/view/pages/home_page/home_page.dart';
 import 'package:teachent_app/view/pages/login_page/login_page.dart';
+import 'package:teachent_app/view/pages/student_home_page/student_home_page.dart';
+import 'package:teachent_app/view/pages/teacher_home_page/teacher_home_page.dart';
 
 class SplashPageController extends BaseController {
   bool isAppConfigAlreadyExists = true;
@@ -15,13 +15,13 @@ class SplashPageController extends BaseController {
   @override
   void init() {
     if (!dataManager.database.isAppConfigurationAlreadyExists()) {
-      dev.log('[SplashPageController] App configuration doesn\'t exists');
+      print('[SplashPageController] App configuration doesn\'t exists');
       isAppConfigAlreadyExists = false;
     }
   }
 
   Future<void> someLogic() async {
-    /// [TODO] Arrays only for testing purposes.
+    /// [TODO] Lists only for testing purposes.
     /// ------------------------------------------------------------------
     final allTopics = [
       Topic('Math', false),
@@ -53,14 +53,24 @@ class SplashPageController extends BaseController {
     await dataManager.database.addLevels(educationLevels);
 
     /// --------------------------------------------------------------------
-    await Future.delayed(const Duration(seconds: 3));
+    await Future.delayed(const Duration(seconds: 2));
   }
 
   void nextPage(BuildContext context) async {
     await someLogic();
 
+    bool isTeacher = true;
+    if (isAppConfigAlreadyExists) {
+      final appConfiguration = dataManager.database.getAppConfiguration();
+      isTeacher = appConfiguration.isTeacher;
+    }
+
+    // TODO - Remove dummy value
     Navigator.of(context).pushReplacement(MaterialPageRoute(
-        builder: (context) =>
-            isAppConfigAlreadyExists ? const HomePage() : const LoginPage()));
+        builder: (context) => isAppConfigAlreadyExists
+            ? (isTeacher
+                ? const TeacherHomePage(userId: 'dummy')
+                : const StudentHomePage(userId: 'dummy'))
+            : const LoginPage()));
   }
 }

@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:teachent_app/common/consts.dart';
 import 'package:teachent_app/controller/controller.dart';
-import 'package:teachent_app/view/pages/welcome_page/welcome_page.dart';
 import 'package:teachent_app/view/widgets/status_bottom_sheet.dart';
+import 'package:teachent_app/view/pages/student_home_page/student_home_page.dart';
+import 'package:teachent_app/view/pages/teacher_home_page/teacher_home_page.dart';
 
 import '../../../view/pages/profile_select_page/profile_select_page.dart';
 
@@ -32,19 +33,23 @@ class LoginFormController extends BaseController {
   }
 
   Future<void> buttonValidator(BuildContext context) async {
-    var validationResult = _loginFormKey.currentState?.validate() ?? false;
+    final validationResult = _loginFormKey.currentState?.validate() ?? false;
 
     if (validationResult) {
       _loginFormKey.currentState?.save();
 
-      var userId =
+      final userId =
           await dataManager.database.checkLoginAndPassword(login, password);
 
       if (userId == DatabaseConsts.emptyKey) {
         showErrorMessage(context, LoginPageConsts.loginNotFound);
       } else {
-        Navigator.of(context)
-          .push(MaterialPageRoute(builder: (_) => const WelcomePage()));
+        final isTeacher = dataManager.database.getAppConfiguration().isTeacher;
+        Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (_) {
+          return isTeacher
+              ? TeacherHomePage(userId: userId)
+              : StudentHomePage(userId: userId);
+        }));
       }
       return;
     }

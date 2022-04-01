@@ -124,5 +124,24 @@ class FirebaseRealTimeDatabaseAdapter {
     await databaseReference.update(values);
   }
 
+  static Future<dynamic> getObject(String collectionName, String key) async {
+    DatabaseReference databaseReference =
+        FirebaseDatabase.instance.ref().child('$collectionName/$key');
+
+    print('[Firebase Adapter] Key: $collectionName/$key');
+    print('Before once');
+    final event = await databaseReference.once();
+    print('After once');
+    final isKeyExists = event.snapshot.exists;
+
+    if (!isKeyExists) {
+      print('[FirebaseAdapter] Object $collectionName/$key does not exist');
+      return {};
+    }
+
+    print('Values: ${event.snapshot.value}');
+    return event.snapshot.value as Map<dynamic, dynamic>;
+  }
+
   static void clear() {}
 }
