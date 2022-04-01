@@ -21,6 +21,9 @@ mixin TeacherDatabaseMethods {
 
   Map<String, dynamic> getMapFromField(
       Map<dynamic, dynamic> values, String field) {
+    if (values[field] == null) {
+      return {};
+    }
     return {
       for (var entry in (values[field] as Map<dynamic, dynamic>).entries)
         (entry.key as String): true
@@ -36,22 +39,27 @@ mixin TeacherDatabaseMethods {
 
     print('[Teachers methods] Teacher found');
     final topics = getMapFromField(teacherValues, 'topics');
+    print('Topics: $topics');
     final topicList =
         topics.entries.map((topic) => Topic(topic.key, true)).toList();
 
     final tools = getMapFromField(teacherValues, 'tools');
+    print('Tools: $tools');
     final toolList =
         tools.entries.map((tool) => Tool(tool.key.toString(), true)).toList();
 
     final places = getMapFromField(teacherValues, 'places');
+    print('Places: $places');
     final placeList = places.entries
         .map((place) => Place(place.key.toString(), true))
         .toList();
 
     final requestIds = getMapFromField(teacherValues, 'requests');
+    print('Requests: $requestIds');
     final requestList = requestIds.entries.map((id) => id.toString()).toList();
 
     final lessonDateIds = getMapFromField(teacherValues, 'lessonDates');
+    print('Dates: $lessonDateIds');
     final lessonDateList =
         lessonDateIds.entries.map((id) => id.toString()).toList();
 

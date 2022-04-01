@@ -45,7 +45,7 @@ class _TeacherHomePageState extends State<TeacherHomePage> {
                   }, childCount: 10))
                 ]);
               } else {
-                return Container();
+                return Container(color: Colors.blue);
               }
             }));
   }

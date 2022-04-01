@@ -16,6 +16,7 @@ class TeacherHomePageController extends BaseController {
       print('ERROR: Teacher not found');
       return;
     }
+    print('After getTeacher');
     teacher = possibleTeacher;
   }
 
