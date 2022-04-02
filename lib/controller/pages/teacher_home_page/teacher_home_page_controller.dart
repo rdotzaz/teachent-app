@@ -4,7 +4,7 @@ import 'package:teachent_app/model/db_objects/teacher.dart';
 
 class TeacherHomePageController extends BaseController {
   final KeyId userId;
-  late Teacher teacher;
+  late Teacher? teacher;
 
   TeacherHomePageController(this.userId);
 
@@ -20,5 +20,5 @@ class TeacherHomePageController extends BaseController {
     teacher = possibleTeacher;
   }
 
-  String get teacherName => teacher.name;
+  String get teacherName => teacher!.name;
 }

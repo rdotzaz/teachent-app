@@ -25,12 +25,9 @@ class _TeacherHomePageState extends State<TeacherHomePage> {
         body: FutureBuilder(
             future: _teacherHomePageController.init(),
             builder: (_, snapshot) {
-              if (snapshot.hasError) {
-                return Container(
-                  color: Colors.red,
-                  child: Text(snapshot.error.toString()),
-                );
-              } else if (snapshot.hasData) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return Container(color: Colors.blue);
+              } else if (snapshot.connectionState == ConnectionState.done) {
                 return CustomScrollView(slivers: [
                   SliverAppBar(
                     expandedHeight: 120,
@@ -39,14 +36,12 @@ class _TeacherHomePageState extends State<TeacherHomePage> {
                             'Hi, ${_teacherHomePageController.teacherName}'),
                         background: Container(color: Colors.grey)),
                   ),
-                  SliverList(
-                      delegate: SliverChildBuilderDelegate((context, index) {
-                    return SizedBox(height: 100, child: Text('$index'));
-                  }, childCount: 10))
                 ]);
-              } else {
-                return Container(color: Colors.blue);
               }
+              return Container(
+                color: Colors.red,
+                child: Text(snapshot.error.toString()),
+              );
             }));
   }
 }
