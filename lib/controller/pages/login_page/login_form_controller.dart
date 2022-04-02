@@ -57,14 +57,6 @@ class LoginFormController extends BaseController {
     showErrorMessage(context, LoginPageConsts.validationFailed);
   }
 
-  void showErrorMessage(BuildContext context, String info) {
-    showModalBottomSheet(
-        context: context,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(35)),
-        builder: (_) =>
-            StatusBottomSheet(info: info, status: BottomSheetStatus.error));
-  }
-
   void goToSignUpPage(BuildContext context) {
     Navigator.of(context)
         .push(MaterialPageRoute(builder: (_) => ProfileSelectPage()));

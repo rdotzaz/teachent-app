@@ -36,8 +36,7 @@ class StudentCreationPageController extends BaseController {
   Future<void> initLevels() async {
     var levels = await dataManager.database.getAvailableEducationLevel();
     educationLevels.addAll(levels);
-    educationLevels.add(
-      EducationLevel(StudentConsts.levelNotSpecified, false));
+    educationLevels.add(EducationLevel(StudentConsts.levelNotSpecified, false));
   }
 
   final _headerNames = StudentCreationPageConsts.headers;
@@ -70,22 +69,13 @@ class StudentCreationPageController extends BaseController {
     name = nameToSet ?? '';
   }
 
-  void showErrorMessage(BuildContext context, String info) {
-    showModalBottomSheet(
-        context: context,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(35)),
-        builder: (_) =>
-            StatusBottomSheet(info: info, status: BottomSheetStatus.error));
-  }
-
   void goToLoginCreationPage(BuildContext context) {
     if (educationLevel == '') {
       showErrorMessage(context, StudentCreationPageConsts.noLevelError);
     }
 
-    var student = Student.noKey(
-      name,
-      EducationLevel(educationLevel, true), [], []);
+    var student =
+        Student.noKey(name, EducationLevel(educationLevel, true), [], []);
     Navigator.of(context).pushReplacement(
         MaterialPageRoute(builder: (_) => AccountCreationPage(student)));
   }

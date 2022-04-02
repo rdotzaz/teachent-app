@@ -132,11 +132,7 @@ class TeacherCreationPageController extends BaseController {
   }
 
   void showErrorMessage(BuildContext context, String info) {
-    showModalBottomSheet(
-        context: context,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(35)),
-        builder: (_) =>
-            StatusBottomSheet(info: info, status: BottomSheetStatus.error));
+    showErrorMessage(context, info);
   }
 
   bool containsTopicInAll(Topic topic) {
@@ -185,10 +181,8 @@ class TeacherCreationPageController extends BaseController {
     if (topics.isEmpty) {
       showErrorMessage(context, TeacherCreationPageConsts.noTopicSelected);
       return;
-    }
-    else if (tools.isEmpty && places.isEmpty) {
-      showErrorMessage(
-        context, TeacherCreationPageConsts.toolOrPlaceError);
+    } else if (tools.isEmpty && places.isEmpty) {
+      showErrorMessage(context, TeacherCreationPageConsts.toolOrPlaceError);
       return;
     }
 
@@ -199,7 +193,7 @@ class TeacherCreationPageController extends BaseController {
         tools.map((name) => Tool(name, true)).toList(),
         places.map((name) => Place(name, true)).toList(),
         TeacherConsts.emptyRate, [], []);
-  
+
     Navigator.of(context).pushReplacement(
         MaterialPageRoute(builder: (_) => AccountCreationPage(teacher)));
   }
