@@ -19,7 +19,7 @@ mixin TeacherDatabaseMethods {
 
   void deleteTeacher(KeyId teacherId) {}
 
-  Map<String, dynamic> getMapFromField(
+  Map<String, dynamic> _getMapFromField(
       Map<dynamic, dynamic> values, String field) {
     if (values[field] == null) {
       return {};
@@ -38,27 +38,27 @@ mixin TeacherDatabaseMethods {
     }
 
     print('[Teachers methods] Teacher found');
-    final topics = getMapFromField(teacherValues, 'topics');
+    final topics = _getMapFromField(teacherValues, 'topics');
     print('Topics: $topics');
     final topicList =
         topics.entries.map((topic) => Topic(topic.key, true)).toList();
 
-    final tools = getMapFromField(teacherValues, 'tools');
+    final tools = _getMapFromField(teacherValues, 'tools');
     print('Tools: $tools');
     final toolList =
         tools.entries.map((tool) => Tool(tool.key.toString(), true)).toList();
 
-    final places = getMapFromField(teacherValues, 'places');
+    final places = _getMapFromField(teacherValues, 'places');
     print('Places: $places');
     final placeList = places.entries
         .map((place) => Place(place.key.toString(), true))
         .toList();
 
-    final requestIds = getMapFromField(teacherValues, 'requests');
+    final requestIds = _getMapFromField(teacherValues, 'requests');
     print('Requests: $requestIds');
     final requestList = requestIds.entries.map((id) => id.toString()).toList();
 
-    final lessonDateIds = getMapFromField(teacherValues, 'lessonDates');
+    final lessonDateIds = _getMapFromField(teacherValues, 'lessonDates');
     print('Dates: $lessonDateIds');
     final lessonDateList =
         lessonDateIds.entries.map((id) => id.toString()).toList();

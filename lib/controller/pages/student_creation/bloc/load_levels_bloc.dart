@@ -10,6 +10,8 @@ class LoadLevelsBloc
     extends Bloc<BaseLoadEducationLevelsEvent, List<EducationLevel>> {
   LoadLevelsBloc(StudentCreationPageController studentController)
       : super(studentController.educationLevels) {
-    on<LoadAllLevelsEvent>((event, emit) async {});
+    on<LoadAllLevelsEvent>((event, emit) async {
+      await studentController.initLevels();
+    });
   }
 }
