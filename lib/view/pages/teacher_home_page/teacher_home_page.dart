@@ -25,21 +25,29 @@ class _TeacherHomePageState extends State<TeacherHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: FutureBuilder(
-            future: _teacherHomePageController.init(),
-            builder: (_, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return const CircularProgressIndicator();
-              } else if (snapshot.connectionState == ConnectionState.done) {
-                return homeWidget();
-              }
-              return errorWidget(snapshot.error.toString());
-            }));
+      body: FutureBuilder(
+          future: _teacherHomePageController.init(),
+          builder: (_, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const CircularProgressIndicator();
+            } else if (snapshot.connectionState == ConnectionState.done) {
+              return homeWidget();
+            }
+            return errorWidget(snapshot.error.toString());
+          }),
+      floatingActionButton: FloatingActionButton.extended(
+          backgroundColor: Colors.red,
+          onPressed: () {
+            print('PRESSED');
+          },
+          icon: const Icon(Icons.add, color: Colors.white),
+          label: const Text('Report', style: TextStyle(color: Colors.white))),
+    );
   }
 
   Widget appBar() {
     return SliverAppBar(
-      expandedHeight: 200,
+      expandedHeight: 150,
       backgroundColor: Colors.white,
       actions: [settings()],
       flexibleSpace: FlexibleSpaceBar(
@@ -50,11 +58,14 @@ class _TeacherHomePageState extends State<TeacherHomePage> {
   }
 
   Widget settings() {
-    return const Padding(
-      padding: EdgeInsets.all(18.0),
-      child: Icon(
-        Icons.settings,
-        color: Colors.black,
+    return GestureDetector(
+      onTap: () {},
+      child: const Padding(
+        padding: EdgeInsets.all(18.0),
+        child: Icon(
+          Icons.settings,
+          color: Colors.black,
+        ),
       ),
     );
   }
@@ -64,12 +75,46 @@ class _TeacherHomePageState extends State<TeacherHomePage> {
       appBar(),
       SliverList(
           delegate: SliverChildListDelegate([
+        searchBarWidget(),
         nextLessonsWidget(),
         studentsWidget(),
         requestsWidget(),
         //reportsWidget()
       ]))
     ]);
+  }
+
+  Widget searchBarWidget() {
+    return GestureDetector(
+        onTap: () => _teacherHomePageController.goToSearchPage(context),
+        child: Hero(
+            tag: 'search',
+            child: Container(
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(12),
+                boxShadow: [
+                  BoxShadow(
+                      color: Colors.grey.withOpacity(0.5),
+                      spreadRadius: 2,
+                      blurRadius: 4,
+                      offset: const Offset(2, 2))
+                ],
+              ),
+              margin: const EdgeInsets.all(15),
+              padding: const EdgeInsets.all(8.0),
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  children: const [
+                    Icon(Icons.search, color: Colors.grey, size: 25),
+                    SizedBox(width: 20),
+                    Text('Search students...',
+                        style: TextStyle(fontSize: 18, color: Colors.grey))
+                  ],
+                ),
+              ),
+            )));
   }
 
   Widget nextLessonsWidget() {
@@ -98,14 +143,14 @@ class _TeacherHomePageState extends State<TeacherHomePage> {
 
   Widget studentsWidget() {
     return SingleCardListWidget(
-      backgroundColor: Colors.red,
+      backgroundColor: Colors.blue,
       title: 'Your students',
       boxHeight: 150.0,
       elementHeight: 150.0,
       elementWidth: 150.0,
       isNotEmptyCondition: _teacherHomePageController.areStudents,
       listLength: _teacherHomePageController.students.length,
-      elementBackgroundColor: Colors.red[900]!,
+      elementBackgroundColor: Colors.blue[700]!,
       emptyInfo: 'No students',
       emptyIcon: Icons.person,
       scrollDirection: Axis.horizontal,

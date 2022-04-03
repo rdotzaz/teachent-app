@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:teachent_app/controller/controller.dart';
 import 'package:teachent_app/model/db_objects/db_object.dart';
 import 'package:teachent_app/model/db_objects/lesson.dart';
@@ -6,6 +7,7 @@ import 'package:teachent_app/model/db_objects/student.dart';
 import 'package:teachent_app/model/db_objects/teacher.dart';
 import 'package:teachent_app/model/objects/education_level.dart';
 import 'package:teachent_app/model/objects/tool.dart';
+import 'package:teachent_app/view/pages/search_page/search_page.dart';
 
 class TeacherHomePageController extends BaseController {
   final KeyId userId;
@@ -55,6 +57,7 @@ class TeacherHomePageController extends BaseController {
     teacher = possibleTeacher;
   }
 
+  String get searchName => 'Search students';
   String get teacherName => teacher?.name ?? '';
   bool get areLessons => lessons.isNotEmpty;
   bool get areStudents => students.isNotEmpty;
@@ -65,5 +68,9 @@ class TeacherHomePageController extends BaseController {
     final student =
         students.firstWhere((student) => student.userId == studentId);
     return student.name;
+  }
+
+  void goToSearchPage(BuildContext context) {
+    Navigator.of(context).push(MaterialPageRoute(builder: (_) => SearchPage()));
   }
 }
