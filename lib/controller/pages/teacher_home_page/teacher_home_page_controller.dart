@@ -7,7 +7,7 @@ import 'package:teachent_app/model/db_objects/student.dart';
 import 'package:teachent_app/model/db_objects/teacher.dart';
 import 'package:teachent_app/model/objects/education_level.dart';
 import 'package:teachent_app/model/objects/tool.dart';
-import 'package:teachent_app/view/pages/search_page/search_page.dart';
+import 'package:teachent_app/view/pages/search_page/teacher_search_page.dart';
 
 class TeacherHomePageController extends BaseController {
   final KeyId userId;
@@ -71,6 +71,7 @@ class TeacherHomePageController extends BaseController {
   }
 
   void goToSearchPage(BuildContext context) {
-    Navigator.of(context).push(MaterialPageRoute(builder: (_) => SearchPage()));
+    Navigator.of(context)
+        .push(MaterialPageRoute(builder: (_) => TeacherSearchPage()));
   }
 }

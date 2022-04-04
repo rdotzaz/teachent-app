@@ -6,13 +6,17 @@ class SingleCardWidget extends StatelessWidget {
   final bool isNotEmptyCondition;
   final Widget bodyWidget;
   final Widget emptyWidget;
+  final Color shadowColor;
+  final Color titleColor;
   const SingleCardWidget(
       {Key? key,
       required this.backgroundColor,
       required this.title,
       required this.isNotEmptyCondition,
       required this.bodyWidget,
-      required this.emptyWidget})
+      required this.emptyWidget,
+      this.titleColor = Colors.white,
+      this.shadowColor = Colors.white})
       : super(key: key);
 
   @override
@@ -23,7 +27,7 @@ class SingleCardWidget extends StatelessWidget {
           borderRadius: BorderRadius.circular(12),
           boxShadow: [
             BoxShadow(
-                color: backgroundColor.withOpacity(0.5),
+                color: shadowColor.withOpacity(0.5),
                 spreadRadius: 2,
                 blurRadius: 4,
                 offset: const Offset(2, 2))
@@ -37,7 +41,7 @@ class SingleCardWidget extends StatelessWidget {
             Padding(
                 padding: const EdgeInsets.all(15),
                 child: Text(title,
-                    style: const TextStyle(fontSize: 24, color: Colors.white))),
+                    style: TextStyle(fontSize: 24, color: titleColor))),
             builderWidget(),
           ],
         ));
@@ -61,6 +65,8 @@ class SingleCardListWidget extends StatelessWidget {
   final IconData emptyIcon;
   final double elementHeight;
   final double elementWidth;
+  final Color shadowColor;
+  final Color titleColor;
   const SingleCardListWidget(
       {Key? key,
       required this.backgroundColor,
@@ -72,6 +78,8 @@ class SingleCardListWidget extends StatelessWidget {
       required this.elementBuilder,
       required this.emptyInfo,
       required this.emptyIcon,
+      this.shadowColor = Colors.white,
+      this.titleColor = Colors.white,
       this.elementHeight = 0.0,
       this.elementWidth = 0.0,
       this.scrollDirection = Axis.vertical})
@@ -83,6 +91,8 @@ class SingleCardListWidget extends StatelessWidget {
       backgroundColor: backgroundColor,
       title: title,
       isNotEmptyCondition: isNotEmptyCondition,
+      shadowColor: shadowColor,
+      titleColor: titleColor,
       bodyWidget: bodyWidget(),
       emptyWidget: emptyWidget(),
     );
@@ -96,33 +106,31 @@ class SingleCardListWidget extends StatelessWidget {
   }
 
   Widget listBuilderWidget() {
-    return SizedBox(
-      child: ListView.builder(
-          shrinkWrap: elementHeight == 0.0,
-          itemCount: listLength,
-          scrollDirection: scrollDirection,
-          itemBuilder: ((context, index) {
-            if (elementWidth == 0.0) {
-              return Container(
-                  decoration: BoxDecoration(
-                    color: elementBackgroundColor,
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  padding: const EdgeInsets.all(12),
-                  margin: const EdgeInsets.fromLTRB(0, 0, 0, 10),
-                  child: elementBuilder(context, index));
-            }
+    return ListView.builder(
+        shrinkWrap: elementHeight == 0.0,
+        itemCount: listLength,
+        scrollDirection: scrollDirection,
+        itemBuilder: ((context, index) {
+          if (elementWidth == 0.0) {
             return Container(
-                width: elementWidth,
                 decoration: BoxDecoration(
                   color: elementBackgroundColor,
                   borderRadius: BorderRadius.circular(12),
                 ),
                 padding: const EdgeInsets.all(12),
-                margin: const EdgeInsets.fromLTRB(5, 0, 5, 0),
+                margin: const EdgeInsets.fromLTRB(0, 0, 0, 10),
                 child: elementBuilder(context, index));
-          })),
-    );
+          }
+          return Container(
+              width: elementWidth,
+              decoration: BoxDecoration(
+                color: elementBackgroundColor,
+                borderRadius: BorderRadius.circular(12),
+              ),
+              padding: const EdgeInsets.all(12),
+              margin: const EdgeInsets.fromLTRB(5, 0, 5, 0),
+              child: elementBuilder(context, index));
+        }));
   }
 
   Widget emptyWidget() {
@@ -130,13 +138,14 @@ class SingleCardListWidget extends StatelessWidget {
         height: boxHeight,
         child: Center(
             child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Padding(
                 padding: const EdgeInsets.all(15),
-                child: Icon(emptyIcon, color: Colors.white)),
+                child:
+                    Icon(emptyIcon, color: elementBackgroundColor, size: 70)),
             Text(emptyInfo,
-                style: const TextStyle(fontSize: 14, color: Colors.white))
+                style: TextStyle(fontSize: 20, color: elementBackgroundColor))
           ],
         )));
   }

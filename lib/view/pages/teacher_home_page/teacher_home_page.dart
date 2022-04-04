@@ -23,6 +23,7 @@ class _TeacherHomePageState extends State<TeacherHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.grey[200],
       body: FutureBuilder(
           future: _teacherHomePageController.init(),
           builder: (_, snapshot) {
@@ -34,7 +35,7 @@ class _TeacherHomePageState extends State<TeacherHomePage> {
             return errorWidget(snapshot.error.toString());
           }),
       floatingActionButton: FloatingActionButton.extended(
-          backgroundColor: Colors.red,
+          backgroundColor: Colors.blue,
           onPressed: () {
             print('PRESSED');
           },
@@ -46,12 +47,12 @@ class _TeacherHomePageState extends State<TeacherHomePage> {
   Widget appBar() {
     return SliverAppBar(
       expandedHeight: 150,
-      backgroundColor: Colors.white,
+      backgroundColor: Colors.transparent,
       actions: [settings()],
       flexibleSpace: FlexibleSpaceBar(
           title: Text('Hi\n${_teacherHomePageController.teacherName}',
               style: const TextStyle(color: Colors.black)),
-          background: Container(color: Colors.white)),
+          background: Container(color: Colors.transparent)),
     );
   }
 
@@ -117,23 +118,25 @@ class _TeacherHomePageState extends State<TeacherHomePage> {
 
   Widget nextLessonsWidget() {
     return SingleCardListWidget(
-      backgroundColor: Colors.blue,
+      backgroundColor: Colors.white,
+      shadowColor: Colors.grey,
       title: 'Next lessons',
+      titleColor: Colors.black,
       boxHeight: 200.0,
       isNotEmptyCondition: _teacherHomePageController.areLessons,
       listLength: _teacherHomePageController.lessons.length,
-      elementBackgroundColor: Colors.white,
+      elementBackgroundColor: Colors.blue,
       emptyInfo: 'No lessons',
       emptyIcon: Icons.free_breakfast,
       elementBuilder: (context, index) {
         return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           Text(_teacherHomePageController.lessons[index].date,
-              style: const TextStyle(fontSize: 14, color: Colors.black)),
-          const SizedBox(height: 20),
+              style: const TextStyle(fontSize: 20, color: Colors.white)),
+          const SizedBox(height: 10),
           Text(
               _teacherHomePageController.getStudentName(
                   _teacherHomePageController.lessons[index].studentId),
-              style: const TextStyle(fontSize: 12, color: Colors.black)),
+              style: const TextStyle(fontSize: 14, color: Colors.white)),
         ]);
       },
     );
@@ -141,14 +144,16 @@ class _TeacherHomePageState extends State<TeacherHomePage> {
 
   Widget studentsWidget() {
     return SingleCardListWidget(
-      backgroundColor: Colors.blue,
+      backgroundColor: Colors.white,
+      shadowColor: Colors.grey,
       title: 'Your students',
+      titleColor: Colors.black,
       boxHeight: 150.0,
       elementHeight: 150.0,
       elementWidth: 150.0,
       isNotEmptyCondition: _teacherHomePageController.areStudents,
       listLength: _teacherHomePageController.students.length,
-      elementBackgroundColor: Colors.blue[700]!,
+      elementBackgroundColor: Colors.blue,
       emptyInfo: 'No students',
       emptyIcon: Icons.person,
       scrollDirection: Axis.horizontal,
@@ -159,7 +164,7 @@ class _TeacherHomePageState extends State<TeacherHomePage> {
               child: Icon(
                 Icons.person,
                 color: Colors.white,
-                size: 50,
+                size: 60,
               )),
           const SizedBox(height: 20),
           Text(_teacherHomePageController.students[index].name,
@@ -171,12 +176,14 @@ class _TeacherHomePageState extends State<TeacherHomePage> {
 
   Widget requestsWidget() {
     return SingleCardListWidget(
-      backgroundColor: Colors.blue,
+      backgroundColor: Colors.white,
+      shadowColor: Colors.grey,
       title: 'Requests',
+      titleColor: Colors.black,
       boxHeight: 300.0,
       isNotEmptyCondition: _teacherHomePageController.areRequests,
       listLength: _teacherHomePageController.requests.length,
-      elementBackgroundColor: Colors.white,
+      elementBackgroundColor: Colors.blue,
       emptyInfo: 'No requests',
       emptyIcon: Icons.free_breakfast,
       elementBuilder: (context, index) {
