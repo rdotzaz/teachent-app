@@ -52,4 +52,18 @@ mixin StudentDatabaseMethods {
         requestList,
         lessonDateList);
   }
+
+  void _addStudentToList(String login, Map values, List<Student> students) {
+    students.add(Student.onlyKeyName(login, values['name'] ?? ''));
+  }
+
+  Future<List<Student>> getStudentsByNamePart(String name) async {
+    final studentValues =
+        await FirebaseRealTimeDatabaseAdapter.getObjectsByName(
+            DatabaseObjectName.students, 'name', name);
+    final students = <Student>[];
+    studentValues.forEach((login, studentValue) => _addStudentToList(
+        login, studentValue as Map<dynamic, dynamic>, students));
+    return students;
+  }
 }

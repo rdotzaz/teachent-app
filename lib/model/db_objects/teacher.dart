@@ -23,6 +23,16 @@ class Teacher extends DatabaseObject {
   Teacher.noKey(this.name, this.description, this.topics, this.tools,
       this.places, this.averageRate, this.requests, this.lessonDates);
 
+  // TODO - Remove this
+  Teacher.onlyKeyName(this.userId, this.name)
+      : description = '',
+        topics = [],
+        tools = [],
+        places = [],
+        averageRate = -1,
+        requests = [],
+        lessonDates = [];
+
   @override
   String get collectionName => DatabaseObjectName.teachers;
 

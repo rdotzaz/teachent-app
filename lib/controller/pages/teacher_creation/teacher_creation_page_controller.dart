@@ -9,7 +9,6 @@ import 'package:teachent_app/model/objects/topic.dart';
 import 'package:teachent_app/model/objects/tool.dart';
 import 'package:teachent_app/model/objects/place.dart';
 import 'package:teachent_app/view/pages/account_creation_page/account_creation_page.dart';
-import 'package:teachent_app/view/widgets/status_bottom_sheet.dart';
 
 class TeacherCreationPageController extends BaseController {
   String name = '';

@@ -74,4 +74,18 @@ mixin TeacherDatabaseMethods {
         requestList,
         lessonDateList);
   }
+
+  void _addTeacherToList(String login, Map values, List<Teacher> teachers) {
+    teachers.add(Teacher.onlyKeyName(login, values['name'] ?? ''));
+  }
+
+  Future<List<Teacher>> getTeachersByNamePart(String name) async {
+    final teacherValues =
+        await FirebaseRealTimeDatabaseAdapter.getObjectsByName(
+            DatabaseObjectName.teachers, 'name', name);
+    final teachers = <Teacher>[];
+    teacherValues.forEach((login, teacherValue) => _addTeacherToList(
+        login, teacherValue as Map<dynamic, dynamic>, teachers));
+    return teachers;
+  }
 }
