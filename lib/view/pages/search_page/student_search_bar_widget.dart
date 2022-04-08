@@ -1,29 +1,35 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:teachent_app/controller/controller.dart';
+import 'package:teachent_app/controller/pages/search_page/bloc/items_bloc.dart';
+import 'package:teachent_app/controller/pages/search_page/bloc/topic_bloc.dart';
+import 'package:teachent_app/controller/pages/search_page/bloc/tool_bloc.dart';
+import 'package:teachent_app/controller/pages/search_page/bloc/place_bloc.dart';
 import 'package:teachent_app/controller/pages/search_page/student_search_page_controller.dart';
 
-class StudentSearchPage extends StatelessWidget {
-  final _searchPageController = StudentSearchPageController();
-
-  StudentSearchPage({Key? key}) : super(key: key);
+class StudentSearchBarWidget extends StatelessWidget {
+  final StudentSearchPageController controller;
+  const StudentSearchBarWidget({Key? key, required this.controller})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        body: Column(
-      children: [searchBarWidget()],
-    ));
-  }
-
-  Widget searchBarWidget() {
     return Stack(alignment: AlignmentDirectional.centerStart, children: [
       heroSearchBar(),
       Container(
         color: Colors.white,
         margin: const EdgeInsets.fromLTRB(70, 0, 40, 5),
-        child: TextField(
-            controller: _searchPageController.searchController,
-            onChanged: (value) => _searchPageController.setValue(value)),
-      )
+        child: BlocBuilder<TopicSelectBloc, List<String>>(builder: (_, topicNames) {
+          return BlocBuilder<ToolSelectBloc, List<String>>(builder: (_, toolNames) {
+            return  BlocBuilder<PlaceSelectBloc, List<String>>(builder: (_, placeNames) {
+              return TextField(
+                controller: controller.searchController,
+                onSubmitted: (value) => context
+                    .read<ItemsBloc>()
+                    .add(RefreshTeacherItemsEvent(value, topicNames, toolNames, placeNames)));
+            });
+          });
+        }))
     ]);
   }
 

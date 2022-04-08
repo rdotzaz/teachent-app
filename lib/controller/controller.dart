@@ -9,6 +9,8 @@ abstract class BaseController {
   void dispose() {}
 }
 
+enum PersonType { all, teachers, students }
+
 abstract class BaseSearchController extends BaseController {
   final _searchTextController = TextEditingController();
   String phrase = '';
@@ -18,4 +20,9 @@ abstract class BaseSearchController extends BaseController {
   void setValue(String? value) {
     phrase = value ?? '';
   }
+
+  Future<void> updateFoundList(PersonType type) async {}
+  Future<void> updateFoundTeacherList(
+    List<String> topicNames,
+    List<String> toolNames, List<String> placeNames) async {}
 }

@@ -6,7 +6,7 @@ import 'package:teachent_app/model/db_objects/lesson_date.dart';
 import 'package:teachent_app/model/db_objects/student.dart';
 import 'package:teachent_app/model/db_objects/teacher.dart';
 import 'package:teachent_app/model/objects/tool.dart';
-import 'package:teachent_app/view/pages/teacher_search_page/student_search_page.dart';
+import 'package:teachent_app/view/pages/search_page/student_search_page.dart';
 
 class StudentHomePageController extends BaseController {
   final KeyId userId;
