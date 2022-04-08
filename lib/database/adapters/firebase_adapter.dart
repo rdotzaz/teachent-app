@@ -155,7 +155,6 @@ class FirebaseRealTimeDatabaseAdapter {
     final event = await query.once();
     final values = event.snapshot.value;
 
-    print('Values: $values');
     if (values == null) {
       return {};
     }

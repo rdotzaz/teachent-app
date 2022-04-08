@@ -16,7 +16,7 @@ class TeacherSearchPage extends StatelessWidget {
           resizeToAvoidBottomInset: true,
           body: Column(
             children: [
-              SearchBarWidget(controller: controller),
+              TeacherSearchBarWidget(controller: controller),
               filtersWidget(),
               foundListWidget()
             ],
@@ -130,9 +130,10 @@ class TeacherSearchPage extends StatelessWidget {
   }
 }
 
-class SearchBarWidget extends StatelessWidget {
+class TeacherSearchBarWidget extends StatelessWidget {
   final TeacherSearchPageController controller;
-  const SearchBarWidget({Key? key, required this.controller}) : super(key: key);
+  const TeacherSearchBarWidget({Key? key, required this.controller})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
