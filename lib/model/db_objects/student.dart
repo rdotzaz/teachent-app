@@ -33,7 +33,7 @@ class Student extends DatabaseObject {
   Map<String, dynamic> toMap() {
     return {
       'name': name,
-      'educationLevel': educationLevel,
+      'educationLevel': educationLevel.name,
       'requests': {for (var request in requests) request: true},
       'lessonDates': {for (var date in lessonDates) date: true}
     };
