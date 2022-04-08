@@ -115,6 +115,7 @@ class _LoginFormState extends State<LoginForm> {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 10.0),
       child: TextFormField(
+        obscureText: true,
         keyboardType: TextInputType.text,
         validator: (password) =>
             _loginFormController.validatePassword(password),

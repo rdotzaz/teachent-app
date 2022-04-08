@@ -33,9 +33,7 @@ class AccountCreationPageController extends BaseController {
   }
 
   @override
-  void dispose() {
-
-  }
+  void dispose() {}
 
   String get profileName => teacher != null ? 'Teacher' : 'Student';
   String get name {
@@ -76,23 +74,19 @@ class AccountCreationPageController extends BaseController {
     repeatedPassword = repeatedPasswordToSet ?? '';
   }
 
-  void showErrorMessage(BuildContext context, String info) {
-    showModalBottomSheet(
-        context: context,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(35)),
-        builder: (_) =>
-            StatusBottomSheet(info: info, status: BottomSheetStatus.error));
-  }
-
   Future<void> buttonValidator(BuildContext context) async {
     if (_creationKey.currentState?.validate() ?? false) {
       await addPossibleMissingObjects();
       await addUserToDatabase();
       await addTeacherOrStudentToDatabase();
-      
-      Navigator.of(context).pushReplacement(MaterialPageRoute(
-        builder: (_) => const WelcomePage()
-      ));
+
+      Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (_) {
+        if (teacher != null) {
+          return WelcomePage(dbObject: teacher!);
+        } else {
+          return WelcomePage(dbObject: student!);
+        }
+      }));
     }
   }
 

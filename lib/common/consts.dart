@@ -45,7 +45,6 @@ class LoginPageConsts {
   static const passwordError = 'Password cannot be empty';
   static const loginNotFound = 'Login has not been found';
   static const validationFailed = 'Validation failed';
-
 }
 
 class ProfilePageConsts {
@@ -110,11 +109,14 @@ class StudentCreationPageConsts {
   static const noLevelError = 'No education level selected';
 
   static const headers = ['What\'s your name?', 'Choose your education level'];
-
 }
 
 class AccountCreationPageConsts {
   static const header = 'Almost done...';
+}
+
+class WelcomePageConsts {
+  static const welcome = 'Welcome';
 }
 
 class StudentConsts {

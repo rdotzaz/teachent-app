@@ -7,6 +7,9 @@ import 'package:teachent_app/database/database.dart';
 
 import '../../common/consts.dart' show DatabaseConsts, DatabaseObjectName;
 
+// Last UTF-8 character based on https://www.charset.org/utf-8/100
+const lastCharacter = '\u1869F';
+
 class FirebaseRealTimeDatabaseAdapter {
   static Future<void> init(DBMode dbMode) async {
     await _startDataBase(dbMode);
@@ -122,6 +125,40 @@ class FirebaseRealTimeDatabaseAdapter {
     var databaseReference = FirebaseDatabase.instance.ref(collectionName);
 
     await databaseReference.update(values);
+  }
+
+  static Future<Map> getObject(String collectionName, String key) async {
+    DatabaseReference databaseReference =
+        FirebaseDatabase.instance.ref().child('$collectionName/$key');
+
+    print('[Firebase Adapter] Key: $collectionName/$key');
+    final event = await databaseReference.once();
+    final isKeyExists = event.snapshot.exists;
+
+    if (!isKeyExists) {
+      print('[FirebaseAdapter] Object $collectionName/$key does not exist');
+      return {};
+    }
+
+    return event.snapshot.value as Map<dynamic, dynamic>;
+  }
+
+  static Future<Map> getObjectsByName(
+      String collectionName, String property, String name) async {
+    DatabaseReference databaseReference =
+        FirebaseDatabase.instance.ref().child(collectionName);
+
+    final query = databaseReference
+        .orderByChild(property)
+        .startAt(name)
+        .endAt(name + lastCharacter);
+    final event = await query.once();
+    final values = event.snapshot.value;
+
+    if (values == null) {
+      return {};
+    }
+    return values as Map<dynamic, dynamic>;
   }
 
   static void clear() {}

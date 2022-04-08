@@ -11,11 +11,17 @@ class Student extends DatabaseObject {
   final List<KeyId> requests;
   final List<KeyId> lessonDates;
 
-  Student(this.userId, this.name, this.educationLevel,
-      this.requests, this.lessonDates);
-
-  Student.noKey(this.name, this.educationLevel, this.requests,
+  Student(this.userId, this.name, this.educationLevel, this.requests,
       this.lessonDates);
+
+  Student.noKey(
+      this.name, this.educationLevel, this.requests, this.lessonDates);
+
+  // TODO - Remove this
+  Student.onlyKeyName(this.userId, this.name)
+      : educationLevel = EducationLevel('', true),
+        requests = [],
+        lessonDates = [];
 
   @override
   String get collectionName => DatabaseObjectName.students;

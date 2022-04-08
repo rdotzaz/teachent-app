@@ -21,7 +21,7 @@ class _AccountCreationPageState extends State<AccountCreationPage> {
   void initState() {
     super.initState();
     _accountCreationPageController =
-      AccountCreationPageController(widget.dbObject);
+        AccountCreationPageController(widget.dbObject);
     _accountCreationPageController.init();
   }
 
@@ -35,10 +35,7 @@ class _AccountCreationPageState extends State<AccountCreationPage> {
   Widget build(BuildContext context) {
     final windowSize = MediaQuery.of(context).size;
     return Scaffold(
-      body: Column(
-        children: [header(windowSize.height), body()]
-      )
-    );
+        body: Column(children: [header(windowSize.height), body()]));
   }
 
   Widget header(double height) {
@@ -65,62 +62,46 @@ class _AccountCreationPageState extends State<AccountCreationPage> {
 
   Widget body() {
     return Expanded(
-      child: Padding(
-        padding: const EdgeInsets.all(15.0),
-        child: Column(
-          children: [
-            profileLabel(),
-            nameLabel(),
-            accountForm(),
-            Expanded(child: Container()),
-            submitButton()
-          ]
-        )
-      )
-    );
+        child: Padding(
+            padding: const EdgeInsets.all(15.0),
+            child: Column(children: [
+              profileLabel(),
+              nameLabel(),
+              accountForm(),
+              Expanded(child: Container()),
+              submitButton()
+            ])));
   }
 
   Widget profileLabel() {
     return Padding(
-      padding: const EdgeInsets.all(10.0),
-      child: Center(
-        child: Text(
-          _accountCreationPageController.profileName,
-          style: const TextStyle(fontSize: 16, color: Colors.black)
-        )
-      )
-    );
+        padding: const EdgeInsets.all(10.0),
+        child: Center(
+            child: Text(_accountCreationPageController.profileName,
+                style: const TextStyle(fontSize: 16, color: Colors.black))));
   }
 
   Widget nameLabel() {
     return Padding(
-      padding: const EdgeInsets.all(5.0),
-      child: Center(
-        child: Text(
-          _accountCreationPageController.name,
-          style: const TextStyle(fontSize: 16, color: Colors.black)
-        )
-      )
-    );
+        padding: const EdgeInsets.all(5.0),
+        child: Center(
+            child: Text(_accountCreationPageController.name,
+                style: const TextStyle(fontSize: 16, color: Colors.black))));
   }
 
   Widget accountForm() {
     return Padding(
-      padding: const EdgeInsets.all(15.0),
-      child: Form(
-        key: _accountCreationPageController.creationKey,
-        child: Column(
-          children: [
-            loginLabel(),
-            loginTextField(),
-            passwordLabel(),
-            passwordTextField(),
-            repeatPasswordLabel(),
-            repeatPasswordTextField()
-          ]
-        )
-      )
-    );
+        padding: const EdgeInsets.all(15.0),
+        child: Form(
+            key: _accountCreationPageController.creationKey,
+            child: Column(children: [
+              loginLabel(),
+              loginTextField(),
+              passwordLabel(),
+              passwordTextField(),
+              repeatPasswordLabel(),
+              repeatPasswordTextField()
+            ])));
   }
 
   Container loginLabel() {
@@ -140,9 +121,8 @@ class _AccountCreationPageState extends State<AccountCreationPage> {
       child: TextFormField(
         keyboardType: TextInputType.text,
         validator: (login) =>
-          _accountCreationPageController.validateLogin(login),
-        onChanged: (login) =>
-          _accountCreationPageController.setLogin(login),
+            _accountCreationPageController.validateLogin(login),
+        onChanged: (login) => _accountCreationPageController.setLogin(login),
         decoration: blackInputDecorator('Login'),
       ),
     );
@@ -163,11 +143,12 @@ class _AccountCreationPageState extends State<AccountCreationPage> {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 10.0),
       child: TextFormField(
+        obscureText: true,
         keyboardType: TextInputType.text,
         validator: (password) =>
-          _accountCreationPageController.validatePassword(password),
+            _accountCreationPageController.validatePassword(password),
         onChanged: (password) =>
-          _accountCreationPageController.setPassword(password),
+            _accountCreationPageController.setPassword(password),
         decoration: blackInputDecorator('Password'),
       ),
     );
@@ -188,11 +169,12 @@ class _AccountCreationPageState extends State<AccountCreationPage> {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 10.0),
       child: TextFormField(
+        obscureText: true,
         keyboardType: TextInputType.text,
         validator: (password) =>
-          _accountCreationPageController.validateRepeatedPassword(password),
+            _accountCreationPageController.validateRepeatedPassword(password),
         onChanged: (password) =>
-          _accountCreationPageController.setRepeatedPassword(password),
+            _accountCreationPageController.setRepeatedPassword(password),
         decoration: blackInputDecorator('Repeat password'),
       ),
     );
@@ -204,7 +186,8 @@ class _AccountCreationPageState extends State<AccountCreationPage> {
         child: CustomButton(
           text: 'Create account',
           fontSize: 18,
-          onPressed: () => _accountCreationPageController.buttonValidator(context),
+          onPressed: () =>
+              _accountCreationPageController.buttonValidator(context),
         ));
   }
 }

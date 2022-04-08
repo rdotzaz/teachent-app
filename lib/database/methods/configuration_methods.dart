@@ -9,7 +9,7 @@ mixin AppConfigartionMethods {
   AppConfiguration getAppConfiguration() {
     var configuration = HiveDatabaseAdapter.getConfiguration();
     return AppConfiguration(configuration['userId'] ?? '',
-        configuration['themeMode'], configuration['userMode']);
+        configuration['themeMode'] ?? false, configuration['userMode'] ?? true);
   }
 
   void addAppConfiguration(AppConfiguration appConfiguration) {

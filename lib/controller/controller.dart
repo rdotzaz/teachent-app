@@ -8,3 +8,14 @@ abstract class BaseController {
   void init() {}
   void dispose() {}
 }
+
+abstract class BaseSearchController extends BaseController {
+  final _searchTextController = TextEditingController();
+  String phrase = '';
+
+  TextEditingController get searchController => _searchTextController;
+
+  void setValue(String? value) {
+    phrase = value ?? '';
+  }
+}
