@@ -18,7 +18,7 @@ class AddNewTopic extends BaseTopicEvent {
   AddNewTopic(this.name, this.context);
 }
 
-/// Event for toggle topic at [index] from [_teacherCreationPageController.topicList]
+/// Event for toggle topic at index from _teacherCreationPageController.topicList
 class ToggleTopicEvent extends BaseTopicEvent {
   final int index;
 

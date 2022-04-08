@@ -10,7 +10,7 @@ abstract class BasePlaceEvent {}
 /// Event for loading all available places
 class LoadAllPlacesEvent extends BasePlaceEvent {}
 
-/// Event for toggle place at [index] from [_teacherCreationPageController.placeList]
+/// Event for toggle place at index from _teacherCreationPageController.placeList
 class TogglePlaceEvent extends BasePlaceEvent {
   final int index;
 

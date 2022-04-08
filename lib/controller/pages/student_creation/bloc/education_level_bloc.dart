@@ -5,7 +5,7 @@ import 'package:teachent_app/model/objects/education_level.dart';
 /// Base event for EducationLevelBloc
 abstract class BaseEducationLevelEvent {}
 
-/// Event to select education level at [index] from [studentController.educationLevels]
+/// Event to select education level at index from studentController.educationLevels
 class ToggleEducationLevelEvent extends BaseEducationLevelEvent {
   final int index;
 

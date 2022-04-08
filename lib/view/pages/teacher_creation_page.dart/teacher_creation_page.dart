@@ -123,9 +123,9 @@ class _TeacherCreationPageState extends State<TeacherCreationPage> {
     return BlocBuilder<TeacherCreationBloc, int>(
         builder: (context, pageNumber) {
       return CustomButton(
-          text: pageNumber == TeacherCreationPageConsts.placePageNumber ? 
-            TeacherCreationPageConsts.done :
-            TeacherCreationPageConsts.next,
+          text: pageNumber == TeacherCreationPageConsts.placePageNumber
+              ? TeacherCreationPageConsts.done
+              : TeacherCreationPageConsts.next,
           fontSize: 18,
           buttonColor: Colors.blue,
           onPressed: () {

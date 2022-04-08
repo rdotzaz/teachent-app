@@ -22,7 +22,7 @@ class SplashPageController extends BaseController {
   }
 
   Future<void> someLogic() async {
-    /// [TODO] Lists only for testing purposes.
+    /// TODO - Lists only for testing purposes.
     /// ------------------------------------------------------------------
     final allTopics = [
       Topic('Math', false),

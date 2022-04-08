@@ -10,7 +10,7 @@ abstract class BaseToolEvent {}
 /// Event for loading all available tools from database
 class LoadAllToolsEvent extends BaseToolEvent {}
 
-/// Event for toggle tool at [index] from [_teacherCreationPageController.toolList]
+/// Event for toggle tool at index from _teacherCreationPageController.toolList
 class ToggleToolEvent extends BaseToolEvent {
   final int index;
 
