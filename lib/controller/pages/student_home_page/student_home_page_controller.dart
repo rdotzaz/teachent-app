@@ -8,6 +8,7 @@ import 'package:teachent_app/model/db_objects/teacher.dart';
 import 'package:teachent_app/model/objects/tool.dart';
 import 'package:teachent_app/view/pages/teacher_search_page/student_search_page.dart';
 
+/// Controller for Student Home Page
 class StudentHomePageController extends BaseController {
   final KeyId userId;
   Student? student;

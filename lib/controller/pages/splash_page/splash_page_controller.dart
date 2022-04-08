@@ -9,6 +9,7 @@ import 'package:teachent_app/view/pages/login_page/login_page.dart';
 import 'package:teachent_app/view/pages/student_home_page/student_home_page.dart';
 import 'package:teachent_app/view/pages/teacher_home_page/teacher_home_page.dart';
 
+/// Controller for Splash Page
 class SplashPageController extends BaseController {
   bool isAppConfigAlreadyExists = true;
 

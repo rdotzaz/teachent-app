@@ -7,6 +7,7 @@ import 'package:teachent_app/model/db_objects/student.dart';
 import 'package:teachent_app/view/pages/account_creation_page/account_creation_page.dart';
 import 'package:teachent_app/view/widgets/status_bottom_sheet.dart';
 
+/// Controller for Student Creation Page
 class StudentCreationPageController extends BaseController {
   String name = '';
   String educationLevel = '';
@@ -33,6 +34,7 @@ class StudentCreationPageController extends BaseController {
     loadLevelsBloc.close();
   }
 
+  /// Load education levels from database
   Future<void> initLevels() async {
     var levels = await dataManager.database.getAvailableEducationLevel();
     educationLevels.addAll(levels);
@@ -69,6 +71,7 @@ class StudentCreationPageController extends BaseController {
     name = nameToSet ?? '';
   }
 
+  /// Go to Account Page. Create student object which can be add to database in Account Creation Page
   void goToLoginCreationPage(BuildContext context) {
     if (educationLevel == '') {
       showErrorMessage(context, StudentCreationPageConsts.noLevelError);

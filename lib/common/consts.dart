@@ -1,8 +1,24 @@
+/// General constans values
 class NameConsts {
   static const appName = 'Teachent';
   static const welcomeText = 'Welcome in Teachent';
 }
 
+/// Constans values related to database objects defined in
+/// lib/model/
+/// Every value corresponds to container in database
+///
+/// E.g.
+/// {
+///   "users": {
+///     "login1": {
+///       ...
+///     },
+///     "login2": {
+///       ...
+///     }
+///   }
+/// }
 class DatabaseObjectName {
   static const users = 'users';
   static const teachers = 'teachers';
@@ -18,6 +34,7 @@ class DatabaseObjectName {
   static const levels = 'levels';
 }
 
+/// Constans related to database required parameters
 class DatabaseConsts {
   static const emulatorPort = 9000;
   static const androidFirebaseHost = '10.0.2.2';
@@ -27,6 +44,7 @@ class DatabaseConsts {
   static const emptyField = '';
 }
 
+/// Constans for Hive loval database
 class HiveConsts {
   static const hiveConfigBox = 'config';
   static const userId = 'userId';
@@ -34,6 +52,7 @@ class HiveConsts {
   static const themeMode = 'themeMode';
 }
 
+/// Constans for login page
 class LoginPageConsts {
   static const login = 'Login';
   static const logIn = 'Log in';
@@ -47,12 +66,14 @@ class LoginPageConsts {
   static const validationFailed = 'Validation failed';
 }
 
+/// Constans for profile page
 class ProfilePageConsts {
   static const selectProfile = 'Select account profile';
   static const teacher = 'Teacher';
   static const student = 'Student';
 }
 
+/// Constans for teacher creation page
 class TeacherCreationPageConsts {
   static const back = 'Back';
   static const next = 'Next';
@@ -87,6 +108,8 @@ class TeacherCreationPageConsts {
   static const toolExists = 'Such tool is already exists';
 }
 
+/// Constans for WorkModeBloc
+/// Every value corresponds to state for WorkModeBloc
 class WorkModeConsts {
   static const none = 0;
   static const place = 1;
@@ -95,6 +118,7 @@ class WorkModeConsts {
   static const remoteWithAdding = 4;
 }
 
+/// Constans for student creatoin page
 class StudentCreationPageConsts {
   static const back = 'Back';
   static const next = 'Next';
@@ -111,18 +135,22 @@ class StudentCreationPageConsts {
   static const headers = ['What\'s your name?', 'Choose your education level'];
 }
 
+/// Constans for accuont creation page
 class AccountCreationPageConsts {
   static const header = 'Almost done...';
 }
 
+/// Constans for welcome page
 class WelcomePageConsts {
   static const welcome = 'Welcome';
 }
 
+/// Constans for student object
 class StudentConsts {
   static const levelNotSpecified = 'Not specified';
 }
 
+/// Constans for teacher object
 class TeacherConsts {
   static const emptyRate = -1;
 }

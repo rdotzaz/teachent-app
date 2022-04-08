@@ -9,6 +9,7 @@ import 'package:teachent_app/model/objects/education_level.dart';
 import 'package:teachent_app/model/objects/tool.dart';
 import 'package:teachent_app/view/pages/search_page/teacher_search_page.dart';
 
+/// Controller for Teacher Home Page
 class TeacherHomePageController extends BaseController {
   final KeyId userId;
   late Teacher? teacher;

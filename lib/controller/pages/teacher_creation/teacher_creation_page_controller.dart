@@ -10,6 +10,7 @@ import 'package:teachent_app/model/objects/tool.dart';
 import 'package:teachent_app/model/objects/place.dart';
 import 'package:teachent_app/view/pages/account_creation_page/account_creation_page.dart';
 
+/// Controller for Teacher Creation Page
 class TeacherCreationPageController extends BaseController {
   String name = '';
   String description = '';
@@ -51,18 +52,21 @@ class TeacherCreationPageController extends BaseController {
     _topicTextFieldController.dispose();
   }
 
+  /// Retrive all available topics in database
   Future<void> initTopics() async {
     var topics = await dataManager.database.getAvailableTopics();
     _allTopics.addAll(topics);
     _allTopics.sort((t1, t2) => t1.name.compareTo(t2.name));
   }
 
+  /// Retrive all available tools in database
   Future<void> initTools() async {
     var tools = await dataManager.database.getAvailableTools();
     _allTools.addAll(tools);
     _allTools.sort((t1, t2) => t1.name.compareTo(t2.name));
   }
 
+  /// Retrive all available places in database
   Future<void> initPlaces() async {
     var places = await dataManager.database.getAvailablePlaces();
     _allPlaces.addAll(places);
@@ -77,7 +81,9 @@ class TeacherCreationPageController extends BaseController {
   final _topicTextFieldController = TextEditingController();
   final _objectTextFieldController = TextEditingController();
 
+  /// Controler for PageView in TeacherCreationPage
   PageController get pageController => _pageViewController;
+
   TextEditingController get topicTextFieldController =>
       _topicTextFieldController;
   TextEditingController get objectTextFieldController =>
@@ -118,12 +124,14 @@ class TeacherCreationPageController extends BaseController {
     return _nameSubPageKey.currentState?.validate() ?? false;
   }
 
+  /// Retrive value from topic TextField
   String getOtherTopicText() {
     var text = _topicTextFieldController.value.text;
     _topicTextFieldController.clear();
     return text;
   }
 
+  /// Retrive value from TextField for tool or place adding
   String getOtherObjectText() {
     var text = _objectTextFieldController.value.text;
     _objectTextFieldController.clear();
@@ -134,6 +142,8 @@ class TeacherCreationPageController extends BaseController {
     showErrorMessage(context, info);
   }
 
+  /// Return true if topic is already in available topics
+  /// Otherwise return false
   bool containsTopicInAll(Topic topic) {
     for (final t in _allTopics) {
       if (t.name == topic.name) {
@@ -143,6 +153,8 @@ class TeacherCreationPageController extends BaseController {
     return false;
   }
 
+  /// Return true if tool is already in available tools
+  /// Otherwise return false
   bool containsToolInAll(Tool tool) {
     for (final t in _allTools) {
       if (t.name == tool.name) {
@@ -152,6 +164,8 @@ class TeacherCreationPageController extends BaseController {
     return false;
   }
 
+  /// Return true if place is already in available places
+  /// Otherwise return false
   bool containsPlaceInAll(Place place) {
     for (final p in _allPlaces) {
       if (p.name == place.name) {
@@ -161,21 +175,28 @@ class TeacherCreationPageController extends BaseController {
     return false;
   }
 
+  /// Method adds new topic to available topics.
+  /// Topic added after clicking "Add other topic"
   void addToAllTopics(Topic topic) {
     _allTopics.add(topic);
     _allTopics.sort((t1, t2) => t1.name.compareTo(t2.name));
   }
 
+  /// Method adds new tool to available tools.
+  /// Topic added after clicking "Add other tool"
   void addToAllTools(Tool tool) {
     _allTools.add(tool);
     _allTools.sort((t1, t2) => t1.name.compareTo(t2.name));
   }
 
+  /// Method adds new place to available places.
+  /// Topic added after clicking "Add other place"
   void addToAllPlaces(Place place) {
     _allPlaces.add(place);
     _allPlaces.sort((p1, p2) => p1.name.compareTo(p2.name));
   }
 
+  /// Go to Account Page. Create teacher object which can be add to database in Account Creation Page
   void goToLoginCreationPage(BuildContext context) {
     if (topics.isEmpty) {
       showErrorMessage(context, TeacherCreationPageConsts.noTopicSelected);
