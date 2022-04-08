@@ -39,7 +39,7 @@ jobs:
       - name: Dart pub get
         run: dart pub get
       - name: Dart analysis
-        run: dart analyze
+        run: dart analyze --fatal-infos
       - name: Run Flutter pub get
         run: flutter pub get
       - name: Run test
