@@ -108,7 +108,7 @@ class _TeacherHomePageState extends State<TeacherHomePage> {
                   children: const [
                     Icon(Icons.search, color: Colors.grey, size: 25),
                     SizedBox(width: 20),
-                    Text('Search students...',
+                    Text('Search people...',
                         style: TextStyle(fontSize: 18, color: Colors.grey))
                   ],
                 ),

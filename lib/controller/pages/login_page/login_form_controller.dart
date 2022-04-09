@@ -38,17 +38,16 @@ class LoginFormController extends BaseController {
     if (validationResult) {
       _loginFormKey.currentState?.save();
 
-      final userId =
+      final user =
           await dataManager.database.checkLoginAndPassword(login, password);
 
-      if (userId == DatabaseConsts.emptyKey) {
+      if (user == null) {
         showErrorMessage(context, LoginPageConsts.loginNotFound);
       } else {
-        final isTeacher = dataManager.database.getAppConfiguration().isTeacher;
         Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (_) {
-          return isTeacher
-              ? TeacherHomePage(userId: userId)
-              : StudentHomePage(userId: userId);
+          return user.isTeacher
+              ? TeacherHomePage(userId: user.key)
+              : StudentHomePage(userId: user.key);
         }));
       }
       return;

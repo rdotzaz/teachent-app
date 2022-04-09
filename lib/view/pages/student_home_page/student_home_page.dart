@@ -15,6 +15,12 @@ class _StudentHomePageState extends State<StudentHomePage> {
   late StudentHomePageController _studentHomePageController;
 
   @override
+  void initState() {
+    super.initState();
+    _studentHomePageController = StudentHomePageController(widget.userId);
+  }
+
+  @override
   Widget build(BuildContext context) {
     return FutureBuilder(
         future: _studentHomePageController.init(),
