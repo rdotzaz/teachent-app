@@ -18,9 +18,8 @@ class Student extends DatabaseObject {
       this.name, this.educationLevel, this.requests, this.lessonDates);
 
   // TODO - Remove this
-  Student.onlyKeyName(this.userId, this.name)
-      : educationLevel = EducationLevel('', true),
-        requests = [],
+  Student.onlyKeyName(this.userId, this.name, this.educationLevel)
+      : requests = [],
         lessonDates = [];
 
   @override

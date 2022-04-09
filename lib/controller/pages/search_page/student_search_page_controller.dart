@@ -20,22 +20,23 @@ class StudentSearchPageController extends BaseSearchController {
     final topics = await dataManager.database.getAvailableTopics();
     _allTopics.addAll(topics);
   }
+
   Future<void> initAllTools() async {
     final tools = await dataManager.database.getAvailableTools();
     _allTools.addAll(tools);
   }
+
   Future<void> initAllPlaces() async {
     final places = await dataManager.database.getAvailablePlaces();
     _allPlaces.addAll(places);
   }
 
   @override
-  Future<void> updateFoundTeacherList(
-    List<String> topicNames,
-    List<String> toolNames, List<String> placeNames) async {
-      _foundTeachers.clear();
-      final teachers = await dataManager.database.getTeachersByParams(
-        phrase, topicNames, toolNames, placeNames);
-      _foundTeachers.addAll(teachers);
+  Future<void> updateFoundTeacherList(List<String> topicNames,
+      List<String> toolNames, List<String> placeNames) async {
+    _foundTeachers.clear();
+    final teachers = await dataManager.database
+        .getTeachersByParams(phrase, topicNames, toolNames, placeNames);
+    _foundTeachers.addAll(teachers);
   }
 }

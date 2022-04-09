@@ -75,8 +75,21 @@ mixin TeacherDatabaseMethods {
         lessonDateList);
   }
 
-  void _addTeacherToList(String login, Map values, List<Teacher> teachers) {
-    teachers.add(Teacher.onlyKeyName(login, values['name'] ?? ''));
+  Teacher _addTeacherToList(String login, Map values) {
+    final topics = _getMapFromField(values, 'topics');
+    final topicList =
+        topics.entries.map((topic) => Topic(topic.key, true)).toList();
+
+    final tools = _getMapFromField(values, 'tools');
+    final toolList =
+        tools.entries.map((tool) => Tool(tool.key.toString(), true)).toList();
+
+    final places = _getMapFromField(values, 'places');
+    final placeList = places.entries
+        .map((place) => Place(place.key.toString(), true))
+        .toList();
+    return Teacher.onlyKeyName(login, values['name'] ?? '', topicList,
+      toolList, placeList);
   }
 
   Future<List<Teacher>> getTeachersByNamePart(String name) async {
@@ -84,8 +97,8 @@ mixin TeacherDatabaseMethods {
         await FirebaseRealTimeDatabaseAdapter.getObjectsByName(
             DatabaseObjectName.teachers, 'name', name);
     final teachers = <Teacher>[];
-    teacherValues.forEach((login, teacherValue) => _addTeacherToList(
-        login, teacherValue as Map<dynamic, dynamic>, teachers));
+    teacherValues.forEach((login, teacherValue) => teachers.add(
+        _addTeacherToList(login, teacherValue as Map<dynamic, dynamic>)));
     return teachers;
   }
 

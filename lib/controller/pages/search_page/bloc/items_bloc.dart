@@ -17,7 +17,7 @@ class RefreshTeacherItemsEvent extends BaseItemsSearchEvent {
   final List<String> placeNames;
 
   RefreshTeacherItemsEvent(
-    this.newPhrase, this.topicNames, this.toolNames, this.placeNames);
+      this.newPhrase, this.topicNames, this.toolNames, this.placeNames);
 }
 
 class ItemsBloc extends Bloc<BaseItemsSearchEvent, String> {
@@ -40,7 +40,7 @@ class ItemsBloc extends Bloc<BaseItemsSearchEvent, String> {
       }
       searchController.phrase = event.newPhrase;
       await searchController.updateFoundTeacherList(
-        event.topicNames, event.toolNames, event.placeNames);
+          event.topicNames, event.toolNames, event.placeNames);
       emit(event.newPhrase);
     }));
   }

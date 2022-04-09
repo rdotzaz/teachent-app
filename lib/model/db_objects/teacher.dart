@@ -24,11 +24,9 @@ class Teacher extends DatabaseObject {
       this.places, this.averageRate, this.requests, this.lessonDates);
 
   // TODO - Remove this
-  Teacher.onlyKeyName(this.userId, this.name)
+  Teacher.onlyKeyName(this.userId, this.name, this.topics, this.tools,
+      this.places)
       : description = '',
-        topics = [],
-        tools = [],
-        places = [],
         averageRate = -1,
         requests = [],
         lessonDates = [];

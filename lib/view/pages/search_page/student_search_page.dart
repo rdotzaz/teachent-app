@@ -10,7 +10,7 @@ import 'student_search_bar_widget.dart';
 import 'user_card.dart';
 
 class StudentSearchPage extends StatefulWidget {
-  StudentSearchPage({Key? key}) : super(key: key);
+  const StudentSearchPage({Key? key}) : super(key: key);
 
   @override
   State<StudentSearchPage> createState() => _StudentSearchPageState();
@@ -65,133 +65,127 @@ class _StudentSearchPageState extends State<StudentSearchPage> {
 
   Widget topicChipActions() {
     return Container(
-          height: 70,
-          padding: const EdgeInsets.all(5),
-          child: FutureBuilder(
+        height: 70,
+        padding: const EdgeInsets.all(5),
+        child: FutureBuilder(
             future: _searchPageController.initAllTopics(),
             builder: (_, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const CircularProgressIndicator();
+                return const CircularProgressIndicator();
               } else if (snapshot.connectionState == ConnectionState.done) {
-                  return topicListBuilder();
+                return topicListBuilder();
               }
               return Text(snapshot.error.toString());
-            }
-    ));
+            }));
   }
 
   Widget topicListBuilder() {
     return BlocBuilder<TopicSelectBloc, List<String>>(builder: (_, topicNames) {
       return ListView.builder(
-        scrollDirection: Axis.horizontal,
-        itemCount: _searchPageController.topics.length,
-        itemBuilder: (context, index) {
-        final isMarked = topicNames.contains(
-          _searchPageController.topics[index].name);
-        return Container(
-          margin: const EdgeInsets.all(8.0),
-          child: ActionChip(
-            padding: const EdgeInsets.all(12.0),
-            label: Text(
-              _searchPageController.topics[index].name,
-                style: TextStyle(
-                    fontSize: 14,
-                    color: isMarked ? Colors.white : Colors.black)),
-            backgroundColor: isMarked ? Colors.red : Colors.grey,
-            onPressed: () {
-              context.read<TopicSelectBloc>().add(ToggleTopicEvent(index));
-            }
-          )
-        );
-      });
+          scrollDirection: Axis.horizontal,
+          itemCount: _searchPageController.topics.length,
+          itemBuilder: (context, index) {
+            final isMarked =
+                topicNames.contains(_searchPageController.topics[index].name);
+            return Container(
+                margin: const EdgeInsets.all(8.0),
+                child: ActionChip(
+                    padding: const EdgeInsets.all(12.0),
+                    label: Text(_searchPageController.topics[index].name,
+                        style: TextStyle(
+                            fontSize: 14,
+                            color: isMarked ? Colors.white : Colors.black)),
+                    backgroundColor: isMarked ? Colors.red : Colors.grey,
+                    onPressed: () {
+                      context
+                          .read<TopicSelectBloc>()
+                          .add(ToggleTopicEvent(index));
+                    }));
+          });
     });
   }
 
   Widget toolChipActions() {
     return Container(
-          height: 70,
-          padding: const EdgeInsets.all(5),
-          child: FutureBuilder(
+        height: 70,
+        padding: const EdgeInsets.all(5),
+        child: FutureBuilder(
             future: _searchPageController.initAllTools(),
             builder: (_, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const CircularProgressIndicator();
+                return const CircularProgressIndicator();
               } else if (snapshot.connectionState == ConnectionState.done) {
-                  return toolListBuilder();
+                return toolListBuilder();
               }
               return Text(snapshot.error.toString());
-            }
-    ));
+            }));
   }
 
   Widget toolListBuilder() {
     return BlocBuilder<ToolSelectBloc, List<String>>(builder: (_, toolNames) {
       return ListView.builder(
-        scrollDirection: Axis.horizontal,
-        itemCount: _searchPageController.tools.length,
-        itemBuilder: (context, index) {
-        final isMarked = toolNames.contains(
-          _searchPageController.tools[index].name);
-        return Container(
-          margin: const EdgeInsets.all(8.0),
-          child: ActionChip(
-            padding: const EdgeInsets.all(12.0),
-            label: Text(
-              _searchPageController.tools[index].name,
-                style: TextStyle(
-                    fontSize: 14,
-                    color: isMarked ? Colors.white : Colors.black)),
-            backgroundColor: isMarked ? Colors.red : Colors.grey,
-            onPressed: () {
-              context.read<ToolSelectBloc>().add(ToggleToolEvent(index));
-            }
-          )
-        );
-      });
+          scrollDirection: Axis.horizontal,
+          itemCount: _searchPageController.tools.length,
+          itemBuilder: (context, index) {
+            final isMarked =
+                toolNames.contains(_searchPageController.tools[index].name);
+            return Container(
+                margin: const EdgeInsets.all(8.0),
+                child: ActionChip(
+                    padding: const EdgeInsets.all(12.0),
+                    label: Text(_searchPageController.tools[index].name,
+                        style: TextStyle(
+                            fontSize: 14,
+                            color: isMarked ? Colors.white : Colors.black)),
+                    backgroundColor: isMarked ? Colors.red : Colors.grey,
+                    onPressed: () {
+                      context
+                          .read<ToolSelectBloc>()
+                          .add(ToggleToolEvent(index));
+                    }));
+          });
     });
   }
 
   Widget placeChipActions() {
     return Container(
-          height: 70,
-          padding: const EdgeInsets.all(5),
-          child: FutureBuilder(
+        height: 70,
+        padding: const EdgeInsets.all(5),
+        child: FutureBuilder(
             future: _searchPageController.initAllPlaces(),
             builder: (_, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const CircularProgressIndicator();
+                return const CircularProgressIndicator();
               } else if (snapshot.connectionState == ConnectionState.done) {
-                  return placeListBuilder();
+                return placeListBuilder();
               }
               return Text(snapshot.error.toString());
-            }
-    ));
+            }));
   }
 
   Widget placeListBuilder() {
     return BlocBuilder<PlaceSelectBloc, List<String>>(builder: (_, placeNames) {
       return ListView.builder(
-        scrollDirection: Axis.horizontal,
-        itemCount: _searchPageController.places.length,
-        itemBuilder: (context, index) {
-        final isMarked = placeNames.contains(
-          _searchPageController.places[index].name);
-        return Container(
-          margin: const EdgeInsets.all(8.0),
-          child: ActionChip(
-            padding: const EdgeInsets.all(12.0),
-            label: Text(
-              _searchPageController.places[index].name,
-                style: TextStyle(
-                    fontSize: 14,
-                    color: isMarked ? Colors.white : Colors.black)),
-            backgroundColor: isMarked ? Colors.red : Colors.grey,
-            onPressed: () {
-              context.read<PlaceSelectBloc>().add(TogglePlaceEvent(index));
-            }
-          )
-        );
-      });
+          scrollDirection: Axis.horizontal,
+          itemCount: _searchPageController.places.length,
+          itemBuilder: (context, index) {
+            final isMarked =
+                placeNames.contains(_searchPageController.places[index].name);
+            return Container(
+                margin: const EdgeInsets.all(8.0),
+                child: ActionChip(
+                    padding: const EdgeInsets.all(12.0),
+                    label: Text(_searchPageController.places[index].name,
+                        style: TextStyle(
+                            fontSize: 14,
+                            color: isMarked ? Colors.white : Colors.black)),
+                    backgroundColor: isMarked ? Colors.red : Colors.grey,
+                    onPressed: () {
+                      context
+                          .read<PlaceSelectBloc>()
+                          .add(TogglePlaceEvent(index));
+                    }));
+          });
     });
   }
 
@@ -201,21 +195,21 @@ class _StudentSearchPageState extends State<StudentSearchPage> {
         return const Center(child: Text('No items found'));
       }
       return SingleChildScrollView(
-          child: Column(
-            children: [
-                const Padding(
-                    padding: EdgeInsets.all(8.0), child: Text('Teachers')),
-                ListView.builder(
-                    itemCount: _searchPageController.teachers.length,
-                    shrinkWrap: true,
-                    itemBuilder: (_, index) {
-                      return TeacherCardWidget(
-                          teacher: _searchPageController.teachers[index],
-                          onPressed: () {});
-                    }),
-            ],
-          ),
-        );
+        child: Column(
+          children: [
+            const Padding(
+                padding: EdgeInsets.all(8.0), child: Text('Teachers')),
+            ListView.builder(
+                itemCount: _searchPageController.teachers.length,
+                shrinkWrap: true,
+                itemBuilder: (_, index) {
+                  return TeacherCardWidget(
+                      teacher: _searchPageController.teachers[index],
+                      onPressed: () {});
+                }),
+          ],
+        ),
+      );
     });
   }
 }

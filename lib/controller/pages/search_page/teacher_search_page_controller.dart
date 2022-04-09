@@ -10,14 +10,14 @@ class TeacherSearchPageController extends BaseSearchController {
   List<Student> get students => _foundStudents;
 
   @override
-  Future<void> updateFoundList(PersonType personType) async {
+  Future<void> updateFoundList(PersonType type) async {
     _foundTeachers.clear();
     _foundStudents.clear();
 
-    if (personType == PersonType.teachers || personType == PersonType.all) {
+    if (type == PersonType.teachers || type == PersonType.all) {
       await _updateTeachers();
     }
-    if (personType == PersonType.students || personType == PersonType.all) {
+    if (type == PersonType.students || type == PersonType.all) {
       await _updateStudents();
     }
   }
