@@ -3,11 +3,11 @@ import 'package:teachent_app/database/adapters/firebase_adapter.dart';
 import 'package:teachent_app/database/database.dart';
 import 'package:teachent_app/model/objects/topic.dart';
 
-mixin TopicDatabaseMethods {
+mixin TopicDatabaseMethods on IDatabase {
   Future<Iterable<Topic>> getAvailableTopics() async {
     DBValues<bool> topicValues =
         await FirebaseRealTimeDatabaseAdapter.getAvailableObjects(
-            DatabaseObjectName.topics);
+            fbReference!, DatabaseObjectName.topics);
 
     return topicValues.entries
         .map((topicEntry) => Topic(topicEntry.key, topicEntry.value));
@@ -18,6 +18,6 @@ mixin TopicDatabaseMethods {
       for (var topic in topicsToAdd) topic.name: false
     };
     await FirebaseRealTimeDatabaseAdapter.addObjects(
-        DatabaseObjectName.topics, topicValues);
+        fbReference!, DatabaseObjectName.topics, topicValues);
   }
 }

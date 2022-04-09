@@ -3,11 +3,11 @@ import 'package:teachent_app/database/adapters/firebase_adapter.dart';
 import 'package:teachent_app/database/database.dart';
 import 'package:teachent_app/model/objects/education_level.dart';
 
-mixin EducationLevelDatabaseMethods {
+mixin EducationLevelDatabaseMethods on IDatabase {
   Future<Iterable<EducationLevel>> getAvailableEducationLevel() async {
     DBValues<bool> levelValues =
         await FirebaseRealTimeDatabaseAdapter.getAvailableObjects(
-            DatabaseObjectName.levels);
+            fbReference!, DatabaseObjectName.levels);
 
     return levelValues.entries
         .map((levelEntry) => EducationLevel(levelEntry.key, levelEntry.value));
@@ -18,6 +18,6 @@ mixin EducationLevelDatabaseMethods {
       for (var level in levelsToAdd) level.name: false
     };
     await FirebaseRealTimeDatabaseAdapter.addObjects(
-        DatabaseObjectName.levels, levelValues);
+        fbReference!, DatabaseObjectName.levels, levelValues);
   }
 }

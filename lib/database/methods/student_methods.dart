@@ -1,15 +1,19 @@
 import 'package:teachent_app/database/adapters/firebase_adapter.dart';
+import 'package:teachent_app/database/database.dart';
 import 'package:teachent_app/model/objects/education_level.dart';
 
 import '../../common/consts.dart';
 import '../../model/db_objects/db_object.dart';
 import '../../model/db_objects/student.dart';
 
-mixin StudentDatabaseMethods {
+mixin StudentDatabaseMethods on IDatabase {
   Future<void> addStudent(Student student) async {
     print('Student');
     var wasAdded = await FirebaseRealTimeDatabaseAdapter.addDatabaseObject(
-        DatabaseObjectName.students, student.key, student.toMap());
+        fbReference!,
+        DatabaseObjectName.students,
+        student.key,
+        student.toMap());
     return;
   }
 
@@ -30,7 +34,7 @@ mixin StudentDatabaseMethods {
 
   Future<Student?> getStudent(KeyId userId) async {
     final studentValues = await FirebaseRealTimeDatabaseAdapter.getObject(
-        DatabaseObjectName.students, userId);
+        fbReference!, DatabaseObjectName.students, userId);
     if (studentValues.isEmpty) {
       return null;
     }
@@ -61,7 +65,7 @@ mixin StudentDatabaseMethods {
   Future<List<Student>> getStudentsByNamePart(String name) async {
     final studentValues =
         await FirebaseRealTimeDatabaseAdapter.getObjectsByName(
-            DatabaseObjectName.students, 'name', name);
+            fbReference!, DatabaseObjectName.students, 'name', name);
     final students = <Student>[];
     studentValues.forEach((login, studentValue) => _addStudentToList(
         login, studentValue as Map<dynamic, dynamic>, students));

@@ -11,8 +11,10 @@ import '../../common/consts.dart' show DatabaseConsts, DatabaseObjectName;
 const lastCharacter = '\u1869F';
 
 class FirebaseRealTimeDatabaseAdapter {
-  static Future<void> init(DBMode dbMode) async {
-    await _startDataBase(dbMode);
+  static Future<FirebaseDatabase> init(
+      DBMode dbMode, FirebaseDatabase? db) async {
+    if (db != null) return db;
+    return await _startDataBase(dbMode);
   }
 
   static String _getHost(DBMode dbMode) {
@@ -21,7 +23,7 @@ class FirebaseRealTimeDatabaseAdapter {
         : DatabaseConsts.webFirebaseHost;
   }
 
-  static Future<void> _startDataBase(DBMode dbMode) async {
+  static Future<FirebaseDatabase> _startDataBase(DBMode dbMode) async {
     var firebaseOptions = defaultTargetPlatform == TargetPlatform.android
         ? androidFirebaseOption // ignore: undefined_identifier
         : webFirebaseOption; // ignore: undefined_identifier
@@ -38,12 +40,12 @@ class FirebaseRealTimeDatabaseAdapter {
       FirebaseDatabase.instance
           .useDatabaseEmulator(databaseHost, DatabaseConsts.emulatorPort);
     }
+    return FirebaseDatabase.instance;
   }
 
   static Future<Map> findUserByLoginAndCheckPassword(
-      String login, String password) async {
-    var databaseReference =
-        FirebaseDatabase.instance.ref('${DatabaseObjectName.users}/$login');
+      FirebaseDatabase db, String login, String password) async {
+    var databaseReference = db.ref('${DatabaseObjectName.users}/$login');
 
     var event = await databaseReference.once();
     var isKeyExists = event.snapshot.exists;
@@ -77,8 +79,8 @@ class FirebaseRealTimeDatabaseAdapter {
   }
 
   static Future<DBValues<bool>> getAvailableObjects(
-      String collectionName) async {
-    var databaseReference = FirebaseDatabase.instance.ref(collectionName);
+      FirebaseDatabase db, String collectionName) async {
+    var databaseReference = db.ref(collectionName);
 
     var event = await databaseReference.once();
     var isKeyExists = event.snapshot.exists;
@@ -98,10 +100,9 @@ class FirebaseRealTimeDatabaseAdapter {
     };
   }
 
-  static Future<bool> addDatabaseObject(
+  static Future<bool> addDatabaseObject(FirebaseDatabase db,
       String collectionName, String keyId, DBValues userValues) async {
-    DatabaseReference databaseReference =
-        FirebaseDatabase.instance.ref().child(collectionName);
+    DatabaseReference databaseReference = db.ref().child(collectionName);
 
     var possibleExistedKeyRef = databaseReference.child(keyId);
 
@@ -118,15 +119,17 @@ class FirebaseRealTimeDatabaseAdapter {
     return true;
   }
 
-  static Future<void> addObjects(String collectionName, DBValues values) async {
-    var databaseReference = FirebaseDatabase.instance.ref(collectionName);
+  static Future<void> addObjects(
+      FirebaseDatabase db, String collectionName, DBValues values) async {
+    var databaseReference = db.ref(collectionName);
 
     await databaseReference.update(values);
   }
 
-  static Future<Map> getObject(String collectionName, String key) async {
+  static Future<Map> getObject(
+      FirebaseDatabase db, String collectionName, String key) async {
     DatabaseReference databaseReference =
-        FirebaseDatabase.instance.ref().child('$collectionName/$key');
+        db.ref().child('$collectionName/$key');
 
     print('[Firebase Adapter] Key: $collectionName/$key');
     final event = await databaseReference.once();
@@ -140,10 +143,9 @@ class FirebaseRealTimeDatabaseAdapter {
     return event.snapshot.value as Map<dynamic, dynamic>;
   }
 
-  static Future<Map> getObjectsByName(
+  static Future<Map> getObjectsByName(FirebaseDatabase db,
       String collectionName, String property, String name) async {
-    DatabaseReference databaseReference =
-        FirebaseDatabase.instance.ref().child(collectionName);
+    DatabaseReference databaseReference = db.ref().child(collectionName);
 
     final query = databaseReference
         .orderByChild(property)

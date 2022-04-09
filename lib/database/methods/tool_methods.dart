@@ -3,11 +3,11 @@ import 'package:teachent_app/database/adapters/firebase_adapter.dart';
 import 'package:teachent_app/database/database.dart';
 import 'package:teachent_app/model/objects/tool.dart';
 
-mixin ToolsDatabaseMethods {
+mixin ToolsDatabaseMethods on IDatabase {
   Future<Iterable<Tool>> getAvailableTools() async {
     DBValues<bool> toolValues =
         await FirebaseRealTimeDatabaseAdapter.getAvailableObjects(
-            DatabaseObjectName.tools);
+            fbReference!, DatabaseObjectName.tools);
 
     return toolValues.entries
         .map((toolEntry) => Tool(toolEntry.key, toolEntry.value));
@@ -18,6 +18,6 @@ mixin ToolsDatabaseMethods {
       for (var tool in toolsToAdd) tool.name: false
     };
     await FirebaseRealTimeDatabaseAdapter.addObjects(
-        DatabaseObjectName.tools, toolValues);
+        fbReference!, DatabaseObjectName.tools, toolValues);
   }
 }
