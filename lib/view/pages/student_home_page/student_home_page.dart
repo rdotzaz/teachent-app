@@ -24,21 +24,21 @@ class _StudentHomePageState extends State<StudentHomePage> {
   Widget build(BuildContext context) {
     return FutureBuilder(
         future: _studentHomePageController.init(),
-        builder: (_, snapshot) {
+        builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const CircularProgressIndicator();
           } else if (snapshot.connectionState == ConnectionState.done) {
-            return homeWidget();
+            return homeWidget(context);
           }
           return errorWidget(snapshot.error.toString());
         });
   }
 
-  Widget appBar() {
+  Widget appBar(BuildContext context) {
     return SliverAppBar(
       expandedHeight: 150,
       backgroundColor: Colors.white,
-      actions: [settings()],
+      actions: [settings(context)],
       flexibleSpace: FlexibleSpaceBar(
           title: Text('Hi\n${_studentHomePageController.studentName}',
               style: const TextStyle(color: Colors.black)),
@@ -46,9 +46,9 @@ class _StudentHomePageState extends State<StudentHomePage> {
     );
   }
 
-  Widget settings() {
+  Widget settings(BuildContext context) {
     return GestureDetector(
-      onTap: () {},
+      onTap: () => _studentHomePageController.goToSettingsPage(context),
       child: const Padding(
         padding: EdgeInsets.all(18.0),
         child: Icon(
@@ -59,9 +59,9 @@ class _StudentHomePageState extends State<StudentHomePage> {
     );
   }
 
-  Widget homeWidget() {
+  Widget homeWidget(BuildContext context) {
     return CustomScrollView(slivers: [
-      appBar(),
+      appBar(context),
       SliverList(
           delegate: SliverChildListDelegate([
         searchBarWidget(),
