@@ -7,6 +7,7 @@ import '../../model/objects/topic.dart';
 import '../../model/objects/tool.dart';
 import '../../model/objects/place.dart';
 
+/// Methods to maintain Teacher object in database
 mixin TeacherDatabaseMethods {
   Future<void> addTeacher(Teacher teacher) async {
     print('Teacher');

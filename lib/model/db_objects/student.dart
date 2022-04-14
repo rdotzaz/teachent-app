@@ -4,6 +4,7 @@ import 'package:teachent_app/model/db_objects/db_object.dart';
 
 import '../objects/education_level.dart';
 
+/// Object representation of student (person who looking for private lessons)
 class Student extends DatabaseObject {
   KeyId userId = DatabaseConsts.emptyKey;
   final String name;

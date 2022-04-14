@@ -2,6 +2,8 @@ import 'package:teachent_app/common/consts.dart'
     show DatabaseConsts, DatabaseObjectName;
 import 'package:teachent_app/model/db_objects/db_object.dart';
 
+/// Object representation of next lesson
+/// Contains information of next lesson between teacher and student
 class Lesson extends DatabaseObject {
   final KeyId lessonDateId;
   final KeyId teacherId;

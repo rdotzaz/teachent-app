@@ -4,6 +4,7 @@ import '../../common/consts.dart';
 import '../../model/db_objects/db_object.dart';
 import '../../model/db_objects/user.dart';
 
+/// Methods to manage User object in database
 mixin UserDatabaseMethods {
   /// Method returns user when login and password are correct
   /// Otherwise returns null

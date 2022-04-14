@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+/// Simple wrapper for ElevatedButton
 class CustomButton extends StatelessWidget {
   final String text;
   final double fontSize;

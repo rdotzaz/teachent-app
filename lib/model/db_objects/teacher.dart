@@ -6,6 +6,7 @@ import '../objects/place.dart';
 import '../objects/tool.dart';
 import '../objects/topic.dart';
 
+/// Object representation of teacher (person who can lead private lessons)
 class Teacher extends DatabaseObject {
   KeyId userId = DatabaseConsts.emptyKey;
   final String name;

@@ -1,7 +1,7 @@
 import 'package:teachent_app/database/adapters/hive_adapter.dart';
 import 'package:teachent_app/model/db_objects/app_configuration.dart';
 
-/// Methods to manage AppConfiguration object in database
+/// Methods to maintain AppConfiguration object in database
 mixin AppConfigartionMethods {
   bool isAppConfigurationAlreadyExists() {
     return HiveDatabaseAdapter.hasConfiguration();
