@@ -3,6 +3,7 @@ import 'package:teachent_app/database/adapters/firebase_adapter.dart';
 import 'package:teachent_app/database/database.dart';
 import 'package:teachent_app/model/objects/education_level.dart';
 
+/// Methods to manage EducationLevel object in database
 mixin EducationLevelDatabaseMethods {
   Future<Iterable<EducationLevel>> getAvailableEducationLevel() async {
     DBValues<bool> levelValues =

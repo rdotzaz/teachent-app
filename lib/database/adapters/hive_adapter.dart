@@ -4,7 +4,9 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:teachent_app/common/consts.dart';
 import 'package:teachent_app/database/database.dart';
 
+/// Class with static methods to communicate with local Hive database
 class HiveDatabaseAdapter {
+  /// Methods initializes local database and configuration box. 
   static Future<void> init() async {
     await Hive.initFlutter();
     await Hive.openBox(HiveConsts.hiveConfigBox);
@@ -15,6 +17,7 @@ class HiveDatabaseAdapter {
     configBox.clear();
   }
 
+  /// Returns true if configuration already exists in local database
   static bool hasConfiguration() {
     var configBox = Hive.box(HiveConsts.hiveConfigBox);
     if (!configBox.isOpen) {
@@ -25,6 +28,7 @@ class HiveDatabaseAdapter {
         configBox.get(HiveConsts.userMode) != null;
   }
 
+  /// Add [values] to configuration box in Hive local database
   static void putConfiguration(DBValues values) {
     var configBox = Hive.box(HiveConsts.hiveConfigBox);
     if (!configBox.isOpen) {
@@ -47,6 +51,7 @@ class HiveDatabaseAdapter {
     configBox.put(HiveConsts.userMode, values['userMode']);
   }
 
+  /// Returns map representation of AppConfiguration object of existing configuration
   static DBValues getConfiguration() {
     var configBox = Hive.box(HiveConsts.hiveConfigBox);
     if (!configBox.isOpen) {

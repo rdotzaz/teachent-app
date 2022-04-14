@@ -3,6 +3,7 @@ import 'package:teachent_app/database/adapters/firebase_adapter.dart';
 import 'package:teachent_app/database/database.dart';
 import 'package:teachent_app/model/objects/place.dart';
 
+/// Methods to manage Place object in database
 mixin PlaceDatabaseMethods {
   Future<Iterable<Place>> getAvailablePlaces() async {
     DBValues<bool> placeValues =

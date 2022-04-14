@@ -14,11 +14,14 @@ typedef DBValues<Value> = Map<String, Value>;
 
 enum DBMode { testing, release }
 
+/// Abstract class for database. It allows to get protected values in mixins
 abstract class IDatabase {
   Future<void> init(DBMode dbMode);
   void clear();
 }
 
+/// Class representing database in whole app.
+/// Class reuses code from mixins to extend functionality of database class
 class MainDatabase extends IDatabase
     with
         AppConfigartionMethods,
