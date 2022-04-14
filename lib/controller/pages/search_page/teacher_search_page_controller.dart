@@ -10,16 +10,25 @@ class TeacherSearchPageController extends BaseSearchController {
   List<Teacher> get teachers => _foundTeachers;
   List<Student> get students => _foundStudents;
 
-  /// Update teacher list using new phrase from search bar
-  Future<void> updateTeachers() async {
+  @override
+  Future<void> updateFoundList(PersonType type) async {
     _foundTeachers.clear();
+    _foundStudents.clear();
+
+    if (type == PersonType.teachers || type == PersonType.all) {
+      await _updateTeachers();
+    }
+    if (type == PersonType.students || type == PersonType.all) {
+      await _updateStudents();
+    }
+  }
+
+  Future<void> _updateTeachers() async {
     final teachers = await dataManager.database.getTeachersByNamePart(phrase);
     _foundTeachers.addAll(teachers);
   }
 
-  /// Update student list using new phrase from search bar
-  Future<void> updateStudents() async {
-    _foundStudents.clear();
+  Future<void> _updateStudents() async {
     final students = await dataManager.database.getStudentsByNamePart(phrase);
     _foundStudents.addAll(students);
   }

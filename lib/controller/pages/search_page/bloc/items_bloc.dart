@@ -1,5 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:teachent_app/controller/pages/search_page/teacher_search_page_controller.dart';
+import 'package:teachent_app/controller/controller.dart';
 
 /// Event for ItemsBloc
 abstract class BaseItemsSearchEvent {}
@@ -7,8 +7,19 @@ abstract class BaseItemsSearchEvent {}
 /// Event to refresh found teachers and students lists
 class RefreshItemsEvent extends BaseItemsSearchEvent {
   final String newPhrase;
+  final PersonType personType;
 
-  RefreshItemsEvent(this.newPhrase);
+  RefreshItemsEvent(this.newPhrase, this.personType);
+}
+
+class RefreshTeacherItemsEvent extends BaseItemsSearchEvent {
+  final String newPhrase;
+  final List<String> topicNames;
+  final List<String> toolNames;
+  final List<String> placeNames;
+
+  RefreshTeacherItemsEvent(
+      this.newPhrase, this.topicNames, this.toolNames, this.placeNames);
 }
 
 /// The class inherits from Bloc<Event, State>
@@ -19,7 +30,7 @@ class RefreshItemsEvent extends BaseItemsSearchEvent {
 ///
 /// For more details: https://bloclibrary.dev/#/
 class ItemsBloc extends Bloc<BaseItemsSearchEvent, String> {
-  ItemsBloc(TeacherSearchPageController searchController)
+  ItemsBloc(BaseSearchController searchController)
       : super(searchController.phrase) {
     on<RefreshItemsEvent>(((event, emit) async {
       if (searchController.phrase == event.newPhrase ||
@@ -27,8 +38,18 @@ class ItemsBloc extends Bloc<BaseItemsSearchEvent, String> {
         return;
       }
       searchController.phrase = event.newPhrase;
-      await searchController.updateTeachers();
-      await searchController.updateStudents();
+      await searchController.updateFoundList(event.personType);
+      emit(event.newPhrase);
+    }));
+
+    on<RefreshTeacherItemsEvent>(((event, emit) async {
+      if (searchController.phrase == event.newPhrase ||
+          event.newPhrase.isEmpty) {
+        return;
+      }
+      searchController.phrase = event.newPhrase;
+      await searchController.updateFoundTeacherList(
+          event.topicNames, event.toolNames, event.placeNames);
       emit(event.newPhrase);
     }));
   }

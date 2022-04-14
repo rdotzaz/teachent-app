@@ -75,8 +75,21 @@ mixin TeacherDatabaseMethods {
         lessonDateList);
   }
 
-  void _addTeacherToList(String login, Map values, List<Teacher> teachers) {
-    teachers.add(Teacher.onlyKeyName(login, values['name'] ?? ''));
+  Teacher _addTeacherToList(String login, Map values) {
+    final topics = _getMapFromField(values, 'topics');
+    final topicList =
+        topics.entries.map((topic) => Topic(topic.key, true)).toList();
+
+    final tools = _getMapFromField(values, 'tools');
+    final toolList =
+        tools.entries.map((tool) => Tool(tool.key.toString(), true)).toList();
+
+    final places = _getMapFromField(values, 'places');
+    final placeList = places.entries
+        .map((place) => Place(place.key.toString(), true))
+        .toList();
+    return Teacher.onlyKeyName(login, values['name'] ?? '', topicList,
+      toolList, placeList);
   }
 
   Future<List<Teacher>> getTeachersByNamePart(String name) async {
@@ -84,8 +97,34 @@ mixin TeacherDatabaseMethods {
         await FirebaseRealTimeDatabaseAdapter.getObjectsByName(
             DatabaseObjectName.teachers, 'name', name);
     final teachers = <Teacher>[];
-    teacherValues.forEach((login, teacherValue) => _addTeacherToList(
-        login, teacherValue as Map<dynamic, dynamic>, teachers));
+    teacherValues.forEach((login, teacherValue) => teachers.add(
+        _addTeacherToList(login, teacherValue as Map<dynamic, dynamic>)));
     return teachers;
+  }
+
+  Future<List<Teacher>> getTeachersByParams(
+    String name,
+    List<String> topics, List<String> tools, List<String> places) async {
+      final teachers = await getTeachersByNamePart(name);
+
+      print(teachers.map((teacher) => teacher.name).toList());
+      final filteredTeachers = <Teacher>[];
+      for (final teacher in teachers) {
+        final toolSet = teacher.tools.map((tool) => tool.name).toSet();
+        final topicSet = teacher.topics.map((topic) => topic.name).toSet();
+        final placeSet = teacher.places.map((place) => place.name).toSet();
+
+        final commonTools = toolSet.intersection(tools.toSet());
+        final commonTopics = topicSet.intersection(topics.toSet());
+        final commonPlaces = placeSet.intersection(places.toSet());
+
+        print('Cond 1: ${toolSet.length}, ${topicSet.length}, ${placeSet.length}');
+        if ((commonTools.length > 0
+            || commonTopics.length > 0 || commonPlaces.length > 0)
+            || (topics.isEmpty && tools.isEmpty && places.isEmpty)) {
+          filteredTeachers.add(teacher);
+        }
+      }
+      return filteredTeachers;
   }
 }

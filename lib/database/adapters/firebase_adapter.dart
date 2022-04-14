@@ -40,27 +40,23 @@ class FirebaseRealTimeDatabaseAdapter {
     }
   }
 
-  static Future<String> findUserByLoginAndCheckPassword(
+  static Future<Map> findUserByLoginAndCheckPassword(
       String login, String password) async {
-    //FirebaseDatabase.instance.setLoggingEnabled(true);
-    print('[FirebaseAdapter] findUserByLogin');
     var databaseReference =
         FirebaseDatabase.instance.ref('${DatabaseObjectName.users}/$login');
 
-    print('Before once. ${databaseReference.key}');
     var event = await databaseReference.once();
-    print('After once');
     var isKeyExists = event.snapshot.exists;
     var foundEventValue = event.snapshot.value;
 
     if (!isKeyExists) {
       print('[FirebaseAdapter] No login found');
-      return DatabaseConsts.emptyKey;
+      return {};
     }
 
     if (foundEventValue == null) {
       print('[FirebaseAdapter] No body found');
-      return DatabaseConsts.emptyKey;
+      return {};
     }
 
     String encryptedPassword =
@@ -68,15 +64,16 @@ class FirebaseRealTimeDatabaseAdapter {
 
     if (encryptedPassword == DatabaseConsts.emptyField) {
       print('[FirebaseAdapter] No password found');
-      return DatabaseConsts.emptyKey;
+      return {};
     }
 
     var comparsionResult = isPasswordCorrect(password, encryptedPassword);
 
     if (!comparsionResult) {
-      return DatabaseConsts.emptyKey;
+      print('[FirebaseAdapter] Password does not match');
+      return {};
     }
-    return login;
+    return foundEventValue;
   }
 
   static Future<DBValues<bool>> getAvailableObjects(

@@ -18,9 +18,8 @@ class Student extends DatabaseObject {
       this.name, this.educationLevel, this.requests, this.lessonDates);
 
   // TODO - Remove this
-  Student.onlyKeyName(this.userId, this.name)
-      : educationLevel = EducationLevel('', true),
-        requests = [],
+  Student.onlyKeyName(this.userId, this.name, this.educationLevel)
+      : requests = [],
         lessonDates = [];
 
   @override
@@ -33,7 +32,7 @@ class Student extends DatabaseObject {
   Map<String, dynamic> toMap() {
     return {
       'name': name,
-      'educationLevel': educationLevel,
+      'educationLevel': educationLevel.name,
       'requests': {for (var request in requests) request: true},
       'lessonDates': {for (var date in lessonDates) date: true}
     };

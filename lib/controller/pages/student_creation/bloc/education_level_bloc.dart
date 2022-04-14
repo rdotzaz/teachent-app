@@ -25,6 +25,7 @@ class EducationLevelBloc
       : super(null) {
     on<ToggleEducationLevelEvent>((event, emit) {
       var levels = studentController.educationLevels;
+      studentController.educationLevel = levels[event.index].name;
       emit(levels[event.index]);
     });
   }

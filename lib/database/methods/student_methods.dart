@@ -54,7 +54,8 @@ mixin StudentDatabaseMethods {
   }
 
   void _addStudentToList(String login, Map values, List<Student> students) {
-    students.add(Student.onlyKeyName(login, values['name'] ?? ''));
+    students.add(Student.onlyKeyName(login, values['name'] ?? '',
+        EducationLevel(values['educationLevel'] ?? '', true)));
   }
 
   Future<List<Student>> getStudentsByNamePart(String name) async {
