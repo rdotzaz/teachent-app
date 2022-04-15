@@ -6,6 +6,7 @@ import 'package:teachent_app/model/db_objects/lesson_date.dart';
 import 'package:teachent_app/model/db_objects/student.dart';
 import 'package:teachent_app/model/db_objects/teacher.dart';
 import 'package:teachent_app/model/objects/tool.dart';
+import 'package:teachent_app/model/objects/topic.dart';
 import 'package:teachent_app/view/pages/search_page/student_search_page.dart';
 import 'package:teachent_app/view/pages/settings_page/settings_page.dart';
 import 'package:teachent_app/view/pages/teacher_profile_page/teacher_profile_page.dart';
@@ -19,12 +20,20 @@ class StudentHomePageController extends BaseController {
   // TODO -- Only for testing
   final teachers = [
     Teacher(
-        'kowalski', 'Jan Kowalski', '', [], [], [], -1, [], ['abcde', 'pohoo'])
+        'kowalski',
+        'Jan Kowalski',
+        '',
+        [Topic('Math', true)],
+        [Tool('Google Meet', true), Tool('Discord', true)],
+        [],
+        3,
+        [],
+        ['abcde', 'pohoo'])
   ];
 
   final lessonDate1 = LessonDate('abcde', 'kowalski', 'john', false, 'Monday',
       '12:00+60', true, 50, [Tool('Google Meet', true)], []);
-  final lessonDate2 = LessonDate('pohoo', 'kowalski', 'john', false, 'Thursday',
+  final lessonDate2 = LessonDate('pohoo', 'kowalski', '', true, 'Thursday',
       '16:00+60', true, 50, [Tool('Google Meet', true)], []);
 
   final lessons = [
@@ -70,7 +79,7 @@ class StudentHomePageController extends BaseController {
   }
 
   void goToTeacherProfile(BuildContext context, int index) {
-    Navigator.of(context)
-        .push(MaterialPageRoute(builder: (_) => TeacherProfilePage(teachers[index], userId)));
+    Navigator.of(context).push(MaterialPageRoute(
+        builder: (_) => TeacherProfilePage(teachers[index], userId)));
   }
 }

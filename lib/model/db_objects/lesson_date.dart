@@ -33,6 +33,26 @@ class LessonDate extends DatabaseObject {
       this.hourTime, this.isCycled, this.price, this.tools, this.places)
       : lessonDateId = DatabaseConsts.emptyKey;
 
+  factory LessonDate.fromMap(KeyId lessonDateId, Map<dynamic, dynamic> values) {
+    return LessonDate(
+        lessonDateId,
+        values['teacherId'] ?? '',
+        values['studentId'] ?? '',
+        values['isFree'] ?? true,
+        values['weekDay'] ?? '',
+        values['hourTime'] ?? '',
+        values['isCycled'] ?? false,
+        values['price'] ?? '',
+        (values['tools'] as Map<dynamic, dynamic>)
+            .entries
+            .map((t) => Tool(t.key, true))
+            .toList(),
+        (values['places'] as Map<dynamic, dynamic>)
+            .entries
+            .map((p) => Place(p.key, true))
+            .toList());
+  }
+
   @override
   String get collectionName => DatabaseObjectName.lessonDates;
 
@@ -41,7 +61,16 @@ class LessonDate extends DatabaseObject {
 
   @override
   Map<String, dynamic> toMap() {
-    final map = <String, String>{};
-    return map;
+    return {
+      'teacherId': teacherId,
+      'studentId': studentId,
+      'isFree': isFree,
+      'weekDay': weekday,
+      'hourTime': hourTime,
+      'isCycled': isCycled,
+      'price': price,
+      'tools': {for (final tool in tools) tool.name: true},
+      'places': {for (final place in places) place.name: true}
+    };
   }
 }
