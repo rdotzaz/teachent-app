@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:teachent_app/controller/pages/settings_page/settings_page_controller.dart';
 import 'package:teachent_app/model/db_objects/db_object.dart';
+import 'package:teachent_app/view/widgets/custom_button.dart';
 
 class SettingsPage extends StatefulWidget {
   final KeyId userId;
@@ -52,8 +53,8 @@ class _SettingsPageState extends State<SettingsPage> {
         child: const Padding(
             padding: EdgeInsets.all(18.0),
             child: Icon(
-            Icons.arrow_back,
-            color: Colors.black,
+              Icons.arrow_back,
+              color: Colors.black,
             ),
         ),
     );
@@ -62,29 +63,63 @@ class _SettingsPageState extends State<SettingsPage> {
   Widget body() {
       return FutureBuilder(
           future: _settingsPageController.init(),
-          builder: (_, snapshot) {
+          builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
               return const CircularProgressIndicator();
             } else if (snapshot.connectionState == ConnectionState.done) {
-              return homeWidget();
+              return homeWidget(context);
             }
             return errorWidget(snapshot.error.toString());
           }
       );
   }
 
-  Widget homeWidget() {
-      return Column(
+  Widget homeWidget(BuildContext context) {
+      return SingleChildScrollView(
+        child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
               Padding(
                   padding: const EdgeInsets.all(15),
                   child: Text(
-                      _settingsPageController.userId,
+                      'Profile',
+                      style: TextStyle(color: Colors.black, fontSize: 14)
+                  )
+              ),
+              Padding(
+                  padding: const EdgeInsets.all(15),
+                  child: Text(
+                      'Login: ${_settingsPageController.userId}',
+                      style: TextStyle(color: Colors.black, fontSize: 18)
+                  )
+              ),
+              Padding(
+                  padding: const EdgeInsets.all(15),
+                  child: Text(
+                      'Name: ${_settingsPageController.name}',
+                      style: TextStyle(color: Colors.black, fontSize: 18)
+                  )
+              ),
+              Padding(
+                  padding: const EdgeInsets.all(15),
+                  child: CustomButton(
+                    text: 'Edit profile',
+                    fontSize: 18,
+                    onPressed: () {}
+                  )
+              ),
+              Padding(
+                  padding: const EdgeInsets.all(15),
+                  child: CustomButton(
+                    text: 'About app',
+                    fontSize: 18,
+                    onPressed: () {
+                      _settingsPageController.aboutDialog(context);
+                    }
                   )
               ),
           ]
-      );
+      ));
   }
 
   Widget errorWidget(String errorMessage) {

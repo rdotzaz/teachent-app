@@ -21,4 +21,10 @@ class SettingsPageController extends BaseController {
         }
         user = possibleUser;
     }
+
+    String get name => '';
+
+    void aboutDialog(BuildContext context) {
+        showAboutDialog(context: context);
+    }
 }
