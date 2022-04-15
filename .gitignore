@@ -58,5 +58,4 @@ firebase-debug.json
 database.rules.json
 database-debug.log
 .firebaserc
-lib/common/firebase_options.dart
 google-services.json
