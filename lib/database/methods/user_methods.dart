@@ -26,6 +26,18 @@ mixin UserDatabaseMethods {
     return;
   }
 
+  Future<User?> getUser(KeyId userId) async {
+    final userValues = await FirebaseRealTimeDatabaseAdapter.getObject(
+      DatabaseObjectName.users, userId);
+    
+    if (userValues.isEmpty) {
+      return null;
+    }
+
+    userValues['login'] = userId;
+    return User.fromMap(userValues as Map<String, dynamic>);
+  }
+
   void update(KeyId userId) {}
 
   void deleteUser(KeyId userId) {}
