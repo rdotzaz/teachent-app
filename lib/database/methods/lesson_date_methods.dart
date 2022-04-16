@@ -17,4 +17,13 @@ mixin LessonDateDatabaseMethods {
     }
     return dates;
   }
+
+  Future<void> addLessonDate(LessonDate lessonDate) async {
+    final wasAdded = await FirebaseRealTimeDatabaseAdapter.addDatabaseObjectWithNewKey(
+        DatabaseObjectName.lessonDates, lessonDate.toMap());
+    
+    if (wasAdded) {
+      print('LessonDate has been added');
+    }
+  }
 }

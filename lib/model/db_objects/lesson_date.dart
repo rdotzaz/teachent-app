@@ -29,6 +29,13 @@ class LessonDate extends DatabaseObject {
       this.tools,
       this.places);
 
+  LessonDate.init(this.teacherId, this.weekday, this.hourTime, this.isCycled,
+      this.price, this.tools, this.places)
+      : lessonDateId = DatabaseConsts.emptyKey,
+        studentId = DatabaseConsts.emptyKey,
+        isFree = true;
+
+
   LessonDate.noKey(this.teacherId, this.studentId, this.isFree, this.weekday,
       this.hourTime, this.isCycled, this.price, this.tools, this.places)
       : lessonDateId = DatabaseConsts.emptyKey;

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:teachent_app/controller/pages/teacher_home_page/teacher_home_page_controller.dart';
 import 'package:teachent_app/model/db_objects/db_object.dart';
+import 'package:teachent_app/view/widgets/custom_button.dart';
 import 'package:teachent_app/view/widgets/single_card.dart';
 
 class TeacherHomePage extends StatefulWidget {
@@ -17,7 +18,11 @@ class _TeacherHomePageState extends State<TeacherHomePage> {
   @override
   void initState() {
     super.initState();
-    _teacherHomePageController = TeacherHomePageController(widget.userId);
+    _teacherHomePageController = TeacherHomePageController(widget.userId, refresh);
+  }
+
+  void refresh() {
+    setState(() {});
   }
 
   @override
@@ -30,9 +35,9 @@ class _TeacherHomePageState extends State<TeacherHomePage> {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const CircularProgressIndicator();
             } else if (snapshot.connectionState == ConnectionState.done) {
-              return homeWidget(context);
+              return _homeWidget(context);
             }
-            return errorWidget(snapshot.error.toString());
+            return _errorWidget(snapshot.error.toString());
           }),
       floatingActionButton: FloatingActionButton.extended(
           backgroundColor: Colors.blue,
@@ -44,11 +49,11 @@ class _TeacherHomePageState extends State<TeacherHomePage> {
     );
   }
 
-  Widget appBar(BuildContext context) {
+  Widget _appBar(BuildContext context) {
     return SliverAppBar(
       expandedHeight: 150,
       backgroundColor: Colors.transparent,
-      actions: [settings(context)],
+      actions: [_settings(context)],
       flexibleSpace: FlexibleSpaceBar(
           title: Text('Hi\n${_teacherHomePageController.teacherName}',
               style: const TextStyle(color: Colors.black)),
@@ -56,7 +61,7 @@ class _TeacherHomePageState extends State<TeacherHomePage> {
     );
   }
 
-  Widget settings(BuildContext context) {
+  Widget _settings(BuildContext context) {
     return GestureDetector(
       onTap: () => _teacherHomePageController.goToSettingsPage(context),
       child: const Padding(
@@ -69,21 +74,21 @@ class _TeacherHomePageState extends State<TeacherHomePage> {
     );
   }
 
-  Widget homeWidget(BuildContext context) {
+  Widget _homeWidget(BuildContext context) {
     return CustomScrollView(slivers: [
-      appBar(context),
+      _appBar(context),
       SliverList(
           delegate: SliverChildListDelegate([
-        searchBarWidget(),
-        nextLessonsWidget(),
-        studentsWidget(),
-        requestsWidget(),
+        _searchBarWidget(),
+        _nextLessonsWidget(),
+        _studentsWidget(),
+        _lessonDateWidget(context),
         //reportsWidget()
       ]))
     ]);
   }
 
-  Widget searchBarWidget() {
+  Widget _searchBarWidget() {
     return GestureDetector(
         onTap: () => _teacherHomePageController.goToSearchPage(context),
         child: Hero(
@@ -116,7 +121,7 @@ class _TeacherHomePageState extends State<TeacherHomePage> {
             )));
   }
 
-  Widget nextLessonsWidget() {
+  Widget _nextLessonsWidget() {
     return SingleCardListWidget(
       backgroundColor: Colors.white,
       shadowColor: Colors.grey,
@@ -142,7 +147,7 @@ class _TeacherHomePageState extends State<TeacherHomePage> {
     );
   }
 
-  Widget studentsWidget() {
+  Widget _studentsWidget() {
     return SingleCardListWidget(
       backgroundColor: Colors.white,
       shadowColor: Colors.grey,
@@ -174,25 +179,38 @@ class _TeacherHomePageState extends State<TeacherHomePage> {
     );
   }
 
-  Widget requestsWidget() {
-    return SingleCardListWidget(
-      backgroundColor: Colors.white,
-      shadowColor: Colors.grey,
-      title: 'Requests',
-      titleColor: Colors.black,
-      boxHeight: 300.0,
-      isNotEmptyCondition: _teacherHomePageController.areRequests,
-      listLength: _teacherHomePageController.requests.length,
-      elementBackgroundColor: Colors.blue,
-      emptyInfo: 'No requests',
-      emptyIcon: Icons.free_breakfast,
-      elementBuilder: (context, index) {
-        return Container();
-      },
-    );
+  Widget _lessonDateWidget(BuildContext context) {
+    return SingleCardWidget(
+        titleColor: Colors.black,
+        backgroundColor: Colors.white,
+        startAlignment: false,
+        rightButton: CustomButton(
+          text: 'Add',
+          fontSize: 18,
+          onPressed: () => _teacherHomePageController.goToLessonPageCreationPage(context),
+          buttonColor: Colors.blue
+        ),
+        title: 'Your lesson dates',
+        bodyWidget: GestureDetector(
+            onTap: () {},
+            child:
+                Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+              Text(
+                  'Number of dates: ${_teacherHomePageController.lessonDates.length}',
+                  style: const TextStyle(color: Colors.black, fontSize: 18)),
+              const SizedBox(height: 20),
+              Text('Free dates: ${_teacherHomePageController.freeDates}',
+                  style: const TextStyle(color: Colors.black, fontSize: 18)),
+              const SizedBox(height: 20),
+              CustomButton(
+                  text: 'Check lesson dates',
+                  buttonColor: Colors.blue,
+                  fontSize: 18,
+                  onPressed: () {})
+            ])));
   }
 
-  Widget errorWidget(String errorMessage) {
+  Widget _errorWidget(String errorMessage) {
     return Container(
       color: Colors.red,
       child: Column(children: [

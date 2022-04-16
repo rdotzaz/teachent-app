@@ -99,14 +99,14 @@ class FirebaseRealTimeDatabaseAdapter {
   }
 
   static Future<bool> addDatabaseObject(
-      String collectionName, String keyId, DBValues userValues) async {
+      String collectionName, String keyId, DBValues values) async {
     DatabaseReference databaseReference =
         FirebaseDatabase.instance.ref().child(collectionName);
 
-    var possibleExistedKeyRef = databaseReference.child(keyId);
+    final possibleExistedKeyRef = databaseReference.child(keyId);
 
-    var event = await possibleExistedKeyRef.once();
-    var isKeyExists = event.snapshot.exists;
+    final event = await possibleExistedKeyRef.once();
+    final isKeyExists = event.snapshot.exists;
 
     if (isKeyExists) {
       print('[FirebaseAdapter] User is already exists');
@@ -114,7 +114,21 @@ class FirebaseRealTimeDatabaseAdapter {
     }
 
     /// [TODO] RESOLVE PRINTED EXCEPTION HERE
-    await databaseReference.update({keyId: userValues});
+    await databaseReference.update({keyId: values});
+    return true;
+  }
+
+  static Future<bool> addDatabaseObjectWithNewKey(
+      String collectionName, DBValues values) async {
+    DatabaseReference databaseReference =
+        FirebaseDatabase.instance.ref().child(collectionName);
+    
+    final newKey = await databaseReference.push().key;
+    if (newKey == null) {
+      return false;
+    }
+    await databaseReference.child(newKey).update(values);
+
     return true;
   }
 

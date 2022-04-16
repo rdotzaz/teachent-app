@@ -12,7 +12,6 @@ mixin TeacherDatabaseMethods {
     print('Teacher');
     final wasAdded = await FirebaseRealTimeDatabaseAdapter.addDatabaseObject(
         DatabaseObjectName.teachers, teacher.key, teacher.toMap());
-    return;
   }
 
   void update(KeyId teacherId) {}

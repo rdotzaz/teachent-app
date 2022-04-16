@@ -3,10 +3,12 @@ import 'package:teachent_app/controller/controller.dart';
 import 'package:teachent_app/model/db_objects/db_object.dart';
 import 'package:teachent_app/model/db_objects/lesson.dart';
 import 'package:teachent_app/model/db_objects/lesson_date.dart';
+import 'package:teachent_app/model/db_objects/request.dart';
 import 'package:teachent_app/model/db_objects/student.dart';
 import 'package:teachent_app/model/db_objects/teacher.dart';
 import 'package:teachent_app/model/objects/education_level.dart';
 import 'package:teachent_app/model/objects/tool.dart';
+import 'package:teachent_app/view/pages/lesson_date_creation_page/lesson_date_creation_page.dart';
 import 'package:teachent_app/view/pages/search_page/teacher_search_page.dart';
 import 'package:teachent_app/view/pages/settings_page/settings_page.dart';
 
@@ -40,11 +42,13 @@ class TeacherHomePageController extends BaseController {
     Lesson('pohoo', 'kowalski', 'john', '07-04-2022', true, false, [])
   ];
 
-  final requests = [];
+  final requests = <Request>[];
+  final lessonDates = <LessonDate>[];
 
   // ----------------------------------------------------------------------
 
-  TeacherHomePageController(this.userId);
+  void Function() refresh;
+  TeacherHomePageController(this.userId, this.refresh);
 
   @override
   Future<void> init() async {
@@ -63,6 +67,7 @@ class TeacherHomePageController extends BaseController {
   bool get areLessons => lessons.isNotEmpty;
   bool get areStudents => students.isNotEmpty;
   bool get areRequests => requests.isNotEmpty;
+  int get freeDates => lessonDates.length;
   bool get areReports => false;
 
   String getStudentName(String studentId) {
@@ -79,5 +84,13 @@ class TeacherHomePageController extends BaseController {
   void goToSettingsPage(BuildContext context) {
     Navigator.of(context)
         .push(MaterialPageRoute(builder: (_) => SettingsPage(userId: userId)));
+  }
+
+  Future<void> goToLessonPageCreationPage(BuildContext context) async {
+    final wasRequestAdded = await Navigator.of(context)
+        .push(MaterialPageRoute(builder: (_) => LessonDateCreationPage(teacher!)));
+    if (wasRequestAdded != null) {
+      refresh();
+    }
   }
 }
