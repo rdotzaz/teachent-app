@@ -172,11 +172,26 @@ class FirebaseRealTimeDatabaseAdapter {
     return values as Map<dynamic, dynamic>;
   }
 
-  static Future<void> addForeignKey(String collectionName, String personId, String property, String foreginId) async {
+  static Future<void> addForeignKey(String collectionName, String id, String property, String foreginId) async {
     DatabaseReference databaseReference =
-        FirebaseDatabase.instance.ref().child('$collectionName/$personId/$property');
+        FirebaseDatabase.instance.ref().child('$collectionName/$id/$property');
     
     await databaseReference.update({foreginId: true});
+  }
+
+  static Future<String> getForeignKey(String collectionName, String id, String property) async {
+    DatabaseReference databaseReference =
+        FirebaseDatabase.instance.ref().child('$collectionName/$id/$property');
+    
+    final event = await databaseReference.once();
+    final isKeyExists = event.snapshot.exists;
+
+    if (!isKeyExists) {
+      print('[FirebaseAdapter] Foreign key does not exist');
+      return DatabaseConsts.emptyKey;
+    }
+
+    return event.snapshot.value as String;
   }
 
   static void clear() {}

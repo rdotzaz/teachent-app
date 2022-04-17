@@ -4,7 +4,7 @@ import 'package:teachent_app/model/db_objects/db_object.dart';
 import 'package:teachent_app/model/db_objects/lesson.dart';
 
 mixin LessonDatabaseMethods {
-  Future<Iterable<Lesson>> getLessonsByTeacherId(List<KeyId> lessonDateIds) async {
+  Future<Iterable<Lesson>> getLessonsByDates(List<KeyId> lessonDateIds) async {
     final lessons = <Lesson>[];
     for (final lessonDateId in lessonDateIds) {
       final lessonValues = await FirebaseRealTimeDatabaseAdapter.getObject(

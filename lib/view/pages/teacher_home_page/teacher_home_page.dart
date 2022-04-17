@@ -81,8 +81,8 @@ class _TeacherHomePageState extends State<TeacherHomePage> {
           delegate: SliverChildListDelegate([
         _searchBarWidget(),
         _nextLessonsWidget(),
-        _studentsWidget(),
         _lessonDateWidget(context),
+        _studentsWidget(),
         //reportsWidget()
       ]))
     ]);
@@ -122,13 +122,7 @@ class _TeacherHomePageState extends State<TeacherHomePage> {
   }
 
   Widget _nextLessonsWidget() {
-    return FutureBuilder(
-      future: _teacherHomePageController.initLessons(),
-      builder: (_, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-            return const CircularProgressIndicator();
-        } else if (snapshot.connectionState == ConnectionState.done) {
-            return SingleCardListWidget(
+    return SingleCardListWidget(
               backgroundColor: Colors.white,
               shadowColor: Colors.grey,
               title: 'Next lessons',
@@ -151,10 +145,6 @@ class _TeacherHomePageState extends State<TeacherHomePage> {
                 ]);
               },
             );
-        }
-        return _errorWidget(snapshot.error.toString());
-      }
-    );
   }
 
   Widget _studentsWidget() {
@@ -191,33 +181,33 @@ class _TeacherHomePageState extends State<TeacherHomePage> {
 
   Widget _lessonDateWidget(BuildContext context) {
     return SingleCardWidget(
-        titleColor: Colors.black,
-        backgroundColor: Colors.white,
-        startAlignment: false,
-        rightButton: CustomButton(
-          text: 'Add',
-          fontSize: 18,
-          onPressed: () => _teacherHomePageController.goToLessonPageCreationPage(context),
-          buttonColor: Colors.blue
-        ),
-        title: 'Your lesson dates',
-        bodyWidget: GestureDetector(
-            onTap: () {},
-            child:
-                Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-              Text(
-                  'Number of dates: ${_teacherHomePageController.lessonDates.length}',
-                  style: const TextStyle(color: Colors.black, fontSize: 18)),
-              const SizedBox(height: 20),
-              Text('Free dates: ${_teacherHomePageController.freeDates}',
-                  style: const TextStyle(color: Colors.black, fontSize: 18)),
-              const SizedBox(height: 20),
-              CustomButton(
-                  text: 'Check lesson dates',
-                  buttonColor: Colors.blue,
-                  fontSize: 18,
-                  onPressed: () {})
-            ])));
+          titleColor: Colors.black,
+          backgroundColor: Colors.white,
+          startAlignment: false,
+          rightButton: CustomButton(
+            text: 'Add',
+            fontSize: 18,
+            onPressed: () => _teacherHomePageController.goToLessonPageCreationPage(context),
+            buttonColor: Colors.blue
+          ),
+          title: 'Your lesson dates',
+          bodyWidget: GestureDetector(
+              onTap: () {},
+              child:
+                  Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+                Text(
+                    'Number of dates: ${_teacherHomePageController.lessonDates.length}',
+                    style: const TextStyle(color: Colors.black, fontSize: 18)),
+                const SizedBox(height: 20),
+                Text('Free dates: ${_teacherHomePageController.freeDates}',
+                    style: const TextStyle(color: Colors.black, fontSize: 18)),
+                const SizedBox(height: 20),
+                CustomButton(
+                    text: 'Check lesson dates',
+                    buttonColor: Colors.blue,
+                    fontSize: 18,
+                    onPressed: () {})
+              ])));
   }
 
   Widget _errorWidget(String errorMessage) {

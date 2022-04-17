@@ -40,25 +40,22 @@ class LessonDate extends DatabaseObject {
       this.hourTime, this.isCycled, this.price, this.tools, this.places)
       : lessonDateId = DatabaseConsts.emptyKey;
 
-  factory LessonDate.fromMap(KeyId lessonDateId, Map<dynamic, dynamic> values) {
-    return LessonDate(
-        lessonDateId,
-        values['teacherId'] ?? '',
-        values['studentId'] ?? '',
-        values['isFree'] ?? true,
-        values['weekDay'] ?? '',
-        values['hourTime'] ?? '',
-        values['isCycled'] ?? false,
-        values['price'] ?? '',
-        (values['tools'] as Map<dynamic, dynamic>)
+  LessonDate.fromMap(this.lessonDateId, Map<dynamic, dynamic> values) :
+        teacherId = values['teacherId'] ?? '',
+        studentId = values['studentId'] ?? '',
+        isFree = values['isFree'] ?? true,
+        weekday = values['weekDay'] ?? '',
+        hourTime = values['hourTime'] ?? '',
+        isCycled = values['isCycled'] ?? false,
+        price = values['price'] ?? '',
+        tools = DatabaseObject.getMapFromField(values, 'tools')
             .entries
             .map((t) => Tool(t.key, true))
             .toList(),
-        (values['places'] as Map<dynamic, dynamic>)
+        places = DatabaseObject.getMapFromField(values, 'places')
             .entries
             .map((p) => Place(p.key, true))
-            .toList());
-  }
+            .toList();
 
   @override
   String get collectionName => DatabaseObjectName.lessonDates;

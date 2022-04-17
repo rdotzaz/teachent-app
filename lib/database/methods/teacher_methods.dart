@@ -33,45 +33,10 @@ mixin TeacherDatabaseMethods {
     final teacherValues = await FirebaseRealTimeDatabaseAdapter.getObject(
         DatabaseObjectName.teachers, userId);
     if (teacherValues.isEmpty) {
+      print('No teacherValues found');
       return null;
     }
-
-    print('[Teachers methods] Teacher found');
-    final topics = _getMapFromField(teacherValues, 'topics');
-    print('Topics: $topics');
-    final topicList =
-        topics.entries.map((topic) => Topic(topic.key, true)).toList();
-
-    final tools = _getMapFromField(teacherValues, 'tools');
-    print('Tools: $tools');
-    final toolList =
-        tools.entries.map((tool) => Tool(tool.key.toString(), true)).toList();
-
-    final places = _getMapFromField(teacherValues, 'places');
-    print('Places: $places');
-    final placeList = places.entries
-        .map((place) => Place(place.key.toString(), true))
-        .toList();
-
-    final requestIds = _getMapFromField(teacherValues, 'requests');
-    print('Requests: $requestIds');
-    final requestList = requestIds.entries.map((id) => id.toString()).toList();
-
-    final lessonDateIds = _getMapFromField(teacherValues, 'lessonDates');
-    print('Dates: $lessonDateIds');
-    final lessonDateList =
-        lessonDateIds.entries.map((id) => id.toString()).toList();
-
-    return Teacher(
-        userId,
-        teacherValues['name'] ?? '',
-        teacherValues['description'] ?? '',
-        topicList,
-        toolList,
-        placeList,
-        teacherValues['averageRate'] ?? -1,
-        requestList,
-        lessonDateList);
+    return Teacher.fromMap(userId, teacherValues);
   }
 
   Teacher _addTeacherToList(String login, Map values) {
@@ -96,8 +61,10 @@ mixin TeacherDatabaseMethods {
         await FirebaseRealTimeDatabaseAdapter.getObjectsByName(
             DatabaseObjectName.teachers, 'name', name);
     final teachers = <Teacher>[];
-    teacherValues.forEach((login, teacherValue) => teachers
-        .add(_addTeacherToList(login, teacherValue as Map<dynamic, dynamic>)));
+    teacherValues.forEach((login, teacherValue) {
+      final teacher = Teacher.fromMap(login, teacherValue as Map<dynamic, dynamic>);
+      teachers.add(teacher);
+    });
     return teachers;
   }
 

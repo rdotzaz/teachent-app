@@ -14,78 +14,63 @@ import 'package:teachent_app/view/pages/settings_page/settings_page.dart';
 
 class TeacherHomePageController extends BaseController {
   final KeyId userId;
-  late Teacher? teacher;
+  Teacher? teacher;
 
-  // TODO - Remove after testing
-  // ---------------------------------------------------------------------
-  final students = [
-    Student('john', 'John Smith', EducationLevel('high school', true), [],
-        ['abcde']),
-    Student('adam', 'Adam Cooper', EducationLevel('high school', true), [],
-        ['tufjf'])
-  ];
-
-  final lessonDate1 = LessonDate('abcde', 'kowalski', 'john', false, 'Monday',
-      '12:00+60', true, 50, [Tool('Google Meet', true)], []);
-  final lessonDate2 = LessonDate('bgnjd', 'kowalski', '', true, 'Tuesday',
-      '13:00+60', true, 50, [Tool('Google Meet', true)], []);
-  final lessonDate3 = LessonDate('tufjf', 'kowalski', 'adam', false,
-      'Wednesday', '17:00+60', false, 50, [Tool('Microsoft Teams', true)], []);
-  final lessonDate4 = LessonDate('bpgkr', 'kowalski', '', true, 'Friday',
-      '11:00+60', true, 50, [Tool('Google Meet', true)], []);
-  final lessonDate5 = LessonDate('pohoo', 'kowalski', 'john', false, 'Thursday',
-      '16:00+60', true, 50, [Tool('Google Meet', true)], []);
-
-  final lessons = [
-    Lesson('abcde', 'kowalski', 'john', '04-04-2022', true, false, []),
-    Lesson('tufjf', 'kowalski', 'adam', '06-04-2022', true, false, []),
-    Lesson('pohoo', 'kowalski', 'john', '07-04-2022', true, false, [])
-  ];
-
-  final requests = <Request>[];
-  final lessonDates = <LessonDate>[];
-
-  // ----------------------------------------------------------------------
+  final List<Lesson> lessons = [];
+  final List<LessonDate> lessonDates = [];
+  final List<Student> students = [];
+  final List<Request> requests = [];
 
   void Function() refresh;
   TeacherHomePageController(this.userId, this.refresh);
 
   @override
   Future<void> init() async {
+    print('Before getTeacher');
     final possibleTeacher = await dataManager.database.getTeacher(userId);
+    print('After getTeacher');
     if (possibleTeacher == null) {
       // TODO - Raise error
       print('ERROR: Teacher not found');
       return;
     }
-    print('After getTeacher');
     teacher = possibleTeacher;
+
+    await _initLessons();
+    await _initStudents();
+    await _initDates();
   }
 
-  Future<void> initLessons() async {
-    final foundLessons = await dataManager.database.getLessonsByTeacherId(teacher?.lessonDates ?? []);
+  Future<void> _initLessons() async {
+    final foundLessons = await dataManager.database.getLessonsByDates(teacher?.lessonDates ?? []);
     if (foundLessons.isEmpty) {
       print('No lessons found');
     }
     lessons.addAll(foundLessons);
   }
 
-  Future<void> initStudents() async {
-    /*
-    final foundStudents = await dataManager.database.getStudentsByTeacherId(teacher?.userId ?? '');
+  Future<void> _initStudents() async {
+    final foundStudents = await dataManager.database.getStudentsByDates(teacher?.lessonDates ?? []);
     if (foundStudents.isEmpty) {
-      print('No lessons found');
+      print('No students found');
     }
     students.addAll(foundStudents);
-    */
+  }
+
+  Future<void> _initDates() async {
+    final foundLessonDates = await dataManager.database.getLessonDates(teacher?.lessonDates ?? []);
+    if (foundLessonDates.isEmpty) {
+      print('No dates found');
+    }
+    lessonDates.addAll(foundLessonDates);
   }
 
   String get searchName => 'Search students';
   String get teacherName => teacher?.name ?? '';
-  bool get areLessons => false;//lessons.isNotEmpty;
+  bool get areLessons => lessons.isNotEmpty;
   bool get areStudents => students.isNotEmpty;
   bool get areRequests => requests.isNotEmpty;
-  int get freeDates => lessonDates.length;
+  int get freeDates => lessonDates.where((d) => d.isFree).length;
   bool get areReports => false;
 
   String getStudentName(String studentId) {

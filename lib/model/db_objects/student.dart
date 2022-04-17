@@ -21,6 +21,18 @@ class Student extends DatabaseObject {
   Student.onlyKeyName(this.userId, this.name, this.educationLevel)
       : requests = [],
         lessonDates = [];
+  
+  Student.fromMap(this.userId, Map<dynamic, dynamic> values) :
+        name = values['name'] ?? '',
+        educationLevel = values['educationLevel'] ?? '',
+        requests = DatabaseObject.getMapFromField(values, 'requests')
+            .entries
+            .map((id) => id.key.toString())
+            .toList(),
+        lessonDates = DatabaseObject.getMapFromField(values, 'lessonDates')
+            .entries
+            .map((id) => id.key.toString())
+            .toList();
 
   @override
   String get collectionName => DatabaseObjectName.students;
