@@ -17,6 +17,20 @@ class Lesson extends DatabaseObject {
   Lesson.noKey(this.teacherId, this.studentId, this.date, this.isPlanned,
       this.isFinished, this.reports)
       : lessonDateId = DatabaseConsts.emptyKey;
+  
+  factory Lesson.fromMap(KeyId lessonDateId, Map<dynamic, dynamic> values) {
+    return Lesson(
+        lessonDateId,
+        values['teacherId'] ?? '',
+        values['studentId'] ?? '',
+        values['date'] ?? '',
+        values['isPlanned'] ?? false,
+        values['isFinished'] ?? false,
+        (values['reports'] as Map<dynamic, dynamic>)
+            .entries
+            .map((r) => r.key as String)
+            .toList());
+  }
 
   @override
   String get collectionName => DatabaseObjectName.lessons;

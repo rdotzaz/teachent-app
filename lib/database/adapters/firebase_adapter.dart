@@ -118,18 +118,18 @@ class FirebaseRealTimeDatabaseAdapter {
     return true;
   }
 
-  static Future<bool> addDatabaseObjectWithNewKey(
+  static Future<String> addDatabaseObjectWithNewKey(
       String collectionName, DBValues values) async {
     DatabaseReference databaseReference =
         FirebaseDatabase.instance.ref().child(collectionName);
     
     final newKey = await databaseReference.push().key;
     if (newKey == null) {
-      return false;
+      return DatabaseConsts.emptyKey;
     }
     await databaseReference.child(newKey).update(values);
 
-    return true;
+    return newKey;
   }
 
   static Future<void> addObjects(String collectionName, DBValues values) async {
@@ -170,6 +170,13 @@ class FirebaseRealTimeDatabaseAdapter {
       return {};
     }
     return values as Map<dynamic, dynamic>;
+  }
+
+  static Future<void> addForeignKey(String collectionName, String personId, String property, String foreginId) async {
+    DatabaseReference databaseReference =
+        FirebaseDatabase.instance.ref().child('$collectionName/$personId/$property');
+    
+    await databaseReference.update({foreginId: true});
   }
 
   static void clear() {}

@@ -62,9 +62,27 @@ class TeacherHomePageController extends BaseController {
     teacher = possibleTeacher;
   }
 
+  Future<void> initLessons() async {
+    final foundLessons = await dataManager.database.getLessonsByTeacherId(teacher?.lessonDates ?? []);
+    if (foundLessons.isEmpty) {
+      print('No lessons found');
+    }
+    lessons.addAll(foundLessons);
+  }
+
+  Future<void> initStudents() async {
+    /*
+    final foundStudents = await dataManager.database.getStudentsByTeacherId(teacher?.userId ?? '');
+    if (foundStudents.isEmpty) {
+      print('No lessons found');
+    }
+    students.addAll(foundStudents);
+    */
+  }
+
   String get searchName => 'Search students';
   String get teacherName => teacher?.name ?? '';
-  bool get areLessons => lessons.isNotEmpty;
+  bool get areLessons => false;//lessons.isNotEmpty;
   bool get areStudents => students.isNotEmpty;
   bool get areRequests => requests.isNotEmpty;
   int get freeDates => lessonDates.length;

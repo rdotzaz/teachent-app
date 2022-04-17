@@ -163,7 +163,8 @@ class LessonDateCreationPageController extends BaseController {
             places
         );
 
-        await dataManager.database.addLessonDate(lessonDate);
+        final lessonDateKey = await dataManager.database.addLessonDate(lessonDate);
+        await dataManager.database.addLessonDateKeyToTeacher(teacher.userId, lessonDateKey);
 
         Navigator.of(context).pop(true);
     }

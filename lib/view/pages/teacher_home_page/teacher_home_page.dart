@@ -122,28 +122,38 @@ class _TeacherHomePageState extends State<TeacherHomePage> {
   }
 
   Widget _nextLessonsWidget() {
-    return SingleCardListWidget(
-      backgroundColor: Colors.white,
-      shadowColor: Colors.grey,
-      title: 'Next lessons',
-      titleColor: Colors.black,
-      boxHeight: 200.0,
-      isNotEmptyCondition: _teacherHomePageController.areLessons,
-      listLength: _teacherHomePageController.lessons.length,
-      elementBackgroundColor: Colors.blue,
-      emptyInfo: 'No lessons',
-      emptyIcon: Icons.free_breakfast,
-      elementBuilder: (context, index) {
-        return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          Text(_teacherHomePageController.lessons[index].date,
-              style: const TextStyle(fontSize: 20, color: Colors.white)),
-          const SizedBox(height: 10),
-          Text(
-              _teacherHomePageController.getStudentName(
-                  _teacherHomePageController.lessons[index].studentId),
-              style: const TextStyle(fontSize: 14, color: Colors.white)),
-        ]);
-      },
+    return FutureBuilder(
+      future: _teacherHomePageController.initLessons(),
+      builder: (_, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+            return const CircularProgressIndicator();
+        } else if (snapshot.connectionState == ConnectionState.done) {
+            return SingleCardListWidget(
+              backgroundColor: Colors.white,
+              shadowColor: Colors.grey,
+              title: 'Next lessons',
+              titleColor: Colors.black,
+              boxHeight: 200.0,
+              isNotEmptyCondition: _teacherHomePageController.areLessons,
+              listLength: _teacherHomePageController.lessons.length,
+              elementBackgroundColor: Colors.blue,
+              emptyInfo: 'No lessons',
+              emptyIcon: Icons.free_breakfast,
+              elementBuilder: (context, index) {
+                return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                  Text(_teacherHomePageController.lessons[index].date,
+                      style: const TextStyle(fontSize: 20, color: Colors.white)),
+                  const SizedBox(height: 10),
+                  Text(
+                      _teacherHomePageController.getStudentName(
+                          _teacherHomePageController.lessons[index].studentId),
+                      style: const TextStyle(fontSize: 14, color: Colors.white)),
+                ]);
+              },
+            );
+        }
+        return _errorWidget(snapshot.error.toString());
+      }
     );
   }
 

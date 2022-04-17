@@ -18,12 +18,13 @@ mixin LessonDateDatabaseMethods {
     return dates;
   }
 
-  Future<void> addLessonDate(LessonDate lessonDate) async {
-    final wasAdded = await FirebaseRealTimeDatabaseAdapter.addDatabaseObjectWithNewKey(
+  Future<KeyId> addLessonDate(LessonDate lessonDate) async {
+    final key = await FirebaseRealTimeDatabaseAdapter.addDatabaseObjectWithNewKey(
         DatabaseObjectName.lessonDates, lessonDate.toMap());
     
-    if (wasAdded) {
+    if (key != null) {
       print('LessonDate has been added');
     }
+    return key;
   }
 }

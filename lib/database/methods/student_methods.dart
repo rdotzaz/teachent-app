@@ -67,4 +67,9 @@ mixin StudentDatabaseMethods {
         login, studentValue as Map<dynamic, dynamic>, students));
     return students;
   }
+
+  Future<void> addLessonDateKeyToStudent(KeyId studentId, KeyId lessonDateId) async {
+    await FirebaseRealTimeDatabaseAdapter.addForeignKey(
+            DatabaseObjectName.students, studentId, DatabaseObjectName.lessonDates, lessonDateId);
+  }
 }
