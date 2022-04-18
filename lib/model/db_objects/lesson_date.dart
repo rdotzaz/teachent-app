@@ -35,13 +35,12 @@ class LessonDate extends DatabaseObject {
         studentId = DatabaseConsts.emptyKey,
         isFree = true;
 
-
   LessonDate.noKey(this.teacherId, this.studentId, this.isFree, this.weekday,
       this.hourTime, this.isCycled, this.price, this.tools, this.places)
       : lessonDateId = DatabaseConsts.emptyKey;
 
-  LessonDate.fromMap(this.lessonDateId, Map<dynamic, dynamic> values) :
-        teacherId = values['teacherId'] ?? '',
+  LessonDate.fromMap(this.lessonDateId, Map<dynamic, dynamic> values)
+      : teacherId = values['teacherId'] ?? '',
         studentId = values['studentId'] ?? '',
         isFree = values['isFree'] ?? true,
         weekday = values['weekDay'] ?? '',

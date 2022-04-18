@@ -13,10 +13,10 @@ class Request extends DatabaseObject {
   Request.noKey(this.lessonDateId, this.studentId, this.status)
       : requestId = DatabaseConsts.emptyKey;
 
-  Request.fromMap(this.requestId, Map<dynamic, dynamic> values) :
-    lessonDateId = values['lessonDateId'] ?? '',
-    studentId = values['studentId'] ?? '',
-    status = values['status'] ?? -1;
+  Request.fromMap(this.requestId, Map<dynamic, dynamic> values)
+      : lessonDateId = values['lessonDateId'] ?? '',
+        studentId = values['studentId'] ?? '',
+        status = values['status'] ?? -1;
 
   @override
   String get collectionName => DatabaseObjectName.requests;

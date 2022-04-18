@@ -21,9 +21,9 @@ class Student extends DatabaseObject {
   Student.onlyKeyName(this.userId, this.name, this.educationLevel)
       : requests = [],
         lessonDates = [];
-  
-  Student.fromMap(this.userId, Map<dynamic, dynamic> values) :
-        name = values['name'] ?? '',
+
+  Student.fromMap(this.userId, Map<dynamic, dynamic> values)
+      : name = values['name'] ?? '',
         educationLevel = EducationLevel(values['educationLevel'] ?? '', true),
         requests = DatabaseObject.getMapFromField(values, 'requests')
             .entries

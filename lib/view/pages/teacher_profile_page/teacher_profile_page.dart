@@ -290,30 +290,33 @@ class TeacherProfilePage extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Container(
-                                padding: const EdgeInsets.all(5),
-                                decoration: BoxDecoration(
-                                    color: Colors.blue,
-                                    borderRadius: BorderRadius.circular(10)),
-                                child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Text(lessonDate.weekday,
-                                          style: const TextStyle(
-                                              fontSize: 18, color: Colors.white)),
-                                      Text(lessonDate.hourTime,
-                                          style: const TextStyle(
-                                              fontSize: 20, color: Colors.white)),
-                                      const SizedBox(height: 20),
-                                      Text('Price: ${lessonDate.price}',
-                                          style: const TextStyle(
-                                              fontSize: 20, color: Colors.white)),
-                                    ])),
+                                  padding: const EdgeInsets.all(5),
+                                  decoration: BoxDecoration(
+                                      color: Colors.blue,
+                                      borderRadius: BorderRadius.circular(10)),
+                                  child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(lessonDate.weekday,
+                                            style: const TextStyle(
+                                                fontSize: 18,
+                                                color: Colors.white)),
+                                        Text(lessonDate.hourTime,
+                                            style: const TextStyle(
+                                                fontSize: 20,
+                                                color: Colors.white)),
+                                        const SizedBox(height: 20),
+                                        Text('Price: ${lessonDate.price}',
+                                            style: const TextStyle(
+                                                fontSize: 20,
+                                                color: Colors.white)),
+                                      ])),
                               CustomButton(
-                                text: 'More',
-                                fontSize: 18,
-                                onPressed: () {},
-                                buttonColor: Colors.blue[600]!
-                              ),
+                                  text: 'More',
+                                  fontSize: 18,
+                                  onPressed: () {},
+                                  buttonColor: Colors.blue[600]!),
                             ]));
                     return Container(
                         padding: const EdgeInsets.all(20),

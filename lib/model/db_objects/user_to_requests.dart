@@ -6,9 +6,7 @@ class UserToRequstsMap extends DatabaseObject {
   final KeyId userId;
   final List<KeyId> requestIds;
 
-  UserToRequstsMap(
-      this.userId,
-      this.requestIds);
+  UserToRequstsMap(this.userId, this.requestIds);
 
   factory UserToRequstsMap.fromMap(KeyId userId, Map<dynamic, dynamic> values) {
     return UserToRequstsMap(

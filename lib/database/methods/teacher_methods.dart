@@ -62,7 +62,8 @@ mixin TeacherDatabaseMethods {
             DatabaseObjectName.teachers, 'name', name);
     final teachers = <Teacher>[];
     teacherValues.forEach((login, teacherValue) {
-      final teacher = Teacher.fromMap(login, teacherValue as Map<dynamic, dynamic>);
+      final teacher =
+          Teacher.fromMap(login, teacherValue as Map<dynamic, dynamic>);
       teachers.add(teacher);
     });
     return teachers;
@@ -95,16 +96,20 @@ mixin TeacherDatabaseMethods {
     return filteredTeachers;
   }
 
-  Future<void> addLessonDateKeyToTeacher(KeyId teacherId, KeyId lessonDateId) async {
+  Future<void> addLessonDateKeyToTeacher(
+      KeyId teacherId, KeyId lessonDateId) async {
     await FirebaseRealTimeDatabaseAdapter.addForeignKey(
-            DatabaseObjectName.teachers, teacherId, DatabaseObjectName.lessonDates, lessonDateId);
+        DatabaseObjectName.teachers,
+        teacherId,
+        DatabaseObjectName.lessonDates,
+        lessonDateId);
   }
 
   Future<List<Teacher>> getTeachersByDates(List<KeyId> lessonDateIds) async {
     final teachers = <Teacher>[];
     for (final lessonDateId in lessonDateIds) {
       final teacherId = await FirebaseRealTimeDatabaseAdapter.getForeignKey(
-        DatabaseObjectName.lessonDates, lessonDateId, 'teacherId');
+          DatabaseObjectName.lessonDates, lessonDateId, 'teacherId');
       if (teacherId == DatabaseConsts.emptyKey) {
         continue;
       }

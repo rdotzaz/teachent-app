@@ -24,34 +24,34 @@ class Teacher extends DatabaseObject {
       this.places, this.averageRate, this.requests, this.lessonDates);
 
   // TODO - Remove this
-  Teacher.onlyKeyName(this.userId, this.name, this.topics, this.tools,
-      this.places)
+  Teacher.onlyKeyName(
+      this.userId, this.name, this.topics, this.tools, this.places)
       : description = '',
         averageRate = -1,
         requests = [],
         lessonDates = [];
-  
-  Teacher.fromMap(this.userId, Map<dynamic, dynamic> values) :
-    name = values['name'] ?? '',
-    description = values['description'] ?? '',
-    topics = DatabaseObject.getMapFromField(values, 'topics')
+
+  Teacher.fromMap(this.userId, Map<dynamic, dynamic> values)
+      : name = values['name'] ?? '',
+        description = values['description'] ?? '',
+        topics = DatabaseObject.getMapFromField(values, 'topics')
             .entries
             .map((t) => Topic(t.key, true))
             .toList(),
-    tools = DatabaseObject.getMapFromField(values, 'tools')
+        tools = DatabaseObject.getMapFromField(values, 'tools')
             .entries
             .map((t) => Tool(t.key, true))
             .toList(),
-    places = DatabaseObject.getMapFromField(values, 'places')
+        places = DatabaseObject.getMapFromField(values, 'places')
             .entries
             .map((p) => Place(p.key, true))
             .toList(),
-    averageRate = values['averageRate'] ?? -1,
-    requests = DatabaseObject.getMapFromField(values, 'requests')
+        averageRate = values['averageRate'] ?? -1,
+        requests = DatabaseObject.getMapFromField(values, 'requests')
             .entries
             .map((id) => id.key.toString())
             .toList(),
-    lessonDates = DatabaseObject.getMapFromField(values, 'lessonDates')
+        lessonDates = DatabaseObject.getMapFromField(values, 'lessonDates')
             .entries
             .map((id) => id.key.toString())
             .toList();

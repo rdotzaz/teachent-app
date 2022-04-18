@@ -40,22 +40,23 @@ class SingleCardWidget extends StatelessWidget {
         margin: const EdgeInsets.all(12),
         padding: const EdgeInsets.all(12),
         child: Column(
-          crossAxisAlignment: startAlignment ? CrossAxisAlignment.start : CrossAxisAlignment.center,
+          crossAxisAlignment: startAlignment
+              ? CrossAxisAlignment.start
+              : CrossAxisAlignment.center,
           children: [
             Row(
-              mainAxisAlignment: rightButton != null ? MainAxisAlignment.spaceBetween : MainAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(15),
-                  child: Text(title,
-                      style: TextStyle(fontSize: 24, color: titleColor))),
-                if (rightButton != null)
+                mainAxisAlignment: rightButton != null
+                    ? MainAxisAlignment.spaceBetween
+                    : MainAxisAlignment.start,
+                children: [
                   Padding(
-                    padding: const EdgeInsets.all(15),
-                    child: rightButton
-                  )
-              ]
-            ),
+                      padding: const EdgeInsets.all(15),
+                      child: Text(title,
+                          style: TextStyle(fontSize: 24, color: titleColor))),
+                  if (rightButton != null)
+                    Padding(
+                        padding: const EdgeInsets.all(15), child: rightButton)
+                ]),
             builderWidget(),
           ],
         ));

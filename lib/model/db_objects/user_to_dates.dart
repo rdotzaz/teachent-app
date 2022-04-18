@@ -6,9 +6,7 @@ class UserToDatesMap extends DatabaseObject {
   final KeyId userId;
   final List<KeyId> lessonDateIds;
 
-  UserToDatesMap(
-      this.userId,
-      this.lessonDateIds);
+  UserToDatesMap(this.userId, this.lessonDateIds);
 
   factory UserToDatesMap.fromMap(KeyId userId, Map<dynamic, dynamic> values) {
     return UserToDatesMap(

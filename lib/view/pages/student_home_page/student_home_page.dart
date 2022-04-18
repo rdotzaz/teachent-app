@@ -149,20 +149,20 @@ class _StudentHomePageState extends State<StudentHomePage> {
       scrollDirection: Axis.horizontal,
       elementBuilder: (context, index) {
         return GestureDetector(
-          onTap: () => _studentHomePageController.goToTeacherProfile(context, index),
-          child: Column(children: [
-            const Padding(
-                padding: EdgeInsets.all(10),
-                child: Icon(
-                  Icons.person,
-                  color: Colors.white,
-                  size: 50,
-                )),
-            const SizedBox(height: 20),
-            Text(_studentHomePageController.teachers[index].name,
-                style: const TextStyle(fontSize: 18, color: Colors.white)),
-          ])
-        );
+            onTap: () =>
+                _studentHomePageController.goToTeacherProfile(context, index),
+            child: Column(children: [
+              const Padding(
+                  padding: EdgeInsets.all(10),
+                  child: Icon(
+                    Icons.person,
+                    color: Colors.white,
+                    size: 50,
+                  )),
+              const SizedBox(height: 20),
+              Text(_studentHomePageController.teachers[index].name,
+                  style: const TextStyle(fontSize: 18, color: Colors.white)),
+            ]));
       },
     );
   }

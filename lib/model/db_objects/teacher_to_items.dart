@@ -12,13 +12,10 @@ class TeacherToItemsMap extends DatabaseObject {
   final List<Tool> tools;
   final List<Place> places;
 
-  TeacherToItemsMap(
-      this.teacherId,
-      this.topics,
-      this.tools,
-      this.places);
+  TeacherToItemsMap(this.teacherId, this.topics, this.tools, this.places);
 
-  factory TeacherToItemsMap.fromMap(KeyId teacherId, Map<dynamic, dynamic> values) {
+  factory TeacherToItemsMap.fromMap(
+      KeyId teacherId, Map<dynamic, dynamic> values) {
     return TeacherToItemsMap(
         teacherId,
         (values['topics'] as Map<dynamic, dynamic>)

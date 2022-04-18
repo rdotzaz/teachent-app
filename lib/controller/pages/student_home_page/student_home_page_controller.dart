@@ -38,7 +38,8 @@ class StudentHomePageController extends BaseController {
   }
 
   Future<void> initLessons() async {
-    final foundLessons = await dataManager.database.getLessonsByDates(student?.lessonDates ?? []);
+    final foundLessons = await dataManager.database
+        .getLessonsByDates(student?.lessonDates ?? []);
     if (foundLessons.isEmpty) {
       print('No lessons found');
     }
@@ -46,7 +47,8 @@ class StudentHomePageController extends BaseController {
   }
 
   Future<void> initTeachers() async {
-    final foundTeachers = await dataManager.database.getTeachersByDates(student?.lessonDates ?? []);
+    final foundTeachers = await dataManager.database
+        .getTeachersByDates(student?.lessonDates ?? []);
     if (foundTeachers.isEmpty) {
       print('No teachers found');
     }
@@ -54,7 +56,8 @@ class StudentHomePageController extends BaseController {
   }
 
   Future<void> initRequests() async {
-    final foundRequests = await dataManager.database.getRequests(student?.requests ?? []);
+    final foundRequests =
+        await dataManager.database.getRequests(student?.requests ?? []);
     if (foundRequests.isEmpty) {
       print('No requests found');
     }
