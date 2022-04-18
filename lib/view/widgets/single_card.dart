@@ -5,18 +5,22 @@ class SingleCardWidget extends StatelessWidget {
   final String title;
   final bool isNotEmptyCondition;
   final Widget bodyWidget;
-  final Widget emptyWidget;
+  final Widget? emptyWidget;
   final Color shadowColor;
   final Color titleColor;
+  final bool startAlignment;
+  final Widget? rightButton;
   const SingleCardWidget(
       {Key? key,
       required this.backgroundColor,
       required this.title,
-      required this.isNotEmptyCondition,
+      this.isNotEmptyCondition = true,
       required this.bodyWidget,
-      required this.emptyWidget,
+      this.emptyWidget,
       this.titleColor = Colors.white,
-      this.shadowColor = Colors.white})
+      this.shadowColor = Colors.white,
+      this.startAlignment = true,
+      this.rightButton})
       : super(key: key);
 
   @override
@@ -36,19 +40,30 @@ class SingleCardWidget extends StatelessWidget {
         margin: const EdgeInsets.all(12),
         padding: const EdgeInsets.all(12),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: startAlignment
+              ? CrossAxisAlignment.start
+              : CrossAxisAlignment.center,
           children: [
-            Padding(
-                padding: const EdgeInsets.all(15),
-                child: Text(title,
-                    style: TextStyle(fontSize: 24, color: titleColor))),
+            Row(
+                mainAxisAlignment: rightButton != null
+                    ? MainAxisAlignment.spaceBetween
+                    : MainAxisAlignment.start,
+                children: [
+                  Padding(
+                      padding: const EdgeInsets.all(15),
+                      child: Text(title,
+                          style: TextStyle(fontSize: 24, color: titleColor))),
+                  if (rightButton != null)
+                    Padding(
+                        padding: const EdgeInsets.all(15), child: rightButton)
+                ]),
             builderWidget(),
           ],
         ));
   }
 
   Widget builderWidget() {
-    return isNotEmptyCondition ? bodyWidget : emptyWidget;
+    return isNotEmptyCondition ? bodyWidget : (emptyWidget ?? Container());
   }
 }
 

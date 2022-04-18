@@ -35,22 +35,7 @@ mixin StudentDatabaseMethods {
       return null;
     }
 
-    print('[Students methods] Student found');
-    final requestIds = _getMapFromField(studentValues, 'requests');
-    print('Requests: $requestIds');
-    final requestList = requestIds.entries.map((id) => id.toString()).toList();
-
-    final lessonDateIds = _getMapFromField(studentValues, 'lessonDates');
-    print('Dates: $lessonDateIds');
-    final lessonDateList =
-        lessonDateIds.entries.map((id) => id.toString()).toList();
-
-    return Student(
-        userId,
-        studentValues['name'] ?? '',
-        EducationLevel(studentValues['educationLevel'] ?? '', true),
-        requestList,
-        lessonDateList);
+    return Student.fromMap(userId, studentValues);
   }
 
   void _addStudentToList(String login, Map values, List<Student> students) {
@@ -63,8 +48,33 @@ mixin StudentDatabaseMethods {
         await FirebaseRealTimeDatabaseAdapter.getObjectsByName(
             DatabaseObjectName.students, 'name', name);
     final students = <Student>[];
-    studentValues.forEach((login, studentValue) => _addStudentToList(
-        login, studentValue as Map<dynamic, dynamic>, students));
+    studentValues.forEach((login, studentValue) {
+      final student = Student.fromMap(
+        login, studentValue as Map<dynamic, dynamic>);
+      students.add(student);
+    });
+    return students;
+  }
+
+  Future<void> addLessonDateKeyToStudent(KeyId studentId, KeyId lessonDateId) async {
+    await FirebaseRealTimeDatabaseAdapter.addForeignKey(
+            DatabaseObjectName.students, studentId, DatabaseObjectName.lessonDates, lessonDateId);
+  }
+
+  Future<Iterable<Student>> getStudentsByDates(List<KeyId> lessonDateIds) async {
+    final students = <Student>[];
+    for (final lessonDateId in lessonDateIds) {
+      final studentId = await FirebaseRealTimeDatabaseAdapter.getForeignKey(
+        DatabaseObjectName.lessonDates, lessonDateId, 'studentId');
+      if (studentId == DatabaseConsts.emptyKey) {
+        continue;
+      }
+      final student = await getStudent(studentId);
+      if (student == null) {
+        continue;
+      }
+      students.add(student);
+    }
     return students;
   }
 }
