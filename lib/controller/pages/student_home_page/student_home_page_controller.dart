@@ -70,7 +70,7 @@ class StudentHomePageController extends BaseController {
 
   void goToSearchPage(BuildContext context) {
     Navigator.of(context)
-        .push(MaterialPageRoute(builder: (_) => StudentSearchPage()));
+        .push(MaterialPageRoute(builder: (_) => StudentSearchPage(userId)));
   }
 
   void goToSettingsPage(BuildContext context) {
