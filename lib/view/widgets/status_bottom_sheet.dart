@@ -4,6 +4,14 @@ import 'custom_button.dart';
 
 enum BottomSheetStatus { error, success, info }
 
+Future<void> showSuccessMessageAsync(BuildContext context, String info) async {
+  await showModalBottomSheet(
+      context: context,
+      backgroundColor: Colors.transparent,
+      builder: (_) =>
+          StatusBottomSheet(info: info, status: BottomSheetStatus.success));
+}
+
 void showErrorMessage(BuildContext context, String info) {
   showModalBottomSheet(
       context: context,

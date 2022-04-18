@@ -4,16 +4,24 @@ import 'package:teachent_app/model/db_objects/db_object.dart';
 import 'package:teachent_app/model/db_objects/lesson_date.dart';
 
 mixin LessonDateDatabaseMethods {
+
+  Future<LessonDate?> getLessonDate(KeyId lessonDateId) async {
+    final dateValues = await FirebaseRealTimeDatabaseAdapter.getObject(
+          DatabaseObjectName.lessonDates, lessonDateId);
+    if (dateValues.isEmpty) {
+      return null;
+    }
+    return LessonDate.fromMap(lessonDateId, dateValues);
+  }
+
   Future<Iterable<LessonDate>> getLessonDates(List<KeyId> lessonDateIds) async {
     final dates = <LessonDate>[];
     for (final lessonDateId in lessonDateIds) {
-      final dateValues = await FirebaseRealTimeDatabaseAdapter.getObject(
-          DatabaseObjectName.lessonDates, lessonDateId);
-
-      if (dateValues.isEmpty) {
+      final lessonDate = await getLessonDate(lessonDateId);
+      if (lessonDate == null) {
         continue;
       }
-      dates.add(LessonDate.fromMap(lessonDateId, dateValues));
+      dates.add(lessonDate);
     }
     return dates;
   }

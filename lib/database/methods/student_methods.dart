@@ -77,4 +77,9 @@ mixin StudentDatabaseMethods {
     }
     return students;
   }
+
+  Future<void> addRequestIdToStudent(KeyId studentId, KeyId requestId) async {
+    await FirebaseRealTimeDatabaseAdapter.addForeignKey(
+          DatabaseObjectName.students, studentId, DatabaseObjectName.requests, requestId);
+  }
 }

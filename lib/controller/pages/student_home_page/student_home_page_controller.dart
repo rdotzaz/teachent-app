@@ -15,8 +15,9 @@ import 'package:teachent_app/view/pages/teacher_profile_page/teacher_profile_pag
 class StudentHomePageController extends BaseController {
   final KeyId userId;
   Student? student;
+  final void Function() refresh;
 
-  StudentHomePageController(this.userId);
+  StudentHomePageController(this.userId, this.refresh);
 
   final List<Teacher> teachers = [];
   final List<Lesson> lessons = [];
@@ -38,6 +39,7 @@ class StudentHomePageController extends BaseController {
   }
 
   Future<void> initLessons() async {
+    lessons.clear();
     final foundLessons = await dataManager.database
         .getLessonsByDates(student?.lessonDates ?? []);
     if (foundLessons.isEmpty) {
@@ -47,6 +49,7 @@ class StudentHomePageController extends BaseController {
   }
 
   Future<void> initTeachers() async {
+    teachers.clear();
     final foundTeachers = await dataManager.database
         .getTeachersByDates(student?.lessonDates ?? []);
     if (foundTeachers.isEmpty) {
@@ -56,6 +59,7 @@ class StudentHomePageController extends BaseController {
   }
 
   Future<void> initRequests() async {
+    requests.clear();
     final foundRequests =
         await dataManager.database.getRequests(student?.requests ?? []);
     if (foundRequests.isEmpty) {
@@ -76,9 +80,10 @@ class StudentHomePageController extends BaseController {
     return teacher.name;
   }
 
-  void goToSearchPage(BuildContext context) {
-    Navigator.of(context)
+  Future<void> goToSearchPage(BuildContext context) async {
+    await Navigator.of(context)
         .push(MaterialPageRoute(builder: (_) => StudentSearchPage(userId)));
+    refresh();
   }
 
   void goToSettingsPage(BuildContext context) {
@@ -86,8 +91,9 @@ class StudentHomePageController extends BaseController {
         .push(MaterialPageRoute(builder: (_) => SettingsPage(userId: userId)));
   }
 
-  void goToTeacherProfile(BuildContext context, int index) {
-    Navigator.of(context).push(MaterialPageRoute(
+  Future<void> goToTeacherProfile(BuildContext context, int index) async {
+    await Navigator.of(context).push(MaterialPageRoute(
         builder: (_) => TeacherProfilePage(teachers[index], userId)));
+    refresh();
   }
 }
