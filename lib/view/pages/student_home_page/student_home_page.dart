@@ -17,7 +17,8 @@ class _StudentHomePageState extends State<StudentHomePage> {
   @override
   void initState() {
     super.initState();
-    _studentHomePageController = StudentHomePageController(widget.userId, refresh);
+    _studentHomePageController =
+        StudentHomePageController(widget.userId, refresh);
   }
 
   void refresh() {

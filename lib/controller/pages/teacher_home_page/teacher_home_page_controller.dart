@@ -43,7 +43,8 @@ class TeacherHomePageController extends BaseController {
 
   Future<void> _initLessons() async {
     lessons.clear();
-    final foundLessons = await dataManager.database.getLessonsByDates(teacher?.lessonDates ?? []);
+    final foundLessons = await dataManager.database
+        .getLessonsByDates(teacher?.lessonDates ?? []);
     if (foundLessons.isEmpty) {
       print('No lessons found');
     }
@@ -52,7 +53,8 @@ class TeacherHomePageController extends BaseController {
 
   Future<void> _initStudents() async {
     students.clear();
-    final foundStudents = await dataManager.database.getStudentsByDates(teacher?.lessonDates ?? []);
+    final foundStudents = await dataManager.database
+        .getStudentsByDates(teacher?.lessonDates ?? []);
     if (foundStudents.isEmpty) {
       print('No students found');
     }
@@ -61,7 +63,8 @@ class TeacherHomePageController extends BaseController {
 
   Future<void> _initDates() async {
     lessonDates.clear();
-    final foundLessonDates = await dataManager.database.getLessonDates(teacher?.lessonDates ?? []);
+    final foundLessonDates =
+        await dataManager.database.getLessonDates(teacher?.lessonDates ?? []);
     if (foundLessonDates.isEmpty) {
       print('No dates found');
     }
@@ -93,8 +96,8 @@ class TeacherHomePageController extends BaseController {
   }
 
   Future<void> goToLessonPageCreationPage(BuildContext context) async {
-    final wasRequestAdded = await Navigator.of(context)
-        .push(MaterialPageRoute(builder: (_) => LessonDateCreationPage(teacher!)));
+    final wasRequestAdded = await Navigator.of(context).push(
+        MaterialPageRoute(builder: (_) => LessonDateCreationPage(teacher!)));
     if (wasRequestAdded != null) {
       refresh();
     }

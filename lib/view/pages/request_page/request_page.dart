@@ -6,64 +6,68 @@ import 'package:teachent_app/model/db_objects/teacher.dart';
 import 'package:teachent_app/view/widgets/custom_button.dart';
 
 class RequestPage extends StatelessWidget {
-  RequestPage({KeyId? requestId, KeyId? studentId, Teacher? teacher, LessonDate? lessonDate, Key? key }) : super(key: key) {
-      _requestPageController = RequestPageController(requestId, studentId, teacher, lessonDate);
+  RequestPage(
+      {KeyId? requestId,
+      KeyId? studentId,
+      Teacher? teacher,
+      LessonDate? lessonDate,
+      Key? key})
+      : super(key: key) {
+    _requestPageController =
+        RequestPageController(requestId, studentId, teacher, lessonDate);
   }
 
   RequestPageController? _requestPageController;
 
   @override
-  Widget build(BuildContext context){
+  Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(title: Text('Request')),
         body: FutureBuilder(
-          future: _requestPageController!.init(),
-          builder: (_, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const CircularProgressIndicator();
-            } else if (snapshot.connectionState == ConnectionState.done) {
-              return _mainWidget(context);
-            }
-            return _errorWidget(snapshot.error.toString());
-          })
-    );
+            future: _requestPageController!.init(),
+            builder: (_, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const CircularProgressIndicator();
+              } else if (snapshot.connectionState == ConnectionState.done) {
+                return _mainWidget(context);
+              }
+              return _errorWidget(snapshot.error.toString());
+            }));
   }
 
   Widget _mainWidget(BuildContext context) {
-      return SingleChildScrollView(
-          child: Column(
-              children: [
-                  Padding(
-                    padding: const EdgeInsets.all(15),
-                    child: Text('Name: ${_requestPageController!.teacherName}',
-                        style: const TextStyle(color: Colors.black, fontSize: 18))),
-                Padding(
-                    padding: const EdgeInsets.all(15),
-                    child: Text('Date: ${_requestPageController!.date}',
-                        style: const TextStyle(color: Colors.black, fontSize: 18))),
-                Padding(
-                    padding: const EdgeInsets.all(15),
-                    child: Text(_requestPageController!.isCycled ? 'Lesson is cycled' : 'One-time lesson',
-                        style: const TextStyle(color: Colors.black, fontSize: 18))),
-                Padding(
-                    padding: const EdgeInsets.all(15),
-                    child: Text('Price: ${_requestPageController!.price}',
-                        style: const TextStyle(color: Colors.black, fontSize: 18))),
-                _tools(),
-                _places(),
-                if (_requestPageController!.request == null)
-                    Container(
-                        margin: const EdgeInsets.all(15),
-                        child: CustomButton(
-                            text: 'Send request for lesson',
-                            fontSize: 18,
-                            onPressed: () => _requestPageController!.sendRequest(context),
-                            buttonColor: Colors.green
-                        )
-                )
-              ]
-          )
-      );
+    return SingleChildScrollView(
+        child: Column(children: [
+      Padding(
+          padding: const EdgeInsets.all(15),
+          child: Text('Name: ${_requestPageController!.teacherName}',
+              style: const TextStyle(color: Colors.black, fontSize: 18))),
+      Padding(
+          padding: const EdgeInsets.all(15),
+          child: Text('Date: ${_requestPageController!.date}',
+              style: const TextStyle(color: Colors.black, fontSize: 18))),
+      Padding(
+          padding: const EdgeInsets.all(15),
+          child: Text(
+              _requestPageController!.isCycled
+                  ? 'Lesson is cycled'
+                  : 'One-time lesson',
+              style: const TextStyle(color: Colors.black, fontSize: 18))),
+      Padding(
+          padding: const EdgeInsets.all(15),
+          child: Text('Price: ${_requestPageController!.price}',
+              style: const TextStyle(color: Colors.black, fontSize: 18))),
+      _tools(),
+      _places(),
+      if (_requestPageController!.request == null)
+        Container(
+            margin: const EdgeInsets.all(15),
+            child: CustomButton(
+                text: 'Send request for lesson',
+                fontSize: 18,
+                onPressed: () => _requestPageController!.sendRequest(context),
+                buttonColor: Colors.green))
+    ]));
   }
 
   Widget _tools() {
@@ -97,8 +101,7 @@ class RequestPage extends StatelessWidget {
                     itemBuilder: (_, index) {
                       return Chip(
                           padding: const EdgeInsets.all(12.0),
-                          label: Text(
-                              _requestPageController!.tools[index].name,
+                          label: Text(_requestPageController!.tools[index].name,
                               style: const TextStyle(
                                   fontSize: 18, color: Colors.white)),
                           backgroundColor: Colors.blue);
