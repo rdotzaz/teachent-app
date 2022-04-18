@@ -24,7 +24,7 @@ class Student extends DatabaseObject {
   
   Student.fromMap(this.userId, Map<dynamic, dynamic> values) :
         name = values['name'] ?? '',
-        educationLevel = values['educationLevel'] ?? '',
+        educationLevel = EducationLevel(values['educationLevel'] ?? '', true),
         requests = DatabaseObject.getMapFromField(values, 'requests')
             .entries
             .map((id) => id.key.toString())

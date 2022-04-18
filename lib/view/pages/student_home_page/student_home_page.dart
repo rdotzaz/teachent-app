@@ -108,12 +108,14 @@ class _StudentHomePageState extends State<StudentHomePage> {
 
   Widget nextLessonsWidget() {
     return SingleCardListWidget(
-      backgroundColor: Colors.red,
+      backgroundColor: Colors.white,
+      shadowColor: Colors.grey,
       title: 'Next lessons',
+      titleColor: Colors.black,
       boxHeight: 200.0,
       isNotEmptyCondition: _studentHomePageController.areLessons,
       listLength: _studentHomePageController.lessons.length,
-      elementBackgroundColor: Colors.white,
+      elementBackgroundColor: Colors.red,
       emptyInfo: 'No lessons',
       emptyIcon: Icons.free_breakfast,
       elementBuilder: (context, index) {
@@ -132,14 +134,16 @@ class _StudentHomePageState extends State<StudentHomePage> {
 
   Widget teachersWidget() {
     return SingleCardListWidget(
-      backgroundColor: Colors.red,
+      backgroundColor: Colors.white,
+      shadowColor: Colors.grey,
       title: 'Your teachers',
+      titleColor: Colors.black,
       boxHeight: 150.0,
       elementHeight: 150.0,
       elementWidth: 150.0,
       isNotEmptyCondition: _studentHomePageController.areTeachers,
       listLength: _studentHomePageController.teachers.length,
-      elementBackgroundColor: Colors.red[700]!,
+      elementBackgroundColor: Colors.red,
       emptyInfo: 'No teachers',
       emptyIcon: Icons.person,
       scrollDirection: Axis.horizontal,
@@ -165,12 +169,14 @@ class _StudentHomePageState extends State<StudentHomePage> {
 
   Widget requestsWidget() {
     return SingleCardListWidget(
-      backgroundColor: Colors.red,
+      backgroundColor: Colors.white,
+      shadowColor: Colors.grey,
       title: 'Requests',
+      titleColor: Colors.black,
       boxHeight: 300.0,
       isNotEmptyCondition: _studentHomePageController.areRequests,
       listLength: _studentHomePageController.requests.length,
-      elementBackgroundColor: Colors.white,
+      elementBackgroundColor: Colors.red,
       emptyInfo: 'No requests',
       emptyIcon: Icons.free_breakfast,
       elementBuilder: (context, index) {

@@ -3,6 +3,7 @@ import 'package:teachent_app/controller/controller.dart';
 import 'package:teachent_app/model/db_objects/db_object.dart';
 import 'package:teachent_app/model/db_objects/lesson.dart';
 import 'package:teachent_app/model/db_objects/lesson_date.dart';
+import 'package:teachent_app/model/db_objects/request.dart';
 import 'package:teachent_app/model/db_objects/student.dart';
 import 'package:teachent_app/model/db_objects/teacher.dart';
 import 'package:teachent_app/model/objects/tool.dart';
@@ -17,33 +18,9 @@ class StudentHomePageController extends BaseController {
 
   StudentHomePageController(this.userId);
 
-  // TODO -- Only for testing
-  final teachers = [
-    Teacher(
-        'kowalski',
-        'Jan Kowalski',
-        '',
-        [Topic('Math', true)],
-        [Tool('Google Meet', true), Tool('Discord', true)],
-        [],
-        3,
-        [],
-        ['abcde', 'pohoo'])
-  ];
-
-  final lessonDate1 = LessonDate('abcde', 'kowalski', 'john', false, 'Monday',
-      '12:00+60', true, 50, [Tool('Google Meet', true)], []);
-  final lessonDate2 = LessonDate('pohoo', 'kowalski', '', true, 'Thursday',
-      '16:00+60', true, 50, [Tool('Google Meet', true)], []);
-
-  final lessons = [
-    Lesson('abcde', 'kowalski', 'john', '04-04-2022', true, false, []),
-    Lesson('pohoo', 'kowalski', 'john', '07-04-2022', true, false, [])
-  ];
-
-  final requests = [];
-
-  // ------------------------------------------------------
+  final List<Teacher> teachers = [];
+  final List<Lesson> lessons = [];
+  final List<Request> requests = [];
 
   @override
   Future<void> init() async {
@@ -54,6 +31,34 @@ class StudentHomePageController extends BaseController {
       return;
     }
     student = possibleStudent;
+
+    await initLessons();
+    await initTeachers();
+    await initRequests();
+  }
+
+  Future<void> initLessons() async {
+    final foundLessons = await dataManager.database.getLessonsByDates(student?.lessonDates ?? []);
+    if (foundLessons.isEmpty) {
+      print('No lessons found');
+    }
+    lessons.addAll(foundLessons);
+  }
+
+  Future<void> initTeachers() async {
+    final foundTeachers = await dataManager.database.getTeachersByDates(student?.lessonDates ?? []);
+    if (foundTeachers.isEmpty) {
+      print('No teachers found');
+    }
+    teachers.addAll(foundTeachers);
+  }
+
+  Future<void> initRequests() async {
+    final foundRequests = await dataManager.database.getRequests(student?.requests ?? []);
+    if (foundRequests.isEmpty) {
+      print('No requests found');
+    }
+    requests.addAll(foundRequests);
   }
 
   String get studentName => student?.name ?? '';

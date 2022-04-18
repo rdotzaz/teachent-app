@@ -99,4 +99,21 @@ mixin TeacherDatabaseMethods {
     await FirebaseRealTimeDatabaseAdapter.addForeignKey(
             DatabaseObjectName.teachers, teacherId, DatabaseObjectName.lessonDates, lessonDateId);
   }
+
+  Future<List<Teacher>> getTeachersByDates(List<KeyId> lessonDateIds) async {
+    final teachers = <Teacher>[];
+    for (final lessonDateId in lessonDateIds) {
+      final teacherId = await FirebaseRealTimeDatabaseAdapter.getForeignKey(
+        DatabaseObjectName.lessonDates, lessonDateId, 'teacherId');
+      if (teacherId == DatabaseConsts.emptyKey) {
+        continue;
+      }
+      final teacher = await getTeacher(teacherId);
+      if (teacher == null) {
+        continue;
+      }
+      teachers.add(teacher);
+    }
+    return teachers;
+  }
 }

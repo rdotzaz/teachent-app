@@ -17,7 +17,7 @@ class TeacherProfilePageController extends BaseController {
   Future<void> initDates() async {
     final dates =
         await dataManager.database.getLessonDates(teacher.lessonDates);
-    lessonDates.addAll(dates);
+    lessonDates.addAll(dates.where((d) => d.isFree));
   }
 
   String get teacherName => teacher.name;

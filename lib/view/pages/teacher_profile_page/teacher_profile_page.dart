@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:teachent_app/controller/pages/teacher_profile_page/teacher_profile_page_controller.dart';
 import 'package:teachent_app/model/db_objects/db_object.dart';
 import 'package:teachent_app/model/db_objects/teacher.dart';
+import 'package:teachent_app/view/widgets/custom_button.dart';
 
 class TeacherProfilePage extends StatelessWidget {
   TeacherProfilePageController? _teacherProfilePageController;
@@ -267,7 +268,6 @@ class TeacherProfilePage extends StatelessWidget {
       const Padding(
           padding: EdgeInsets.all(5), child: Text('Available lesson dates')),
       Container(
-          height: 70,
           padding: const EdgeInsets.all(5),
           child: _teacherProfilePageController!.lessonDates.isEmpty
               ? const SizedBox(
@@ -281,6 +281,43 @@ class TeacherProfilePage extends StatelessWidget {
                     final lessonDate =
                         _teacherProfilePageController!.lessonDates[index];
                     return Container(
+                        padding: const EdgeInsets.all(20),
+                        margin: const EdgeInsets.all(5),
+                        decoration: BoxDecoration(
+                            color: Colors.blue,
+                            borderRadius: BorderRadius.circular(10)),
+                        child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Container(
+                                padding: const EdgeInsets.all(5),
+                                decoration: BoxDecoration(
+                                    color: Colors.blue,
+                                    borderRadius: BorderRadius.circular(10)),
+                                child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(lessonDate.weekday,
+                                          style: const TextStyle(
+                                              fontSize: 18, color: Colors.white)),
+                                      Text(lessonDate.hourTime,
+                                          style: const TextStyle(
+                                              fontSize: 20, color: Colors.white)),
+                                      const SizedBox(height: 20),
+                                      Text('Price: ${lessonDate.price}',
+                                          style: const TextStyle(
+                                              fontSize: 20, color: Colors.white)),
+                                    ])),
+                              CustomButton(
+                                text: 'More',
+                                fontSize: 18,
+                                onPressed: () {},
+                                buttonColor: Colors.blue[600]!
+                              ),
+                            ]));
+                    return Container(
+                        padding: const EdgeInsets.all(20),
+                        margin: const EdgeInsets.all(5),
                         decoration: BoxDecoration(
                             color: Colors.blue,
                             borderRadius: BorderRadius.circular(10)),
