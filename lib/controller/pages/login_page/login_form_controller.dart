@@ -44,11 +44,9 @@ class LoginFormController extends BaseController {
 
       if (result.status == LoginStatus.logicError) {
         showErrorMessage(context, LoginPageConsts.logicError);
-      }
-      else if (result.status == LoginStatus.loginNotFound) {
+      } else if (result.status == LoginStatus.loginNotFound) {
         showErrorMessage(context, LoginPageConsts.loginNotFound);
-      }
-      else if (result.status == LoginStatus.invalidPassword) {
+      } else if (result.status == LoginStatus.invalidPassword) {
         showErrorMessage(context, LoginPageConsts.invalidPassword);
       } else {
         final user = result.user!;

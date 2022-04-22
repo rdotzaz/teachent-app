@@ -13,10 +13,10 @@ class Report extends DatabaseObject {
   Report.noKey(this.lessonId, this.description, this.date)
       : reportId = DatabaseConsts.emptyKey;
 
-  Report.withMap(this.reportId, Map<dynamic, dynamic> values) :
-      lessonId = values['lessonId'] ?? '',
-      description = values['description'] ?? '',
-      date = values['date'] ?? '';
+  Report.withMap(this.reportId, Map<dynamic, dynamic> values)
+      : lessonId = values['lessonId'] ?? '',
+        description = values['description'] ?? '',
+        date = values['date'] ?? '';
 
   @override
   String get collectionName => DatabaseObjectName.reports;
@@ -26,10 +26,6 @@ class Report extends DatabaseObject {
 
   @override
   Map<String, dynamic> toMap() {
-    return {
-      'lessonId': lessonId,
-      'description': description,
-      'date': date
-    };
+    return {'lessonId': lessonId, 'description': description, 'date': date};
   }
 }

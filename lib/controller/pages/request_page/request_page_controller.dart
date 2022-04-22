@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:teachent_app/common/enums.dart';
 import 'package:teachent_app/controller/controller.dart';
 import 'package:teachent_app/model/db_objects/db_object.dart';
 import 'package:teachent_app/model/db_objects/lesson_date.dart';
@@ -70,7 +71,7 @@ class RequestPageController extends BaseController {
 
   Future<void> sendRequest(BuildContext context) async {
     request = Request.noKey(lessonDate?.lessonDateId ?? '',
-        teacher?.userId ?? '', studentId ?? '', 0);
+        teacher?.userId ?? '', studentId ?? '', RequestStatus.waiting, [], []);
 
     final requestKey = await dataManager.database.addRequest(request!);
 

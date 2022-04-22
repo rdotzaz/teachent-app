@@ -4,10 +4,9 @@ import 'package:teachent_app/model/db_objects/db_object.dart';
 import 'package:teachent_app/model/db_objects/lesson_date.dart';
 
 mixin LessonDateDatabaseMethods {
-
   Future<LessonDate?> getLessonDate(KeyId lessonDateId) async {
     final dateValues = await FirebaseRealTimeDatabaseAdapter.getObject(
-          DatabaseObjectName.lessonDates, lessonDateId);
+        DatabaseObjectName.lessonDates, lessonDateId);
     if (dateValues.isEmpty) {
       return null;
     }

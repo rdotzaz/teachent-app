@@ -6,7 +6,7 @@ import 'package:teachent_app/model/db_objects/request.dart';
 mixin RequestDatabaseMethods {
   Future<Request?> getRequest(KeyId requestId) async {
     final requestValues = await FirebaseRealTimeDatabaseAdapter.getObject(
-          DatabaseObjectName.requests, requestId);
+        DatabaseObjectName.requests, requestId);
     if (requestValues.isEmpty) {
       return null;
     }
@@ -26,8 +26,9 @@ mixin RequestDatabaseMethods {
   }
 
   Future<KeyId?> addRequest(Request request) async {
-    final newKey = await FirebaseRealTimeDatabaseAdapter.addDatabaseObjectWithNewKey(
-        DatabaseObjectName.requests, request.toMap());
+    final newKey =
+        await FirebaseRealTimeDatabaseAdapter.addDatabaseObjectWithNewKey(
+            DatabaseObjectName.requests, request.toMap());
     if (newKey == DatabaseConsts.emptyKey) {
       print('Request has not been added');
       return null;

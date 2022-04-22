@@ -8,7 +8,8 @@ import '../../model/db_objects/user.dart';
 mixin UserDatabaseMethods {
   /// Method returns user when login and password are correct
   /// Otherwise returns null
-  Future<LoginResult> checkLoginAndPassword(String login, String password) async {
+  Future<LoginResult> checkLoginAndPassword(
+      String login, String password) async {
     final userValues =
         await FirebaseRealTimeDatabaseAdapter.findUserByLoginAndCheckPassword(
             login, password);
@@ -17,13 +18,15 @@ mixin UserDatabaseMethods {
     }
 
     if (userValues.containsKey('error')) {
-      return userValues['error'] == 'login' ?
-          LoginResult(status: LoginStatus.loginNotFound) :
-          LoginResult(status: LoginStatus.invalidPassword);
+      return userValues['error'] == 'login'
+          ? LoginResult(status: LoginStatus.loginNotFound)
+          : LoginResult(status: LoginStatus.invalidPassword);
     }
 
-    return LoginResult(status: LoginStatus.success, user: User(login, userValues['isDarkMode'] ?? false,
-        userValues['isTeacher'] ?? true, password));
+    return LoginResult(
+        status: LoginStatus.success,
+        user: User(login, userValues['isDarkMode'] ?? false,
+            userValues['isTeacher'] ?? true, password));
   }
 
   Future<void> addUser(User user) async {
@@ -35,8 +38,8 @@ mixin UserDatabaseMethods {
 
   Future<User?> getUser(KeyId userId) async {
     final userValues = await FirebaseRealTimeDatabaseAdapter.getObject(
-      DatabaseObjectName.users, userId);
-    
+        DatabaseObjectName.users, userId);
+
     if (userValues.isEmpty) {
       return null;
     }

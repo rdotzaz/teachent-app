@@ -33,6 +33,10 @@ class TeacherProfilePageController extends BaseController {
   List<Place> get places => teacher.places;
 
   void goToRequestPage(BuildContext context, int dateIndex) {
-    Navigator.of(context).push(MaterialPageRoute(builder: (_) => RequestPage(studentId: studentId, teacher: teacher, lessonDate: lessonDates[dateIndex])));
+    Navigator.of(context).push(MaterialPageRoute(
+        builder: (_) => RequestPage(
+            studentId: studentId,
+            teacher: teacher,
+            lessonDate: lessonDates[dateIndex])));
   }
 }

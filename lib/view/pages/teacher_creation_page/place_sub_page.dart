@@ -24,8 +24,8 @@ Widget placeSubPage(TeacherCreationPageController teacherController) {
                 },
                 color: Colors.blue[100]!,
                 enabledColor: Colors.blue,
-                isEnabled: value == WorkModeConsts.place
-                  || value == WorkModeConsts.placeWithAdding),
+                isEnabled: value == WorkModeConsts.place ||
+                    value == WorkModeConsts.placeWithAdding),
             EnabledButton(
                 text: TeacherCreationPageConsts.remote,
                 icon: Icons.computer,
@@ -34,8 +34,8 @@ Widget placeSubPage(TeacherCreationPageController teacherController) {
                 },
                 color: Colors.blue[100]!,
                 enabledColor: Colors.blue,
-                isEnabled: value == WorkModeConsts.remote
-                  || value == WorkModeConsts.remoteWithAdding)
+                isEnabled: value == WorkModeConsts.remote ||
+                    value == WorkModeConsts.remoteWithAdding)
           ]),
           body(value),
           AddButtonWidget(teacherController: teacherController, value: value)
@@ -44,11 +44,11 @@ Widget placeSubPage(TeacherCreationPageController teacherController) {
 }
 
 Widget body(int value) {
-  if (value == WorkModeConsts.place
-    || value == WorkModeConsts.placeWithAdding) {
+  if (value == WorkModeConsts.place ||
+      value == WorkModeConsts.placeWithAdding) {
     return placeListWidget();
-  } else if (value == WorkModeConsts.remote
-    || value == WorkModeConsts.remoteWithAdding) {
+  } else if (value == WorkModeConsts.remote ||
+      value == WorkModeConsts.remoteWithAdding) {
     return toolListWidget();
   }
   return emptyBodyWidget();
@@ -114,10 +114,11 @@ class AddButtonWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isEnabled = value != WorkModeConsts.none;
-    final isEditBox = value == WorkModeConsts.placeWithAdding
-      || value == WorkModeConsts.remoteWithAdding;
-    final buttonName = value == WorkModeConsts.place ?
-      TeacherCreationPageConsts.place : TeacherCreationPageConsts.tool;
+    final isEditBox = value == WorkModeConsts.placeWithAdding ||
+        value == WorkModeConsts.remoteWithAdding;
+    final buttonName = value == WorkModeConsts.place
+        ? TeacherCreationPageConsts.place
+        : TeacherCreationPageConsts.tool;
 
     if (isEditBox) {
       return Row(

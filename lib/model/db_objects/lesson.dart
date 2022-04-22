@@ -37,7 +37,13 @@ class Lesson extends DatabaseObject {
 
   @override
   Map<String, dynamic> toMap() {
-    final map = <String, String>{};
-    return map;
+    return {
+      'teacherId': teacherId,
+      'studentId': studentId,
+      'date': date,
+      'isPlanned': isPlanned,
+      'isFinished': isFinished,
+      'reports': {for (final reportId in reports) reportId: true}
+    };
   }
 }
