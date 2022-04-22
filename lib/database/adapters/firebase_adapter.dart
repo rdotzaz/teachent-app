@@ -51,7 +51,9 @@ class FirebaseRealTimeDatabaseAdapter {
 
     if (!isKeyExists) {
       print('[FirebaseAdapter] No login found');
-      return {};
+      return {
+        'error': 'login'
+      };
     }
 
     if (foundEventValue == null) {
@@ -71,7 +73,9 @@ class FirebaseRealTimeDatabaseAdapter {
 
     if (!comparsionResult) {
       print('[FirebaseAdapter] Password does not match');
-      return {};
+      return {
+        'error': 'password'
+      };
     }
     return foundEventValue;
   }

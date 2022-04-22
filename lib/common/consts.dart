@@ -43,7 +43,9 @@ class LoginPageConsts {
 
   static const loginError = 'Login cannot be empty';
   static const passwordError = 'Password cannot be empty';
-  static const loginNotFound = 'Login has not been found';
+  static const loginNotFound = 'User has not been found';
+  static const invalidPassword = 'Invalid password';
+  static const logicError = 'Error in checking password logic.\nPlease contact support.';
   static const validationFailed = 'Validation failed';
 }
 

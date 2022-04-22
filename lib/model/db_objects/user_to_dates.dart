@@ -8,14 +8,11 @@ class UserToDatesMap extends DatabaseObject {
 
   UserToDatesMap(this.userId, this.lessonDateIds);
 
-  factory UserToDatesMap.fromMap(KeyId userId, Map<dynamic, dynamic> values) {
-    return UserToDatesMap(
-        userId,
-        (values['lessonDateIds'] as Map<dynamic, dynamic>)
+  UserToDatesMap.fromMap(this.userId, Map<dynamic, dynamic> values) :
+      lessonDateIds = DatabaseObject.getMapFromField(values, 'lessonDateIds')
             .entries
             .map((id) => id.key as String)
-            .toList());
-  }
+            .toList();
 
   @override
   String get collectionName => '';
