@@ -1,5 +1,6 @@
 import 'package:teachent_app/common/consts.dart'
     show DatabaseConsts, DatabaseObjectName;
+import 'package:teachent_app/common/enums.dart';
 import 'package:teachent_app/model/db_objects/db_object.dart';
 
 import '../objects/place.dart';
@@ -13,6 +14,7 @@ class LessonDate extends DatabaseObject {
   final String weekday;
   final String hourTime;
   final bool isCycled;
+  final CycleType cycleType;
   final int price;
   final List<Tool> tools;
   final List<Place> places;
@@ -25,18 +27,19 @@ class LessonDate extends DatabaseObject {
       this.weekday,
       this.hourTime,
       this.isCycled,
+      this.cycleType,
       this.price,
       this.tools,
       this.places);
 
-  LessonDate.init(this.teacherId, this.weekday, this.hourTime, this.isCycled,
+  LessonDate.init(this.teacherId, this.weekday, this.hourTime, this.isCycled, this.cycleType,
       this.price, this.tools, this.places)
       : lessonDateId = DatabaseConsts.emptyKey,
         studentId = DatabaseConsts.emptyKey,
         isFree = true;
 
   LessonDate.noKey(this.teacherId, this.studentId, this.isFree, this.weekday,
-      this.hourTime, this.isCycled, this.price, this.tools, this.places)
+      this.hourTime, this.isCycled, this.cycleType, this.price, this.tools, this.places)
       : lessonDateId = DatabaseConsts.emptyKey;
 
   LessonDate.fromMap(this.lessonDateId, Map<dynamic, dynamic> values)
@@ -46,6 +49,7 @@ class LessonDate extends DatabaseObject {
         weekday = values['weekDay'] ?? '',
         hourTime = values['hourTime'] ?? '',
         isCycled = values['isCycled'] ?? false,
+        cycleType = values['cycleType'] ?? -1,
         price = values['price'] ?? '',
         tools = DatabaseObject.getMapFromField(values, 'tools')
             .entries
@@ -71,6 +75,7 @@ class LessonDate extends DatabaseObject {
       'weekDay': weekday,
       'hourTime': hourTime,
       'isCycled': isCycled,
+      'cycleType': cycleType.value,
       'price': price,
       'tools': {for (final tool in tools) tool.name: true},
       'places': {for (final place in places) place.name: true}

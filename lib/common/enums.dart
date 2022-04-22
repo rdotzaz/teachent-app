@@ -28,3 +28,23 @@ extension RequestStatusExt on RequestStatus {
     return -1;
   }
 }
+
+enum CycleType { single, daily, weekly, biweekly, monthly }
+
+extension CycleTypeExt on CycleType {
+  int get value {
+    if (this == CycleType.single) {
+      return 0;
+    }
+    if (this == CycleType.daily) {
+      return 1;
+    }
+    if (this == CycleType.weekly) {
+      return 2;
+    }
+    if (this == CycleType.biweekly) {
+      return 3;
+    }
+    return 4;
+  }
+}

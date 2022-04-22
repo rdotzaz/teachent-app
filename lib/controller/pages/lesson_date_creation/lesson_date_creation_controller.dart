@@ -1,6 +1,10 @@
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
+import 'package:teachent_app/common/enums.dart';
 import 'package:teachent_app/controller/controller.dart';
+import 'package:teachent_app/controller/pages/lesson_date_creation/bloc/freq_bloc.dart';
+import 'package:teachent_app/controller/pages/lesson_date_creation/bloc/tool_bloc.dart';
+import 'package:teachent_app/controller/pages/lesson_date_creation/bloc/place_bloc.dart';
 import 'package:teachent_app/model/db_objects/lesson_date.dart';
 import 'package:teachent_app/model/db_objects/teacher.dart';
 import 'package:teachent_app/model/objects/topic.dart';
@@ -15,7 +19,7 @@ class LessonDateCreationPageController extends BaseController {
   final _formKey = GlobalKey<FormState>();
   final List<Tool> _tools = [];
   final List<Place> _places = [];
-  final List<String> _freqs = ['Weekly', 'Daily', 'Biweekly', 'Monthly'];
+  final List<String> _freqs = ['Single', 'Daily', 'Weekly', 'Biweekly', 'Monthly'];
 
   GlobalKey<FormState> get formKey => _formKey;
   DateTime _selectedDate = DateTime.now();
@@ -23,12 +27,20 @@ class LessonDateCreationPageController extends BaseController {
   int _duration = 60;
   int _price = 50;
   bool _isCycled = false;
-  String _selectedFreq = 'Weekly';
+  int _selectedFreqIndex = 0;
+
+  late FrequencyBloc freqBloc;
+  late ToolBloc toolBloc;
+  late PlaceBloc placeBloc;
 
   @override
   void init() {
     _tools.addAll(teacher.tools.map((t) => Tool(t.name, false)).toList());
     _places.addAll(teacher.places.map((p) => Place(p.name, false)).toList());
+
+    freqBloc = FrequencyBloc(this);
+    toolBloc = ToolBloc(this);
+    placeBloc = PlaceBloc(this);
   }
 
   String get date => DateFormat('yyyy-MM-dd').format(_selectedDate);
@@ -40,10 +52,10 @@ class LessonDateCreationPageController extends BaseController {
   List<String> get lessonFrequencies => _freqs;
   bool get isCycled => _isCycled;
 
-  bool isFreqSelected(int index) => _freqs[index] == _selectedFreq;
+  bool isFreqSelected(int index) => index == _selectedFreqIndex;
 
   void toggleFreq(int index) {
-    _selectedFreq = _freqs[index];
+    _selectedFreqIndex = index;
     refresh();
   }
 
@@ -119,17 +131,8 @@ class LessonDateCreationPageController extends BaseController {
     _price = int.tryParse(priceToSet ?? '') ?? 50;
   }
 
-  void toggleTool(int index) {
-    _tools[index].marked = !_tools[index].marked;
-  }
-
-  void togglePlace(int index) {
-    _places[index].marked = !_places[index].marked;
-  }
-
-  void toggleCycleCheck(bool? value) {
-    _isCycled = value!;
-    refresh();
+  void toggleCycleCheck() {
+    _isCycled = !_isCycled;
   }
 
   Color getCycledCheckBoxColor(Set<MaterialState> checkBoxStates) {
@@ -139,14 +142,36 @@ class LessonDateCreationPageController extends BaseController {
     return Colors.blue;
   }
 
+  CycleType _getCycleByValue(int value) {
+    if (value == 0) {
+      return CycleType.single;
+    }
+    if (value == 1) {
+      return CycleType.daily;
+    }
+    if (value == 2) {
+      return CycleType.weekly;
+    }
+    if (value == 3) {
+      return CycleType.biweekly;
+    }
+    return CycleType.monthly;
+  }
+
   Future<void> validateForm(BuildContext context) async {
     print('LessonDate: ${date}, ${time(context)}, ${lessonDuration}, ${price}');
+
+    final toolIndexes = toolBloc.state;
+    final placeIndexes = placeBloc.state;
+
+    toolIndexes.asMap().forEach((i, isMarked) => _tools[i].marked = isMarked);
+    placeIndexes.asMap().forEach((i, isMarked) => _places[i].marked = isMarked);
 
     final tools = _tools.where((t) => t.marked).toList();
     final places = _places.where((p) => p.marked).toList();
 
     final lessonDate = LessonDate.init(
-        teacher.userId, date, time(context), isCycled, price, tools, places);
+        teacher.userId, date, time(context), isCycled, _getCycleByValue(freqBloc.state), price, tools, places);
 
     final lessonDateKey = await dataManager.database.addLessonDate(lessonDate);
     await dataManager.database
