@@ -2,6 +2,7 @@ import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:teachent_app/common/enums.dart';
 import 'package:teachent_app/controller/controller.dart';
+import 'package:teachent_app/controller/pages/request_page/bloc/request_topic_bloc.dart';
 import 'package:teachent_app/model/db_objects/db_object.dart';
 import 'package:teachent_app/model/db_objects/lesson_date.dart';
 import 'package:teachent_app/model/db_objects/request.dart';
@@ -21,8 +22,12 @@ class RequestPageController extends BaseController {
   DateTime? otherDate;
   int topicIndex = -1;
 
+  late RequestTopicBloc requestTopicBloc;
+
   RequestPageController(
-      this.requestId, this.studentId, this.teacher, this.lessonDate);
+      this.requestId, this.studentId, this.teacher, this.lessonDate) {
+        requestTopicBloc = RequestTopicBloc(this);
+  }
 
   @override
   Future<void> init() async {
@@ -54,6 +59,12 @@ class RequestPageController extends BaseController {
       return;
     }
     teacher = foundTeacher;
+
+    if (request != null) {
+      final pickedTopic = request!.topic;
+      topicIndex = topics.indexWhere((topic) => topic.name == pickedTopic.name);
+      requestTopicBloc.add(ToggleTopicEvent(topicIndex));
+    }
   }
 
   Future<void> initLessonDate() async {

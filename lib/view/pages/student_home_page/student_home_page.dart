@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:teachent_app/common/enums.dart';
 import 'package:teachent_app/controller/pages/student_home_page/student_home_page_controller.dart';
 import 'package:teachent_app/model/db_objects/db_object.dart';
 import 'package:teachent_app/view/widgets/single_card.dart';
+import 'package:teachent_app/view/widgets/custom_button.dart';
 
 class StudentHomePage extends StatefulWidget {
   final KeyId userId;
@@ -27,7 +29,8 @@ class _StudentHomePageState extends State<StudentHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
+    return Scaffold(
+      body: FutureBuilder(
         future: _studentHomePageController.init(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
@@ -36,7 +39,8 @@ class _StudentHomePageState extends State<StudentHomePage> {
             return homeWidget(context);
           }
           return errorWidget(snapshot.error.toString());
-        });
+        })
+    );
   }
 
   Widget appBar(BuildContext context) {
@@ -185,7 +189,18 @@ class _StudentHomePageState extends State<StudentHomePage> {
       emptyInfo: 'No requests',
       emptyIcon: Icons.free_breakfast,
       elementBuilder: (context, index) {
-        return Container();
+        final request = _studentHomePageController.requests[index];
+        return ListTile(
+          title: Text(
+            request.requestedDate,
+            style: const TextStyle(fontSize: 20, color: Colors.white)),
+          leading: Icon(Icons.send, size: 30, color: Colors.white),
+          onTap: () => _studentHomePageController.goToRequestPage(context, index),
+          subtitle: Text(
+            request.status.stringValue,
+            style: const TextStyle(fontSize: 14, color: Colors.white)
+          )
+        );
       },
     );
   }

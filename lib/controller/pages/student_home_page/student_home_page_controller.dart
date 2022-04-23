@@ -8,6 +8,7 @@ import 'package:teachent_app/model/db_objects/teacher.dart';
 import 'package:teachent_app/view/pages/search_page/student_search_page.dart';
 import 'package:teachent_app/view/pages/settings_page/settings_page.dart';
 import 'package:teachent_app/view/pages/teacher_profile_page/teacher_profile_page.dart';
+import 'package:teachent_app/view/pages/request_page/request_page.dart';
 
 class StudentHomePageController extends BaseController {
   final KeyId userId;
@@ -91,6 +92,15 @@ class StudentHomePageController extends BaseController {
   Future<void> goToTeacherProfile(BuildContext context, int index) async {
     await Navigator.of(context).push(MaterialPageRoute(
         builder: (_) => TeacherProfilePage(teachers[index], userId)));
+    refresh();
+  }
+
+  Future<void> goToRequestPage(BuildContext context, int requestIndex) async {
+    final request = requests[requestIndex];
+
+    await Navigator.of(context).push(MaterialPageRoute(
+      builder: (_) => RequestPage(requestId: request.requestId, studentId: student?.userId ?? '')
+    ));
     refresh();
   }
 }

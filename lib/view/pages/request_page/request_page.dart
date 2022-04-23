@@ -27,7 +27,7 @@ class RequestPage extends StatelessWidget {
     return MultiBlocProvider(
         providers: [
           BlocProvider(create: (_) => RequestDayBloc(_requestPageController!)),
-          BlocProvider(create: (_) => RequestTopicBloc(_requestPageController!))
+          BlocProvider(create: (_) => _requestPageController!.requestTopicBloc)
         ],
         child: Scaffold(
             appBar: AppBar(title: Text('Request')),

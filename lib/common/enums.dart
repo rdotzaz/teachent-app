@@ -30,6 +30,25 @@ extension RequestStatusExt on RequestStatus {
     }
     return -1;
   }
+
+  String get stringValue {
+    if (this == RequestStatus.newReq) {
+      return 'New request has been sent';
+    }
+    if (this == RequestStatus.waiting) {
+      return 'Waiting for new response';
+    }
+    if (this == RequestStatus.responded) {
+      return 'Responded';
+    }
+    if (this == RequestStatus.rejected) {
+      return 'Request rejected';
+    }
+    if (this == RequestStatus.accepted) {
+      return 'Request accepted';
+    }
+    return 'Error';
+  }
 }
 
 enum CycleType { single, daily, weekly, biweekly, monthly }

@@ -10,7 +10,7 @@ class ToggleTopicEvent extends BaseRequestTopicEvent {
 }
 
 class RequestTopicBloc extends Bloc<BaseRequestTopicEvent, int> {
-  RequestTopicBloc(RequestPageController controller) : super(-1) {
+  RequestTopicBloc(RequestPageController controller) : super(controller.topicIndex) {
     on<ToggleTopicEvent>(((event, emit) {
       controller.setTopicIndex(event.index);
       emit(event.index);

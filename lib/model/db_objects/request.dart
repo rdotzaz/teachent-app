@@ -43,7 +43,7 @@ class Request extends DatabaseObject {
         teacherId = values['teacherId'] ?? '',
         studentId = values['studentId'] ?? '',
         status = getStatusByValue(values['status'] ?? -1),
-        topic = Topic(values['topic']['name'] ?? '', true),
+        topic = Topic(values['topic'].keys.firstWhere((_) => true) ?? '', true),
         requestedDate = values['requestedDate'] ?? '',
         teacherMessages =
             DatabaseObject.getMapFromField(values, 'teacherMessages')
