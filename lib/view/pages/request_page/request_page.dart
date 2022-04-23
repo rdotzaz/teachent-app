@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:teachent_app/controller/pages/request_page/request_page_controller.dart';
+import 'package:teachent_app/controller/pages/request_page/bloc/request_day_bloc.dart';
+import 'package:teachent_app/controller/pages/request_page/bloc/request_topic_bloc.dart';
 import 'package:teachent_app/model/db_objects/db_object.dart';
 import 'package:teachent_app/model/db_objects/lesson_date.dart';
 import 'package:teachent_app/model/db_objects/teacher.dart';
@@ -21,7 +24,12 @@ class RequestPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (_) => RequestDayBloc(_requestPageController!)),
+        BlocProvider(create: (_) => RequestTopicBloc(_requestPageController!))
+      ],
+      child: Scaffold(
         appBar: AppBar(title: Text('Request')),
         body: FutureBuilder(
             future: _requestPageController!.init(),
@@ -32,7 +40,8 @@ class RequestPage extends StatelessWidget {
                 return _mainWidget(context);
               }
               return _errorWidget(snapshot.error.toString());
-            }));
+            }))
+    );
   }
 
   Widget _mainWidget(BuildContext context) {
@@ -59,14 +68,11 @@ class RequestPage extends StatelessWidget {
               style: const TextStyle(color: Colors.black, fontSize: 18))),
       _tools(),
       _places(),
-      if (_requestPageController!.request == null)
-        Container(
-            margin: const EdgeInsets.all(15),
-            child: CustomButton(
-                text: 'Send request for lesson',
-                fontSize: 18,
-                onPressed: () => _requestPageController!.sendRequest(context),
-                buttonColor: Colors.green))
+      _requestDay(),
+      _topicSelecting(),
+      _studentMessage(),
+      if (_requestPageController!.hasTeacherMessage) _teacherMessage(),
+      if (_requestPageController!.canSendRequest) _sendRequestButton(context)
     ]));
   }
 
@@ -149,6 +155,90 @@ class RequestPage extends StatelessWidget {
                     }))
       ]),
     );
+  }
+
+  Widget _requestDay() {
+    return BlocBuilder<RequestDayBloc, Widget>(
+      builder: (_, widget) {
+        return Container(
+          height: 80,
+          padding: const EdgeInsets.all(10),
+          child: AnimatedSwitcher(
+            duration: const Duration(milliseconds: 700),
+            child: widget
+          )
+        );
+      }
+    );
+  }
+
+  Widget _topicSelecting() {
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(10),
+        boxShadow: [
+          BoxShadow(
+              color: Colors.grey.withOpacity(0.5),
+              spreadRadius: 2,
+              blurRadius: 4,
+              offset: const Offset(2, 2))
+        ],
+      ),
+      margin: const EdgeInsets.all(4),
+      padding: const EdgeInsets.all(5),
+      child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+        const Padding(padding: EdgeInsets.all(5), child: Text('Topic')),
+        Container(
+            height: 50,
+            padding: const EdgeInsets.all(5),
+            child: BlocBuilder<RequestTopicBloc, int>(
+              builder: (_, selectedIndex) {
+                return ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: _requestPageController!.topics.length,
+                  itemBuilder: (context, index) {
+                    final isMarked = selectedIndex == index;
+                    final topic = _requestPageController!.topics[index];
+                    return ActionChip(
+                        padding: const EdgeInsets.all(10.0),
+                        label: Text(topic.name,
+                            style: TextStyle(
+                                fontSize: 14,
+                                color:
+                                    isMarked ? Colors.white : Colors.black)),
+                        backgroundColor: isMarked ? Colors.blue : Colors.grey,
+                        onPressed: () =>
+                            context.read<RequestTopicBloc>().add(ToggleTopicEvent(index)));
+                  });
+              }
+            ))
+      ]),
+    );
+  }
+
+  Widget _studentMessage() {
+    return Container(
+            margin: const EdgeInsets.all(15),
+            child: CustomButton(
+                text: 'Add message for teacher',
+                fontSize: 18,
+                onPressed: () {},
+                buttonColor: Colors.blue));
+  }
+
+  Widget _teacherMessage() {
+    return Container();
+  }
+
+  Widget _sendRequestButton(BuildContext context) {
+    return Container(
+            margin: const EdgeInsets.all(15),
+            child: CustomButton(
+                text: 'Send request for lesson',
+                fontSize: 18,
+                onPressed: () => _requestPageController!.sendRequest(context),
+                buttonColor: Colors.green));
   }
 
   Widget _errorWidget(String errorMessage) {

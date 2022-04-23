@@ -77,7 +77,7 @@ class SingleCardListWidget extends StatelessWidget {
   final Widget Function(BuildContext context, int index) elementBuilder;
   final Axis scrollDirection;
   final String emptyInfo;
-  final IconData emptyIcon;
+  final IconData? emptyIcon;
   final double elementHeight;
   final double elementWidth;
   final Color shadowColor;
@@ -92,7 +92,7 @@ class SingleCardListWidget extends StatelessWidget {
       required this.elementBackgroundColor,
       required this.elementBuilder,
       required this.emptyInfo,
-      required this.emptyIcon,
+      this.emptyIcon,
       this.shadowColor = Colors.white,
       this.titleColor = Colors.white,
       this.elementHeight = 0.0,
@@ -155,10 +155,11 @@ class SingleCardListWidget extends StatelessWidget {
             child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Padding(
-                padding: const EdgeInsets.all(15),
-                child:
-                    Icon(emptyIcon, color: elementBackgroundColor, size: 70)),
+            if (emptyIcon != null)
+              Padding(
+                  padding: const EdgeInsets.all(15),
+                  child:
+                      Icon(emptyIcon!, color: elementBackgroundColor, size: 70)),
             Text(emptyInfo,
                 style: TextStyle(fontSize: 20, color: elementBackgroundColor))
           ],

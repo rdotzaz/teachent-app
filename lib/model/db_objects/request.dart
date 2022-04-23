@@ -3,6 +3,7 @@ import 'package:teachent_app/common/consts.dart'
 import 'package:teachent_app/common/enums.dart';
 import 'package:teachent_app/model/db_objects/db_object.dart';
 import 'package:teachent_app/model/objects/message.dart';
+import 'package:teachent_app/model/objects/topic.dart';
 
 class Request extends DatabaseObject {
   final KeyId requestId;
@@ -10,13 +11,15 @@ class Request extends DatabaseObject {
   final KeyId teacherId;
   final KeyId studentId;
   final RequestStatus status;
+  final Topic topic;
+  final String requestedDate; 
   final List<MessageRecord> teacherMessages;
   final List<MessageRecord> studentMessages;
 
   Request(this.requestId, this.lessonDateId, this.teacherId, this.studentId,
-      this.status, this.teacherMessages, this.studentMessages);
+      this.status, this.topic, this.requestedDate, this.teacherMessages, this.studentMessages);
 
-  Request.noKey(this.lessonDateId, this.teacherId, this.studentId, this.status,
+  Request.noKey(this.lessonDateId, this.teacherId, this.studentId, this.status, this.topic, this.requestedDate,
       this.teacherMessages, this.studentMessages)
       : requestId = DatabaseConsts.emptyKey;
 
@@ -25,6 +28,8 @@ class Request extends DatabaseObject {
         teacherId = values['teacherId'] ?? '',
         studentId = values['studentId'] ?? '',
         status = values['status'] ?? -1,
+        topic = Topic(values['topic']['name'] ?? '', true),
+        requestedDate = values['requestedDate'] ?? '',
         teacherMessages =
             DatabaseObject.getMapFromField(values, 'teacherMessages')
                 .entries
@@ -49,6 +54,8 @@ class Request extends DatabaseObject {
       'teacherId': teacherId,
       'studentId': studentId,
       'status': status.value,
+      'topic': {topic.name: true},
+      'requestedDate': requestedDate,
       'teacherMessages': {
         for (final teacherMessage in teacherMessages)
           teacherMessage.message: teacherMessage.date
