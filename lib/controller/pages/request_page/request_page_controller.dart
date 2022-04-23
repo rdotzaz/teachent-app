@@ -89,6 +89,7 @@ class RequestPageController extends BaseController {
   List<Topic> get topics => teacher?.topics ?? [];
   bool get hasTeacherMessage => false;
   bool get canSendRequest => request == null;
+  bool get canCheckStatus => request != null;
 
   Future<void> enableDatePicker(BuildContext context) async {
     final pickedDate = await showDatePicker(
@@ -121,6 +122,25 @@ class RequestPageController extends BaseController {
     } else {
       topicIndex = index;
     }
+  }
+
+  Color getStatusColor() {
+    if(request == null) {
+      return Colors.white;
+    }
+    if (request!.status == RequestStatus.newReq || request!.status == RequestStatus.waiting) {
+      return Colors.blue;
+    }
+    if (request!.status == RequestStatus.responded) {
+      return Colors.cyanAccent;
+    }
+    if (request!.status == RequestStatus.rejected) {
+      return Colors.red;
+    }
+    if (request!.status == RequestStatus.accepted) {
+      return Colors.green;
+    }
+    return Colors.black;
   }
 
   Future<void> sendRequest(BuildContext context) async {

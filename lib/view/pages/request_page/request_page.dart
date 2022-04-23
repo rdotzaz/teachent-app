@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:teachent_app/common/enums.dart';
 import 'package:teachent_app/controller/pages/request_page/request_page_controller.dart';
 import 'package:teachent_app/controller/pages/request_page/bloc/request_day_bloc.dart';
 import 'package:teachent_app/controller/pages/request_page/bloc/request_topic_bloc.dart';
@@ -21,16 +22,17 @@ class RequestPage extends StatelessWidget {
   }
 
   RequestPageController? _requestPageController;
+  double width = 0;
 
   @override
   Widget build(BuildContext context) {
+    width = MediaQuery.of(context).size.width;
     return MultiBlocProvider(
         providers: [
           BlocProvider(create: (_) => RequestDayBloc(_requestPageController!)),
           BlocProvider(create: (_) => _requestPageController!.requestTopicBloc)
         ],
         child: Scaffold(
-            appBar: AppBar(title: Text('Request')),
             body: FutureBuilder(
                 future: _requestPageController!.init(),
                 builder: (_, snapshot) {
@@ -46,6 +48,7 @@ class RequestPage extends StatelessWidget {
   Widget _mainWidget(BuildContext context) {
     return SingleChildScrollView(
         child: Column(children: [
+      if (_requestPageController!.canCheckStatus) _checkStatus(),
       Padding(
           padding: const EdgeInsets.all(15),
           child: Text('Name: ${_requestPageController!.teacherName}',
@@ -223,6 +226,28 @@ class RequestPage extends StatelessWidget {
   Widget _teacherMessage() {
     return Container();
   }
+
+  Widget _checkStatus() {
+    return Container(
+      width: width,
+      color: _requestPageController!.getStatusColor(),
+      child: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.fromLTRB(0, 80, 0, 8),
+            child: Chip(
+              label: Text(
+                _requestPageController!.request!.status.stringValue,
+                style: const TextStyle(fontSize: 18, color: Colors.white) 
+              ),
+              padding: const EdgeInsets.all(8),
+              backgroundColor: _requestPageController!.getStatusColor()
+            )
+          )
+        ]
+      )
+    );
+  } 
 
   Widget _sendRequestButton(BuildContext context) {
     return Container(
