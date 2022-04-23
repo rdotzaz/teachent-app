@@ -14,8 +14,8 @@ class ToolBloc extends Bloc<BaseToolEvent, List<bool>> {
   ToolBloc(LessonDateCreationPageController controller)
       : super(List<bool>.generate(controller.tools.length, (_) => false)) {
     on<ToggleToolEvent>(((event, emit) async {
-        state[event.index] = !state[event.index];
-        emit(List.from(state)); 
+      state[event.index] = !state[event.index];
+      emit(List.from(state));
     }));
   }
 }

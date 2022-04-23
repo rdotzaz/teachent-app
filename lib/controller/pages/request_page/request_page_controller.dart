@@ -69,7 +69,8 @@ class RequestPageController extends BaseController {
   String get teacherName => teacher?.name ?? '';
   String get date =>
       '${lessonDate?.weekday ?? ''}, ${lessonDate?.hourTime ?? ''}';
-  String get reqestedDate => DateFormat('yyyy-MM-dd').format(otherDate ?? DateTime.now());
+  String get reqestedDate =>
+      DateFormat('yyyy-MM-dd').format(otherDate ?? DateTime.now());
   bool get isCycled => lessonDate?.isCycled ?? false;
   int get price => lessonDate?.price ?? 0;
   List<Tool> get tools => lessonDate?.tools ?? [];
@@ -115,13 +116,12 @@ class RequestPageController extends BaseController {
     final newDate = otherDate != null ? reqestedDate : date;
 
     request = Request.noKey(
-      lessonDate?.lessonDateId ?? '',
-      teacher?.userId ?? '',
-      studentId ?? '',
-      RequestStatus.waiting,
-      topics[topicIndex],
-      newDate,
-      [], []);
+        lessonDate?.lessonDateId ?? '',
+        teacher?.userId ?? '',
+        studentId ?? '',
+        RequestStatus.waiting,
+        topics[topicIndex],
+        newDate, [], []);
 
     final requestKey = await dataManager.database.addRequest(request!);
 

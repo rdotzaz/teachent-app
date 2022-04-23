@@ -25,23 +25,22 @@ class RequestPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
-      providers: [
-        BlocProvider(create: (_) => RequestDayBloc(_requestPageController!)),
-        BlocProvider(create: (_) => RequestTopicBloc(_requestPageController!))
-      ],
-      child: Scaffold(
-        appBar: AppBar(title: Text('Request')),
-        body: FutureBuilder(
-            future: _requestPageController!.init(),
-            builder: (_, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return const CircularProgressIndicator();
-              } else if (snapshot.connectionState == ConnectionState.done) {
-                return _mainWidget(context);
-              }
-              return _errorWidget(snapshot.error.toString());
-            }))
-    );
+        providers: [
+          BlocProvider(create: (_) => RequestDayBloc(_requestPageController!)),
+          BlocProvider(create: (_) => RequestTopicBloc(_requestPageController!))
+        ],
+        child: Scaffold(
+            appBar: AppBar(title: Text('Request')),
+            body: FutureBuilder(
+                future: _requestPageController!.init(),
+                builder: (_, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const CircularProgressIndicator();
+                  } else if (snapshot.connectionState == ConnectionState.done) {
+                    return _mainWidget(context);
+                  }
+                  return _errorWidget(snapshot.error.toString());
+                })));
   }
 
   Widget _mainWidget(BuildContext context) {
@@ -158,18 +157,13 @@ class RequestPage extends StatelessWidget {
   }
 
   Widget _requestDay() {
-    return BlocBuilder<RequestDayBloc, Widget>(
-      builder: (_, widget) {
-        return Container(
+    return BlocBuilder<RequestDayBloc, Widget>(builder: (_, widget) {
+      return Container(
           height: 80,
           padding: const EdgeInsets.all(10),
           child: AnimatedSwitcher(
-            duration: const Duration(milliseconds: 700),
-            child: widget
-          )
-        );
-      }
-    );
+              duration: const Duration(milliseconds: 700), child: widget));
+    });
   }
 
   Widget _topicSelecting() {
@@ -192,9 +186,9 @@ class RequestPage extends StatelessWidget {
         Container(
             height: 50,
             padding: const EdgeInsets.all(5),
-            child: BlocBuilder<RequestTopicBloc, int>(
-              builder: (_, selectedIndex) {
-                return ListView.builder(
+            child:
+                BlocBuilder<RequestTopicBloc, int>(builder: (_, selectedIndex) {
+              return ListView.builder(
                   scrollDirection: Axis.horizontal,
                   itemCount: _requestPageController!.topics.length,
                   itemBuilder: (context, index) {
@@ -205,26 +199,25 @@ class RequestPage extends StatelessWidget {
                         label: Text(topic.name,
                             style: TextStyle(
                                 fontSize: 14,
-                                color:
-                                    isMarked ? Colors.white : Colors.black)),
+                                color: isMarked ? Colors.white : Colors.black)),
                         backgroundColor: isMarked ? Colors.blue : Colors.grey,
-                        onPressed: () =>
-                            context.read<RequestTopicBloc>().add(ToggleTopicEvent(index)));
+                        onPressed: () => context
+                            .read<RequestTopicBloc>()
+                            .add(ToggleTopicEvent(index)));
                   });
-              }
-            ))
+            }))
       ]),
     );
   }
 
   Widget _studentMessage() {
     return Container(
-            margin: const EdgeInsets.all(15),
-            child: CustomButton(
-                text: 'Add message for teacher',
-                fontSize: 18,
-                onPressed: () {},
-                buttonColor: Colors.blue));
+        margin: const EdgeInsets.all(15),
+        child: CustomButton(
+            text: 'Add message for teacher',
+            fontSize: 18,
+            onPressed: () {},
+            buttonColor: Colors.blue));
   }
 
   Widget _teacherMessage() {
@@ -233,12 +226,12 @@ class RequestPage extends StatelessWidget {
 
   Widget _sendRequestButton(BuildContext context) {
     return Container(
-            margin: const EdgeInsets.all(15),
-            child: CustomButton(
-                text: 'Send request for lesson',
-                fontSize: 18,
-                onPressed: () => _requestPageController!.sendRequest(context),
-                buttonColor: Colors.green));
+        margin: const EdgeInsets.all(15),
+        child: CustomButton(
+            text: 'Send request for lesson',
+            fontSize: 18,
+            onPressed: () => _requestPageController!.sendRequest(context),
+            buttonColor: Colors.green));
   }
 
   Widget _errorWidget(String errorMessage) {

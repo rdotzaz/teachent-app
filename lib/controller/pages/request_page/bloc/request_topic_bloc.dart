@@ -5,14 +5,13 @@ import 'package:teachent_app/controller/pages/request_page/request_page_controll
 abstract class BaseRequestTopicEvent {}
 
 class ToggleTopicEvent extends BaseRequestTopicEvent {
-    final int index;
+  final int index;
 
-    ToggleTopicEvent(this.index);
+  ToggleTopicEvent(this.index);
 }
 
 class RequestTopicBloc extends Bloc<BaseRequestTopicEvent, int> {
-  RequestTopicBloc(RequestPageController controller)
-      : super(-1) {
+  RequestTopicBloc(RequestPageController controller) : super(-1) {
     on<ToggleTopicEvent>(((event, emit) {
       controller.setTopicIndex(event.index);
       emit(event.index);

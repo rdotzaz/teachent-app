@@ -13,17 +13,16 @@ class ToggleFreqencyEvent extends BaseLessonFrequencyEvent {
 class ToggleCycleModeEvent extends BaseLessonFrequencyEvent {}
 
 class FrequencyBloc extends Bloc<BaseLessonFrequencyEvent, int> {
-  FrequencyBloc(LessonDateCreationPageController controller)
-      : super(0) {
+  FrequencyBloc(LessonDateCreationPageController controller) : super(0) {
     on<ToggleFreqencyEvent>(((event, emit) {
       controller.toggleFreq(event.index);
       emit(event.index);
     }));
 
     on<ToggleCycleModeEvent>((event, emit) {
-        controller.toggleCycleCheck();
-        final refreshedState = state;
-        emit(refreshedState);
+      controller.toggleCycleCheck();
+      final refreshedState = state;
+      emit(refreshedState);
     });
   }
 }

@@ -9,7 +9,7 @@ class LoginResult {
   LoginResult({required this.status, this.user});
 }
 
-enum RequestStatus {newReq, waiting, responded, rejected, accepted, invalid }
+enum RequestStatus { newReq, waiting, responded, rejected, accepted, invalid }
 
 extension RequestStatusExt on RequestStatus {
   int get value {
@@ -53,36 +53,36 @@ extension CycleTypeExt on CycleType {
 }
 
 CycleType getCycleByValue(int value) {
-    if (value == 0) {
-      return CycleType.single;
-    }
-    if (value == 1) {
-      return CycleType.daily;
-    }
-    if (value == 2) {
-      return CycleType.weekly;
-    }
-    if (value == 3) {
-      return CycleType.biweekly;
-    }
-    return CycleType.monthly;
+  if (value == 0) {
+    return CycleType.single;
+  }
+  if (value == 1) {
+    return CycleType.daily;
+  }
+  if (value == 2) {
+    return CycleType.weekly;
+  }
+  if (value == 3) {
+    return CycleType.biweekly;
+  }
+  return CycleType.monthly;
 }
 
 RequestStatus getStatusByValue(int value) {
-    if (value == 0) {
-      return RequestStatus.newReq;
-    }
-    if (value == 1) {
-      return RequestStatus.waiting;
-    }
-    if (value == 2) {
-      return RequestStatus.responded;
-    }
-    if (value == 3) {
-      return RequestStatus.rejected;
-    }
-    if (value == 4) {
-      return RequestStatus.accepted;
-    }
-    return RequestStatus.invalid;
+  if (value == 0) {
+    return RequestStatus.newReq;
+  }
+  if (value == 1) {
+    return RequestStatus.waiting;
+  }
+  if (value == 2) {
+    return RequestStatus.responded;
+  }
+  if (value == 3) {
+    return RequestStatus.rejected;
+  }
+  if (value == 4) {
+    return RequestStatus.accepted;
+  }
+  return RequestStatus.invalid;
 }

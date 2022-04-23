@@ -19,7 +19,13 @@ class LessonDateCreationPageController extends BaseController {
   final _formKey = GlobalKey<FormState>();
   final List<Tool> _tools = [];
   final List<Place> _places = [];
-  final List<String> _freqs = ['Single', 'Daily', 'Weekly', 'Biweekly', 'Monthly'];
+  final List<String> _freqs = [
+    'Single',
+    'Daily',
+    'Weekly',
+    'Biweekly',
+    'Monthly'
+  ];
 
   GlobalKey<FormState> get formKey => _formKey;
   DateTime _selectedDate = DateTime.now();
@@ -154,8 +160,8 @@ class LessonDateCreationPageController extends BaseController {
     final tools = _tools.where((t) => t.marked).toList();
     final places = _places.where((p) => p.marked).toList();
 
-    final lessonDate = LessonDate.init(
-        teacher.userId, date, time(context), isCycled, getCycleByValue(freqBloc.state), price, tools, places);
+    final lessonDate = LessonDate.init(teacher.userId, date, time(context),
+        isCycled, getCycleByValue(freqBloc.state), price, tools, places);
 
     final lessonDateKey = await dataManager.database.addLessonDate(lessonDate);
     await dataManager.database

@@ -12,15 +12,30 @@ class Request extends DatabaseObject {
   final KeyId studentId;
   final RequestStatus status;
   final Topic topic;
-  final String requestedDate; 
+  final String requestedDate;
   final List<MessageRecord> teacherMessages;
   final List<MessageRecord> studentMessages;
 
-  Request(this.requestId, this.lessonDateId, this.teacherId, this.studentId,
-      this.status, this.topic, this.requestedDate, this.teacherMessages, this.studentMessages);
+  Request(
+      this.requestId,
+      this.lessonDateId,
+      this.teacherId,
+      this.studentId,
+      this.status,
+      this.topic,
+      this.requestedDate,
+      this.teacherMessages,
+      this.studentMessages);
 
-  Request.noKey(this.lessonDateId, this.teacherId, this.studentId, this.status, this.topic, this.requestedDate,
-      this.teacherMessages, this.studentMessages)
+  Request.noKey(
+      this.lessonDateId,
+      this.teacherId,
+      this.studentId,
+      this.status,
+      this.topic,
+      this.requestedDate,
+      this.teacherMessages,
+      this.studentMessages)
       : requestId = DatabaseConsts.emptyKey;
 
   Request.fromMap(this.requestId, Map<dynamic, dynamic> values)

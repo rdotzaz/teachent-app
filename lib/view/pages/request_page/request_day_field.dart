@@ -6,29 +6,29 @@ import 'package:teachent_app/view/widgets/custom_button.dart';
 
 class RequestDayField extends StatelessWidget {
   final RequestPageController requestPageController;
-  const RequestDayField(this.requestPageController, { Key? key }) : super(key: key);
+  const RequestDayField(this.requestPageController, {Key? key})
+      : super(key: key);
 
   @override
-  Widget build(BuildContext context){
+  Widget build(BuildContext context) {
     return Row(
       children: [
         GestureDetector(
-            onTap: () async {
-                await requestPageController.enableDatePicker(context);
-                context.read<RequestDayBloc>().add(ToggleRequestDayField());
-            },
-            child: Text(
-                    requestPageController.reqestedDate,
-                    style: const TextStyle(fontSize: 18, color: Colors.black)),
+          onTap: () async {
+            await requestPageController.enableDatePicker(context);
+            context.read<RequestDayBloc>().add(ToggleRequestDayField());
+          },
+          child: Text(requestPageController.reqestedDate,
+              style: const TextStyle(fontSize: 18, color: Colors.black)),
         ),
         CustomButton(
-              text: 'Cancel',
-              fontSize: 14,
-              onPressed: () {
-                  requestPageController.cancelRequestedDate();
-                  context.read<RequestDayBloc>().add(ToggleRequestDayButton());
-              },
-              buttonColor: Colors.blue)
+            text: 'Cancel',
+            fontSize: 14,
+            onPressed: () {
+              requestPageController.cancelRequestedDate();
+              context.read<RequestDayBloc>().add(ToggleRequestDayButton());
+            },
+            buttonColor: Colors.blue)
       ],
     );
   }

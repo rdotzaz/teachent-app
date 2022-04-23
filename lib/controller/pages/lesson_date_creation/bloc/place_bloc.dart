@@ -14,8 +14,8 @@ class PlaceBloc extends Bloc<BasePlaceEvent, List<bool>> {
   PlaceBloc(LessonDateCreationPageController controller)
       : super(List<bool>.generate(controller.places.length, (_) => false)) {
     on<TogglePlaceEvent>(((event, emit) async {
-        state[event.index] = !state[event.index];
-        emit(List.from(state)); 
+      state[event.index] = !state[event.index];
+      emit(List.from(state));
     }));
   }
 }
