@@ -49,6 +49,7 @@ class StudentSearchPageController extends BaseSearchController {
   void goToProfilePage(BuildContext context, int teacherIndex) {
     final teacher = _foundTeachers[teacherIndex];
 
-    Navigator.of(context).push(MaterialPageRoute(builder: (_) => TeacherProfilePage(teacher, studentId)));
+    Navigator.of(context).push(MaterialPageRoute(
+        builder: (_) => TeacherProfilePage(teacher, studentId)));
   }
 }

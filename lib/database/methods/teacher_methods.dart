@@ -121,4 +121,12 @@ mixin TeacherDatabaseMethods {
     }
     return teachers;
   }
+
+  Future<void> addRequestIdToTeacher(KeyId teacherId, KeyId requestId) async {
+    await FirebaseRealTimeDatabaseAdapter.addForeignKey(
+        DatabaseObjectName.teachers,
+        teacherId,
+        DatabaseObjectName.requests,
+        requestId);
+  }
 }

@@ -6,8 +6,6 @@ import 'package:teachent_app/model/db_objects/lesson_date.dart';
 import 'package:teachent_app/model/db_objects/request.dart';
 import 'package:teachent_app/model/db_objects/student.dart';
 import 'package:teachent_app/model/db_objects/teacher.dart';
-import 'package:teachent_app/model/objects/education_level.dart';
-import 'package:teachent_app/model/objects/tool.dart';
 import 'package:teachent_app/view/pages/lesson_date_creation_page/lesson_date_creation_page.dart';
 import 'package:teachent_app/view/pages/search_page/teacher_search_page.dart';
 import 'package:teachent_app/view/pages/settings_page/settings_page.dart';
@@ -42,7 +40,9 @@ class TeacherHomePageController extends BaseController {
   }
 
   Future<void> _initLessons() async {
-    final foundLessons = await dataManager.database.getLessonsByDates(teacher?.lessonDates ?? []);
+    lessons.clear();
+    final foundLessons = await dataManager.database
+        .getLessonsByDates(teacher?.lessonDates ?? []);
     if (foundLessons.isEmpty) {
       print('No lessons found');
     }
@@ -50,7 +50,9 @@ class TeacherHomePageController extends BaseController {
   }
 
   Future<void> _initStudents() async {
-    final foundStudents = await dataManager.database.getStudentsByDates(teacher?.lessonDates ?? []);
+    students.clear();
+    final foundStudents = await dataManager.database
+        .getStudentsByDates(teacher?.lessonDates ?? []);
     if (foundStudents.isEmpty) {
       print('No students found');
     }
@@ -58,11 +60,14 @@ class TeacherHomePageController extends BaseController {
   }
 
   Future<void> _initDates() async {
-    final foundLessonDates = await dataManager.database.getLessonDates(teacher?.lessonDates ?? []);
+    lessonDates.clear();
+    final foundLessonDates =
+        await dataManager.database.getLessonDates(teacher?.lessonDates ?? []);
     if (foundLessonDates.isEmpty) {
       print('No dates found');
     }
     lessonDates.addAll(foundLessonDates);
+    print('Date size: ${lessonDates.length}');
   }
 
   String get searchName => 'Search students';
@@ -90,8 +95,8 @@ class TeacherHomePageController extends BaseController {
   }
 
   Future<void> goToLessonPageCreationPage(BuildContext context) async {
-    final wasRequestAdded = await Navigator.of(context)
-        .push(MaterialPageRoute(builder: (_) => LessonDateCreationPage(teacher!)));
+    final wasRequestAdded = await Navigator.of(context).push(
+        MaterialPageRoute(builder: (_) => LessonDateCreationPage(teacher!)));
     if (wasRequestAdded != null) {
       refresh();
     }

@@ -213,7 +213,8 @@ class _StudentSearchPageState extends State<StudentSearchPage> {
                 itemBuilder: (context, index) {
                   return TeacherCardWidget(
                       teacher: _searchPageController.teachers[index],
-                      onPressed: () => _searchPageController.goToProfilePage(context, index));
+                      onPressed: () => _searchPageController.goToProfilePage(
+                          context, index));
                 }),
           ],
         ),

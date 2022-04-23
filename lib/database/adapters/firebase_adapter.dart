@@ -51,7 +51,7 @@ class FirebaseRealTimeDatabaseAdapter {
 
     if (!isKeyExists) {
       print('[FirebaseAdapter] No login found');
-      return {};
+      return {'error': 'login'};
     }
 
     if (foundEventValue == null) {
@@ -71,7 +71,7 @@ class FirebaseRealTimeDatabaseAdapter {
 
     if (!comparsionResult) {
       print('[FirebaseAdapter] Password does not match');
-      return {};
+      return {'error': 'password'};
     }
     return foundEventValue;
   }
@@ -123,7 +123,7 @@ class FirebaseRealTimeDatabaseAdapter {
     DatabaseReference databaseReference =
         FirebaseDatabase.instance.ref().child(collectionName);
 
-    final newKey = await databaseReference.push().key;
+    final newKey = databaseReference.push().key;
     if (newKey == null) {
       return DatabaseConsts.emptyKey;
     }

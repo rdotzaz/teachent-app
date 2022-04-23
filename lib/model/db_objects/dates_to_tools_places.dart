@@ -10,12 +10,10 @@ class DatesToToolsPlacesMap extends DatabaseObject {
   final List<Tool> tools;
   final List<Place> places;
 
-  DatesToToolsPlacesMap(
-      this.lessonDateId,
-      this.tools,
-      this.places);
+  DatesToToolsPlacesMap(this.lessonDateId, this.tools, this.places);
 
-  factory DatesToToolsPlacesMap.fromMap(KeyId lessonDateId, Map<dynamic, dynamic> values) {
+  factory DatesToToolsPlacesMap.fromMap(
+      KeyId lessonDateId, Map<dynamic, dynamic> values) {
     return DatesToToolsPlacesMap(
         lessonDateId,
         (values['tools'] as Map<dynamic, dynamic>)

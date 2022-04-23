@@ -315,7 +315,9 @@ class TeacherProfilePage extends StatelessWidget {
                               CustomButton(
                                   text: 'More',
                                   fontSize: 18,
-                                  onPressed: () {},
+                                  onPressed: () =>
+                                      _teacherProfilePageController!
+                                          .goToRequestPage(context, index),
                                   buttonColor: Colors.blue[600]!),
                             ]));
                     return Container(

@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:teachent_app/controller/pages/lesson_date_creation/lesson_date_creation_controller.dart';
+import 'package:teachent_app/controller/pages/lesson_date_creation/bloc/freq_bloc.dart';
+import 'package:teachent_app/controller/pages/lesson_date_creation/bloc/tool_bloc.dart';
+import 'package:teachent_app/controller/pages/lesson_date_creation/bloc/place_bloc.dart';
 import 'package:teachent_app/model/db_objects/teacher.dart';
 import 'package:teachent_app/view/widgets/black_input_decorator.dart';
 import 'package:teachent_app/view/widgets/custom_button.dart';
@@ -31,12 +35,18 @@ class _LessonDateCreationPageState extends State<LessonDateCreationPage> {
   @override
   Widget build(BuildContext context) {
     final windowSize = MediaQuery.of(context).size;
-    return Scaffold(
-        body: SingleChildScrollView(
-            child: Column(children: [
-      _lessonCreationHeader(windowSize.height),
-      _form(context)
-    ])));
+    return MultiBlocProvider(
+        providers: [
+          BlocProvider(create: (_) => _lessonDateCreationController.freqBloc),
+          BlocProvider(create: (_) => _lessonDateCreationController.toolBloc),
+          BlocProvider(create: (_) => _lessonDateCreationController.placeBloc),
+        ],
+        child: Scaffold(
+            body: SingleChildScrollView(
+                child: Column(children: [
+          _lessonCreationHeader(windowSize.height),
+          _form(context)
+        ]))));
   }
 
   Widget _lessonCreationHeader(double height) {
@@ -123,45 +133,29 @@ class _LessonDateCreationPageState extends State<LessonDateCreationPage> {
   }
 
   Widget _cycledSelecting() {
-    return Column(children: [
-      Row(children: [
-        Checkbox(
-          checkColor: Colors.white,
-          value: _lessonDateCreationController.isCycled,
-          fillColor: MaterialStateProperty.resolveWith(
-              _lessonDateCreationController.getCycledCheckBoxColor),
-          onChanged: (value) =>
-              _lessonDateCreationController.toggleCycleCheck(value),
-        ),
-        Container(
-          alignment: Alignment.centerLeft,
-          padding: const EdgeInsets.all(5.0),
-          child: const Text(
-            'Lesson cycled',
-            style: TextStyle(fontSize: 16, color: Colors.black),
+    return BlocBuilder<FrequencyBloc, int>(builder: (context, _) {
+      return Column(children: [
+        Row(children: [
+          Checkbox(
+            checkColor: Colors.white,
+            value: _lessonDateCreationController.isCycled,
+            fillColor: MaterialStateProperty.resolveWith(
+                _lessonDateCreationController.getCycledCheckBoxColor),
+            onChanged: (value) =>
+                context.read<FrequencyBloc>().add(ToggleCycleModeEvent()),
           ),
-        )
-      ]),
-      if (_lessonDateCreationController.isCycled) _cycledList()
-    ]);
-    return Row(children: [
-      Checkbox(
-        checkColor: Colors.white,
-        value: _lessonDateCreationController.isCycled,
-        fillColor: MaterialStateProperty.resolveWith(
-            _lessonDateCreationController.getCycledCheckBoxColor),
-        onChanged: (value) =>
-            _lessonDateCreationController.toggleCycleCheck(value),
-      ),
-      Container(
-        alignment: Alignment.centerLeft,
-        padding: const EdgeInsets.all(5.0),
-        child: const Text(
-          'Lesson cycled',
-          style: TextStyle(fontSize: 16, color: Colors.black),
-        ),
-      )
-    ]);
+          Container(
+            alignment: Alignment.centerLeft,
+            padding: const EdgeInsets.all(5.0),
+            child: const Text(
+              'Lesson cycled',
+              style: TextStyle(fontSize: 16, color: Colors.black),
+            ),
+          )
+        ]),
+        if (_lessonDateCreationController.isCycled) _cycledList()
+      ]);
+    });
   }
 
   Widget _cycledList() {
@@ -185,25 +179,28 @@ class _LessonDateCreationPageState extends State<LessonDateCreationPage> {
         Container(
             height: 50,
             padding: const EdgeInsets.all(5),
-            child: ListView.builder(
-                scrollDirection: Axis.horizontal,
-                itemCount:
-                    _lessonDateCreationController.lessonFrequencies.length,
-                itemBuilder: (_, index) {
-                  final isSelected =
-                      _lessonDateCreationController.isFreqSelected(index);
-                  return ActionChip(
-                      padding: const EdgeInsets.all(10.0),
-                      label: Text(
-                          _lessonDateCreationController
-                              .lessonFrequencies[index],
-                          style: TextStyle(
-                              fontSize: 14,
-                              color: isSelected ? Colors.white : Colors.black)),
-                      backgroundColor: isSelected ? Colors.blue : Colors.grey,
-                      onPressed: () =>
-                          _lessonDateCreationController.toggleFreq(index));
-                }))
+            child: BlocBuilder<FrequencyBloc, int>(builder: (_, selectedIndex) {
+              return ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  itemCount:
+                      _lessonDateCreationController.lessonFrequencies.length,
+                  itemBuilder: (context, index) {
+                    final isSelected = selectedIndex == index;
+                    return ActionChip(
+                        padding: const EdgeInsets.all(10.0),
+                        label: Text(
+                            _lessonDateCreationController
+                                .lessonFrequencies[index],
+                            style: TextStyle(
+                                fontSize: 14,
+                                color:
+                                    isSelected ? Colors.white : Colors.black)),
+                        backgroundColor: isSelected ? Colors.blue : Colors.grey,
+                        onPressed: () => context
+                            .read<FrequencyBloc>()
+                            .add(ToggleFreqencyEvent(index)));
+                  });
+            }))
       ]),
     );
   }
@@ -288,22 +285,25 @@ class _LessonDateCreationPageState extends State<LessonDateCreationPage> {
         Container(
             height: 50,
             padding: const EdgeInsets.all(5),
-            child: ListView.builder(
-                scrollDirection: Axis.horizontal,
-                itemCount: _lessonDateCreationController.tools.length,
-                itemBuilder: (_, index) {
-                  final tool = _lessonDateCreationController.tools[index];
-                  return ActionChip(
-                      padding: const EdgeInsets.all(10.0),
-                      label: Text(tool.name,
-                          style: TextStyle(
-                              fontSize: 14,
-                              color:
-                                  tool.marked ? Colors.white : Colors.black)),
-                      backgroundColor: tool.marked ? Colors.blue : Colors.grey,
-                      onPressed: () =>
-                          _lessonDateCreationController.toggleTool(index));
-                }))
+            child: BlocBuilder<ToolBloc, List<bool>>(builder: (_, indexes) {
+              return ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: _lessonDateCreationController.tools.length,
+                  itemBuilder: (context, index) {
+                    final isMarked = indexes[index];
+                    final tool = _lessonDateCreationController.tools[index];
+                    return ActionChip(
+                        padding: const EdgeInsets.all(10.0),
+                        label: Text(tool.name,
+                            style: TextStyle(
+                                fontSize: 14,
+                                color: isMarked ? Colors.white : Colors.black)),
+                        backgroundColor: isMarked ? Colors.blue : Colors.grey,
+                        onPressed: () => context
+                            .read<ToolBloc>()
+                            .add(ToggleToolEvent(index)));
+                  });
+            }))
       ]),
     );
   }
@@ -339,22 +339,25 @@ class _LessonDateCreationPageState extends State<LessonDateCreationPage> {
         Container(
             height: 50,
             padding: const EdgeInsets.all(5),
-            child: ListView.builder(
-                scrollDirection: Axis.horizontal,
-                itemCount: _lessonDateCreationController.places.length,
-                itemBuilder: (_, index) {
-                  final place = _lessonDateCreationController.places[index];
-                  return ActionChip(
-                      padding: const EdgeInsets.all(10.0),
-                      label: Text(place.name,
-                          style: TextStyle(
-                              fontSize: 14,
-                              color:
-                                  place.marked ? Colors.white : Colors.black)),
-                      backgroundColor: place.marked ? Colors.blue : Colors.grey,
-                      onPressed: () =>
-                          _lessonDateCreationController.togglePlace(index));
-                }))
+            child: BlocBuilder<PlaceBloc, List<bool>>(builder: (_, indexes) {
+              return ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: _lessonDateCreationController.places.length,
+                  itemBuilder: (context, index) {
+                    final isMarked = indexes[index];
+                    final place = _lessonDateCreationController.places[index];
+                    return ActionChip(
+                        padding: const EdgeInsets.all(10.0),
+                        label: Text(place.name,
+                            style: TextStyle(
+                                fontSize: 14,
+                                color: isMarked ? Colors.white : Colors.black)),
+                        backgroundColor: isMarked ? Colors.blue : Colors.grey,
+                        onPressed: () => context
+                            .read<PlaceBloc>()
+                            .add(TogglePlaceEvent(index)));
+                  });
+            }))
       ]),
     );
   }
