@@ -30,7 +30,7 @@ mixin LessonDateDatabaseMethods {
         await FirebaseRealTimeDatabaseAdapter.addDatabaseObjectWithNewKey(
             DatabaseObjectName.lessonDates, lessonDate.toMap());
 
-    if (key != null) {
+    if (key != DatabaseConsts.emptyKey) {
       print('LessonDate has been added');
     }
     return key;

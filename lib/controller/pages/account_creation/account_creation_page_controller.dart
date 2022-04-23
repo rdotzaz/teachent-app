@@ -5,7 +5,6 @@ import 'package:teachent_app/model/db_objects/student.dart';
 import 'package:teachent_app/model/db_objects/teacher.dart';
 import 'package:teachent_app/model/db_objects/user.dart';
 import 'package:teachent_app/view/pages/welcome_page/welcome_page.dart';
-import 'package:teachent_app/view/widgets/status_bottom_sheet.dart';
 
 class AccountCreationPageController extends BaseController {
   final DatabaseObject dbObject;

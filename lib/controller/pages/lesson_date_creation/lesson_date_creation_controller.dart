@@ -7,7 +7,6 @@ import 'package:teachent_app/controller/pages/lesson_date_creation/bloc/tool_blo
 import 'package:teachent_app/controller/pages/lesson_date_creation/bloc/place_bloc.dart';
 import 'package:teachent_app/model/db_objects/lesson_date.dart';
 import 'package:teachent_app/model/db_objects/teacher.dart';
-import 'package:teachent_app/model/objects/topic.dart';
 import 'package:teachent_app/model/objects/tool.dart';
 import 'package:teachent_app/model/objects/place.dart';
 
@@ -149,8 +148,6 @@ class LessonDateCreationPageController extends BaseController {
   }
 
   Future<void> validateForm(BuildContext context) async {
-    print('LessonDate: ${date}, ${time(context)}, ${lessonDuration}, ${price}');
-
     final toolIndexes = toolBloc.state;
     final placeIndexes = placeBloc.state;
 

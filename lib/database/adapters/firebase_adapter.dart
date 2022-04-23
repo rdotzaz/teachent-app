@@ -123,7 +123,7 @@ class FirebaseRealTimeDatabaseAdapter {
     DatabaseReference databaseReference =
         FirebaseDatabase.instance.ref().child(collectionName);
 
-    final newKey = await databaseReference.push().key;
+    final newKey = databaseReference.push().key;
     if (newKey == null) {
       return DatabaseConsts.emptyKey;
     }
