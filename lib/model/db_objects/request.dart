@@ -27,7 +27,7 @@ class Request extends DatabaseObject {
       : lessonDateId = values['lessonDateId'] ?? '',
         teacherId = values['teacherId'] ?? '',
         studentId = values['studentId'] ?? '',
-        status = values['status'] ?? -1,
+        status = getStatusByValue(values['status'] ?? -1),
         topic = Topic(values['topic']['name'] ?? '', true),
         requestedDate = values['requestedDate'] ?? '',
         teacherMessages =

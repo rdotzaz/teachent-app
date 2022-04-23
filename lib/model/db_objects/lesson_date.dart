@@ -49,7 +49,7 @@ class LessonDate extends DatabaseObject {
         weekday = values['weekDay'] ?? '',
         hourTime = values['hourTime'] ?? '',
         isCycled = values['isCycled'] ?? false,
-        cycleType = values['cycleType'] ?? -1,
+        cycleType = getCycleByValue(values['cycleType'] ?? -1),
         price = values['price'] ?? '',
         tools = DatabaseObject.getMapFromField(values, 'tools')
             .entries

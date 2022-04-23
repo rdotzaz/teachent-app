@@ -142,22 +142,6 @@ class LessonDateCreationPageController extends BaseController {
     return Colors.blue;
   }
 
-  CycleType _getCycleByValue(int value) {
-    if (value == 0) {
-      return CycleType.single;
-    }
-    if (value == 1) {
-      return CycleType.daily;
-    }
-    if (value == 2) {
-      return CycleType.weekly;
-    }
-    if (value == 3) {
-      return CycleType.biweekly;
-    }
-    return CycleType.monthly;
-  }
-
   Future<void> validateForm(BuildContext context) async {
     print('LessonDate: ${date}, ${time(context)}, ${lessonDuration}, ${price}');
 
@@ -171,7 +155,7 @@ class LessonDateCreationPageController extends BaseController {
     final places = _places.where((p) => p.marked).toList();
 
     final lessonDate = LessonDate.init(
-        teacher.userId, date, time(context), isCycled, _getCycleByValue(freqBloc.state), price, tools, places);
+        teacher.userId, date, time(context), isCycled, getCycleByValue(freqBloc.state), price, tools, places);
 
     final lessonDateKey = await dataManager.database.addLessonDate(lessonDate);
     await dataManager.database

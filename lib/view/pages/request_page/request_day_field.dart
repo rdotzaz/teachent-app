@@ -17,10 +17,9 @@ class RequestDayField extends StatelessWidget {
                 await requestPageController.enableDatePicker(context);
                 context.read<RequestDayBloc>().add(ToggleRequestDayField());
             },
-            child: Expanded(
-                child: Text(
+            child: Text(
                     requestPageController.reqestedDate,
-                    style: const TextStyle(fontSize: 18, color: Colors.black))),
+                    style: const TextStyle(fontSize: 18, color: Colors.black)),
         ),
         CustomButton(
               text: 'Cancel',

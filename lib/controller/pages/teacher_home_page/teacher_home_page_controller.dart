@@ -69,6 +69,7 @@ class TeacherHomePageController extends BaseController {
       print('No dates found');
     }
     lessonDates.addAll(foundLessonDates);
+    print('Date size: ${lessonDates.length}');
   }
 
   String get searchName => 'Search students';

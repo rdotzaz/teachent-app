@@ -13,7 +13,7 @@ mixin LessonDateDatabaseMethods {
     return LessonDate.fromMap(lessonDateId, dateValues);
   }
 
-  Future<Iterable<LessonDate>> getLessonDates(List<KeyId> lessonDateIds) async {
+  Future<List<LessonDate>> getLessonDates(List<KeyId> lessonDateIds) async {
     final dates = <LessonDate>[];
     for (final lessonDateId in lessonDateIds) {
       final lessonDate = await getLessonDate(lessonDateId);

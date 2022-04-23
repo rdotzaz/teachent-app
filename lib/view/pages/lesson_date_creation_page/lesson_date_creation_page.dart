@@ -293,7 +293,7 @@ class _LessonDateCreationPageState extends State<LessonDateCreationPage> {
                 return ListView.builder(
                   scrollDirection: Axis.horizontal,
                   itemCount: _lessonDateCreationController.tools.length,
-                  itemBuilder: (_, index) {
+                  itemBuilder: (context, index) {
                     final isMarked = indexes[index];
                     final tool = _lessonDateCreationController.tools[index];
                     return ActionChip(
@@ -349,7 +349,7 @@ class _LessonDateCreationPageState extends State<LessonDateCreationPage> {
                 return ListView.builder(
                   scrollDirection: Axis.horizontal,
                   itemCount: _lessonDateCreationController.places.length,
-                  itemBuilder: (_, index) {
+                  itemBuilder: (context, index) {
                     final isMarked = indexes[index];
                     final place = _lessonDateCreationController.places[index];
                     return ActionChip(
