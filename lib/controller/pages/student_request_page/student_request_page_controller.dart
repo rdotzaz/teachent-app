@@ -2,7 +2,7 @@ import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:teachent_app/common/enums.dart';
 import 'package:teachent_app/controller/controller.dart';
-import 'package:teachent_app/controller/pages/request_page/bloc/request_topic_bloc.dart';
+import 'package:teachent_app/controller/pages/student_request_page/bloc/request_topic_bloc.dart';
 import 'package:teachent_app/model/db_objects/db_object.dart';
 import 'package:teachent_app/model/db_objects/lesson_date.dart';
 import 'package:teachent_app/model/db_objects/request.dart';
@@ -12,7 +12,7 @@ import 'package:teachent_app/model/objects/topic.dart';
 import 'package:teachent_app/model/objects/place.dart';
 import 'package:teachent_app/view/widgets/status_bottom_sheet.dart';
 
-class RequestPageController extends BaseController {
+class StudentRequestPageController extends BaseController {
   KeyId? requestId;
   KeyId? studentId;
   Teacher? teacher;
@@ -25,9 +25,9 @@ class RequestPageController extends BaseController {
 
   late RequestTopicBloc requestTopicBloc;
 
-  RequestPageController(
+  StudentRequestPageController(
       this.requestId, this.studentId, this.teacher, this.lessonDate) {
-        requestTopicBloc = RequestTopicBloc(this);
+    requestTopicBloc = RequestTopicBloc(this);
   }
 
   @override
@@ -126,10 +126,11 @@ class RequestPageController extends BaseController {
   }
 
   Color getStatusColor() {
-    if(request == null) {
+    if (request == null) {
       return Colors.white;
     }
-    if (request!.status == RequestStatus.newReq || request!.status == RequestStatus.waiting) {
+    if (request!.status == RequestStatus.newReq ||
+        request!.status == RequestStatus.waiting) {
       return Colors.blue;
     }
     if (request!.status == RequestStatus.responded) {
@@ -148,24 +149,27 @@ class RequestPageController extends BaseController {
     if (request == null) {
       return false;
     }
-    return (request!.status == RequestStatus.waiting && request!.requestedDate.isNotEmpty)
-        ||  (request!.status == RequestStatus.responded && request!.requestedDate.isEmpty);
+    return (request!.status == RequestStatus.waiting &&
+            request!.requestedDate.isNotEmpty) ||
+        (request!.status == RequestStatus.responded &&
+            request!.requestedDate.isEmpty);
   }
 
   String getStatusAdditionalInfo() {
     String message = '';
-    if (request!.status == RequestStatus.waiting && request!.requestedDate.isNotEmpty) {
+    if (request!.status == RequestStatus.waiting &&
+        request!.requestedDate.isNotEmpty) {
       message = 'Request date: ${request!.requestedDate}';
     }
-    if (request!.status == RequestStatus.responded && request!.requestedDate.isEmpty) {
-      message = 'Teacher did not accept\nyour request date: ${request!.requestedDate}';
+    if (request!.status == RequestStatus.responded &&
+        request!.requestedDate.isEmpty) {
+      message =
+          'Teacher did not accept\nyour request date: ${request!.requestedDate}';
     }
     return message;
   }
 
-  Future<void> sendResponse(BuildContext context) async {
-
-  }
+  Future<void> sendResponse(BuildContext context) async {}
 
   Future<void> sendRequest(BuildContext context) async {
     if (topicIndex == -1) {

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:teachent_app/controller/pages/request_page/request_page_controller.dart';
-import 'package:teachent_app/controller/pages/request_page/bloc/request_day_bloc.dart';
+import 'package:teachent_app/controller/pages/student_request_page/student_request_page_controller.dart';
+import 'package:teachent_app/controller/pages/student_request_page/bloc/request_day_bloc.dart';
 import 'package:teachent_app/view/widgets/custom_button.dart';
 
 class RequestDayField extends StatelessWidget {
-  final RequestPageController requestPageController;
+  final StudentRequestPageController requestPageController;
   const RequestDayField(this.requestPageController, {Key? key})
       : super(key: key);
 

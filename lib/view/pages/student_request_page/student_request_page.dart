@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:teachent_app/common/enums.dart';
-import 'package:teachent_app/controller/pages/request_page/request_page_controller.dart';
-import 'package:teachent_app/controller/pages/request_page/bloc/request_day_bloc.dart';
-import 'package:teachent_app/controller/pages/request_page/bloc/request_topic_bloc.dart';
+import 'package:teachent_app/controller/pages/student_request_page/student_request_page_controller.dart';
+import 'package:teachent_app/controller/pages/student_request_page/bloc/request_day_bloc.dart';
+import 'package:teachent_app/controller/pages/student_request_page/bloc/request_topic_bloc.dart';
 import 'package:teachent_app/model/db_objects/db_object.dart';
 import 'package:teachent_app/model/db_objects/lesson_date.dart';
 import 'package:teachent_app/model/db_objects/teacher.dart';
@@ -11,8 +11,8 @@ import 'package:teachent_app/view/widgets/custom_button.dart';
 
 import 'confirm_button.dart';
 
-class RequestPage extends StatelessWidget {
-  RequestPage(
+class StudentRequestPage extends StatelessWidget {
+  StudentRequestPage(
       {KeyId? requestId,
       KeyId? studentId,
       Teacher? teacher,
@@ -20,10 +20,10 @@ class RequestPage extends StatelessWidget {
       Key? key})
       : super(key: key) {
     _requestPageController =
-        RequestPageController(requestId, studentId, teacher, lessonDate);
+        StudentRequestPageController(requestId, studentId, teacher, lessonDate);
   }
 
-  RequestPageController? _requestPageController;
+  StudentRequestPageController? _requestPageController;
   double width = 0;
 
   @override
@@ -231,34 +231,25 @@ class RequestPage extends StatelessWidget {
 
   Widget _checkStatus() {
     return Container(
-      width: width,
-      color: _requestPageController!.getStatusColor(),
-      child: Column(
-        children: [
+        width: width,
+        color: _requestPageController!.getStatusColor(),
+        child: Column(children: [
           Padding(
-            padding: const EdgeInsets.fromLTRB(0, 80, 0, 8),
-            child: Text(
-                _requestPageController!.request?.status.stringValue ?? '',
-                style: const TextStyle(fontSize: 18, color: Colors.white) 
-            )
-          ),
-          if (_requestPageController!.canCheckStatus && _requestPageController!.hasAdditionalInfo())
-            Padding(
-              padding: const EdgeInsets.fromLTRB(0, 5, 0, 8),
+              padding: const EdgeInsets.fromLTRB(0, 80, 0, 8),
               child: Text(
-                  _requestPageController!.getStatusAdditionalInfo(),
-                  style: const TextStyle(fontSize: 18, color: Colors.white) 
-              )
-            ),
-        ]
-      )
-    );
-  } 
+                  _requestPageController!.request?.status.stringValue ?? '',
+                  style: const TextStyle(fontSize: 18, color: Colors.white))),
+          if (_requestPageController!.canCheckStatus &&
+              _requestPageController!.hasAdditionalInfo())
+            Padding(
+                padding: const EdgeInsets.fromLTRB(0, 5, 0, 8),
+                child: Text(_requestPageController!.getStatusAdditionalInfo(),
+                    style: const TextStyle(fontSize: 18, color: Colors.white))),
+        ]));
+  }
 
   Widget _sendRequestButton() {
-    return ConfirmButton(
-      controller: _requestPageController!
-    );
+    return ConfirmButton(controller: _requestPageController!);
   }
 
   Widget _errorWidget(String errorMessage) {

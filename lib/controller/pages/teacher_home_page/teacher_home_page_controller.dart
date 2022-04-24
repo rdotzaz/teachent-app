@@ -9,6 +9,7 @@ import 'package:teachent_app/model/db_objects/teacher.dart';
 import 'package:teachent_app/view/pages/lesson_date_creation_page/lesson_date_creation_page.dart';
 import 'package:teachent_app/view/pages/search_page/teacher_search_page.dart';
 import 'package:teachent_app/view/pages/settings_page/settings_page.dart';
+import 'package:teachent_app/view/pages/teacher_request_page/teacher_request_page.dart';
 
 class TeacherHomePageController extends BaseController {
   final KeyId userId;
@@ -37,6 +38,7 @@ class TeacherHomePageController extends BaseController {
     await _initLessons();
     await _initStudents();
     await _initDates();
+    await _initRequests();
   }
 
   Future<void> _initLessons() async {
@@ -70,6 +72,16 @@ class TeacherHomePageController extends BaseController {
     print('Date size: ${lessonDates.length}');
   }
 
+  Future<void> _initRequests() async {
+    requests.clear();
+    final foundRequests =
+        await dataManager.database.getRequests(teacher?.requests ?? []);
+    if (foundRequests.isEmpty) {
+      print('No requests found');
+    }
+    requests.addAll(foundRequests);
+  }
+
   String get searchName => 'Search students';
   String get teacherName => teacher?.name ?? '';
   bool get areLessons => lessons.isNotEmpty;
@@ -100,5 +112,14 @@ class TeacherHomePageController extends BaseController {
     if (wasRequestAdded != null) {
       refresh();
     }
+  }
+
+  Future<void> goToRequestPage(BuildContext context, int requestIndex) async {
+    final request = requests[requestIndex];
+
+    await Navigator.of(context).push(MaterialPageRoute(
+        builder: (_) => TeacherRequestPage(
+            request: request, teacherId: teacher?.userId ?? '')));
+    refresh();
   }
 }
