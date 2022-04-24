@@ -21,6 +21,7 @@ class RequestPageController extends BaseController {
 
   DateTime? otherDate;
   int topicIndex = -1;
+  bool hasChangesProvided = false;
 
   late RequestTopicBloc requestTopicBloc;
 
@@ -143,8 +144,36 @@ class RequestPageController extends BaseController {
     return Colors.black;
   }
 
+  bool hasAdditionalInfo() {
+    if (request == null) {
+      return false;
+    }
+    return (request!.status == RequestStatus.waiting && request!.requestedDate.isNotEmpty)
+        ||  (request!.status == RequestStatus.responded && request!.requestedDate.isEmpty);
+  }
+
+  String getStatusAdditionalInfo() {
+    String message = '';
+    if (request!.status == RequestStatus.waiting && request!.requestedDate.isNotEmpty) {
+      message = 'Request date: ${request!.requestedDate}';
+    }
+    if (request!.status == RequestStatus.responded && request!.requestedDate.isEmpty) {
+      message = 'Teacher did not accept\nyour request date: ${request!.requestedDate}';
+    }
+    return message;
+  }
+
+  Future<void> sendResponse(BuildContext context) async {
+
+  }
+
   Future<void> sendRequest(BuildContext context) async {
-    final newDate = otherDate != null ? reqestedDate : date;
+    if (topicIndex == -1) {
+      showErrorMessage(context, 'Topic must be selected');
+      return;
+    }
+
+    final newDate = otherDate != null ? reqestedDate : '';
 
     request = Request.noKey(
         lessonDate?.lessonDateId ?? '',

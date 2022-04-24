@@ -9,6 +9,8 @@ import 'package:teachent_app/model/db_objects/lesson_date.dart';
 import 'package:teachent_app/model/db_objects/teacher.dart';
 import 'package:teachent_app/view/widgets/custom_button.dart';
 
+import 'confirm_button.dart';
+
 class RequestPage extends StatelessWidget {
   RequestPage(
       {KeyId? requestId,
@@ -39,16 +41,16 @@ class RequestPage extends StatelessWidget {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return const CircularProgressIndicator();
                   } else if (snapshot.connectionState == ConnectionState.done) {
-                    return _mainWidget(context);
+                    return _mainWidget();
                   }
                   return _errorWidget(snapshot.error.toString());
                 })));
   }
 
-  Widget _mainWidget(BuildContext context) {
+  Widget _mainWidget() {
     return SingleChildScrollView(
         child: Column(children: [
-      if (_requestPageController!.canCheckStatus) _checkStatus(),
+      _checkStatus(),
       Padding(
           padding: const EdgeInsets.all(15),
           child: Text('Name: ${_requestPageController!.teacherName}',
@@ -74,7 +76,7 @@ class RequestPage extends StatelessWidget {
       _topicSelecting(),
       _studentMessage(),
       if (_requestPageController!.hasTeacherMessage) _teacherMessage(),
-      if (_requestPageController!.canSendRequest) _sendRequestButton(context)
+      if (_requestPageController!.canSendRequest) _sendRequestButton()
     ]));
   }
 
@@ -235,28 +237,28 @@ class RequestPage extends StatelessWidget {
         children: [
           Padding(
             padding: const EdgeInsets.fromLTRB(0, 80, 0, 8),
-            child: Chip(
-              label: Text(
-                _requestPageController!.request!.status.stringValue,
+            child: Text(
+                _requestPageController!.request?.status.stringValue ?? '',
                 style: const TextStyle(fontSize: 18, color: Colors.white) 
-              ),
-              padding: const EdgeInsets.all(8),
-              backgroundColor: _requestPageController!.getStatusColor()
             )
-          )
+          ),
+          if (_requestPageController!.canCheckStatus && _requestPageController!.hasAdditionalInfo())
+            Padding(
+              padding: const EdgeInsets.fromLTRB(0, 5, 0, 8),
+              child: Text(
+                  _requestPageController!.getStatusAdditionalInfo(),
+                  style: const TextStyle(fontSize: 18, color: Colors.white) 
+              )
+            ),
         ]
       )
     );
   } 
 
-  Widget _sendRequestButton(BuildContext context) {
-    return Container(
-        margin: const EdgeInsets.all(15),
-        child: CustomButton(
-            text: 'Send request for lesson',
-            fontSize: 18,
-            onPressed: () => _requestPageController!.sendRequest(context),
-            buttonColor: Colors.green));
+  Widget _sendRequestButton() {
+    return ConfirmButton(
+      controller: _requestPageController!
+    );
   }
 
   Widget _errorWidget(String errorMessage) {
