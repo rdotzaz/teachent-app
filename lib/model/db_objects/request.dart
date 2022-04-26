@@ -1,6 +1,7 @@
 import 'package:teachent_app/common/consts.dart'
     show DatabaseConsts, DatabaseObjectName;
 import 'package:teachent_app/common/enums.dart';
+import 'package:teachent_app/common/enum_functions.dart';
 import 'package:teachent_app/model/db_objects/db_object.dart';
 import 'package:teachent_app/model/objects/message.dart';
 import 'package:teachent_app/model/objects/topic.dart';
@@ -12,6 +13,7 @@ class Request extends DatabaseObject {
   final KeyId studentId;
   final RequestStatus status;
   final Topic topic;
+  final RequestedDateStatus dateStatus;
   final String requestedDate;
   final List<MessageRecord> teacherMessages;
   final List<MessageRecord> studentMessages;
@@ -23,6 +25,7 @@ class Request extends DatabaseObject {
       this.studentId,
       this.status,
       this.topic,
+      this.dateStatus,
       this.requestedDate,
       this.teacherMessages,
       this.studentMessages);
@@ -33,6 +36,7 @@ class Request extends DatabaseObject {
       this.studentId,
       this.status,
       this.topic,
+      this.dateStatus,
       this.requestedDate,
       this.teacherMessages,
       this.studentMessages)
@@ -42,8 +46,9 @@ class Request extends DatabaseObject {
       : lessonDateId = values['lessonDateId'] ?? '',
         teacherId = values['teacherId'] ?? '',
         studentId = values['studentId'] ?? '',
-        status = getStatusByValue(values['status'] ?? -1),
+        status = getRequestStatusByValue(values['status'] ?? -1),
         topic = Topic(values['topic'].keys.firstWhere((_) => true) ?? '', true),
+        dateStatus = getRequestedDateStatusByValue(values['dateStatus'] ?? -1),
         requestedDate = values['requestedDate'] ?? '',
         teacherMessages =
             DatabaseObject.getMapFromField(values, 'teacherMessages')
