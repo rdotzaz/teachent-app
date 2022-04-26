@@ -28,12 +28,13 @@ class OtherDayWidget extends StatelessWidget {
                             child: Row(
                                 children: [
                                     Padding(
-                                        padding: const EdgeInsets.all(8),
+                                        padding: const EdgeInsets.all(12),
                                         child: Text(
                                             controller.requestedDate,
                                             style: const TextStyle(color: Colors.black, fontSize: 18))),
+                                    const SizedBox(width: 50),
                                     CustomButton(
-                                        text: !wasRejected ? 'Reject date' : 'Restore recjeted date',
+                                        text: wasRejected ? 'Restore recjeted date' : 'Reject date',
                                         onPressed: () => context.read<RefreshBloc>().add(wasRejected ? RestoreDateEvent() : RejectDateEvent()),
                                         fontSize: 18,
                                         buttonColor: Colors.blue,

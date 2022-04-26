@@ -22,6 +22,14 @@ class RequestDayField extends StatelessWidget {
               style: const TextStyle(fontSize: 18, color: Colors.black)),
         ),
         CustomButton(
+            text: 'Save',
+            fontSize: 14,
+            onPressed: () {
+              requestPageController.saveRequestedDate();
+              context.read<RequestDayBloc>().add(ToggleRequestDayButton());
+            },
+            buttonColor: Colors.blue),
+        CustomButton(
             text: 'Cancel',
             fontSize: 14,
             onPressed: () {

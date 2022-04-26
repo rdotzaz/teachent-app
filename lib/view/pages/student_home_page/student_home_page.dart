@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:teachent_app/common/enums.dart';
+import 'package:teachent_app/common/enum_functions.dart';
 import 'package:teachent_app/controller/pages/student_home_page/student_home_page_controller.dart';
 import 'package:teachent_app/model/db_objects/db_object.dart';
 import 'package:teachent_app/view/widgets/single_card.dart';

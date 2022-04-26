@@ -75,6 +75,7 @@ class Request extends DatabaseObject {
       'studentId': studentId,
       'status': status.value,
       'topic': {topic.name: true},
+      'dateStatus': dateStatus.value,
       'requestedDate': requestedDate,
       'teacherMessages': {
         for (final teacherMessage in teacherMessages)

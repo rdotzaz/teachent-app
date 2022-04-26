@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:teachent_app/common/enums.dart';
+import 'package:teachent_app/common/enum_functions.dart';
 import 'package:teachent_app/controller/pages/teacher_request_page/teacher_request_page_controller.dart';
 import 'package:teachent_app/controller/pages/teacher_request_page/bloc/refresh_bloc.dart';
 import 'package:teachent_app/model/db_objects/db_object.dart';
@@ -51,29 +52,11 @@ class TeacherRequestPage extends StatelessWidget {
     return SingleChildScrollView(
         child: Column(children: [
       _checkStatus(),
-      Padding(
-          padding: const EdgeInsets.all(15),
-          child: Text('Name: ${_requestPageController!.studentName}',
-              style: const TextStyle(color: Colors.black, fontSize: 18))),
-      Padding(
-          padding: const EdgeInsets.all(15),
-          child: Text('Date: ${_requestPageController!.date}',
-              style: const TextStyle(color: Colors.black, fontSize: 18))),
-      Padding(
-          padding: const EdgeInsets.all(15),
-          child: Text(
-              _requestPageController!.isCycled
-                  ? 'Lesson is cycled'
-                  : 'One-time lesson',
-              style: const TextStyle(color: Colors.black, fontSize: 18))),
-      Padding(
-          padding: const EdgeInsets.all(15),
-          child: Text('Price: ${_requestPageController!.price}',
-              style: const TextStyle(color: Colors.black, fontSize: 18))),
-      Padding(
-          padding: const EdgeInsets.all(15),
-          child: Text('Topic: ${_requestPageController!.topic}',
-              style: const TextStyle(color: Colors.black, fontSize: 18))),
+      _textLabel('Name: ${_requestPageController!.studentName}'),
+      _textLabel('Date: ${_requestPageController!.date}'),
+      _textLabel(_requestPageController!.isCycled ? 'Lesson is cycled' : 'One-time lesson'),
+      _textLabel('Price: ${_requestPageController!.price}'),
+      _textLabel('Topic: ${_requestPageController!.topic}'),
       if(_requestPageController!.tools.isNotEmpty) _tools(),
       if(_requestPageController!.places.isNotEmpty) _places(),
       if(_requestPageController!.wasOtherDateRequested) OtherDayWidget(controller: _requestPageController!),
@@ -81,6 +64,30 @@ class TeacherRequestPage extends StatelessWidget {
       if (_requestPageController!.hasStudentMessage) _studentMessage(),
       Buttons(controller: _requestPageController!)
     ]));
+  }
+
+  Widget _checkStatus() {
+    return Container(
+        width: width,
+        color: _requestPageController!.getStatusColor(),
+        child: Column(children: [
+          Padding(
+              padding: const EdgeInsets.fromLTRB(0, 80, 0, 8),
+              child: Text(
+                  _requestPageController!.statusInfo,
+                  style: const TextStyle(fontSize: 18, color: Colors.white))),
+          Padding(
+              padding: const EdgeInsets.fromLTRB(0, 5, 0, 8),
+              child: Text(_requestPageController!.additionalInfo,
+                  style: const TextStyle(fontSize: 18, color: Colors.white))),
+        ]));
+  }
+
+  Widget _textLabel(String text) {
+    return Padding(
+          padding: const EdgeInsets.all(10),
+          child: Text(text,
+              style: const TextStyle(color: Colors.black, fontSize: 18)));
   }
 
   Widget _tools() {
@@ -166,24 +173,6 @@ class TeacherRequestPage extends StatelessWidget {
             fontSize: 18,
             onPressed: () {},
             buttonColor: Colors.blue));
-  }
-
-  Widget _checkStatus() {
-    return Container(
-        width: width,
-        color: _requestPageController!.getStatusColor(),
-        child: Column(children: [
-          Padding(
-              padding: const EdgeInsets.fromLTRB(0, 80, 0, 8),
-              child: Text(
-                  _requestPageController!.request.status.stringValue,
-                  style: const TextStyle(fontSize: 18, color: Colors.white))),
-          if (_requestPageController!.hasAdditionalInfo())
-            Padding(
-                padding: const EdgeInsets.fromLTRB(0, 5, 0, 8),
-                child: Text(_requestPageController!.getStatusAdditionalInfo(),
-                    style: const TextStyle(fontSize: 18, color: Colors.white))),
-        ]));
   }
 
   Widget _errorWidget(String errorMessage) {

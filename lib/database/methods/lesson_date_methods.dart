@@ -35,4 +35,8 @@ mixin LessonDateDatabaseMethods {
     }
     return key;
   }
+
+  Future<void> changeLessonDate(KeyId lessonDateId, String newDate) async {
+    await FirebaseRealTimeDatabaseAdapter.updateField(DatabaseObjectName.lessonDates, lessonDateId, 'weekday', newDate);
+  }
 }

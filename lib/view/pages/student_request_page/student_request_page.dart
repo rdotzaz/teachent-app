@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:teachent_app/common/enums.dart';
+import 'package:teachent_app/common/enum_functions.dart';
 import 'package:teachent_app/controller/pages/student_request_page/student_request_page_controller.dart';
 import 'package:teachent_app/controller/pages/student_request_page/bloc/request_day_bloc.dart';
 import 'package:teachent_app/controller/pages/student_request_page/bloc/request_topic_bloc.dart';
@@ -51,33 +52,43 @@ class StudentRequestPage extends StatelessWidget {
     return SingleChildScrollView(
         child: Column(children: [
       _checkStatus(),
-      Padding(
-          padding: const EdgeInsets.all(15),
-          child: Text('Name: ${_requestPageController!.teacherName}',
-              style: const TextStyle(color: Colors.black, fontSize: 18))),
-      Padding(
-          padding: const EdgeInsets.all(15),
-          child: Text('Date: ${_requestPageController!.date}',
-              style: const TextStyle(color: Colors.black, fontSize: 18))),
-      Padding(
-          padding: const EdgeInsets.all(15),
-          child: Text(
-              _requestPageController!.isCycled
-                  ? 'Lesson is cycled'
-                  : 'One-time lesson',
-              style: const TextStyle(color: Colors.black, fontSize: 18))),
-      Padding(
-          padding: const EdgeInsets.all(15),
-          child: Text('Price: ${_requestPageController!.price}',
-              style: const TextStyle(color: Colors.black, fontSize: 18))),
+      _textLabel('Name: ${_requestPageController!.teacherName}'),
+      _textLabel('Date: ${_requestPageController!.date}'),
+      _textLabel(_requestPageController!.isCycled ? 'Lesson is cycled' : 'One-time lesson'),
+      _textLabel('Price: ${_requestPageController!.price}'),
       _tools(),
       _places(),
       _requestDay(),
       _topicSelecting(),
       _studentMessage(),
       if (_requestPageController!.hasTeacherMessage) _teacherMessage(),
-      if (_requestPageController!.canSendRequest) _sendRequestButton()
+      _sendRequestButton()
     ]));
+  }
+
+  Widget _checkStatus() {
+    return Container(
+        width: width,
+        color: _requestPageController!.getStatusColor(),
+        child: Column(children: [
+          Padding(
+              padding: const EdgeInsets.fromLTRB(0, 80, 0, 8),
+              child: Text(
+                  _requestPageController!.statusInfo,
+                  style: const TextStyle(fontSize: 18, color: Colors.white))),
+          if (_requestPageController!.canCheckStatus)
+            Padding(
+                padding: const EdgeInsets.fromLTRB(0, 5, 0, 8),
+                child: Text(_requestPageController!.additionalInfo,
+                    style: const TextStyle(fontSize: 18, color: Colors.white))),
+        ]));
+  }
+
+  Widget _textLabel(String text) {
+    return Padding(
+          padding: const EdgeInsets.all(15),
+          child: Text(text,
+              style: const TextStyle(color: Colors.black, fontSize: 18)));
   }
 
   Widget _tools() {
@@ -229,27 +240,10 @@ class StudentRequestPage extends StatelessWidget {
     return Container();
   }
 
-  Widget _checkStatus() {
-    return Container(
-        width: width,
-        color: _requestPageController!.getStatusColor(),
-        child: Column(children: [
-          Padding(
-              padding: const EdgeInsets.fromLTRB(0, 80, 0, 8),
-              child: Text(
-                  _requestPageController!.request?.status.stringValue ?? '',
-                  style: const TextStyle(fontSize: 18, color: Colors.white))),
-          if (_requestPageController!.canCheckStatus &&
-              _requestPageController!.hasAdditionalInfo())
-            Padding(
-                padding: const EdgeInsets.fromLTRB(0, 5, 0, 8),
-                child: Text(_requestPageController!.getStatusAdditionalInfo(),
-                    style: const TextStyle(fontSize: 18, color: Colors.white))),
-        ]));
-  }
-
   Widget _sendRequestButton() {
-    return ConfirmButton(controller: _requestPageController!);
+    return BlocBuilder<RequestDayBloc, Widget>(builder: (_, __) {
+      return ConfirmButton(controller: _requestPageController!);
+    });
   }
 
   Widget _errorWidget(String errorMessage) {

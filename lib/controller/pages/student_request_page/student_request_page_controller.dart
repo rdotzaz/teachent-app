@@ -1,6 +1,7 @@
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:teachent_app/common/enums.dart';
+import 'package:teachent_app/common/enum_functions.dart';
 import 'package:teachent_app/controller/controller.dart';
 import 'package:teachent_app/controller/pages/student_request_page/bloc/request_topic_bloc.dart';
 import 'package:teachent_app/model/db_objects/db_object.dart';
@@ -78,18 +79,30 @@ class StudentRequestPageController extends BaseController {
     lessonDate = foundDate;
   }
 
+  String get exactDay {
+    final lessonDateExactDay = lessonDate?.weekday ?? '';
+    if (request == null) {
+      return lessonDateExactDay;
+    }
+    if (request!.dateStatus == RequestedDateStatus.accepted) {
+      return request!.requestedDate;
+    }
+    return lessonDateExactDay;
+  }
+
   String get teacherName => teacher?.name ?? '';
   String get date =>
-      '${lessonDate?.weekday ?? ''}, ${lessonDate?.hourTime ?? ''}';
+      '$exactDay, ${lessonDate?.hourTime ?? ''}';
   String get reqestedDate =>
       DateFormat('yyyy-MM-dd').format(otherDate ?? DateTime.now());
+  String get statusInfo => request?.status.stringValue ?? '';
+  String get additionalInfo => request?.dateStatus.stringValue ?? '';
   bool get isCycled => lessonDate?.isCycled ?? false;
   int get price => lessonDate?.price ?? 0;
   List<Tool> get tools => lessonDate?.tools ?? [];
   List<Place> get places => lessonDate?.places ?? [];
   List<Topic> get topics => teacher?.topics ?? [];
   bool get hasTeacherMessage => false;
-  bool get canSendRequest => request == null;
   bool get canCheckStatus => request != null;
 
   Future<void> enableDatePicker(BuildContext context) async {
@@ -113,7 +126,12 @@ class StudentRequestPageController extends BaseController {
     }
   }
 
+  void saveRequestedDate() {
+    hasChangesProvided = true;
+  }
+
   void cancelRequestedDate() {
+    hasChangesProvided = false;
     otherDate = null;
   }
 
@@ -127,7 +145,7 @@ class StudentRequestPageController extends BaseController {
 
   Color getStatusColor() {
     if (request == null) {
-      return Colors.white;
+      return Colors.transparent;
     }
     if (request!.status == RequestStatus.newReq ||
         request!.status == RequestStatus.waiting) {
@@ -145,16 +163,6 @@ class StudentRequestPageController extends BaseController {
     return Colors.black;
   }
 
-  bool hasAdditionalInfo() {
-    if (request == null) {
-      return false;
-    }
-    return (request!.status == RequestStatus.waiting &&
-            request!.requestedDate.isNotEmpty) ||
-        (request!.status == RequestStatus.responded &&
-            request!.requestedDate.isEmpty);
-  }
-
   String getStatusAdditionalInfo() {
     String message = '';
     if (request!.status == RequestStatus.waiting &&
@@ -169,7 +177,19 @@ class StudentRequestPageController extends BaseController {
     return message;
   }
 
-  Future<void> sendResponse(BuildContext context) async {}
+  Future<void> sendResponse(BuildContext context) async {
+    assert(hasChangesProvided && request != null);
+    
+    await dataManager.database.changeRequestStatus(request!.requestId, RequestStatus.waiting);
+
+    print('$reqestedDate == ${request!.requestedDate}');
+    if (reqestedDate != request!.requestedDate) {
+      await dataManager.database.changeRequestedDate(request!.requestId, reqestedDate);
+      await dataManager.database.changeRequestedDateStatus(request!.requestId, RequestedDateStatus.requested);
+    }
+    await showSuccessMessageAsync(context, 'Request has been updated');
+    Navigator.of(context).pop();
+  }
 
   Future<void> sendRequest(BuildContext context) async {
     if (topicIndex == -1) {
@@ -185,6 +205,7 @@ class StudentRequestPageController extends BaseController {
         studentId ?? '',
         RequestStatus.waiting,
         topics[topicIndex],
+        otherDate == null ? RequestedDateStatus.none : RequestedDateStatus.requested,
         newDate, [], []);
 
     final requestKey = await dataManager.database.addRequest(request!);
@@ -198,7 +219,6 @@ class StudentRequestPageController extends BaseController {
         .addRequestIdToStudent(studentId ?? '', requestKey);
 
     await showSuccessMessageAsync(context, 'Request has successfully sent');
-
     Navigator.of(context).pop();
   }
 }

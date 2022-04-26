@@ -1,5 +1,6 @@
 import 'package:teachent_app/common/consts.dart';
 import 'package:teachent_app/common/enums.dart';
+import 'package:teachent_app/common/enum_functions.dart';
 import 'package:teachent_app/database/adapters/firebase_adapter.dart';
 import 'package:teachent_app/model/db_objects/db_object.dart';
 import 'package:teachent_app/model/db_objects/request.dart';
@@ -37,11 +38,15 @@ mixin RequestDatabaseMethods {
     return newKey;
   }
 
-  Future<void> clearRequestedDate(KeyId requestId) async {
-    await FirebaseRealTimeDatabaseAdapter.updateField(DatabaseObjectName.requests, requestId, 'requestedDate', DatabaseConsts.emptyField);
+  Future<void> changeRequestedDate(KeyId requestId, String newDate) async {
+    await FirebaseRealTimeDatabaseAdapter.updateField(DatabaseObjectName.requests, requestId, 'requestedDate', newDate);
   }
 
   Future<void> changeRequestStatus(KeyId requestId, RequestStatus newStatus) async {
     await FirebaseRealTimeDatabaseAdapter.updateField(DatabaseObjectName.requests, requestId, 'status', newStatus.value);
+  }
+
+  Future<void> changeRequestedDateStatus(KeyId requestId, RequestedDateStatus newStatus) async {
+    await FirebaseRealTimeDatabaseAdapter.updateField(DatabaseObjectName.requests, requestId, 'dateStatus', newStatus.value);
   }
 }

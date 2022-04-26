@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:teachent_app/common/enums.dart';
+import 'package:teachent_app/common/enum_functions.dart';
 import 'package:teachent_app/controller/pages/student_request_page/student_request_page_controller.dart';
 import 'package:teachent_app/view/widgets/custom_button.dart';
 
@@ -30,8 +31,8 @@ class ConfirmButton extends StatelessWidget {
     }
   }
 
-  Color _getColor(RequestStatus status) {
-    if (status == RequestStatus.waiting) {
+  Color _getColor(RequestStatus status, bool hasChangesProvided) {
+    if (status == RequestStatus.waiting || hasChangesProvided) {
       return Colors.blue;
     }
     if (status == RequestStatus.responded) {
@@ -51,11 +52,12 @@ class ConfirmButton extends StatelessWidget {
     final status = controller.request?.status ?? RequestStatus.newReq;
     final hasChangesProvided = controller.hasChangesProvided;
     return Container(
-        margin: const EdgeInsets.all(15),
-        child: CustomButton(
-            text: _buttonText(status, hasChangesProvided),
-            fontSize: 18,
-            onPressed: () => _onPressed(context, status, hasChangesProvided),
-            buttonColor: _getColor(status)));
-  }
+          margin: const EdgeInsets.all(15),
+          child: CustomButton(
+              text: _buttonText(status, hasChangesProvided),
+              fontSize: 18,
+              onPressed: () => _onPressed(context, status, hasChangesProvided),
+              isEnabled: hasChangesProvided,
+              buttonColor: _getColor(status, hasChangesProvided)));
+      }
 }

@@ -1,6 +1,7 @@
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:teachent_app/common/enums.dart';
+import 'package:teachent_app/common/enum_functions.dart';
 import 'package:teachent_app/controller/controller.dart';
 import 'package:teachent_app/controller/pages/student_request_page/bloc/request_topic_bloc.dart';
 import 'package:teachent_app/model/db_objects/db_object.dart';
@@ -19,7 +20,7 @@ class TeacherRequestPageController extends BaseController {
 
   Request request;
 
-  bool hasChanged = false;
+  bool isNewDateAccepted = true;
   String requestedDate = '';
 
   TeacherRequestPageController(this.request, this.teacherId, this.student, this.lessonDate);
@@ -65,7 +66,9 @@ class TeacherRequestPageController extends BaseController {
   List<Place> get places => lessonDate?.places ?? [];
   Topic get topic => request.topic;
   bool get hasStudentMessage => false;
-  bool get wasOtherDateRequested => request.requestedDate != '';
+  bool get wasOtherDateRequested => request.dateStatus == RequestedDateStatus.requested;
+  String get statusInfo => request.status.stringValue;
+  String get additionalInfo => request.dateStatus.stringValue;
 
   Color getStatusColor() {
     if (request == null) {
@@ -87,41 +90,39 @@ class TeacherRequestPageController extends BaseController {
     return Colors.black;
   }
 
-  bool hasAdditionalInfo() {
-    return request.status == RequestStatus.waiting &&
-            request.requestedDate.isNotEmpty;
-  }
-
-  String getStatusAdditionalInfo() {
-    String message = '';
-    if (hasAdditionalInfo()) {
-      message = 'Student requested date: ${request.requestedDate}';
-    }
-    return message;
-  }
-
   void rejectNewDate() {
-      hasChanged = true;
-      requestedDate = '';
+      isNewDateAccepted = false;
   }
 
   void restoreNewDate() {
-      hasChanged = false;
-      requestedDate = request.requestedDate;
+      isNewDateAccepted = true;
   }
 
   Future<void> sendResponse(BuildContext context) async {
-      if (hasChanged) {
-          await dataManager.database.clearRequestedDate(request.requestId);
-      }
-      await dataManager.database.changeRequestStatus(request.requestId, RequestStatus.responded);
+    await dataManager.database.changeRequestedDateStatus(request.requestId,
+      isNewDateAccepted ? RequestedDateStatus.accepted : RequestedDateStatus.rejected);
 
-      await showSuccessMessageAsync(context, 'Response has been sent');
+    await dataManager.database.changeRequestStatus(request.requestId, RequestStatus.responded);
 
-      Navigator.of(context).pop();
+    await showSuccessMessageAsync(context, 'Response has been sent');
+    Navigator.of(context).pop();
   }
 
-  Future<void> acceptRequest(BuildContext context) async {}
+  Future<void> acceptRequest(BuildContext context) async {
+    if (request.dateStatus == RequestedDateStatus.accepted) {
+      await dataManager.database.changeLessonDate(lessonDate?.lessonDateId ?? '', request.requestedDate);
+    }
 
-  Future<void> rejectRequest(BuildContext context) async {}
+    await dataManager.database.changeRequestStatus(request.requestId, RequestStatus.accepted);
+
+    await showSuccessMessageAsync(context, 'Request has been accepted');
+    Navigator.of(context).pop();
+  }
+
+  Future<void> rejectRequest(BuildContext context) async {
+    await dataManager.database.changeRequestStatus(request.requestId, RequestStatus.rejected);
+
+    await showSuccessMessageAsync(context, 'Request has been rejected');
+    Navigator.of(context).pop();
+  }
 }
