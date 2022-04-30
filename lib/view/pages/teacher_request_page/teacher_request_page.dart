@@ -9,6 +9,7 @@ import 'package:teachent_app/model/db_objects/lesson_date.dart';
 import 'package:teachent_app/model/db_objects/request.dart';
 import 'package:teachent_app/model/db_objects/student.dart';
 import 'package:teachent_app/view/widgets/custom_button.dart';
+import 'package:teachent_app/view/widgets/chip_list.dart';
 
 import 'other_day_widget.dart';
 import 'buttons.dart';
@@ -91,6 +92,20 @@ class TeacherRequestPage extends StatelessWidget {
   }
 
   Widget _tools() {
+    return ChipHorizontalList(
+      title: 'Tools',
+      isNotEmptyCondition: _requestPageController!.tools.isNotEmpty,
+      listLength: _requestPageController!.tools.length,
+      emptyInfo: '',
+      elementBuilder: (_, index) {
+        return Chip(
+          padding: const EdgeInsets.all(12.0),
+          label: Text(_requestPageController!.tools[index].name,
+            style: const TextStyle(
+            fontSize: 18, color: Colors.white)),
+          backgroundColor: Colors.blue);
+      }
+    );
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
@@ -126,6 +141,20 @@ class TeacherRequestPage extends StatelessWidget {
   }
 
   Widget _places() {
+    return ChipHorizontalList(
+      title: 'Places',
+      isNotEmptyCondition: _requestPageController!.places.isNotEmpty,
+      listLength: _requestPageController!.places.length,
+      emptyInfo: '',
+      elementBuilder: (_, index) {
+        return Chip(
+          padding: const EdgeInsets.all(12.0),
+          label: Text(_requestPageController!.places[index].name,
+            style: const TextStyle(
+            fontSize: 18, color: Colors.white)),
+          backgroundColor: Colors.blue);
+      }
+    );
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,

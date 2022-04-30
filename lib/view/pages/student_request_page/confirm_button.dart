@@ -57,7 +57,7 @@ class ConfirmButton extends StatelessWidget {
               text: _buttonText(status, hasChangesProvided),
               fontSize: 18,
               onPressed: () => _onPressed(context, status, hasChangesProvided),
-              isEnabled: hasChangesProvided,
+              isEnabled: hasChangesProvided || controller.request == null,
               buttonColor: _getColor(status, hasChangesProvided)));
       }
 }

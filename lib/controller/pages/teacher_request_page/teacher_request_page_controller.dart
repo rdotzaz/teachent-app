@@ -109,11 +109,12 @@ class TeacherRequestPageController extends BaseController {
   }
 
   Future<void> acceptRequest(BuildContext context) async {
-    if (request.dateStatus == RequestedDateStatus.accepted) {
+    if (request.requestedDate.isNotEmpty) {
       await dataManager.database.changeLessonDate(lessonDate?.lessonDateId ?? '', request.requestedDate);
     }
 
     await dataManager.database.changeRequestStatus(request.requestId, RequestStatus.accepted);
+    await dataManager.database.changeRequestDate(request.requestId, request.requestedDate);
 
     await showSuccessMessageAsync(context, 'Request has been accepted');
     Navigator.of(context).pop();

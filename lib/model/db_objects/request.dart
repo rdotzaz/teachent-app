@@ -13,6 +13,7 @@ class Request extends DatabaseObject {
   final KeyId studentId;
   final RequestStatus status;
   final Topic topic;
+  final String currentDate;
   final RequestedDateStatus dateStatus;
   final String requestedDate;
   final List<MessageRecord> teacherMessages;
@@ -25,6 +26,7 @@ class Request extends DatabaseObject {
       this.studentId,
       this.status,
       this.topic,
+      this.currentDate,
       this.dateStatus,
       this.requestedDate,
       this.teacherMessages,
@@ -36,6 +38,7 @@ class Request extends DatabaseObject {
       this.studentId,
       this.status,
       this.topic,
+      this.currentDate,
       this.dateStatus,
       this.requestedDate,
       this.teacherMessages,
@@ -48,6 +51,7 @@ class Request extends DatabaseObject {
         studentId = values['studentId'] ?? '',
         status = getRequestStatusByValue(values['status'] ?? -1),
         topic = Topic(values['topic'].keys.firstWhere((_) => true) ?? '', true),
+        currentDate = values['currentDate'] ?? '',
         dateStatus = getRequestedDateStatusByValue(values['dateStatus'] ?? -1),
         requestedDate = values['requestedDate'] ?? '',
         teacherMessages =
@@ -75,6 +79,7 @@ class Request extends DatabaseObject {
       'studentId': studentId,
       'status': status.value,
       'topic': {topic.name: true},
+      'currentDate': currentDate,
       'dateStatus': dateStatus.value,
       'requestedDate': requestedDate,
       'teacherMessages': {

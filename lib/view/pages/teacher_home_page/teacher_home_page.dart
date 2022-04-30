@@ -230,7 +230,7 @@ class _TeacherHomePageState extends State<TeacherHomePage> {
         final request = _teacherHomePageController.requests[index];
         return ListTile(
           title: Text(
-            request.requestedDate,
+            request.currentDate,
             style: const TextStyle(fontSize: 20, color: Colors.white)),
           leading: Icon(Icons.send, size: 30, color: Colors.white),
           onTap: () => _teacherHomePageController.goToRequestPage(context, index),

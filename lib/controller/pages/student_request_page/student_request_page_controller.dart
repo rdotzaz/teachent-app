@@ -92,7 +92,7 @@ class StudentRequestPageController extends BaseController {
 
   String get teacherName => teacher?.name ?? '';
   String get date =>
-      '$exactDay, ${lessonDate?.hourTime ?? ''}';
+      '${lessonDate?.weekday ?? ''}, ${lessonDate?.hourTime ?? ''}';
   String get reqestedDate =>
       DateFormat('yyyy-MM-dd').format(otherDate ?? DateTime.now());
   String get statusInfo => request?.status.stringValue ?? '';
@@ -205,6 +205,7 @@ class StudentRequestPageController extends BaseController {
         studentId ?? '',
         RequestStatus.waiting,
         topics[topicIndex],
+        date,
         otherDate == null ? RequestedDateStatus.none : RequestedDateStatus.requested,
         newDate, [], []);
 

@@ -9,6 +9,8 @@ import 'package:teachent_app/model/db_objects/db_object.dart';
 import 'package:teachent_app/model/db_objects/lesson_date.dart';
 import 'package:teachent_app/model/db_objects/teacher.dart';
 import 'package:teachent_app/view/widgets/custom_button.dart';
+import 'package:teachent_app/view/widgets/label.dart';
+import 'package:teachent_app/view/widgets/chip_list.dart';
 
 import 'confirm_button.dart';
 
@@ -52,10 +54,10 @@ class StudentRequestPage extends StatelessWidget {
     return SingleChildScrollView(
         child: Column(children: [
       _checkStatus(),
-      _textLabel('Name: ${_requestPageController!.teacherName}'),
-      _textLabel('Date: ${_requestPageController!.date}'),
-      _textLabel(_requestPageController!.isCycled ? 'Lesson is cycled' : 'One-time lesson'),
-      _textLabel('Price: ${_requestPageController!.price}'),
+      Label(text: 'Name: ${_requestPageController!.teacherName}'),
+      Label(text: 'Date: ${_requestPageController!.date}'),
+      Label(text: _requestPageController!.isCycled ? 'Lesson is cycled' : 'One-time lesson'),
+      Label(text: 'Price: ${_requestPageController!.price}'),
       _tools(),
       _places(),
       _requestDay(),
@@ -92,83 +94,36 @@ class StudentRequestPage extends StatelessWidget {
   }
 
   Widget _tools() {
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(10),
-        boxShadow: [
-          BoxShadow(
-              color: Colors.grey.withOpacity(0.5),
-              spreadRadius: 2,
-              blurRadius: 4,
-              offset: const Offset(2, 2))
-        ],
-      ),
-      margin: const EdgeInsets.all(8),
-      padding: const EdgeInsets.all(10),
-      child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-        const Padding(padding: EdgeInsets.all(5), child: Text('Tools')),
-        Container(
-            height: 70,
-            padding: const EdgeInsets.all(5),
-            child: _requestPageController!.tools.isEmpty
-                ? const SizedBox(
-                    height: 100,
-                    child: Center(
-                        child: Text('Teacher did not provide any tools')))
-                : ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    itemCount: _requestPageController!.tools.length,
-                    itemBuilder: (_, index) {
-                      return Chip(
-                          padding: const EdgeInsets.all(12.0),
-                          label: Text(_requestPageController!.tools[index].name,
-                              style: const TextStyle(
-                                  fontSize: 18, color: Colors.white)),
-                          backgroundColor: Colors.blue);
-                    }))
-      ]),
+    return ChipHorizontalList(
+      title: 'Tools',
+      isNotEmptyCondition: _requestPageController!.tools.isNotEmpty,
+      listLength: _requestPageController!.tools.length,
+      emptyInfo: 'Teacher did not provide any tools',
+      elementBuilder: (_, index) {
+        return Chip(
+          padding: const EdgeInsets.all(12.0),
+          label: Text(_requestPageController!.tools[index].name,
+            style: const TextStyle(
+            fontSize: 18, color: Colors.white)),
+          backgroundColor: Colors.blue);
+      }
     );
   }
 
   Widget _places() {
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(10),
-        boxShadow: [
-          BoxShadow(
-              color: Colors.grey.withOpacity(0.5),
-              spreadRadius: 2,
-              blurRadius: 4,
-              offset: const Offset(2, 2))
-        ],
-      ),
-      margin: const EdgeInsets.all(8),
-      padding: const EdgeInsets.all(10),
-      child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-        const Padding(padding: EdgeInsets.all(5), child: Text('Places')),
-        Container(
-            height: 70,
-            padding: const EdgeInsets.all(5),
-            child: _requestPageController!.places.isEmpty
-                ? const SizedBox(
-                    height: 100,
-                    child: Center(
-                        child: Text('Teacher did not provide any places')))
-                : ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    itemCount: _requestPageController!.places.length,
-                    itemBuilder: (_, index) {
-                      return Chip(
-                          padding: const EdgeInsets.fromLTRB(10, 5, 10, 5),
-                          label: Text(
-                              _requestPageController!.places[index].name,
-                              style: const TextStyle(
-                                  fontSize: 18, color: Colors.white)),
-                          backgroundColor: Colors.blue);
-                    }))
-      ]),
+    return ChipHorizontalList(
+      title: 'Places',
+      isNotEmptyCondition: _requestPageController!.places.isNotEmpty,
+      listLength: _requestPageController!.places.length,
+      emptyInfo: 'Teacher did not provide any places',
+      elementBuilder: (_, index) {
+        return Chip(
+          padding: const EdgeInsets.all(12.0),
+          label: Text(_requestPageController!.places[index].name,
+            style: const TextStyle(
+            fontSize: 18, color: Colors.white)),
+          backgroundColor: Colors.blue);
+      }
     );
   }
 
@@ -183,47 +138,29 @@ class StudentRequestPage extends StatelessWidget {
   }
 
   Widget _topicSelecting() {
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(10),
-        boxShadow: [
-          BoxShadow(
-              color: Colors.grey.withOpacity(0.5),
-              spreadRadius: 2,
-              blurRadius: 4,
-              offset: const Offset(2, 2))
-        ],
-      ),
-      margin: const EdgeInsets.all(4),
-      padding: const EdgeInsets.all(5),
-      child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-        const Padding(padding: EdgeInsets.all(5), child: Text('Topic')),
-        Container(
-            height: 50,
-            padding: const EdgeInsets.all(5),
-            child:
-                BlocBuilder<RequestTopicBloc, int>(builder: (_, selectedIndex) {
-              return ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  itemCount: _requestPageController!.topics.length,
-                  itemBuilder: (context, index) {
-                    final isMarked = selectedIndex == index;
-                    final topic = _requestPageController!.topics[index];
-                    return ActionChip(
-                        padding: const EdgeInsets.all(10.0),
-                        label: Text(topic.name,
-                            style: TextStyle(
-                                fontSize: 14,
-                                color: isMarked ? Colors.white : Colors.black)),
-                        backgroundColor: isMarked ? Colors.blue : Colors.grey,
-                        onPressed: () => context
-                            .read<RequestTopicBloc>()
-                            .add(ToggleTopicEvent(index)));
-                  });
-            }))
-      ]),
-    );
+    return BlocBuilder<RequestTopicBloc, int>(builder: (_, selectedIndex) {
+      return ChipHorizontalList(
+        title: 'Topic',
+        isNotEmptyCondition: _requestPageController!.topics.isNotEmpty,
+        listLength: _requestPageController!.topics.length,
+        emptyInfo: 'Teacher did not provide any topics',
+
+        elementBuilder: (context, index) {
+          final isMarked = selectedIndex == index;
+          final topic = _requestPageController!.topics[index];
+          return ActionChip(
+            padding: const EdgeInsets.all(10.0),
+            label: Text(topic.name,
+              style: TextStyle(
+              fontSize: 14,
+              color: isMarked ? Colors.white : Colors.black)),
+              backgroundColor: isMarked ? Colors.blue : Colors.grey,
+              onPressed: () => context
+                  .read<RequestTopicBloc>()
+                  .add(ToggleTopicEvent(index)));
+        }
+      );
+    });
   }
 
   Widget _studentMessage() {

@@ -193,7 +193,7 @@ class _StudentHomePageState extends State<StudentHomePage> {
         final request = _studentHomePageController.requests[index];
         return ListTile(
           title: Text(
-            request.requestedDate,
+            request.currentDate,
             style: const TextStyle(fontSize: 20, color: Colors.white)),
           leading: Icon(Icons.send, size: 30, color: Colors.white),
           onTap: () => _studentHomePageController.goToRequestPage(context, index),

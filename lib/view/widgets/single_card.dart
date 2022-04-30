@@ -5,22 +5,26 @@ class SingleCardWidget extends StatelessWidget {
   final String title;
   final bool isNotEmptyCondition;
   final Widget bodyWidget;
-  final Widget? emptyWidget;
+  final Widget emptyWidget;
   final Color shadowColor;
   final Color titleColor;
   final bool startAlignment;
   final Widget? rightButton;
+  final double margin;
+  final double padding;
   const SingleCardWidget(
       {Key? key,
-      required this.backgroundColor,
+      this.backgroundColor = Colors.white,
       required this.title,
       this.isNotEmptyCondition = true,
       required this.bodyWidget,
-      this.emptyWidget,
+      this.emptyWidget = const SizedBox(),
       this.titleColor = Colors.white,
       this.shadowColor = Colors.white,
       this.startAlignment = true,
-      this.rightButton})
+      this.rightButton,
+      this.margin = 12,
+      this.padding = 12})
       : super(key: key);
 
   @override
@@ -37,8 +41,8 @@ class SingleCardWidget extends StatelessWidget {
                 offset: const Offset(2, 2))
           ],
         ),
-        margin: const EdgeInsets.all(12),
-        padding: const EdgeInsets.all(12),
+        margin: EdgeInsets.all(margin),
+        padding: EdgeInsets.all(padding),
         child: Column(
           crossAxisAlignment: startAlignment
               ? CrossAxisAlignment.start
@@ -63,7 +67,7 @@ class SingleCardWidget extends StatelessWidget {
   }
 
   Widget builderWidget() {
-    return isNotEmptyCondition ? bodyWidget : (emptyWidget ?? Container());
+    return isNotEmptyCondition ? bodyWidget : emptyWidget;
   }
 }
 
@@ -74,6 +78,8 @@ class SingleCardListWidget extends StatelessWidget {
   final bool isNotEmptyCondition;
   final int listLength;
   final Color elementBackgroundColor;
+  final double elementPadding;
+  final double elementBottomMargin;
   final Widget Function(BuildContext context, int index) elementBuilder;
   final Axis scrollDirection;
   final String emptyInfo;
@@ -82,9 +88,11 @@ class SingleCardListWidget extends StatelessWidget {
   final double elementWidth;
   final Color shadowColor;
   final Color titleColor;
+  final double padding;
+  final double margin;
   const SingleCardListWidget(
       {Key? key,
-      required this.backgroundColor,
+      this.backgroundColor = Colors.white,
       required this.title,
       required this.boxHeight,
       required this.isNotEmptyCondition,
@@ -93,11 +101,15 @@ class SingleCardListWidget extends StatelessWidget {
       required this.elementBuilder,
       required this.emptyInfo,
       this.emptyIcon,
-      this.shadowColor = Colors.white,
+      this.shadowColor = Colors.grey,
       this.titleColor = Colors.white,
       this.elementHeight = 0.0,
       this.elementWidth = 0.0,
-      this.scrollDirection = Axis.vertical})
+      this.scrollDirection = Axis.vertical,
+      this.padding = 12,
+      this.margin = 12,
+      this.elementPadding = 12,
+      this.elementBottomMargin = 10})
       : super(key: key);
 
   @override
@@ -108,6 +120,8 @@ class SingleCardListWidget extends StatelessWidget {
       isNotEmptyCondition: isNotEmptyCondition,
       shadowColor: shadowColor,
       titleColor: titleColor,
+      padding: padding,
+      margin: margin,
       bodyWidget: bodyWidget(),
       emptyWidget: emptyWidget(),
     );
@@ -132,8 +146,8 @@ class SingleCardListWidget extends StatelessWidget {
                   color: elementBackgroundColor,
                   borderRadius: BorderRadius.circular(12),
                 ),
-                padding: const EdgeInsets.all(12),
-                margin: const EdgeInsets.fromLTRB(0, 0, 0, 10),
+                padding: EdgeInsets.all(elementPadding),
+                margin: EdgeInsets.fromLTRB(0, 0, 0, elementBottomMargin),
                 child: elementBuilder(context, index));
           }
           return Container(
@@ -142,7 +156,7 @@ class SingleCardListWidget extends StatelessWidget {
                 color: elementBackgroundColor,
                 borderRadius: BorderRadius.circular(12),
               ),
-              padding: const EdgeInsets.all(12),
+              padding: EdgeInsets.all(elementPadding),
               margin: const EdgeInsets.fromLTRB(5, 0, 5, 0),
               child: elementBuilder(context, index));
         }));
@@ -158,7 +172,7 @@ class SingleCardListWidget extends StatelessWidget {
             if (emptyIcon != null)
               Padding(
                   padding: const EdgeInsets.all(15),
-                  child: Icon(emptyIcon!,
+                  child: Icon(emptyIcon,
                       color: elementBackgroundColor, size: 70)),
             Text(emptyInfo,
                 style: TextStyle(fontSize: 20, color: elementBackgroundColor))
