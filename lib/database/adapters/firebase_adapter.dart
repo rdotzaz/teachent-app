@@ -28,16 +28,24 @@ class FirebaseRealTimeDatabaseAdapter {
 
     if (defaultTargetPlatform == TargetPlatform.android) {
       await Firebase.initializeApp();
+    } else if (dbMode == DBMode.testingUnitTests) {
+      await Firebase.app();
     } else {
       await Firebase.initializeApp(options: firebaseOptions);
     }
 
-    if (dbMode == DBMode.testing) {
+    if (dbMode == DBMode.testing || dbMode == DBMode.testingUnitTests) {
       var databaseHost = _getHost(dbMode);
       print('[Host] $databaseHost');
       FirebaseDatabase.instance
           .useDatabaseEmulator(databaseHost, DatabaseConsts.emulatorPort);
     }
+  }
+
+  static Future<void> setInitialData(Map<dynamic, dynamic> data) async {
+    final databaseReference = FirebaseDatabase.instance.ref();
+
+    await databaseReference.set(data);
   }
 
   static Future<Map> findUserByLoginAndCheckPassword(

@@ -1,5 +1,3 @@
-import 'dart:developer' as dev;
-
 import 'package:teachent_app/database/database.dart';
 import 'package:teachent_app/model/db_objects/app_configuration.dart';
 
@@ -11,7 +9,6 @@ class DataManagerCreator {
       var database = MainDatabase();
       _dataManager = DataManager(database);
     }
-    dev.log('[DataManagerCreator] Create DataManager object');
     return _dataManager!;
   }
 }

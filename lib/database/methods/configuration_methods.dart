@@ -1,3 +1,4 @@
+import 'package:teachent_app/database/adapters/firebase_adapter.dart';
 import 'package:teachent_app/database/adapters/hive_adapter.dart';
 import 'package:teachent_app/model/db_objects/app_configuration.dart';
 
@@ -19,5 +20,9 @@ mixin AppConfigartionMethods {
       'userMode': appConfiguration.isTeacher
     };
     HiveDatabaseAdapter.putConfiguration(values);
+  }
+
+  Future<void> setFirebaseInitialData(Map<dynamic, dynamic> data) async {
+    await FirebaseRealTimeDatabaseAdapter.setInitialData(data);
   }
 }

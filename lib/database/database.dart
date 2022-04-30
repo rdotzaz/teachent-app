@@ -15,7 +15,7 @@ import 'adapters/hive_adapter.dart';
 
 typedef DBValues<Value> = Map<String, Value>;
 
-enum DBMode { testing, release }
+enum DBMode { testing, release, testingUnitTests }
 
 abstract class IDatabase {
   Future<void> init(DBMode dbMode);
