@@ -1,6 +1,7 @@
 import 'package:teachent_app/common/consts.dart'
     show DatabaseConsts, DatabaseObjectName;
 import 'package:teachent_app/common/enums.dart';
+import 'package:teachent_app/common/enum_functions.dart';
 import 'package:teachent_app/model/db_objects/db_object.dart';
 
 import '../objects/place.dart';
@@ -11,7 +12,7 @@ class LessonDate extends DatabaseObject {
   final KeyId teacherId;
   final KeyId studentId;
   final bool isFree;
-  final String weekday;
+  final String weekday; // [TODO] Change this name
   final String hourTime;
   final bool isCycled;
   final CycleType cycleType;

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:teachent_app/controller/pages/request_page/bloc/request_day_bloc.dart';
+import 'package:teachent_app/controller/pages/student_request_page/bloc/request_day_bloc.dart';
 import 'package:teachent_app/view/widgets/custom_button.dart';
 
 class RequestDayButton extends StatelessWidget {

@@ -6,7 +6,7 @@ import 'package:teachent_app/model/db_objects/teacher.dart';
 import 'package:teachent_app/model/objects/topic.dart';
 import 'package:teachent_app/model/objects/tool.dart';
 import 'package:teachent_app/model/objects/place.dart';
-import 'package:teachent_app/view/pages/request_page/request_page.dart';
+import 'package:teachent_app/view/pages/student_request_page/student_request_page.dart';
 
 class TeacherProfilePageController extends BaseController {
   final Teacher teacher;
@@ -34,7 +34,7 @@ class TeacherProfilePageController extends BaseController {
 
   void goToRequestPage(BuildContext context, int dateIndex) {
     Navigator.of(context).push(MaterialPageRoute(
-        builder: (_) => RequestPage(
+        builder: (_) => StudentRequestPage(
             studentId: studentId,
             teacher: teacher,
             lessonDate: lessonDates[dateIndex])));

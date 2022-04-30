@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:teachent_app/common/enums.dart';
+import 'package:teachent_app/common/enum_functions.dart';
 import 'package:teachent_app/controller/pages/teacher_home_page/teacher_home_page_controller.dart';
 import 'package:teachent_app/model/db_objects/db_object.dart';
 import 'package:teachent_app/view/widgets/custom_button.dart';
@@ -84,6 +86,7 @@ class _TeacherHomePageState extends State<TeacherHomePage> {
         _nextLessonsWidget(),
         _lessonDateWidget(context),
         _studentsWidget(),
+        _requestsWidget()
         //reportsWidget()
       ]))
     ]);
@@ -209,6 +212,35 @@ class _TeacherHomePageState extends State<TeacherHomePage> {
                   fontSize: 18,
                   onPressed: () {})
             ])));
+  }
+
+  Widget _requestsWidget() {
+    return SingleCardListWidget(
+      backgroundColor: Colors.white,
+      shadowColor: Colors.grey,
+      title: 'Requests',
+      titleColor: Colors.black,
+      boxHeight: 300.0,
+      isNotEmptyCondition: _teacherHomePageController.areRequests,
+      listLength: _teacherHomePageController.requests.length,
+      elementBackgroundColor: Colors.blue,
+      emptyInfo: 'No requests',
+      emptyIcon: Icons.free_breakfast,
+      elementBuilder: (context, index) {
+        final request = _teacherHomePageController.requests[index];
+        return ListTile(
+          title: Text(
+            request.currentDate,
+            style: const TextStyle(fontSize: 20, color: Colors.white)),
+          leading: Icon(Icons.send, size: 30, color: Colors.white),
+          onTap: () => _teacherHomePageController.goToRequestPage(context, index),
+          subtitle: Text(
+            request.status.stringValue,
+            style: const TextStyle(fontSize: 14, color: Colors.white)
+          )
+        );
+      },
+    );
   }
 
   Widget _errorWidget(String errorMessage) {
