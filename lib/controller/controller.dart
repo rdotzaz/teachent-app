@@ -22,7 +22,6 @@ abstract class BaseSearchController extends BaseController {
   }
 
   Future<void> updateFoundList(PersonType type) async {}
-  Future<void> updateFoundTeacherList(
-    List<String> topicNames,
-    List<String> toolNames, List<String> placeNames) async {}
+  Future<void> updateFoundTeacherList(List<String> topicNames,
+      List<String> toolNames, List<String> placeNames) async {}
 }

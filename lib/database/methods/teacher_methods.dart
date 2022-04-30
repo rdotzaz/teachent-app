@@ -12,7 +12,6 @@ mixin TeacherDatabaseMethods {
     print('Teacher');
     final wasAdded = await FirebaseRealTimeDatabaseAdapter.addDatabaseObject(
         DatabaseObjectName.teachers, teacher.key, teacher.toMap());
-    return;
   }
 
   void update(KeyId teacherId) {}
@@ -34,45 +33,10 @@ mixin TeacherDatabaseMethods {
     final teacherValues = await FirebaseRealTimeDatabaseAdapter.getObject(
         DatabaseObjectName.teachers, userId);
     if (teacherValues.isEmpty) {
+      print('No teacherValues found');
       return null;
     }
-
-    print('[Teachers methods] Teacher found');
-    final topics = _getMapFromField(teacherValues, 'topics');
-    print('Topics: $topics');
-    final topicList =
-        topics.entries.map((topic) => Topic(topic.key, true)).toList();
-
-    final tools = _getMapFromField(teacherValues, 'tools');
-    print('Tools: $tools');
-    final toolList =
-        tools.entries.map((tool) => Tool(tool.key.toString(), true)).toList();
-
-    final places = _getMapFromField(teacherValues, 'places');
-    print('Places: $places');
-    final placeList = places.entries
-        .map((place) => Place(place.key.toString(), true))
-        .toList();
-
-    final requestIds = _getMapFromField(teacherValues, 'requests');
-    print('Requests: $requestIds');
-    final requestList = requestIds.entries.map((id) => id.toString()).toList();
-
-    final lessonDateIds = _getMapFromField(teacherValues, 'lessonDates');
-    print('Dates: $lessonDateIds');
-    final lessonDateList =
-        lessonDateIds.entries.map((id) => id.toString()).toList();
-
-    return Teacher(
-        userId,
-        teacherValues['name'] ?? '',
-        teacherValues['description'] ?? '',
-        topicList,
-        toolList,
-        placeList,
-        teacherValues['averageRate'] ?? -1,
-        requestList,
-        lessonDateList);
+    return Teacher.fromMap(userId, teacherValues);
   }
 
   Teacher _addTeacherToList(String login, Map values) {
@@ -88,8 +52,8 @@ mixin TeacherDatabaseMethods {
     final placeList = places.entries
         .map((place) => Place(place.key.toString(), true))
         .toList();
-    return Teacher.onlyKeyName(login, values['name'] ?? '', topicList,
-      toolList, placeList);
+    return Teacher.onlyKeyName(
+        login, values['name'] ?? '', topicList, toolList, placeList);
   }
 
   Future<List<Teacher>> getTeachersByNamePart(String name) async {
@@ -97,34 +61,72 @@ mixin TeacherDatabaseMethods {
         await FirebaseRealTimeDatabaseAdapter.getObjectsByName(
             DatabaseObjectName.teachers, 'name', name);
     final teachers = <Teacher>[];
-    teacherValues.forEach((login, teacherValue) => teachers.add(
-        _addTeacherToList(login, teacherValue as Map<dynamic, dynamic>)));
+    teacherValues.forEach((login, teacherValue) {
+      final teacher =
+          Teacher.fromMap(login, teacherValue as Map<dynamic, dynamic>);
+      teachers.add(teacher);
+    });
     return teachers;
   }
 
-  Future<List<Teacher>> getTeachersByParams(
-    String name,
-    List<String> topics, List<String> tools, List<String> places) async {
-      final teachers = await getTeachersByNamePart(name);
+  Future<List<Teacher>> getTeachersByParams(String name, List<String> topics,
+      List<String> tools, List<String> places) async {
+    final teachers = await getTeachersByNamePart(name);
 
-      print(teachers.map((teacher) => teacher.name).toList());
-      final filteredTeachers = <Teacher>[];
-      for (final teacher in teachers) {
-        final toolSet = teacher.tools.map((tool) => tool.name).toSet();
-        final topicSet = teacher.topics.map((topic) => topic.name).toSet();
-        final placeSet = teacher.places.map((place) => place.name).toSet();
+    print(teachers.map((teacher) => teacher.name).toList());
+    final filteredTeachers = <Teacher>[];
+    for (final teacher in teachers) {
+      final toolSet = teacher.tools.map((tool) => tool.name).toSet();
+      final topicSet = teacher.topics.map((topic) => topic.name).toSet();
+      final placeSet = teacher.places.map((place) => place.name).toSet();
 
-        final commonTools = toolSet.intersection(tools.toSet());
-        final commonTopics = topicSet.intersection(topics.toSet());
-        final commonPlaces = placeSet.intersection(places.toSet());
+      final commonTools = toolSet.intersection(tools.toSet());
+      final commonTopics = topicSet.intersection(topics.toSet());
+      final commonPlaces = placeSet.intersection(places.toSet());
 
-        print('Cond 1: ${toolSet.length}, ${topicSet.length}, ${placeSet.length}');
-        if ((commonTools.length > 0
-            || commonTopics.length > 0 || commonPlaces.length > 0)
-            || (topics.isEmpty && tools.isEmpty && places.isEmpty)) {
-          filteredTeachers.add(teacher);
-        }
+      print(
+          'Cond 1: ${toolSet.length}, ${topicSet.length}, ${placeSet.length}');
+      if ((commonTools.length > 0 ||
+              commonTopics.length > 0 ||
+              commonPlaces.length > 0) ||
+          (topics.isEmpty && tools.isEmpty && places.isEmpty)) {
+        filteredTeachers.add(teacher);
       }
-      return filteredTeachers;
+    }
+    return filteredTeachers;
+  }
+
+  Future<void> addLessonDateKeyToTeacher(
+      KeyId teacherId, KeyId lessonDateId) async {
+    await FirebaseRealTimeDatabaseAdapter.addForeignKey(
+        DatabaseObjectName.teachers,
+        teacherId,
+        DatabaseObjectName.lessonDates,
+        lessonDateId);
+  }
+
+  Future<List<Teacher>> getTeachersByDates(List<KeyId> lessonDateIds) async {
+    final teachers = <Teacher>[];
+    for (final lessonDateId in lessonDateIds) {
+      final teacherId = await FirebaseRealTimeDatabaseAdapter.getForeignKey(
+          DatabaseObjectName.lessonDates, lessonDateId, 'teacherId');
+      if (teacherId == DatabaseConsts.emptyKey) {
+        continue;
+      }
+      final teacher = await getTeacher(teacherId);
+      if (teacher == null) {
+        continue;
+      }
+      teachers.add(teacher);
+    }
+    return teachers;
+  }
+
+  Future<void> addRequestIdToTeacher(KeyId teacherId, KeyId requestId) async {
+    await FirebaseRealTimeDatabaseAdapter.addForeignKey(
+        DatabaseObjectName.teachers,
+        teacherId,
+        DatabaseObjectName.requests,
+        requestId);
   }
 }

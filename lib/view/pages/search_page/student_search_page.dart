@@ -5,23 +5,26 @@ import 'package:teachent_app/controller/pages/search_page/bloc/topic_bloc.dart';
 import 'package:teachent_app/controller/pages/search_page/bloc/tool_bloc.dart';
 import 'package:teachent_app/controller/pages/search_page/bloc/place_bloc.dart';
 import 'package:teachent_app/controller/pages/search_page/student_search_page_controller.dart';
+import 'package:teachent_app/model/db_objects/db_object.dart';
 
 import 'student_search_bar_widget.dart';
 import 'user_card.dart';
 
 class StudentSearchPage extends StatefulWidget {
-  const StudentSearchPage({Key? key}) : super(key: key);
+  final KeyId studentId;
+  const StudentSearchPage(this.studentId, {Key? key}) : super(key: key);
 
   @override
   State<StudentSearchPage> createState() => _StudentSearchPageState();
 }
 
 class _StudentSearchPageState extends State<StudentSearchPage> {
-  final _searchPageController = StudentSearchPageController();
+  late StudentSearchPageController _searchPageController;
 
   @override
   void initState() {
     super.initState();
+    _searchPageController = StudentSearchPageController(widget.studentId);
     _searchPageController.init();
   }
 
@@ -43,10 +46,10 @@ class _StudentSearchPageState extends State<StudentSearchPage> {
         child: Scaffold(
             resizeToAvoidBottomInset: true,
             appBar: AppBar(
-              iconTheme: IconThemeData(color: Colors.black),
-              title: Text('Search', style: TextStyle(color: Colors.black)),
-              elevation: 0,
-              backgroundColor: Colors.transparent),
+                iconTheme: IconThemeData(color: Colors.black),
+                title: Text('Search', style: TextStyle(color: Colors.black)),
+                elevation: 0,
+                backgroundColor: Colors.transparent),
             body: Column(
               children: [
                 StudentSearchBarWidget(controller: _searchPageController),
@@ -207,10 +210,11 @@ class _StudentSearchPageState extends State<StudentSearchPage> {
             ListView.builder(
                 itemCount: _searchPageController.teachers.length,
                 shrinkWrap: true,
-                itemBuilder: (_, index) {
+                itemBuilder: (context, index) {
                   return TeacherCardWidget(
                       teacher: _searchPageController.teachers[index],
-                      onPressed: () {});
+                      onPressed: () => _searchPageController.goToProfilePage(
+                          context, index));
                 }),
           ],
         ),

@@ -118,8 +118,9 @@ class _StudentCreationPageState extends State<StudentCreationPage> {
     return BlocBuilder<StudentCreationBloc, int>(
         builder: (context, pageNumber) {
       return CustomButton(
-          text: pageNumber == StudentCreationPageConsts.namePageNumber ?
-            StudentCreationPageConsts.next : StudentCreationPageConsts.done,
+          text: pageNumber == StudentCreationPageConsts.namePageNumber
+              ? StudentCreationPageConsts.next
+              : StudentCreationPageConsts.done,
           fontSize: 18,
           buttonColor: Colors.red,
           onPressed: () {

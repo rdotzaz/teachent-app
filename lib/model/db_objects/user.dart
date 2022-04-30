@@ -12,10 +12,10 @@ class User extends DatabaseObject {
       : isDarkMode = false,
         isTeacher = false;
 
-  factory User.fromMap(Map<String, dynamic> map) {
-    return User(map['login'] ?? '', map['isDarkMode'] ?? false,
-        map['isTeacher'] ?? false, map['password'] ?? '');
-  }
+  User.fromMap(this.login, Map<String, dynamic> values)
+      : isDarkMode = values['isDarkMode'] ?? false,
+        isTeacher = values['isTeacher'] ?? false,
+        password = values['password'] ?? '';
 
   @override
   String get collectionName => DatabaseObjectName.users;

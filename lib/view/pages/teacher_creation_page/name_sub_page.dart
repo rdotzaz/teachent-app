@@ -9,16 +9,16 @@ Widget nameSubPage(TeacherCreationPageController teacherController) {
     child: Padding(
       padding: const EdgeInsets.all(25.0),
       child: Column(children: [
-        nameLabel(teacherController),
+        nameLabel(),
         nameTextField(teacherController),
-        descriptionLabel(teacherController),
+        descriptionLabel(),
         descriptionTextField(teacherController)
       ]),
     ),
   );
 }
 
-Container nameLabel(TeacherCreationPageController teacherController) {
+Container nameLabel() {
   return Container(
     alignment: Alignment.centerLeft,
     padding: const EdgeInsets.all(5.0),
@@ -41,7 +41,7 @@ Padding nameTextField(TeacherCreationPageController teacherController) {
   );
 }
 
-Container descriptionLabel(TeacherCreationPageController teacherController) {
+Container descriptionLabel() {
   return Container(
     alignment: Alignment.centerLeft,
     padding: const EdgeInsets.all(5.0),
