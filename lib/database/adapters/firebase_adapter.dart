@@ -197,6 +197,7 @@ class FirebaseRealTimeDatabaseAdapter {
     return values as Map<dynamic, dynamic>;
   }
 
+  /// Method adds or updates [foreginId] key to [collectionName]/[id]/[property]
   static Future<void> addForeignKey(String collectionName, String id,
       String property, String foreginId) async {
     DatabaseReference databaseReference =
@@ -205,6 +206,7 @@ class FirebaseRealTimeDatabaseAdapter {
     await databaseReference.update({foreginId: true});
   }
 
+  /// Method retrives foreign key from [collectionName]/[id]/[property]
   static Future<String> getForeignKey(
       String collectionName, String id, String property) async {
     DatabaseReference databaseReference =
@@ -221,6 +223,7 @@ class FirebaseRealTimeDatabaseAdapter {
     return event.snapshot.value as String;
   }
 
+  /// Method updates field [collectionName]/[id]/[path] by [value]
   static Future<void> updateField<Value>(String collectionName, String id, String path, Value value) async {
     DatabaseReference databaseReference =
         FirebaseDatabase.instance.ref().child('$collectionName/$id/$path');
