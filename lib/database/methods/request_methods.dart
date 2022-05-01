@@ -5,7 +5,10 @@ import 'package:teachent_app/database/adapters/firebase_adapter.dart';
 import 'package:teachent_app/model/db_objects/db_object.dart';
 import 'package:teachent_app/model/db_objects/request.dart';
 
+/// Methods to maintain Request object in database
 mixin RequestDatabaseMethods {
+  /// Returns Request object by [requestId].
+  /// If object with [requestId] does not exist, returns null
   Future<Request?> getRequest(KeyId requestId) async {
     final requestValues = await FirebaseRealTimeDatabaseAdapter.getObject(
         DatabaseObjectName.requests, requestId);
@@ -15,6 +18,7 @@ mixin RequestDatabaseMethods {
     return Request.fromMap(requestId, requestValues);
   }
 
+  /// Returns list of Request objects based on [requestIds]
   Future<Iterable<Request>> getRequests(List<KeyId> requestIds) async {
     final requests = <Request>[];
     for (final requestId in requestIds) {
@@ -27,6 +31,9 @@ mixin RequestDatabaseMethods {
     return requests;
   }
 
+  /// Methdd adds request to database.
+  /// If request was successfully added, new request key is returned.
+  /// Otherwise returns null
   Future<KeyId?> addRequest(Request request) async {
     final newKey =
         await FirebaseRealTimeDatabaseAdapter.addDatabaseObjectWithNewKey(
@@ -38,19 +45,23 @@ mixin RequestDatabaseMethods {
     return newKey;
   }
 
+  /// Update requested date from request with [requestId] with [newDate]
   Future<void> changeRequestedDate(KeyId requestId, String newDate) async {
     await FirebaseRealTimeDatabaseAdapter.updateField(DatabaseObjectName.requests, requestId, 'requestedDate', newDate);
   }
 
+  /// Update request stauts from request with [requestId] with [newStatus]
   Future<void> changeRequestStatus(KeyId requestId, RequestStatus newStatus) async {
     await FirebaseRealTimeDatabaseAdapter.updateField(DatabaseObjectName.requests, requestId, 'status', newStatus.value);
   }
 
+  /// Update requested date status from request with [requestId] with [newStatus]
   Future<void> changeRequestedDateStatus(KeyId requestId, RequestedDateStatus newStatus) async {
     await FirebaseRealTimeDatabaseAdapter.updateField(DatabaseObjectName.requests, requestId, 'dateStatus', newStatus.value);
   }
 
-  Future<void> changeRequestDate(KeyId requestId, String newDate) async {
+  /// Update current date from request with [requestId] with [newDate]
+  Future<void> changeCurrentDate(KeyId requestId, String newDate) async {
     await FirebaseRealTimeDatabaseAdapter.updateField(DatabaseObjectName.requests, requestId, 'currentDate', newDate);
   }
 }

@@ -5,6 +5,7 @@ import 'package:teachent_app/model/objects/place.dart';
 
 /// Methods to maintain Place object in database
 mixin PlaceDatabaseMethods {
+  /// Get all available places from database
   Future<Iterable<Place>> getAvailablePlaces() async {
     DBValues<bool> placeValues =
         await FirebaseRealTimeDatabaseAdapter.getAvailableObjects(
@@ -14,6 +15,7 @@ mixin PlaceDatabaseMethods {
         .map((placeEntry) => Place(placeEntry.key, placeEntry.value));
   }
 
+  /// Add place to database
   Future<void> addPlaces(List<Place> placesToAdd) async {
     Map<String, bool> placeValues = {
       for (var place in placesToAdd) place.name: false
