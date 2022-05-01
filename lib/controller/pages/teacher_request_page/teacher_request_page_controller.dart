@@ -13,6 +13,7 @@ import 'package:teachent_app/model/objects/topic.dart';
 import 'package:teachent_app/model/objects/place.dart';
 import 'package:teachent_app/view/widgets/status_bottom_sheet.dart';
 
+/// Controller for Teacher Request Page
 class TeacherRequestPageController extends BaseController {
   KeyId? teacherId;
   Student? student;

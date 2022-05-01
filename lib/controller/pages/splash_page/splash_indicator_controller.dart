@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:teachent_app/controller/controller.dart';
 
+/// Controller for Splash screen loading indicator
 class SplashProgressIndicatorController extends BaseController {
   late AnimationController animationController;
 

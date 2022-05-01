@@ -8,6 +8,7 @@ import 'package:teachent_app/model/objects/tool.dart';
 import 'package:teachent_app/model/objects/place.dart';
 import 'package:teachent_app/view/pages/student_request_page/student_request_page.dart';
 
+/// Controller for Teacher Profile Page
 class TeacherProfilePageController extends BaseController {
   final Teacher teacher;
   final KeyId studentId;
