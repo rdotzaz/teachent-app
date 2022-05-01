@@ -313,13 +313,13 @@ class TeacherProfilePage extends StatelessWidget {
                                                 color: Colors.white)),
                                       ])),
                               if (_teacherProfilePageController!.hasStudentId)
-                              CustomButton(
-                                  text: 'More',
-                                  fontSize: 18,
-                                  onPressed: () =>
-                                      _teacherProfilePageController!
-                                          .goToRequestPage(context, index),
-                                  buttonColor: Colors.blue[600]!),
+                                CustomButton(
+                                    text: 'More',
+                                    fontSize: 18,
+                                    onPressed: () =>
+                                        _teacherProfilePageController!
+                                            .goToRequestPage(context, index),
+                                    buttonColor: Colors.blue[600]!),
                             ]));
                     return Container(
                         padding: const EdgeInsets.all(20),

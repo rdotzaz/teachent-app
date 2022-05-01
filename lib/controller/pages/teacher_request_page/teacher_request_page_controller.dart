@@ -23,7 +23,8 @@ class TeacherRequestPageController extends BaseController {
   bool isNewDateAccepted = true;
   String requestedDate = '';
 
-  TeacherRequestPageController(this.request, this.teacherId, this.student, this.lessonDate);
+  TeacherRequestPageController(
+      this.request, this.teacherId, this.student, this.lessonDate);
 
   @override
   Future<void> init() async {
@@ -66,7 +67,8 @@ class TeacherRequestPageController extends BaseController {
   List<Place> get places => lessonDate?.places ?? [];
   Topic get topic => request.topic;
   bool get hasStudentMessage => false;
-  bool get wasOtherDateRequested => request.dateStatus == RequestedDateStatus.requested;
+  bool get wasOtherDateRequested =>
+      request.dateStatus == RequestedDateStatus.requested;
   String get statusInfo => request.status.stringValue;
   String get additionalInfo => request.dateStatus.stringValue;
 
@@ -91,18 +93,22 @@ class TeacherRequestPageController extends BaseController {
   }
 
   void rejectNewDate() {
-      isNewDateAccepted = false;
+    isNewDateAccepted = false;
   }
 
   void restoreNewDate() {
-      isNewDateAccepted = true;
+    isNewDateAccepted = true;
   }
 
   Future<void> sendResponse(BuildContext context) async {
-    await dataManager.database.changeRequestedDateStatus(request.requestId,
-      isNewDateAccepted ? RequestedDateStatus.accepted : RequestedDateStatus.rejected);
+    await dataManager.database.changeRequestedDateStatus(
+        request.requestId,
+        isNewDateAccepted
+            ? RequestedDateStatus.accepted
+            : RequestedDateStatus.rejected);
 
-    await dataManager.database.changeRequestStatus(request.requestId, RequestStatus.responded);
+    await dataManager.database
+        .changeRequestStatus(request.requestId, RequestStatus.responded);
 
     await showSuccessMessageAsync(context, 'Response has been sent');
     Navigator.of(context).pop();
@@ -110,18 +116,22 @@ class TeacherRequestPageController extends BaseController {
 
   Future<void> acceptRequest(BuildContext context) async {
     if (request.requestedDate.isNotEmpty) {
-      await dataManager.database.changeLessonDate(lessonDate?.lessonDateId ?? '', request.requestedDate);
+      await dataManager.database.changeLessonDate(
+          lessonDate?.lessonDateId ?? '', request.requestedDate);
     }
 
-    await dataManager.database.changeRequestStatus(request.requestId, RequestStatus.accepted);
-    await dataManager.database.changeRequestDate(request.requestId, request.requestedDate);
+    await dataManager.database
+        .changeRequestStatus(request.requestId, RequestStatus.accepted);
+    await dataManager.database
+        .changeRequestDate(request.requestId, request.requestedDate);
 
     await showSuccessMessageAsync(context, 'Request has been accepted');
     Navigator.of(context).pop();
   }
 
   Future<void> rejectRequest(BuildContext context) async {
-    await dataManager.database.changeRequestStatus(request.requestId, RequestStatus.rejected);
+    await dataManager.database
+        .changeRequestStatus(request.requestId, RequestStatus.rejected);
 
     await showSuccessMessageAsync(context, 'Request has been rejected');
     Navigator.of(context).pop();

@@ -35,17 +35,19 @@ class TeacherSearchPageController extends BaseSearchController {
     _foundStudents.addAll(students);
   }
 
-  Future<void> goToStudentProfile(BuildContext context, int studentIndex) async {
+  Future<void> goToStudentProfile(
+      BuildContext context, int studentIndex) async {
     final student = _foundStudents[studentIndex];
 
-    await Navigator.of(context).push(MaterialPageRoute(
-      builder: (_) => StudentProfilePage(student)));
+    await Navigator.of(context)
+        .push(MaterialPageRoute(builder: (_) => StudentProfilePage(student)));
   }
 
-  Future<void> goToTeacherProfile(BuildContext context, int teacherIndex) async {
+  Future<void> goToTeacherProfile(
+      BuildContext context, int teacherIndex) async {
     final teacher = _foundTeachers[teacherIndex];
 
     await Navigator.of(context).push(MaterialPageRoute(
-      builder: (_) => TeacherProfilePage(teacher: teacher)));
+        builder: (_) => TeacherProfilePage(teacher: teacher)));
   }
 }

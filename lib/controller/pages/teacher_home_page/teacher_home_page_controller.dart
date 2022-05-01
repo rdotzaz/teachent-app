@@ -124,11 +124,12 @@ class TeacherHomePageController extends BaseController {
     refresh();
   }
 
-  Future<void> goToStudentProfile(BuildContext context, int studentIndex) async {
+  Future<void> goToStudentProfile(
+      BuildContext context, int studentIndex) async {
     final student = students[studentIndex];
 
-    await Navigator.of(context).push(MaterialPageRoute(
-      builder: (_) => StudentProfilePage(student)));
+    await Navigator.of(context)
+        .push(MaterialPageRoute(builder: (_) => StudentProfilePage(student)));
     refresh();
   }
 }

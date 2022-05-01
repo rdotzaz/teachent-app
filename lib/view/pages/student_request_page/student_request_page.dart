@@ -56,7 +56,10 @@ class StudentRequestPage extends StatelessWidget {
       _checkStatus(),
       Label(text: 'Name: ${_requestPageController!.teacherName}'),
       Label(text: 'Date: ${_requestPageController!.date}'),
-      Label(text: _requestPageController!.isCycled ? 'Lesson is cycled' : 'One-time lesson'),
+      Label(
+          text: _requestPageController!.isCycled
+              ? 'Lesson is cycled'
+              : 'One-time lesson'),
       Label(text: 'Price: ${_requestPageController!.price}'),
       _tools(),
       _places(),
@@ -75,8 +78,7 @@ class StudentRequestPage extends StatelessWidget {
         child: Column(children: [
           Padding(
               padding: const EdgeInsets.fromLTRB(0, 80, 0, 8),
-              child: Text(
-                  _requestPageController!.statusInfo,
+              child: Text(_requestPageController!.statusInfo,
                   style: const TextStyle(fontSize: 18, color: Colors.white))),
           if (_requestPageController!.canCheckStatus)
             Padding(
@@ -88,43 +90,39 @@ class StudentRequestPage extends StatelessWidget {
 
   Widget _textLabel(String text) {
     return Padding(
-          padding: const EdgeInsets.all(15),
-          child: Text(text,
-              style: const TextStyle(color: Colors.black, fontSize: 18)));
+        padding: const EdgeInsets.all(15),
+        child: Text(text,
+            style: const TextStyle(color: Colors.black, fontSize: 18)));
   }
 
   Widget _tools() {
     return ChipHorizontalList(
-      title: 'Tools',
-      isNotEmptyCondition: _requestPageController!.tools.isNotEmpty,
-      listLength: _requestPageController!.tools.length,
-      emptyInfo: 'Teacher did not provide any tools',
-      elementBuilder: (_, index) {
-        return Chip(
-          padding: const EdgeInsets.all(12.0),
-          label: Text(_requestPageController!.tools[index].name,
-            style: const TextStyle(
-            fontSize: 18, color: Colors.white)),
-          backgroundColor: Colors.blue);
-      }
-    );
+        title: 'Tools',
+        isNotEmptyCondition: _requestPageController!.tools.isNotEmpty,
+        listLength: _requestPageController!.tools.length,
+        emptyInfo: 'Teacher did not provide any tools',
+        elementBuilder: (_, index) {
+          return Chip(
+              padding: const EdgeInsets.all(12.0),
+              label: Text(_requestPageController!.tools[index].name,
+                  style: const TextStyle(fontSize: 18, color: Colors.white)),
+              backgroundColor: Colors.blue);
+        });
   }
 
   Widget _places() {
     return ChipHorizontalList(
-      title: 'Places',
-      isNotEmptyCondition: _requestPageController!.places.isNotEmpty,
-      listLength: _requestPageController!.places.length,
-      emptyInfo: 'Teacher did not provide any places',
-      elementBuilder: (_, index) {
-        return Chip(
-          padding: const EdgeInsets.all(12.0),
-          label: Text(_requestPageController!.places[index].name,
-            style: const TextStyle(
-            fontSize: 18, color: Colors.white)),
-          backgroundColor: Colors.blue);
-      }
-    );
+        title: 'Places',
+        isNotEmptyCondition: _requestPageController!.places.isNotEmpty,
+        listLength: _requestPageController!.places.length,
+        emptyInfo: 'Teacher did not provide any places',
+        elementBuilder: (_, index) {
+          return Chip(
+              padding: const EdgeInsets.all(12.0),
+              label: Text(_requestPageController!.places[index].name,
+                  style: const TextStyle(fontSize: 18, color: Colors.white)),
+              backgroundColor: Colors.blue);
+        });
   }
 
   Widget _requestDay() {
@@ -140,26 +138,24 @@ class StudentRequestPage extends StatelessWidget {
   Widget _topicSelecting() {
     return BlocBuilder<RequestTopicBloc, int>(builder: (_, selectedIndex) {
       return ChipHorizontalList(
-        title: 'Topic',
-        isNotEmptyCondition: _requestPageController!.topics.isNotEmpty,
-        listLength: _requestPageController!.topics.length,
-        emptyInfo: 'Teacher did not provide any topics',
-
-        elementBuilder: (context, index) {
-          final isMarked = selectedIndex == index;
-          final topic = _requestPageController!.topics[index];
-          return ActionChip(
-            padding: const EdgeInsets.all(10.0),
-            label: Text(topic.name,
-              style: TextStyle(
-              fontSize: 14,
-              color: isMarked ? Colors.white : Colors.black)),
-              backgroundColor: isMarked ? Colors.blue : Colors.grey,
-              onPressed: () => context
-                  .read<RequestTopicBloc>()
-                  .add(ToggleTopicEvent(index)));
-        }
-      );
+          title: 'Topic',
+          isNotEmptyCondition: _requestPageController!.topics.isNotEmpty,
+          listLength: _requestPageController!.topics.length,
+          emptyInfo: 'Teacher did not provide any topics',
+          elementBuilder: (context, index) {
+            final isMarked = selectedIndex == index;
+            final topic = _requestPageController!.topics[index];
+            return ActionChip(
+                padding: const EdgeInsets.all(10.0),
+                label: Text(topic.name,
+                    style: TextStyle(
+                        fontSize: 14,
+                        color: isMarked ? Colors.white : Colors.black)),
+                backgroundColor: isMarked ? Colors.blue : Colors.grey,
+                onPressed: () => context
+                    .read<RequestTopicBloc>()
+                    .add(ToggleTopicEvent(index)));
+          });
     });
   }
 

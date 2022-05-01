@@ -7,33 +7,22 @@ import 'package:teachent_app/view/widgets/label.dart';
 
 class StudentProfilePage extends StatelessWidget {
   StudentProfilePageController? _studentProfilePageController;
-  StudentProfilePage(Student student, {Key? key})
-      : super(key: key) {
-    _studentProfilePageController =
-        StudentProfilePageController(student);
+  StudentProfilePage(Student student, {Key? key}) : super(key: key) {
+    _studentProfilePageController = StudentProfilePageController(student);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(title: Text(_studentProfilePageController!.name)),
-        body: Column(
-            children: [
-                _educationLevel(),
-                _reviews()
-            ]
-        )
-    );
+        body: Column(children: [_educationLevel(), _reviews()]));
   }
 
   Widget _educationLevel() {
-    return Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-            Label(text: 'Education level:'),
-            Label(text: _studentProfilePageController!.educationLevel)
-        ]
-    );
+    return Row(mainAxisAlignment: MainAxisAlignment.start, children: [
+      Label(text: 'Education level:'),
+      Label(text: _studentProfilePageController!.educationLevel)
+    ]);
   }
 
   Widget _reviews() {

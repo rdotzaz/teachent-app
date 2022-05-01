@@ -125,7 +125,8 @@ class TeacherSearchPage extends StatelessWidget {
                     itemBuilder: (context, index) {
                       return TeacherCardWidget(
                           teacher: controller.teachers[index],
-                          onPressed: () => controller.goToTeacherProfile(context, index));
+                          onPressed: () =>
+                              controller.goToTeacherProfile(context, index));
                     }),
               if (isStudentsMarked)
                 const Padding(
@@ -137,7 +138,8 @@ class TeacherSearchPage extends StatelessWidget {
                     itemBuilder: (context, index) {
                       return StudentCardWidget(
                         student: controller.students[index],
-                        onPressed: () => controller.goToStudentProfile(context, index),
+                        onPressed: () =>
+                            controller.goToStudentProfile(context, index),
                       );
                     }),
             ],
