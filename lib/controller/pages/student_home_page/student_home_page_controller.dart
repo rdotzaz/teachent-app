@@ -91,7 +91,7 @@ class StudentHomePageController extends BaseController {
 
   Future<void> goToTeacherProfile(BuildContext context, int index) async {
     await Navigator.of(context).push(MaterialPageRoute(
-        builder: (_) => TeacherProfilePage(teachers[index], userId)));
+        builder: (_) => TeacherProfilePage(teacher: teachers[index], studentId: userId)));
     refresh();
   }
 

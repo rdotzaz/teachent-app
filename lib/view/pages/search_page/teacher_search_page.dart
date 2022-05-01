@@ -122,10 +122,10 @@ class TeacherSearchPage extends StatelessWidget {
                 ListView.builder(
                     itemCount: controller.teachers.length,
                     shrinkWrap: true,
-                    itemBuilder: (_, index) {
+                    itemBuilder: (context, index) {
                       return TeacherCardWidget(
                           teacher: controller.teachers[index],
-                          onPressed: () {});
+                          onPressed: () => controller.goToTeacherProfile(context, index));
                     }),
               if (isStudentsMarked)
                 const Padding(
@@ -134,10 +134,10 @@ class TeacherSearchPage extends StatelessWidget {
                 ListView.builder(
                     itemCount: controller.students.length,
                     shrinkWrap: true,
-                    itemBuilder: (_, index) {
+                    itemBuilder: (context, index) {
                       return StudentCardWidget(
                         student: controller.students[index],
-                        onPressed: () {},
+                        onPressed: () => controller.goToStudentProfile(context, index),
                       );
                     }),
             ],
