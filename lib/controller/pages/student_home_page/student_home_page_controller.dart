@@ -2,38 +2,25 @@ import 'package:flutter/material.dart';
 import 'package:teachent_app/controller/controller.dart';
 import 'package:teachent_app/model/db_objects/db_object.dart';
 import 'package:teachent_app/model/db_objects/lesson.dart';
-import 'package:teachent_app/model/db_objects/lesson_date.dart';
+import 'package:teachent_app/model/db_objects/request.dart';
 import 'package:teachent_app/model/db_objects/student.dart';
 import 'package:teachent_app/model/db_objects/teacher.dart';
-import 'package:teachent_app/model/objects/tool.dart';
 import 'package:teachent_app/view/pages/search_page/student_search_page.dart';
+import 'package:teachent_app/view/pages/settings_page/settings_page.dart';
+import 'package:teachent_app/view/pages/teacher_profile_page/teacher_profile_page.dart';
+import 'package:teachent_app/view/pages/student_request_page/student_request_page.dart';
 
 /// Controller for Student Home Page
 class StudentHomePageController extends BaseController {
   final KeyId userId;
   Student? student;
+  final void Function() refresh;
 
-  StudentHomePageController(this.userId);
+  StudentHomePageController(this.userId, this.refresh);
 
-  // TODO -- Only for testing
-  final teachers = [
-    Teacher(
-        'kowalski', 'Jan Kowalski', '', [], [], [], -1, [], ['abcde', 'pohoo'])
-  ];
-
-  final lessonDate1 = LessonDate('abcde', 'kowalski', 'john', false, 'Monday',
-      '12:00+60', true, 50, [Tool('Google Meet', true)], []);
-  final lessonDate2 = LessonDate('pohoo', 'kowalski', 'john', false, 'Thursday',
-      '16:00+60', true, 50, [Tool('Google Meet', true)], []);
-
-  final lessons = [
-    Lesson('abcde', 'kowalski', 'john', '04-04-2022', true, false, []),
-    Lesson('pohoo', 'kowalski', 'john', '07-04-2022', true, false, [])
-  ];
-
-  final requests = [];
-
-  // ------------------------------------------------------
+  final List<Teacher> teachers = [];
+  final List<Lesson> lessons = [];
+  final List<Request> requests = [];
 
   @override
   Future<void> init() async {
@@ -44,6 +31,40 @@ class StudentHomePageController extends BaseController {
       return;
     }
     student = possibleStudent;
+
+    await initLessons();
+    await initTeachers();
+    await initRequests();
+  }
+
+  Future<void> initLessons() async {
+    lessons.clear();
+    final foundLessons = await dataManager.database
+        .getLessonsByDates(student?.lessonDates ?? []);
+    if (foundLessons.isEmpty) {
+      print('No lessons found');
+    }
+    lessons.addAll(foundLessons);
+  }
+
+  Future<void> initTeachers() async {
+    teachers.clear();
+    final foundTeachers = await dataManager.database
+        .getTeachersByDates(student?.lessonDates ?? []);
+    if (foundTeachers.isEmpty) {
+      print('No teachers found');
+    }
+    teachers.addAll(foundTeachers);
+  }
+
+  Future<void> initRequests() async {
+    requests.clear();
+    final foundRequests =
+        await dataManager.database.getRequests(student?.requests ?? []);
+    if (foundRequests.isEmpty) {
+      print('No requests found');
+    }
+    requests.addAll(foundRequests);
   }
 
   String get studentName => student?.name ?? '';
@@ -58,8 +79,29 @@ class StudentHomePageController extends BaseController {
     return teacher.name;
   }
 
-  void goToSearchPage(BuildContext context) {
+  Future<void> goToSearchPage(BuildContext context) async {
+    await Navigator.of(context)
+        .push(MaterialPageRoute(builder: (_) => StudentSearchPage(userId)));
+    refresh();
+  }
+
+  void goToSettingsPage(BuildContext context) {
     Navigator.of(context)
-        .push(MaterialPageRoute(builder: (_) => StudentSearchPage()));
+        .push(MaterialPageRoute(builder: (_) => SettingsPage(userId: userId)));
+  }
+
+  Future<void> goToTeacherProfile(BuildContext context, int index) async {
+    await Navigator.of(context).push(MaterialPageRoute(
+        builder: (_) => TeacherProfilePage(teachers[index], userId)));
+    refresh();
+  }
+
+  Future<void> goToRequestPage(BuildContext context, int requestIndex) async {
+    final request = requests[requestIndex];
+
+    await Navigator.of(context).push(MaterialPageRoute(
+        builder: (_) => StudentRequestPage(
+            requestId: request.requestId, studentId: student?.userId ?? '')));
+    refresh();
   }
 }

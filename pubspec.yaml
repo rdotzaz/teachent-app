@@ -9,6 +9,7 @@ environment:
 
 dependencies:
   build_runner: ^2.1.8
+  cryptography: ^2.0.5
   cupertino_icons: ^1.0.2
   firebase_core: ^1.13.1
   firebase_database: ^9.0.8
@@ -18,8 +19,8 @@ dependencies:
   hive: ^2.1.0
   hive_flutter: ^1.1.0
   hive_generator: ^1.1.2
+  intl: ^0.17.0
   mobile_web_view: ^0.2.0-nullsafety.0
-  cryptography: ^2.0.5
 
 dev_dependencies:
   flutter_lints: ^1.0.0

@@ -5,8 +5,8 @@ import 'package:teachent_app/controller/pages/teacher_creation/bloc/other_topic_
 import 'package:teachent_app/controller/pages/teacher_creation/bloc/teacher_creation_bloc.dart';
 import 'package:teachent_app/controller/pages/teacher_creation/bloc/work_mode_bloc.dart';
 import 'package:teachent_app/controller/pages/teacher_creation/teacher_creation_page_controller.dart';
-import 'package:teachent_app/view/pages/teacher_creation_page.dart/place_sub_page.dart';
-import 'package:teachent_app/view/pages/teacher_creation_page.dart/topic_sub_page.dart';
+import 'package:teachent_app/view/pages/teacher_creation_page/place_sub_page.dart';
+import 'package:teachent_app/view/pages/teacher_creation_page/topic_sub_page.dart';
 import 'package:teachent_app/view/widgets/custom_button.dart';
 
 import 'name_sub_page.dart';

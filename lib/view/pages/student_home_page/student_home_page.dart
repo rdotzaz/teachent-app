@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:teachent_app/common/enums.dart';
+import 'package:teachent_app/common/enum_functions.dart';
 import 'package:teachent_app/controller/pages/student_home_page/student_home_page_controller.dart';
 import 'package:teachent_app/model/db_objects/db_object.dart';
 import 'package:teachent_app/view/widgets/single_card.dart';
+import 'package:teachent_app/view/widgets/custom_button.dart';
 
 class StudentHomePage extends StatefulWidget {
   final KeyId userId;
@@ -17,28 +20,35 @@ class _StudentHomePageState extends State<StudentHomePage> {
   @override
   void initState() {
     super.initState();
-    _studentHomePageController = StudentHomePageController(widget.userId);
+    _studentHomePageController =
+        StudentHomePageController(widget.userId, refresh);
+  }
+
+  void refresh() {
+    setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
+    return Scaffold(
+      body: FutureBuilder(
         future: _studentHomePageController.init(),
-        builder: (_, snapshot) {
+        builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const CircularProgressIndicator();
           } else if (snapshot.connectionState == ConnectionState.done) {
-            return homeWidget();
+            return homeWidget(context);
           }
           return errorWidget(snapshot.error.toString());
-        });
+        })
+    );
   }
 
-  Widget appBar() {
+  Widget appBar(BuildContext context) {
     return SliverAppBar(
       expandedHeight: 150,
       backgroundColor: Colors.white,
-      actions: [settings()],
+      actions: [settings(context)],
       flexibleSpace: FlexibleSpaceBar(
           title: Text('Hi\n${_studentHomePageController.studentName}',
               style: const TextStyle(color: Colors.black)),
@@ -46,9 +56,9 @@ class _StudentHomePageState extends State<StudentHomePage> {
     );
   }
 
-  Widget settings() {
+  Widget settings(BuildContext context) {
     return GestureDetector(
-      onTap: () {},
+      onTap: () => _studentHomePageController.goToSettingsPage(context),
       child: const Padding(
         padding: EdgeInsets.all(18.0),
         child: Icon(
@@ -59,9 +69,9 @@ class _StudentHomePageState extends State<StudentHomePage> {
     );
   }
 
-  Widget homeWidget() {
+  Widget homeWidget(BuildContext context) {
     return CustomScrollView(slivers: [
-      appBar(),
+      appBar(context),
       SliverList(
           delegate: SliverChildListDelegate([
         searchBarWidget(),
@@ -108,12 +118,14 @@ class _StudentHomePageState extends State<StudentHomePage> {
 
   Widget nextLessonsWidget() {
     return SingleCardListWidget(
-      backgroundColor: Colors.red,
+      backgroundColor: Colors.white,
+      shadowColor: Colors.grey,
       title: 'Next lessons',
+      titleColor: Colors.black,
       boxHeight: 200.0,
       isNotEmptyCondition: _studentHomePageController.areLessons,
       listLength: _studentHomePageController.lessons.length,
-      elementBackgroundColor: Colors.white,
+      elementBackgroundColor: Colors.red,
       emptyInfo: 'No lessons',
       emptyIcon: Icons.free_breakfast,
       elementBuilder: (context, index) {
@@ -132,46 +144,64 @@ class _StudentHomePageState extends State<StudentHomePage> {
 
   Widget teachersWidget() {
     return SingleCardListWidget(
-      backgroundColor: Colors.red,
+      backgroundColor: Colors.white,
+      shadowColor: Colors.grey,
       title: 'Your teachers',
+      titleColor: Colors.black,
       boxHeight: 150.0,
       elementHeight: 150.0,
       elementWidth: 150.0,
       isNotEmptyCondition: _studentHomePageController.areTeachers,
       listLength: _studentHomePageController.teachers.length,
-      elementBackgroundColor: Colors.red[700]!,
+      elementBackgroundColor: Colors.red,
       emptyInfo: 'No teachers',
       emptyIcon: Icons.person,
       scrollDirection: Axis.horizontal,
       elementBuilder: (context, index) {
-        return Column(children: [
-          const Padding(
-              padding: EdgeInsets.all(10),
-              child: Icon(
-                Icons.person,
-                color: Colors.white,
-                size: 50,
-              )),
-          const SizedBox(height: 20),
-          Text(_studentHomePageController.teachers[index].name,
-              style: const TextStyle(fontSize: 18, color: Colors.white)),
-        ]);
+        return GestureDetector(
+            onTap: () =>
+                _studentHomePageController.goToTeacherProfile(context, index),
+            child: Column(children: [
+              const Padding(
+                  padding: EdgeInsets.all(10),
+                  child: Icon(
+                    Icons.person,
+                    color: Colors.white,
+                    size: 50,
+                  )),
+              const SizedBox(height: 20),
+              Text(_studentHomePageController.teachers[index].name,
+                  style: const TextStyle(fontSize: 18, color: Colors.white)),
+            ]));
       },
     );
   }
 
   Widget requestsWidget() {
     return SingleCardListWidget(
-      backgroundColor: Colors.red,
+      backgroundColor: Colors.white,
+      shadowColor: Colors.grey,
       title: 'Requests',
+      titleColor: Colors.black,
       boxHeight: 300.0,
       isNotEmptyCondition: _studentHomePageController.areRequests,
       listLength: _studentHomePageController.requests.length,
-      elementBackgroundColor: Colors.white,
+      elementBackgroundColor: Colors.red,
       emptyInfo: 'No requests',
       emptyIcon: Icons.free_breakfast,
       elementBuilder: (context, index) {
-        return Container();
+        final request = _studentHomePageController.requests[index];
+        return ListTile(
+          title: Text(
+            request.currentDate,
+            style: const TextStyle(fontSize: 20, color: Colors.white)),
+          leading: Icon(Icons.send, size: 30, color: Colors.white),
+          onTap: () => _studentHomePageController.goToRequestPage(context, index),
+          subtitle: Text(
+            request.status.stringValue,
+            style: const TextStyle(fontSize: 14, color: Colors.white)
+          )
+        );
       },
     );
   }

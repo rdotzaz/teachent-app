@@ -20,6 +20,17 @@ class Lesson extends DatabaseObject {
       this.isFinished, this.reports)
       : lessonDateId = DatabaseConsts.emptyKey;
 
+  Lesson.fromMap(this.lessonDateId, Map<dynamic, dynamic> values)
+      : teacherId = values['teacherId'] ?? '',
+        studentId = values['studentId'] ?? '',
+        date = values['date'] ?? '',
+        isPlanned = values['isPlanned'] ?? false,
+        isFinished = values['isFinished'] ?? false,
+        reports = DatabaseObject.getMapFromField(values, 'reports')
+            .entries
+            .map((r) => r.key)
+            .toList();
+
   @override
   String get collectionName => DatabaseObjectName.lessons;
 
@@ -28,7 +39,13 @@ class Lesson extends DatabaseObject {
 
   @override
   Map<String, dynamic> toMap() {
-    final map = <String, String>{};
-    return map;
+    return {
+      'teacherId': teacherId,
+      'studentId': studentId,
+      'date': date,
+      'isPlanned': isPlanned,
+      'isFinished': isFinished,
+      'reports': {for (final reportId in reports) reportId: true}
+    };
   }
 }

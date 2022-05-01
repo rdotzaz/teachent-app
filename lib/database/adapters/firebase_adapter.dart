@@ -58,7 +58,7 @@ class FirebaseRealTimeDatabaseAdapter {
 
     if (!isKeyExists) {
       print('[FirebaseAdapter] No login found');
-      return {};
+      return {'error': 'login'};
     }
 
     if (foundEventValue == null) {
@@ -78,7 +78,7 @@ class FirebaseRealTimeDatabaseAdapter {
 
     if (!comparsionResult) {
       print('[FirebaseAdapter] Password does not match');
-      return {};
+      return {'error': 'password'};
     }
     return foundEventValue;
   }
@@ -118,14 +118,14 @@ class FirebaseRealTimeDatabaseAdapter {
   /// [keyId] key identifies object in [collectionName]
   /// [userValues] map representation of object
   static Future<bool> addDatabaseObject(
-      String collectionName, String keyId, DBValues userValues) async {
+      String collectionName, String keyId, DBValues values) async {
     DatabaseReference databaseReference =
         FirebaseDatabase.instance.ref().child(collectionName);
 
-    var possibleExistedKeyRef = databaseReference.child(keyId);
+    final possibleExistedKeyRef = databaseReference.child(keyId);
 
-    var event = await possibleExistedKeyRef.once();
-    var isKeyExists = event.snapshot.exists;
+    final event = await possibleExistedKeyRef.once();
+    final isKeyExists = event.snapshot.exists;
 
     if (isKeyExists) {
       print('[FirebaseAdapter] User is already exists');
@@ -133,11 +133,24 @@ class FirebaseRealTimeDatabaseAdapter {
     }
 
     /// TODO - RESOLVE PRINTED EXCEPTION HERE
-    await databaseReference.update({keyId: userValues});
+    await databaseReference.update({keyId: values});
     return true;
   }
 
-  /// Add objects like topics, tools, places to database
+  static Future<String> addDatabaseObjectWithNewKey(
+      String collectionName, DBValues values) async {
+    DatabaseReference databaseReference =
+        FirebaseDatabase.instance.ref().child(collectionName);
+
+    final newKey = databaseReference.push().key;
+    if (newKey == null) {
+      return DatabaseConsts.emptyKey;
+    }
+    await databaseReference.child(newKey).update(values);
+
+    return newKey;
+  }
+
   static Future<void> addObjects(String collectionName, DBValues values) async {
     var databaseReference = FirebaseDatabase.instance.ref(collectionName);
 
@@ -182,6 +195,37 @@ class FirebaseRealTimeDatabaseAdapter {
       return {};
     }
     return values as Map<dynamic, dynamic>;
+  }
+
+  static Future<void> addForeignKey(String collectionName, String id,
+      String property, String foreginId) async {
+    DatabaseReference databaseReference =
+        FirebaseDatabase.instance.ref().child('$collectionName/$id/$property');
+
+    await databaseReference.update({foreginId: true});
+  }
+
+  static Future<String> getForeignKey(
+      String collectionName, String id, String property) async {
+    DatabaseReference databaseReference =
+        FirebaseDatabase.instance.ref().child('$collectionName/$id/$property');
+
+    final event = await databaseReference.once();
+    final isKeyExists = event.snapshot.exists;
+
+    if (!isKeyExists) {
+      print('[FirebaseAdapter] Foreign key does not exist');
+      return DatabaseConsts.emptyKey;
+    }
+
+    return event.snapshot.value as String;
+  }
+
+  static Future<void> updateField<Value>(String collectionName, String id, String path, Value value) async {
+    DatabaseReference databaseReference =
+        FirebaseDatabase.instance.ref().child('$collectionName/$id/$path');
+
+    await databaseReference.set(value);
   }
 
   static void clear() {}
