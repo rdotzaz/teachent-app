@@ -180,13 +180,16 @@ class StudentRequestPageController extends BaseController {
 
   Future<void> sendResponse(BuildContext context) async {
     assert(hasChangesProvided && request != null);
-    
-    await dataManager.database.changeRequestStatus(request!.requestId, RequestStatus.waiting);
+
+    await dataManager.database
+        .changeRequestStatus(request!.requestId, RequestStatus.waiting);
 
     print('$reqestedDate == ${request!.requestedDate}');
     if (reqestedDate != request!.requestedDate) {
-      await dataManager.database.changeRequestedDate(request!.requestId, reqestedDate);
-      await dataManager.database.changeRequestedDateStatus(request!.requestId, RequestedDateStatus.requested);
+      await dataManager.database
+          .changeRequestedDate(request!.requestId, reqestedDate);
+      await dataManager.database.changeRequestedDateStatus(
+          request!.requestId, RequestedDateStatus.requested);
     }
     await showSuccessMessageAsync(context, 'Request has been updated');
     Navigator.of(context).pop();
@@ -207,8 +210,12 @@ class StudentRequestPageController extends BaseController {
         RequestStatus.waiting,
         topics[topicIndex],
         date,
-        otherDate == null ? RequestedDateStatus.none : RequestedDateStatus.requested,
-        newDate, [], []);
+        otherDate == null
+            ? RequestedDateStatus.none
+            : RequestedDateStatus.requested,
+        newDate,
+        [],
+        []);
 
     final requestKey = await dataManager.database.addRequest(request!);
 

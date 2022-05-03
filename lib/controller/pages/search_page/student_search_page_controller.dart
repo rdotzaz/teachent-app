@@ -51,6 +51,7 @@ class StudentSearchPageController extends BaseSearchController {
     final teacher = _foundTeachers[teacherIndex];
 
     Navigator.of(context).push(MaterialPageRoute(
-        builder: (_) => TeacherProfilePage(teacher, studentId)));
+        builder: (_) =>
+            TeacherProfilePage(teacher: teacher, studentId: studentId)));
   }
 }

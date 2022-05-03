@@ -6,33 +6,29 @@ import 'package:teachent_app/view/widgets/custom_button.dart';
 
 class Buttons extends StatelessWidget {
   final TeacherRequestPageController controller;
-  const Buttons({required this.controller, Key? key }) : super(key: key);
+  const Buttons({required this.controller, Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<RefreshBloc, bool>(
-        builder: (context, wasRejected) {
-            return Column(
-                children: [
-                    if (wasRejected)
-                        CustomButton(
-                            text: 'Send response',
-                            fontSize: 18,
-                            onPressed: () => controller.sendResponse(context),
-                            buttonColor: Colors.blue),
-                    CustomButton(
-                        text: 'Accept request',
-                        fontSize: 18,
-                        onPressed: () => controller.acceptRequest(context),
-                        buttonColor: Colors.green),
-                    CustomButton(
-                        text: 'Reject request',
-                        fontSize: 18,
-                        onPressed: () => controller.rejectRequest(context),
-                        buttonColor: Colors.red),
-                ]
-            );
-        }
-    );
+    return BlocBuilder<RefreshBloc, bool>(builder: (context, wasRejected) {
+      return Column(children: [
+        if (wasRejected)
+          CustomButton(
+              text: 'Send response',
+              fontSize: 18,
+              onPressed: () => controller.sendResponse(context),
+              buttonColor: Colors.blue),
+        CustomButton(
+            text: 'Accept request',
+            fontSize: 18,
+            onPressed: () => controller.acceptRequest(context),
+            buttonColor: Colors.green),
+        CustomButton(
+            text: 'Reject request',
+            fontSize: 18,
+            onPressed: () => controller.rejectRequest(context),
+            buttonColor: Colors.red),
+      ]);
+    });
   }
 }

@@ -10,6 +10,7 @@ import 'package:teachent_app/view/pages/lesson_date_creation_page/lesson_date_cr
 import 'package:teachent_app/view/pages/search_page/teacher_search_page.dart';
 import 'package:teachent_app/view/pages/settings_page/settings_page.dart';
 import 'package:teachent_app/view/pages/teacher_request_page/teacher_request_page.dart';
+import 'package:teachent_app/view/pages/student_profile_page/student_profile_page.dart';
 
 /// Controller for Teacher Home Page
 class TeacherHomePageController extends BaseController {
@@ -121,6 +122,15 @@ class TeacherHomePageController extends BaseController {
     await Navigator.of(context).push(MaterialPageRoute(
         builder: (_) => TeacherRequestPage(
             request: request, teacherId: teacher?.userId ?? '')));
+    refresh();
+  }
+
+  Future<void> goToStudentProfile(
+      BuildContext context, int studentIndex) async {
+    final student = students[studentIndex];
+
+    await Navigator.of(context)
+        .push(MaterialPageRoute(builder: (_) => StudentProfilePage(student)));
     refresh();
   }
 }

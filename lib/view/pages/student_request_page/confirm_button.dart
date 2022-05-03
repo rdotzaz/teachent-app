@@ -52,12 +52,12 @@ class ConfirmButton extends StatelessWidget {
     final status = controller.request?.status ?? RequestStatus.newReq;
     final hasChangesProvided = controller.hasChangesProvided;
     return Container(
-          margin: const EdgeInsets.all(15),
-          child: CustomButton(
-              text: _buttonText(status, hasChangesProvided),
-              fontSize: 18,
-              onPressed: () => _onPressed(context, status, hasChangesProvided),
-              isEnabled: hasChangesProvided || controller.request == null,
-              buttonColor: _getColor(status, hasChangesProvided)));
-      }
+        margin: const EdgeInsets.all(15),
+        child: CustomButton(
+            text: _buttonText(status, hasChangesProvided),
+            fontSize: 18,
+            onPressed: () => _onPressed(context, status, hasChangesProvided),
+            isEnabled: hasChangesProvided || controller.request == null,
+            buttonColor: _getColor(status, hasChangesProvided)));
+  }
 }

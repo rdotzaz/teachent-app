@@ -167,6 +167,21 @@ class _TeacherHomePageState extends State<TeacherHomePage> {
       emptyIcon: Icons.person,
       scrollDirection: Axis.horizontal,
       elementBuilder: (context, index) {
+        return GestureDetector(
+            onTap: () =>
+                _teacherHomePageController.goToStudentProfile(context, index),
+            child: Column(children: [
+              const Padding(
+                  padding: EdgeInsets.all(10),
+                  child: Icon(
+                    Icons.person,
+                    color: Colors.white,
+                    size: 60,
+                  )),
+              const SizedBox(height: 20),
+              Text(_teacherHomePageController.students[index].name,
+                  style: const TextStyle(fontSize: 18, color: Colors.white)),
+            ]));
         return Column(children: [
           const Padding(
               padding: EdgeInsets.all(10),
@@ -229,16 +244,13 @@ class _TeacherHomePageState extends State<TeacherHomePage> {
       elementBuilder: (context, index) {
         final request = _teacherHomePageController.requests[index];
         return ListTile(
-          title: Text(
-            request.currentDate,
-            style: const TextStyle(fontSize: 20, color: Colors.white)),
-          leading: Icon(Icons.send, size: 30, color: Colors.white),
-          onTap: () => _teacherHomePageController.goToRequestPage(context, index),
-          subtitle: Text(
-            request.status.stringValue,
-            style: const TextStyle(fontSize: 14, color: Colors.white)
-          )
-        );
+            title: Text(request.currentDate,
+                style: const TextStyle(fontSize: 20, color: Colors.white)),
+            leading: Icon(Icons.send, size: 30, color: Colors.white),
+            onTap: () =>
+                _teacherHomePageController.goToRequestPage(context, index),
+            subtitle: Text(request.status.stringValue,
+                style: const TextStyle(fontSize: 14, color: Colors.white)));
       },
     );
   }

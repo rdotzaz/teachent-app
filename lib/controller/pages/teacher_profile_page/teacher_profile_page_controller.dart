@@ -11,7 +11,7 @@ import 'package:teachent_app/view/pages/student_request_page/student_request_pag
 /// Controller for Teacher Profile Page
 class TeacherProfilePageController extends BaseController {
   final Teacher teacher;
-  final KeyId studentId;
+  final KeyId? studentId;
 
   final List<LessonDate> lessonDates = [];
 
@@ -22,6 +22,8 @@ class TeacherProfilePageController extends BaseController {
         await dataManager.database.getLessonDates(teacher.lessonDates);
     lessonDates.addAll(dates.where((d) => d.isFree));
   }
+
+  bool get hasStudentId => studentId != null;
 
   String get teacherName => teacher.name;
   String get description => teacher.description;
@@ -36,7 +38,7 @@ class TeacherProfilePageController extends BaseController {
   void goToRequestPage(BuildContext context, int dateIndex) {
     Navigator.of(context).push(MaterialPageRoute(
         builder: (_) => StudentRequestPage(
-            studentId: studentId,
+            studentId: studentId!,
             teacher: teacher,
             lessonDate: lessonDates[dateIndex])));
   }

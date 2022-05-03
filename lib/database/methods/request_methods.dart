@@ -47,7 +47,8 @@ mixin RequestDatabaseMethods {
 
   /// Update requested date from request with [requestId] with [newDate]
   Future<void> changeRequestedDate(KeyId requestId, String newDate) async {
-    await FirebaseRealTimeDatabaseAdapter.updateField(DatabaseObjectName.requests, requestId, 'requestedDate', newDate);
+    await FirebaseRealTimeDatabaseAdapter.updateField(
+        DatabaseObjectName.requests, requestId, 'requestedDate', newDate);
   }
 
   /// Update request stauts from request with [requestId] with [newStatus]

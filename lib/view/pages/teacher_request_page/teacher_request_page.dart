@@ -34,7 +34,7 @@ class TeacherRequestPage extends StatelessWidget {
     width = MediaQuery.of(context).size.width;
     return MultiBlocProvider(
         providers: [
-            BlocProvider(create: (_) => RefreshBloc(_requestPageController!))
+          BlocProvider(create: (_) => RefreshBloc(_requestPageController!))
         ],
         child: Scaffold(
             body: FutureBuilder(
@@ -55,12 +55,15 @@ class TeacherRequestPage extends StatelessWidget {
       _checkStatus(),
       _textLabel('Name: ${_requestPageController!.studentName}'),
       _textLabel('Date: ${_requestPageController!.date}'),
-      _textLabel(_requestPageController!.isCycled ? 'Lesson is cycled' : 'One-time lesson'),
+      _textLabel(_requestPageController!.isCycled
+          ? 'Lesson is cycled'
+          : 'One-time lesson'),
       _textLabel('Price: ${_requestPageController!.price}'),
       _textLabel('Topic: ${_requestPageController!.topic}'),
-      if(_requestPageController!.tools.isNotEmpty) _tools(),
-      if(_requestPageController!.places.isNotEmpty) _places(),
-      if(_requestPageController!.wasOtherDateRequested) OtherDayWidget(controller: _requestPageController!),
+      if (_requestPageController!.tools.isNotEmpty) _tools(),
+      if (_requestPageController!.places.isNotEmpty) _places(),
+      if (_requestPageController!.wasOtherDateRequested)
+        OtherDayWidget(controller: _requestPageController!),
       _teacherMessage(),
       if (_requestPageController!.hasStudentMessage) _studentMessage(),
       Buttons(controller: _requestPageController!)
@@ -74,8 +77,7 @@ class TeacherRequestPage extends StatelessWidget {
         child: Column(children: [
           Padding(
               padding: const EdgeInsets.fromLTRB(0, 80, 0, 8),
-              child: Text(
-                  _requestPageController!.statusInfo,
+              child: Text(_requestPageController!.statusInfo,
                   style: const TextStyle(fontSize: 18, color: Colors.white))),
           Padding(
               padding: const EdgeInsets.fromLTRB(0, 5, 0, 8),
@@ -86,26 +88,24 @@ class TeacherRequestPage extends StatelessWidget {
 
   Widget _textLabel(String text) {
     return Padding(
-          padding: const EdgeInsets.all(10),
-          child: Text(text,
-              style: const TextStyle(color: Colors.black, fontSize: 18)));
+        padding: const EdgeInsets.all(10),
+        child: Text(text,
+            style: const TextStyle(color: Colors.black, fontSize: 18)));
   }
 
   Widget _tools() {
     return ChipHorizontalList(
-      title: 'Tools',
-      isNotEmptyCondition: _requestPageController!.tools.isNotEmpty,
-      listLength: _requestPageController!.tools.length,
-      emptyInfo: '',
-      elementBuilder: (_, index) {
-        return Chip(
-          padding: const EdgeInsets.all(12.0),
-          label: Text(_requestPageController!.tools[index].name,
-            style: const TextStyle(
-            fontSize: 18, color: Colors.white)),
-          backgroundColor: Colors.blue);
-      }
-    );
+        title: 'Tools',
+        isNotEmptyCondition: _requestPageController!.tools.isNotEmpty,
+        listLength: _requestPageController!.tools.length,
+        emptyInfo: '',
+        elementBuilder: (_, index) {
+          return Chip(
+              padding: const EdgeInsets.all(12.0),
+              label: Text(_requestPageController!.tools[index].name,
+                  style: const TextStyle(fontSize: 18, color: Colors.white)),
+              backgroundColor: Colors.blue);
+        });
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
@@ -126,35 +126,33 @@ class TeacherRequestPage extends StatelessWidget {
             height: 70,
             padding: const EdgeInsets.all(5),
             child: ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    itemCount: _requestPageController!.tools.length,
-                    itemBuilder: (_, index) {
-                      return Chip(
-                          padding: const EdgeInsets.all(12.0),
-                          label: Text(_requestPageController!.tools[index].name,
-                              style: const TextStyle(
-                                  fontSize: 18, color: Colors.white)),
-                          backgroundColor: Colors.blue);
-                    }))
+                scrollDirection: Axis.horizontal,
+                itemCount: _requestPageController!.tools.length,
+                itemBuilder: (_, index) {
+                  return Chip(
+                      padding: const EdgeInsets.all(12.0),
+                      label: Text(_requestPageController!.tools[index].name,
+                          style: const TextStyle(
+                              fontSize: 18, color: Colors.white)),
+                      backgroundColor: Colors.blue);
+                }))
       ]),
     );
   }
 
   Widget _places() {
     return ChipHorizontalList(
-      title: 'Places',
-      isNotEmptyCondition: _requestPageController!.places.isNotEmpty,
-      listLength: _requestPageController!.places.length,
-      emptyInfo: '',
-      elementBuilder: (_, index) {
-        return Chip(
-          padding: const EdgeInsets.all(12.0),
-          label: Text(_requestPageController!.places[index].name,
-            style: const TextStyle(
-            fontSize: 18, color: Colors.white)),
-          backgroundColor: Colors.blue);
-      }
-    );
+        title: 'Places',
+        isNotEmptyCondition: _requestPageController!.places.isNotEmpty,
+        listLength: _requestPageController!.places.length,
+        emptyInfo: '',
+        elementBuilder: (_, index) {
+          return Chip(
+              padding: const EdgeInsets.all(12.0),
+              label: Text(_requestPageController!.places[index].name,
+                  style: const TextStyle(fontSize: 18, color: Colors.white)),
+              backgroundColor: Colors.blue);
+        });
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
@@ -175,17 +173,16 @@ class TeacherRequestPage extends StatelessWidget {
             height: 70,
             padding: const EdgeInsets.all(5),
             child: ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    itemCount: _requestPageController!.places.length,
-                    itemBuilder: (_, index) {
-                      return Chip(
-                          padding: const EdgeInsets.fromLTRB(10, 5, 10, 5),
-                          label: Text(
-                              _requestPageController!.places[index].name,
-                              style: const TextStyle(
-                                  fontSize: 18, color: Colors.white)),
-                          backgroundColor: Colors.blue);
-                    }))
+                scrollDirection: Axis.horizontal,
+                itemCount: _requestPageController!.places.length,
+                itemBuilder: (_, index) {
+                  return Chip(
+                      padding: const EdgeInsets.fromLTRB(10, 5, 10, 5),
+                      label: Text(_requestPageController!.places[index].name,
+                          style: const TextStyle(
+                              fontSize: 18, color: Colors.white)),
+                      backgroundColor: Colors.blue);
+                }))
       ]),
     );
   }
