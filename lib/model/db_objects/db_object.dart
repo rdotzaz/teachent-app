@@ -2,6 +2,7 @@ import 'dart:convert';
 
 typedef KeyId = String;
 
+/// Abstract class of database object
 abstract class DatabaseObject {
   String get collectionName;
   KeyId get key;

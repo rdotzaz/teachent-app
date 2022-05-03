@@ -1,6 +1,8 @@
 import 'package:teachent_app/common/consts.dart';
 import 'package:teachent_app/model/db_objects/db_object.dart';
 
+/// Object representation of user.
+/// This object is identified by login.
 class User extends DatabaseObject {
   final KeyId login;
   final bool isDarkMode;

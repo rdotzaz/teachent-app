@@ -12,6 +12,7 @@ import 'package:teachent_app/view/pages/settings_page/settings_page.dart';
 import 'package:teachent_app/view/pages/teacher_request_page/teacher_request_page.dart';
 import 'package:teachent_app/view/pages/student_profile_page/student_profile_page.dart';
 
+/// Controller for Teacher Home Page
 class TeacherHomePageController extends BaseController {
   final KeyId userId;
   Teacher? teacher;

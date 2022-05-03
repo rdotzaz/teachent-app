@@ -13,6 +13,7 @@ import 'package:teachent_app/model/objects/topic.dart';
 import 'package:teachent_app/model/objects/place.dart';
 import 'package:teachent_app/view/widgets/status_bottom_sheet.dart';
 
+/// Controller for Student Ruquest Page
 class StudentRequestPageController extends BaseController {
   KeyId? requestId;
   KeyId? studentId;

@@ -8,11 +8,13 @@ import 'package:teachent_app/view/pages/teacher_home_page/teacher_home_page.dart
 
 import '../../../view/pages/profile_select_page/profile_select_page.dart';
 
+/// Controller for Login Page
 class LoginFormController extends BaseController {
   final _loginFormKey = GlobalKey<FormState>();
   String login = '';
   String password = '';
 
+  /// Key object for form widget to validate fields under form widget
   GlobalKey<FormState> get key => _loginFormKey;
 
   String? validateLogin(String? login) {

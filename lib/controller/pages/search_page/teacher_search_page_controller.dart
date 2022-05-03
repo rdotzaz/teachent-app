@@ -5,6 +5,7 @@ import 'package:teachent_app/model/db_objects/teacher.dart';
 import 'package:teachent_app/view/pages/teacher_profile_page/teacher_profile_page.dart';
 import 'package:teachent_app/view/pages/student_profile_page/student_profile_page.dart';
 
+/// Controller for Teacher Search Page
 class TeacherSearchPageController extends BaseSearchController {
   final List<Teacher> _foundTeachers = [];
   final List<Student> _foundStudents = [];

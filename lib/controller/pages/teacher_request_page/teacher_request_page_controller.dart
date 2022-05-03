@@ -13,6 +13,7 @@ import 'package:teachent_app/model/objects/topic.dart';
 import 'package:teachent_app/model/objects/place.dart';
 import 'package:teachent_app/view/widgets/status_bottom_sheet.dart';
 
+/// Controller for Teacher Request Page
 class TeacherRequestPageController extends BaseController {
   KeyId? teacherId;
   Student? student;
@@ -120,10 +121,8 @@ class TeacherRequestPageController extends BaseController {
           lessonDate?.lessonDateId ?? '', request.requestedDate);
     }
 
-    await dataManager.database
-        .changeRequestStatus(request.requestId, RequestStatus.accepted);
-    await dataManager.database
-        .changeRequestDate(request.requestId, request.requestedDate);
+    await dataManager.database.changeRequestStatus(request.requestId, RequestStatus.accepted);
+    await dataManager.database.changeCurrentDate(request.requestId, request.requestedDate);
 
     await showSuccessMessageAsync(context, 'Request has been accepted');
     Navigator.of(context).pop();

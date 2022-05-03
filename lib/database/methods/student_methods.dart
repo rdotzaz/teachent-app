@@ -5,7 +5,9 @@ import '../../common/consts.dart';
 import '../../model/db_objects/db_object.dart';
 import '../../model/db_objects/student.dart';
 
+/// Methods to maintain Student object in database
 mixin StudentDatabaseMethods {
+  /// Add student to database
   Future<void> addStudent(Student student) async {
     print('Student');
     var wasAdded = await FirebaseRealTimeDatabaseAdapter.addDatabaseObject(
@@ -13,10 +15,7 @@ mixin StudentDatabaseMethods {
     return;
   }
 
-  void update(KeyId studentId) {}
-
-  void deleteStudent(KeyId studentId) {}
-
+  /// Returns newly created map object based on map object stored in [field]
   Map<String, dynamic> _getMapFromField(
       Map<dynamic, dynamic> values, String field) {
     if (values[field] == null) {
@@ -28,6 +27,8 @@ mixin StudentDatabaseMethods {
     };
   }
 
+  /// Returns Student object based on [userId]
+  /// If object with [userId] does not exist in database, returns null
   Future<Student?> getStudent(KeyId userId) async {
     final studentValues = await FirebaseRealTimeDatabaseAdapter.getObject(
         DatabaseObjectName.students, userId);
@@ -38,11 +39,7 @@ mixin StudentDatabaseMethods {
     return Student.fromMap(userId, studentValues);
   }
 
-  void _addStudentToList(String login, Map values, List<Student> students) {
-    students.add(Student.onlyKeyName(login, values['name'] ?? '',
-        EducationLevel(values['educationLevel'] ?? '', true)));
-  }
-
+  /// Returns list of students with matching pattern [name]
   Future<List<Student>> getStudentsByNamePart(String name) async {
     final studentValues =
         await FirebaseRealTimeDatabaseAdapter.getObjectsByName(

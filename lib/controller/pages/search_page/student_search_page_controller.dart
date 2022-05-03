@@ -7,6 +7,7 @@ import 'package:teachent_app/model/objects/tool.dart';
 import 'package:teachent_app/model/objects/place.dart';
 import 'package:teachent_app/view/pages/teacher_profile_page/teacher_profile_page.dart';
 
+/// Controler for Student Search Page
 class StudentSearchPageController extends BaseSearchController {
   final KeyId studentId;
   StudentSearchPageController(this.studentId);

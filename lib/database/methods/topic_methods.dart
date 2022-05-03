@@ -3,6 +3,7 @@ import 'package:teachent_app/database/adapters/firebase_adapter.dart';
 import 'package:teachent_app/database/database.dart';
 import 'package:teachent_app/model/objects/topic.dart';
 
+/// Methods to maintain Topic object in database
 mixin TopicDatabaseMethods {
   Future<Iterable<Topic>> getAvailableTopics() async {
     DBValues<bool> topicValues =

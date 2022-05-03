@@ -1,5 +1,6 @@
 import 'enums.dart';
 
+/// Extend RequestStatus enum with useful getters
 extension RequestStatusExt on RequestStatus {
   int get value {
     if (this == RequestStatus.newReq) {
@@ -40,6 +41,7 @@ extension RequestStatusExt on RequestStatus {
   }
 }
 
+/// Extend RequestedDateStatus enum with useful getters
 extension RequestedDateStatusExt on RequestedDateStatus {
   int get value {
     if (this == RequestedDateStatus.none) {
@@ -74,8 +76,7 @@ extension RequestedDateStatusExt on RequestedDateStatus {
   }
 }
 
-enum CycleType { single, daily, weekly, biweekly, monthly }
-
+/// Extend CycleType enum with useful getters
 extension CycleTypeExt on CycleType {
   int get value {
     if (this == CycleType.single) {
@@ -94,6 +95,7 @@ extension CycleTypeExt on CycleType {
   }
 }
 
+/// Returns CycleType enum based on value from database
 CycleType getCycleByValue(int value) {
   if (value == 0) {
     return CycleType.single;
@@ -110,6 +112,7 @@ CycleType getCycleByValue(int value) {
   return CycleType.monthly;
 }
 
+/// Returns RequestStatus enum based on value from database
 RequestStatus getRequestStatusByValue(int value) {
   if (value == 0) {
     return RequestStatus.newReq;
@@ -129,6 +132,7 @@ RequestStatus getRequestStatusByValue(int value) {
   return RequestStatus.invalid;
 }
 
+/// Returns RequestedDateStatus enum based on value from database
 RequestedDateStatus getRequestedDateStatusByValue(int value) {
   if (value == 0) {
     return RequestedDateStatus.none;

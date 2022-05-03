@@ -1,3 +1,4 @@
+/// Object representation of place (city)
 class Place {
   final String name;
   bool marked;

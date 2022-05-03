@@ -10,7 +10,11 @@ import '../../common/consts.dart' show DatabaseConsts, DatabaseObjectName;
 // Last UTF-8 character based on https://www.charset.org/utf-8/100
 const lastCharacter = '\u1869F';
 
+/// Class with static methods to communicate with FirebaseDatabase
 class FirebaseRealTimeDatabaseAdapter {
+  /// Method initializes database after starting app.
+  /// Needs to be called before runApp() function.
+  /// If [dbMode] is DBMode.testing, then firebase emulator is set as well.
   static Future<void> init(DBMode dbMode) async {
     await _startDataBase(dbMode);
   }
@@ -40,6 +44,9 @@ class FirebaseRealTimeDatabaseAdapter {
     }
   }
 
+  /// Method returns User database object with key-values
+  /// with matching login and password.
+  /// Return empty map if such user has not been found.
   static Future<Map> findUserByLoginAndCheckPassword(
       String login, String password) async {
     var databaseReference =
@@ -76,6 +83,14 @@ class FirebaseRealTimeDatabaseAdapter {
     return foundEventValue;
   }
 
+  /// Returns map object with values of type bool.
+  /// It corresponds to objects like topics, tools, places etc.
+  /// For instance [collectionName]=topics, returns
+  ///
+  /// {
+  ///   "Math": true,
+  ///   "Computer Science": true
+  /// }
   static Future<DBValues<bool>> getAvailableObjects(
       String collectionName) async {
     var databaseReference = FirebaseDatabase.instance.ref(collectionName);
@@ -98,6 +113,10 @@ class FirebaseRealTimeDatabaseAdapter {
     };
   }
 
+  /// Returns true if object has been successfully added to database.
+  /// [collectionName] like "teachers", "students"
+  /// [keyId] key identifies object in [collectionName]
+  /// [userValues] map representation of object
   static Future<bool> addDatabaseObject(
       String collectionName, String keyId, DBValues values) async {
     DatabaseReference databaseReference =
@@ -113,7 +132,7 @@ class FirebaseRealTimeDatabaseAdapter {
       return false;
     }
 
-    /// [TODO] RESOLVE PRINTED EXCEPTION HERE
+    /// TODO - RESOLVE PRINTED EXCEPTION HERE
     await databaseReference.update({keyId: values});
     return true;
   }
@@ -138,6 +157,9 @@ class FirebaseRealTimeDatabaseAdapter {
     await databaseReference.update(values);
   }
 
+  /// Returns map representaion of object from [collectionName] with [key]
+  /// It means that method returns values from [collectionName]/[key]
+  /// If [collectionName]/[key] record does not exist in database method returns empty map object
   static Future<Map> getObject(String collectionName, String key) async {
     DatabaseReference databaseReference =
         FirebaseDatabase.instance.ref().child('$collectionName/$key');
@@ -154,6 +176,9 @@ class FirebaseRealTimeDatabaseAdapter {
     return event.snapshot.value as Map<dynamic, dynamic>;
   }
 
+  /// Returns map representation of object from [collectionName]/{teachers/students}
+  /// where [collectionName]/{teachers/students}/name value is matching with [name]
+  /// Returns empty map if object has not been found
   static Future<Map> getObjectsByName(
       String collectionName, String property, String name) async {
     DatabaseReference databaseReference =
@@ -172,6 +197,7 @@ class FirebaseRealTimeDatabaseAdapter {
     return values as Map<dynamic, dynamic>;
   }
 
+  /// Method adds or updates [foreginId] key to [collectionName]/[id]/[property]
   static Future<void> addForeignKey(String collectionName, String id,
       String property, String foreginId) async {
     DatabaseReference databaseReference =
@@ -180,6 +206,7 @@ class FirebaseRealTimeDatabaseAdapter {
     await databaseReference.update({foreginId: true});
   }
 
+  /// Method retrives foreign key from [collectionName]/[id]/[property]
   static Future<String> getForeignKey(
       String collectionName, String id, String property) async {
     DatabaseReference databaseReference =
@@ -196,8 +223,8 @@ class FirebaseRealTimeDatabaseAdapter {
     return event.snapshot.value as String;
   }
 
-  static Future<void> updateField<Value>(
-      String collectionName, String id, String path, Value value) async {
+  /// Method updates field [collectionName]/[id]/[path] by [value]
+  static Future<void> updateField<Value>(String collectionName, String id, String path, Value value) async {
     DatabaseReference databaseReference =
         FirebaseDatabase.instance.ref().child('$collectionName/$id/$path');
 

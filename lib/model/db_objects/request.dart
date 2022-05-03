@@ -6,6 +6,8 @@ import 'package:teachent_app/model/db_objects/db_object.dart';
 import 'package:teachent_app/model/objects/message.dart';
 import 'package:teachent_app/model/objects/topic.dart';
 
+/// Object representation of request from student to teacher
+/// Contains current status of request
 class Request extends DatabaseObject {
   final KeyId requestId;
   final KeyId lessonDateId;

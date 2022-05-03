@@ -6,6 +6,7 @@ import 'package:teachent_app/model/db_objects/teacher.dart';
 import 'package:teachent_app/model/db_objects/user.dart';
 import 'package:teachent_app/view/pages/welcome_page/welcome_page.dart';
 
+/// Controller for Account Creation Page
 class AccountCreationPageController extends BaseController {
   final DatabaseObject dbObject;
   AccountCreationPageController(this.dbObject);
@@ -18,6 +19,8 @@ class AccountCreationPageController extends BaseController {
   String repeatedPassword = '';
 
   final _creationKey = GlobalKey<FormState>();
+
+  /// Key object for form widget to validate fields under form widget
   GlobalKey<FormState> get creationKey => _creationKey;
 
   @override
@@ -89,6 +92,8 @@ class AccountCreationPageController extends BaseController {
     }
   }
 
+  /// Method adds topic, tool and place objects
+  /// which are not already present in database
   Future<void> addPossibleMissingObjects() async {
     if (teacher != null) {
       final topics = teacher?.topics ?? [];
@@ -101,6 +106,8 @@ class AccountCreationPageController extends BaseController {
     }
   }
 
+  /// Method adds user object to database
+  /// This allows to log in using user's login and password
   Future<void> addUserToDatabase() async {
     final isTeacher = teacher != null;
     final user = User(login, false, isTeacher, password);
@@ -108,6 +115,8 @@ class AccountCreationPageController extends BaseController {
     await dataManager.database.addUser(user);
   }
 
+  /// Method adds student/teacher object to database
+  /// Such objects will be retrived later e.g. in home pages
   Future<void> addTeacherOrStudentToDatabase() async {
     if (teacher != null) {
       teacher?.userId = login;

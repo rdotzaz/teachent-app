@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+/// Wrapper for ElevatedButton
+/// Allows to maintain button status (enabled/disabled)
 class EnabledButton extends StatelessWidget {
   final String text;
   final IconData icon;

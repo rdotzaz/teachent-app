@@ -4,16 +4,20 @@ import 'package:teachent_app/common/consts.dart';
 import 'package:teachent_app/controller/pages/teacher_creation/teacher_creation_page_controller.dart';
 import 'package:teachent_app/model/objects/place.dart';
 
+/// Event for PlaceBloc
 abstract class BasePlaceEvent {}
 
+/// Event for loading all available places
 class LoadAllPlacesEvent extends BasePlaceEvent {}
 
+/// Event for toggle place at index from _teacherCreationPageController.placeList
 class TogglePlaceEvent extends BasePlaceEvent {
   final int index;
 
   TogglePlaceEvent(this.index);
 }
 
+/// Event for adding new place to available places
 class AddNewPlaceEvent extends BasePlaceEvent {
   final String name;
   final BuildContext context;
@@ -21,6 +25,13 @@ class AddNewPlaceEvent extends BasePlaceEvent {
   AddNewPlaceEvent(this.name, this.context);
 }
 
+/// The class inherits from Bloc<Event, State>
+///
+/// Bloc object allows to manage state.
+/// Bloc allows to refresh specific widgets (wrapped in BlocBuilder) after receiving event and emiting new state.
+/// Such pattern improve widget rebuilding performance and better state management as well.
+///
+/// For more details: https://bloclibrary.dev/#/
 class PlaceBloc extends Bloc<BasePlaceEvent, List<Place>> {
   PlaceBloc(TeacherCreationPageController _teacherCreationPageController)
       : super(_teacherCreationPageController.placeList) {

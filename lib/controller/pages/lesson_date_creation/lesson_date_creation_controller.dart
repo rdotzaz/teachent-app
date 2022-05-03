@@ -11,6 +11,7 @@ import 'package:teachent_app/model/db_objects/teacher.dart';
 import 'package:teachent_app/model/objects/tool.dart';
 import 'package:teachent_app/model/objects/place.dart';
 
+/// Controller for LessonDate Creation Page
 class LessonDateCreationPageController extends BaseController {
   final Teacher teacher;
   final void Function() refresh;
@@ -19,6 +20,9 @@ class LessonDateCreationPageController extends BaseController {
   final _formKey = GlobalKey<FormState>();
   final List<Tool> _tools = [];
   final List<Place> _places = [];
+  
+  /// Available lesson frequences.
+  /// TODO - Move [_freqs] list to database
   final List<String> _freqs = [
     'Single',
     'Daily',
@@ -27,6 +31,7 @@ class LessonDateCreationPageController extends BaseController {
     'Monthly'
   ];
 
+  /// Key for form widget
   GlobalKey<FormState> get formKey => _formKey;
   DateTime _selectedDate = DateTime.now();
   TimeOfDay _selectedTime = TimeOfDay.now();
@@ -49,6 +54,7 @@ class LessonDateCreationPageController extends BaseController {
     placeBloc = PlaceBloc(this);
   }
 
+  /// Lesson date established by teacher
   String get date => DateFormat('yyyy-MM-dd').format(_selectedDate);
   String time(BuildContext context) => _selectedTime.format(context);
   int get lessonDuration => _duration;
@@ -60,11 +66,13 @@ class LessonDateCreationPageController extends BaseController {
 
   bool isFreqSelected(int index) => index == _selectedFreqIndex;
 
+  /// Change lesson frequence
   void toggleFreq(int index) {
     _selectedFreqIndex = index;
     refresh();
   }
 
+  /// Date picker
   Future<void> enableDatePicker(BuildContext context) async {
     final pickedDate = await showDatePicker(
         context: context,
@@ -83,6 +91,7 @@ class LessonDateCreationPageController extends BaseController {
     }
   }
 
+  /// Time picker
   Future<void> enableTimePicker(BuildContext context) async {
     final pickedTime = await showTimePicker(
         context: context,
@@ -141,6 +150,8 @@ class LessonDateCreationPageController extends BaseController {
     _isCycled = !_isCycled;
   }
 
+  /// Get color for selected checkbox based on checkbox state
+  /// Return blue if chekcbox selected, white otherwise 
   Color getCycledCheckBoxColor(Set<MaterialState> checkBoxStates) {
     if (checkBoxStates.contains(MaterialState.pressed)) {
       return Colors.white;

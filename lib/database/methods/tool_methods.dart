@@ -3,6 +3,7 @@ import 'package:teachent_app/database/adapters/firebase_adapter.dart';
 import 'package:teachent_app/database/database.dart';
 import 'package:teachent_app/model/objects/tool.dart';
 
+/// Methods to maintain Tool object in database
 mixin ToolsDatabaseMethods {
   Future<Iterable<Tool>> getAvailableTools() async {
     DBValues<bool> toolValues =

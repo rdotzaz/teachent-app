@@ -4,16 +4,20 @@ import 'package:teachent_app/common/consts.dart';
 import 'package:teachent_app/controller/pages/teacher_creation/teacher_creation_page_controller.dart';
 import 'package:teachent_app/model/objects/tool.dart';
 
+/// Event for ToolBloc
 abstract class BaseToolEvent {}
 
+/// Event for loading all available tools from database
 class LoadAllToolsEvent extends BaseToolEvent {}
 
+/// Event for toggle tool at index from _teacherCreationPageController.toolList
 class ToggleToolEvent extends BaseToolEvent {
   final int index;
 
   ToggleToolEvent(this.index);
 }
 
+/// Event for adding new tool to available tools
 class AddNewToolEvent extends BaseToolEvent {
   final String name;
   final BuildContext context;
@@ -21,6 +25,13 @@ class AddNewToolEvent extends BaseToolEvent {
   AddNewToolEvent(this.name, this.context);
 }
 
+/// The class inherits from Bloc<Event, State>
+///
+/// Bloc object allows to manage state.
+/// Bloc allows to refresh specific widgets (wrapped in BlocBuilder) after receiving event and emiting new state.
+/// Such pattern improve widget rebuilding performance and better state management as well.
+///
+/// For more details: https://bloclibrary.dev/#/
 class ToolBloc extends Bloc<BaseToolEvent, List<Tool>> {
   ToolBloc(TeacherCreationPageController _teacherCreationPageController)
       : super(_teacherCreationPageController.toolList) {

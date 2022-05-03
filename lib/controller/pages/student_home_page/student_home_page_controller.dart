@@ -10,6 +10,7 @@ import 'package:teachent_app/view/pages/settings_page/settings_page.dart';
 import 'package:teachent_app/view/pages/teacher_profile_page/teacher_profile_page.dart';
 import 'package:teachent_app/view/pages/student_request_page/student_request_page.dart';
 
+/// Controller for Student Home Page
 class StudentHomePageController extends BaseController {
   final KeyId userId;
   Student? student;

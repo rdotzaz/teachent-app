@@ -7,6 +7,9 @@ import 'package:teachent_app/model/db_objects/db_object.dart';
 import '../objects/place.dart';
 import '../objects/tool.dart';
 
+/// Object representation of lesson record.
+/// Contains information about teacher and student collaboration
+/// It is general representation of lesson. It does not relate to exact lesson
 class LessonDate extends DatabaseObject {
   final KeyId lessonDateId;
   final KeyId teacherId;

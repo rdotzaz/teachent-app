@@ -6,6 +6,7 @@ import 'package:teachent_app/model/db_objects/teacher.dart';
 import 'package:teachent_app/view/pages/student_home_page/student_home_page.dart';
 import 'package:teachent_app/view/pages/teacher_home_page/teacher_home_page.dart';
 
+/// Controller for Welcome Page
 class WelcomePageController extends BaseController {
   final DatabaseObject dbObject;
   final BuildContext context;
