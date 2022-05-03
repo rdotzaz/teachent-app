@@ -128,15 +128,19 @@ class _StudentHomePageState extends State<StudentHomePage> {
       emptyInfo: 'No lessons',
       emptyIcon: Icons.free_breakfast,
       elementBuilder: (context, index) {
-        return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          Text(_studentHomePageController.lessons[index].date,
-              style: const TextStyle(fontSize: 14, color: Colors.black)),
-          const SizedBox(height: 20),
-          Text(
-              _studentHomePageController.getTeacherName(
-                  _studentHomePageController.lessons[index].teacherId),
-              style: const TextStyle(fontSize: 12, color: Colors.black)),
-        ]);
+        return GestureDetector(
+            onTap: () =>
+                _studentHomePageController.goToLessonPage(context, index),
+            child:
+                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+              Text(_studentHomePageController.lessons[index].date,
+                  style: const TextStyle(fontSize: 14, color: Colors.black)),
+              const SizedBox(height: 20),
+              Text(
+                  _studentHomePageController.getTeacherName(
+                      _studentHomePageController.lessons[index].teacherId),
+                  style: const TextStyle(fontSize: 12, color: Colors.black)),
+            ]));
       },
     );
   }

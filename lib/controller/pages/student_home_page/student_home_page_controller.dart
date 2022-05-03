@@ -5,6 +5,7 @@ import 'package:teachent_app/model/db_objects/lesson.dart';
 import 'package:teachent_app/model/db_objects/request.dart';
 import 'package:teachent_app/model/db_objects/student.dart';
 import 'package:teachent_app/model/db_objects/teacher.dart';
+import 'package:teachent_app/view/pages/lesson_page/lesson_page.dart';
 import 'package:teachent_app/view/pages/search_page/student_search_page.dart';
 import 'package:teachent_app/view/pages/settings_page/settings_page.dart';
 import 'package:teachent_app/view/pages/teacher_profile_page/teacher_profile_page.dart';
@@ -103,6 +104,19 @@ class StudentHomePageController extends BaseController {
     await Navigator.of(context).push(MaterialPageRoute(
         builder: (_) => StudentRequestPage(
             requestId: request.requestId, studentId: student?.userId ?? '')));
+    refresh();
+  }
+
+  Future<void> goToLessonPage(BuildContext context, int lessonIndex) async {
+    final lesson = lessons[lessonIndex];
+    final teacher = teachers.firstWhere((t) => t.userId == lesson.teacherId);
+
+    await Navigator.of(context).push(MaterialPageRoute(
+        builder: (_) => LessonPage(
+            lesson: lesson,
+            teacher: teacher,
+            student: student!,
+            isTeacher: false)));
     refresh();
   }
 }
