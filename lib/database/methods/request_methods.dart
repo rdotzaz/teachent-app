@@ -52,17 +52,22 @@ mixin RequestDatabaseMethods {
   }
 
   /// Update request stauts from request with [requestId] with [newStatus]
-  Future<void> changeRequestStatus(KeyId requestId, RequestStatus newStatus) async {
-    await FirebaseRealTimeDatabaseAdapter.updateField(DatabaseObjectName.requests, requestId, 'status', newStatus.value);
+  Future<void> changeRequestStatus(
+      KeyId requestId, RequestStatus newStatus) async {
+    await FirebaseRealTimeDatabaseAdapter.updateField(
+        DatabaseObjectName.requests, requestId, 'status', newStatus.value);
   }
 
   /// Update requested date status from request with [requestId] with [newStatus]
-  Future<void> changeRequestedDateStatus(KeyId requestId, RequestedDateStatus newStatus) async {
-    await FirebaseRealTimeDatabaseAdapter.updateField(DatabaseObjectName.requests, requestId, 'dateStatus', newStatus.value);
+  Future<void> changeRequestedDateStatus(
+      KeyId requestId, RequestedDateStatus newStatus) async {
+    await FirebaseRealTimeDatabaseAdapter.updateField(
+        DatabaseObjectName.requests, requestId, 'dateStatus', newStatus.value);
   }
 
   /// Update current date from request with [requestId] with [newDate]
   Future<void> changeCurrentDate(KeyId requestId, String newDate) async {
-    await FirebaseRealTimeDatabaseAdapter.updateField(DatabaseObjectName.requests, requestId, 'currentDate', newDate);
+    await FirebaseRealTimeDatabaseAdapter.updateField(
+        DatabaseObjectName.requests, requestId, 'currentDate', newDate);
   }
 }

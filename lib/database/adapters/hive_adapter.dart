@@ -6,7 +6,7 @@ import 'package:teachent_app/database/database.dart';
 
 /// Class with static methods to communicate with local Hive database
 class HiveDatabaseAdapter {
-  /// Methods initializes local database and configuration box. 
+  /// Methods initializes local database and configuration box.
   static Future<void> init() async {
     await Hive.initFlutter();
     await Hive.openBox(HiveConsts.hiveConfigBox);

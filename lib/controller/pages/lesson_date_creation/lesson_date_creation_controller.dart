@@ -20,7 +20,7 @@ class LessonDateCreationPageController extends BaseController {
   final _formKey = GlobalKey<FormState>();
   final List<Tool> _tools = [];
   final List<Place> _places = [];
-  
+
   /// Available lesson frequences.
   /// TODO - Move [_freqs] list to database
   final List<String> _freqs = [
@@ -151,7 +151,7 @@ class LessonDateCreationPageController extends BaseController {
   }
 
   /// Get color for selected checkbox based on checkbox state
-  /// Return blue if chekcbox selected, white otherwise 
+  /// Return blue if chekcbox selected, white otherwise
   Color getCycledCheckBoxColor(Set<MaterialState> checkBoxStates) {
     if (checkBoxStates.contains(MaterialState.pressed)) {
       return Colors.white;

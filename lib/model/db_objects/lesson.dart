@@ -1,5 +1,7 @@
 import 'package:teachent_app/common/consts.dart'
     show DatabaseConsts, DatabaseObjectName;
+import 'package:teachent_app/common/enums.dart';
+import 'package:teachent_app/common/enum_functions.dart';
 import 'package:teachent_app/model/db_objects/db_object.dart';
 
 /// Object representation of next lesson
@@ -9,27 +11,22 @@ class Lesson extends DatabaseObject {
   final KeyId teacherId;
   final KeyId studentId;
   final String date;
-  final bool isPlanned;
-  final bool isFinished;
-  final List<KeyId> reports;
+  final LessonStatus status;
+  final KeyId reportId;
 
   Lesson(this.lessonDateId, this.teacherId, this.studentId, this.date,
-      this.isPlanned, this.isFinished, this.reports);
+      this.status, this.reportId);
 
-  Lesson.noKey(this.teacherId, this.studentId, this.date, this.isPlanned,
-      this.isFinished, this.reports)
+  Lesson.noKey(
+      this.teacherId, this.studentId, this.date, this.status, this.reportId)
       : lessonDateId = DatabaseConsts.emptyKey;
 
   Lesson.fromMap(this.lessonDateId, Map<dynamic, dynamic> values)
       : teacherId = values['teacherId'] ?? '',
         studentId = values['studentId'] ?? '',
         date = values['date'] ?? '',
-        isPlanned = values['isPlanned'] ?? false,
-        isFinished = values['isFinished'] ?? false,
-        reports = DatabaseObject.getMapFromField(values, 'reports')
-            .entries
-            .map((r) => r.key)
-            .toList();
+        status = values['status'] ?? 0,
+        reportId = values['reportId'] ?? '';
 
   @override
   String get collectionName => DatabaseObjectName.lessons;
@@ -43,9 +40,8 @@ class Lesson extends DatabaseObject {
       'teacherId': teacherId,
       'studentId': studentId,
       'date': date,
-      'isPlanned': isPlanned,
-      'isFinished': isFinished,
-      'reports': {for (final reportId in reports) reportId: true}
+      'status': status.value,
+      'reportId': reportId
     };
   }
 }

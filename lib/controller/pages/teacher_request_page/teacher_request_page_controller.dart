@@ -121,8 +121,10 @@ class TeacherRequestPageController extends BaseController {
           lessonDate?.lessonDateId ?? '', request.requestedDate);
     }
 
-    await dataManager.database.changeRequestStatus(request.requestId, RequestStatus.accepted);
-    await dataManager.database.changeCurrentDate(request.requestId, request.requestedDate);
+    await dataManager.database
+        .changeRequestStatus(request.requestId, RequestStatus.accepted);
+    await dataManager.database
+        .changeCurrentDate(request.requestId, request.requestedDate);
 
     await showSuccessMessageAsync(context, 'Request has been accepted');
     Navigator.of(context).pop();

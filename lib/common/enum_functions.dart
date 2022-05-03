@@ -95,6 +95,35 @@ extension CycleTypeExt on CycleType {
   }
 }
 
+/// Extend LessonStatus enum with useful getters
+extension LessonStatusExt on LessonStatus {
+  int get value {
+    if (this == LessonStatus.open) {
+      return 0;
+    }
+    if (this == LessonStatus.teacherCancelled) {
+      return 1;
+    }
+    if (this == LessonStatus.studentCancelled) {
+      return 2;
+    }
+    return 3;
+  }
+
+  String get stringValue {
+    if (this == LessonStatus.open) {
+      return 'Open';
+    }
+    if (this == LessonStatus.teacherCancelled) {
+      return 'Lesson cancelled by teacher';
+    }
+    if (this == LessonStatus.studentCancelled) {
+      return 'Lesson cancelled by student';
+    }
+    return 'Lesson completed';
+  }
+}
+
 /// Returns CycleType enum based on value from database
 CycleType getCycleByValue(int value) {
   if (value == 0) {
@@ -147,4 +176,18 @@ RequestedDateStatus getRequestedDateStatusByValue(int value) {
     return RequestedDateStatus.rejected;
   }
   return RequestedDateStatus.invalid;
+}
+
+/// Returns LessonStatus enum based on value from database
+LessonStatus getLessonStatusStatusByValue(int value) {
+  if (value == 0) {
+    return LessonStatus.open;
+  }
+  if (value == 1) {
+    return LessonStatus.teacherCancelled;
+  }
+  if (value == 2) {
+    return LessonStatus.studentCancelled;
+  }
+  return LessonStatus.finished;
 }

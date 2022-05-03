@@ -224,7 +224,8 @@ class FirebaseRealTimeDatabaseAdapter {
   }
 
   /// Method updates field [collectionName]/[id]/[path] by [value]
-  static Future<void> updateField<Value>(String collectionName, String id, String path, Value value) async {
+  static Future<void> updateField<Value>(
+      String collectionName, String id, String path, Value value) async {
     DatabaseReference databaseReference =
         FirebaseDatabase.instance.ref().child('$collectionName/$id/$path');
 
