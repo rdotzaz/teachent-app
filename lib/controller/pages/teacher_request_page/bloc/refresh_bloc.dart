@@ -9,8 +9,7 @@ class RejectDateEvent extends BaseRefreshEvent {}
 class RestoreDateEvent extends BaseRefreshEvent {}
 
 class RefreshBloc extends Bloc<BaseRefreshEvent, bool> {
-  RefreshBloc(TeacherRequestPageController controller)
-      : super(false) {
+  RefreshBloc(TeacherRequestPageController controller) : super(false) {
     on<RejectDateEvent>(((event, emit) {
       controller.rejectNewDate();
       emit(true);

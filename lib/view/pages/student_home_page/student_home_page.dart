@@ -31,17 +31,16 @@ class _StudentHomePageState extends State<StudentHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: FutureBuilder(
-        future: _studentHomePageController.init(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const CircularProgressIndicator();
-          } else if (snapshot.connectionState == ConnectionState.done) {
-            return homeWidget(context);
-          }
-          return errorWidget(snapshot.error.toString());
-        })
-    );
+        body: FutureBuilder(
+            future: _studentHomePageController.init(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const CircularProgressIndicator();
+              } else if (snapshot.connectionState == ConnectionState.done) {
+                return homeWidget(context);
+              }
+              return errorWidget(snapshot.error.toString());
+            }));
   }
 
   Widget appBar(BuildContext context) {
@@ -192,16 +191,13 @@ class _StudentHomePageState extends State<StudentHomePage> {
       elementBuilder: (context, index) {
         final request = _studentHomePageController.requests[index];
         return ListTile(
-          title: Text(
-            request.currentDate,
-            style: const TextStyle(fontSize: 20, color: Colors.white)),
-          leading: Icon(Icons.send, size: 30, color: Colors.white),
-          onTap: () => _studentHomePageController.goToRequestPage(context, index),
-          subtitle: Text(
-            request.status.stringValue,
-            style: const TextStyle(fontSize: 14, color: Colors.white)
-          )
-        );
+            title: Text(request.currentDate,
+                style: const TextStyle(fontSize: 20, color: Colors.white)),
+            leading: Icon(Icons.send, size: 30, color: Colors.white),
+            onTap: () =>
+                _studentHomePageController.goToRequestPage(context, index),
+            subtitle: Text(request.status.stringValue,
+                style: const TextStyle(fontSize: 14, color: Colors.white)));
       },
     );
   }

@@ -172,8 +172,8 @@ class SingleCardListWidget extends StatelessWidget {
             if (emptyIcon != null)
               Padding(
                   padding: const EdgeInsets.all(15),
-                  child: Icon(emptyIcon,
-                      color: elementBackgroundColor, size: 70)),
+                  child:
+                      Icon(emptyIcon, color: elementBackgroundColor, size: 70)),
             Text(emptyInfo,
                 style: TextStyle(fontSize: 20, color: elementBackgroundColor))
           ],

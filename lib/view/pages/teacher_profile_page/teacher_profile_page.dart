@@ -6,7 +6,7 @@ import 'package:teachent_app/view/widgets/custom_button.dart';
 
 class TeacherProfilePage extends StatelessWidget {
   TeacherProfilePageController? _teacherProfilePageController;
-  TeacherProfilePage(Teacher teacher, KeyId studentId, {Key? key})
+  TeacherProfilePage({required Teacher teacher, KeyId? studentId, Key? key})
       : super(key: key) {
     _teacherProfilePageController =
         TeacherProfilePageController(teacher, studentId);
@@ -312,13 +312,14 @@ class TeacherProfilePage extends StatelessWidget {
                                                 fontSize: 20,
                                                 color: Colors.white)),
                                       ])),
-                              CustomButton(
-                                  text: 'More',
-                                  fontSize: 18,
-                                  onPressed: () =>
-                                      _teacherProfilePageController!
-                                          .goToRequestPage(context, index),
-                                  buttonColor: Colors.blue[600]!),
+                              if (_teacherProfilePageController!.hasStudentId)
+                                CustomButton(
+                                    text: 'More',
+                                    fontSize: 18,
+                                    onPressed: () =>
+                                        _teacherProfilePageController!
+                                            .goToRequestPage(context, index),
+                                    buttonColor: Colors.blue[600]!),
                             ]));
                     return Container(
                         padding: const EdgeInsets.all(20),

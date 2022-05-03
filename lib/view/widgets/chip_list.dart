@@ -8,13 +8,14 @@ class ChipHorizontalList extends StatelessWidget {
   final int listLength;
   final String emptyInfo;
   final Widget Function(BuildContext context, int index) elementBuilder;
-  const ChipHorizontalList({
-      Key? key,
+  const ChipHorizontalList(
+      {Key? key,
       required this.title,
       required this.isNotEmptyCondition,
       required this.listLength,
       required this.elementBuilder,
-      required this.emptyInfo}) : super(key: key);
+      required this.emptyInfo})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +25,8 @@ class ChipHorizontalList extends StatelessWidget {
         boxHeight: 60,
         isNotEmptyCondition: isNotEmptyCondition,
         listLength: listLength,
-        elementBackgroundColor: isNotEmptyCondition ? Colors.white : Colors.blue,
+        elementBackgroundColor:
+            isNotEmptyCondition ? Colors.white : Colors.blue,
         elementPadding: 5,
         elementBottomMargin: 0,
         scrollDirection: Axis.horizontal,
@@ -32,7 +34,6 @@ class ChipHorizontalList extends StatelessWidget {
         elementHeight: 50,
         padding: 10,
         margin: 8,
-        elementBuilder: elementBuilder
-    );
+        elementBuilder: elementBuilder);
   }
 }

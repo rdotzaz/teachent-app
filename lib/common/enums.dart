@@ -11,5 +11,4 @@ class LoginResult {
 
 enum RequestStatus { newReq, waiting, responded, rejected, accepted, invalid }
 
-enum RequestedDateStatus {none, requested, accepted, rejected, invalid}
-
+enum RequestedDateStatus { none, requested, accepted, rejected, invalid }
