@@ -64,9 +64,9 @@ class TeacherRequestPage extends StatelessWidget {
       if (_requestPageController!.places.isNotEmpty) _places(),
       if (_requestPageController!.wasOtherDateRequested)
         OtherDayWidget(controller: _requestPageController!),
-      _teacherMessage(),
-      if (_requestPageController!.hasStudentMessage) _studentMessage(),
-      Buttons(controller: _requestPageController!)
+      Buttons(controller: _requestPageController!),
+      const SizedBox(height: 50),
+      _teacherMessage()
     ]));
   }
 
@@ -187,18 +187,8 @@ class TeacherRequestPage extends StatelessWidget {
     );
   }
 
-  Widget _studentMessage() {
-    return Container();
-  }
-
   Widget _teacherMessage() {
-    return Container(
-        margin: const EdgeInsets.all(15),
-        child: CustomButton(
-            text: 'Add message for student',
-            fontSize: 18,
-            onPressed: () {},
-            buttonColor: Colors.blue));
+    return Container();
   }
 
   Widget _errorWidget(String errorMessage) {

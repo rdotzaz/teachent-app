@@ -99,11 +99,11 @@ mixin TeacherDatabaseMethods {
 
   Future<void> addLessonDateKeyToTeacher(
       KeyId teacherId, KeyId lessonDateId) async {
-    await FirebaseRealTimeDatabaseAdapter.addForeignKey(
+    await FirebaseRealTimeDatabaseAdapter.updateField(
         DatabaseObjectName.teachers,
         teacherId,
         DatabaseObjectName.lessonDates,
-        lessonDateId);
+        {lessonDateId: true});
   }
 
   Future<List<Teacher>> getTeachersByDates(List<KeyId> lessonDateIds) async {
@@ -124,10 +124,10 @@ mixin TeacherDatabaseMethods {
   }
 
   Future<void> addRequestIdToTeacher(KeyId teacherId, KeyId requestId) async {
-    await FirebaseRealTimeDatabaseAdapter.addForeignKey(
+    await FirebaseRealTimeDatabaseAdapter.updateField(
         DatabaseObjectName.teachers,
         teacherId,
         DatabaseObjectName.requests,
-        requestId);
+        {requestId: true});
   }
 }

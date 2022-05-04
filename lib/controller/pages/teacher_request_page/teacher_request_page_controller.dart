@@ -11,10 +11,11 @@ import 'package:teachent_app/model/db_objects/student.dart';
 import 'package:teachent_app/model/objects/tool.dart';
 import 'package:teachent_app/model/objects/topic.dart';
 import 'package:teachent_app/model/objects/place.dart';
+import 'package:teachent_app/model/objects/message.dart';
 import 'package:teachent_app/view/widgets/status_bottom_sheet.dart';
 
 /// Controller for Teacher Request Page
-class TeacherRequestPageController extends BaseController {
+class TeacherRequestPageController extends BaseRequestPageController {
   KeyId? teacherId;
   Student? student;
   LessonDate? lessonDate;
@@ -67,11 +68,19 @@ class TeacherRequestPageController extends BaseController {
   List<Tool> get tools => lessonDate?.tools ?? [];
   List<Place> get places => lessonDate?.places ?? [];
   Topic get topic => request.topic;
-  bool get hasStudentMessage => false;
   bool get wasOtherDateRequested =>
       request.dateStatus == RequestedDateStatus.requested;
   String get statusInfo => request.status.stringValue;
   String get additionalInfo => request.dateStatus.stringValue;
+
+  @override
+  bool get hasAnyMessages => request.teacherMessages.isNotEmpty || request.studentMessages.isNotEmpty;
+
+  @override
+  int get messagesCount => request.teacherMessages.length + request.studentMessages.length;
+
+  @override
+  List<MessageField> get messages => request.teacherMessages.map((m) => MessageField(m, true)).toList() + request.studentMessages.map((m) => MessageField(m, false)).toList();
 
   Color getStatusColor() {
     if (request == null) {
@@ -99,6 +108,13 @@ class TeacherRequestPageController extends BaseController {
 
   void restoreNewDate() {
     isNewDateAccepted = true;
+  }
+
+  @override
+  Future<void> sendMessage(BuildContext context) async {
+    await dataManager.database.addTeacherMessage(request.requestId, messageText);
+    textController.clear();
+    refreshMessages!();
   }
 
   Future<void> sendResponse(BuildContext context) async {

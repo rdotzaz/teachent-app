@@ -14,7 +14,7 @@ import 'package:teachent_app/model/objects/place.dart';
 import 'package:teachent_app/view/widgets/status_bottom_sheet.dart';
 
 /// Controller for Student Ruquest Page
-class StudentRequestPageController extends BaseController {
+class StudentRequestPageController extends BaseRequestPageController {
   KeyId? requestId;
   KeyId? studentId;
   Teacher? teacher;
@@ -81,20 +81,15 @@ class StudentRequestPageController extends BaseController {
   }
 
   String get exactDay {
-    final lessonDateExactDay = lessonDate?.weekday ?? '';
     if (request == null) {
-      return lessonDateExactDay;
+      return date;
     }
-    if (request!.dateStatus == RequestedDateStatus.accepted) {
-      return request!.requestedDate;
-    }
-    return lessonDateExactDay;
+    return requestedDate;
   }
 
   String get teacherName => teacher?.name ?? '';
-  String get date =>
-      '${lessonDate?.weekday ?? ''}, ${lessonDate?.hourTime ?? ''}';
-  String get reqestedDate =>
+  String get date => DateFormat('yyyy-MM-dd hh:mm').format(lessonDate!.date);
+  String get requestedDate =>
       DateFormat('yyyy-MM-dd').format(otherDate ?? DateTime.now());
   String get statusInfo => request?.status.stringValue ?? '';
   String get additionalInfo => request?.dateStatus.stringValue ?? '';
@@ -176,6 +171,21 @@ class StudentRequestPageController extends BaseController {
           'Teacher did not accept\nyour request date: ${request!.requestedDate}';
     }
     return message;
+  }
+
+  @override
+  void sendMessage(BuildContext context) {
+
+  }
+
+  @override
+  void getSenderMessages() {
+
+  }
+
+  @override
+  void getRecieverMessages() {
+    
   }
 
   Future<void> sendResponse(BuildContext context) async {

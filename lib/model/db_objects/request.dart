@@ -1,3 +1,4 @@
+import 'package:intl/intl.dart';
 import 'package:teachent_app/common/consts.dart'
     show DatabaseConsts, DatabaseObjectName;
 import 'package:teachent_app/common/enums.dart';
@@ -15,9 +16,9 @@ class Request extends DatabaseObject {
   final KeyId studentId;
   final RequestStatus status;
   final Topic topic;
-  final String currentDate;
+  final DateTime currentDate;
   final RequestedDateStatus dateStatus;
-  final String requestedDate;
+  final DateTime requestedDate;
   final List<MessageRecord> teacherMessages;
   final List<MessageRecord> studentMessages;
 
@@ -53,9 +54,9 @@ class Request extends DatabaseObject {
         studentId = values['studentId'] ?? '',
         status = getRequestStatusByValue(values['status'] ?? -1),
         topic = Topic(values['topic'].keys.firstWhere((_) => true) ?? '', true),
-        currentDate = values['currentDate'] ?? '',
+        currentDate = DateTime.parse(values['currentDate'] ?? ''),
         dateStatus = getRequestedDateStatusByValue(values['dateStatus'] ?? -1),
-        requestedDate = values['requestedDate'] ?? '',
+        requestedDate = DateTime.parse(values['requestedDate'] ?? ''),
         teacherMessages =
             DatabaseObject.getMapFromField(values, 'teacherMessages')
                 .entries
@@ -86,11 +87,11 @@ class Request extends DatabaseObject {
       'requestedDate': requestedDate,
       'teacherMessages': {
         for (final teacherMessage in teacherMessages)
-          teacherMessage.message: teacherMessage.date
+          teacherMessage.message: DateFormat('yyyy-MM-dd hh:mm').format(teacherMessage.date)
       },
       'studentMessages': {
         for (final studentMessage in studentMessages)
-          studentMessage.message: studentMessage.date
+          studentMessage.message: DateFormat('yyyy-MM-dd hh:mm').format(studentMessage.date)
       },
     };
   }

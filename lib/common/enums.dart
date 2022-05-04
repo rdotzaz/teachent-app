@@ -42,3 +42,9 @@ enum CycleType { single, daily, weekly, biweekly, monthly }
 /// [teacherCancelled] - lesson has been cancelled by teacher
 /// [studentCancelled] - lesson has been cancelled by student
 enum LessonStatus { open, teacherCancelled, studentCancelled, finished }
+
+/// Enum for person type in search page
+/// [all] - search all users, teachers and students either
+/// [teachers] - search only teachers
+/// [students] - search only students
+enum PersonType { all, teachers, students }

@@ -55,7 +55,7 @@ class LessonDateCreationPageController extends BaseController {
   }
 
   /// Lesson date established by teacher
-  String get date => DateFormat('yyyy-MM-dd').format(_selectedDate);
+  DateTime get date => _selectedDate.add(Duration(hours: _selectedTime.hour, minutes: _selectedTime.minute));
   String time(BuildContext context) => _selectedTime.format(context);
   int get lessonDuration => _duration;
   int get price => _price;
@@ -169,7 +169,7 @@ class LessonDateCreationPageController extends BaseController {
     final tools = _tools.where((t) => t.marked).toList();
     final places = _places.where((p) => p.marked).toList();
 
-    final lessonDate = LessonDate.init(teacher.userId, date, time(context),
+    final lessonDate = LessonDate.init(teacher.userId, date,
         isCycled, getCycleByValue(freqBloc.state), price, tools, places);
 
     final lessonDateKey = await dataManager.database.addLessonDate(lessonDate);

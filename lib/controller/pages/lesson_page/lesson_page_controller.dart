@@ -1,3 +1,4 @@
+import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:teachent_app/common/enums.dart';
 import 'package:teachent_app/common/enum_functions.dart';
@@ -15,7 +16,7 @@ class LessonPageController extends BaseController {
   final bool isTeacher;
   LessonPageController(this.lesson, this.teacher, this.student, this.isTeacher);
 
-  String get date => lesson.date;
+  String get date => DateFormat('yyyy-MM-dd hh:mm:ss').format(lesson.date);
   String get userType => isTeacher ? 'Teacher' : 'Student';
   String get name => isTeacher ? teacher.name : student.name;
   String get status => lesson.status.stringValue;
