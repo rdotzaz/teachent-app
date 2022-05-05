@@ -1,6 +1,7 @@
 import 'package:intl/intl.dart';
 import 'package:teachent_app/common/consts.dart'
     show DatabaseConsts, DatabaseObjectName;
+import 'package:teachent_app/common/date.dart';
 import 'package:teachent_app/common/enums.dart';
 import 'package:teachent_app/common/enum_functions.dart';
 import 'package:teachent_app/model/db_objects/db_object.dart';
@@ -57,7 +58,7 @@ class LessonDate extends DatabaseObject {
       : teacherId = values['teacherId'] ?? '',
         studentId = values['studentId'] ?? '',
         isFree = values['isFree'] ?? true,
-        date = DateTime.parse(values['date'] ?? ''),
+        date = DateFormatter.parse(values['date']),
         isCycled = values['isCycled'] ?? false,
         cycleType = getCycleByValue(values['cycleType'] ?? -1),
         price = values['price'] ?? '',
@@ -82,7 +83,7 @@ class LessonDate extends DatabaseObject {
       'teacherId': teacherId,
       'studentId': studentId,
       'isFree': isFree,
-      'date': DateFormat('yyyy-MM-dd hh:mm').format(date),
+      'date': DateFormatter.getString(date),
       'isCycled': isCycled,
       'cycleType': cycleType.value,
       'price': price,

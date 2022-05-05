@@ -1,6 +1,7 @@
 import 'package:intl/intl.dart';
 import 'package:teachent_app/common/consts.dart'
     show DatabaseConsts, DatabaseObjectName;
+import 'package:teachent_app/common/date.dart';
 import 'package:teachent_app/common/enums.dart';
 import 'package:teachent_app/common/enum_functions.dart';
 import 'package:teachent_app/model/db_objects/db_object.dart';
@@ -18,7 +19,7 @@ class Request extends DatabaseObject {
   final Topic topic;
   final DateTime currentDate;
   final RequestedDateStatus dateStatus;
-  final DateTime requestedDate;
+  final DateTime? requestedDate;
   final List<MessageRecord> teacherMessages;
   final List<MessageRecord> studentMessages;
 
@@ -54,9 +55,9 @@ class Request extends DatabaseObject {
         studentId = values['studentId'] ?? '',
         status = getRequestStatusByValue(values['status'] ?? -1),
         topic = Topic(values['topic'].keys.firstWhere((_) => true) ?? '', true),
-        currentDate = DateTime.parse(values['currentDate'] ?? ''),
+        currentDate = DateFormatter.parse(values['currentDate']),
         dateStatus = getRequestedDateStatusByValue(values['dateStatus'] ?? -1),
-        requestedDate = DateTime.parse(values['requestedDate'] ?? ''),
+        requestedDate = DateFormatter.tryParse(values['requestedDate']),
         teacherMessages =
             DatabaseObject.getMapFromField(values, 'teacherMessages')
                 .entries
@@ -82,16 +83,16 @@ class Request extends DatabaseObject {
       'studentId': studentId,
       'status': status.value,
       'topic': {topic.name: true},
-      'currentDate': currentDate,
+      'currentDate': DateFormatter.getString(currentDate),
       'dateStatus': dateStatus.value,
-      'requestedDate': requestedDate,
+      'requestedDate': DateFormatter.getString(requestedDate),
       'teacherMessages': {
         for (final teacherMessage in teacherMessages)
-          teacherMessage.message: DateFormat('yyyy-MM-dd hh:mm').format(teacherMessage.date)
+          teacherMessage.message: DateFormatter.getString(teacherMessage.date)
       },
       'studentMessages': {
         for (final studentMessage in studentMessages)
-          studentMessage.message: DateFormat('yyyy-MM-dd hh:mm').format(studentMessage.date)
+          studentMessage.message: DateFormatter.getString(studentMessage.date)
       },
     };
   }

@@ -1,5 +1,6 @@
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
+import 'package:teachent_app/common/date.dart';
 import 'package:teachent_app/common/enums.dart';
 import 'package:teachent_app/common/enum_functions.dart';
 import 'package:teachent_app/controller/controller.dart';
@@ -34,7 +35,7 @@ class LessonDateCreationPageController extends BaseController {
   /// Key for form widget
   GlobalKey<FormState> get formKey => _formKey;
   DateTime _selectedDate = DateTime.now();
-  TimeOfDay _selectedTime = TimeOfDay.now();
+  TimeOfDay _selectedTime = TimeOfDay(hour: 12, minute: 0);
   int _duration = 60;
   int _price = 50;
   bool _isCycled = false;
@@ -55,8 +56,8 @@ class LessonDateCreationPageController extends BaseController {
   }
 
   /// Lesson date established by teacher
-  DateTime get date => _selectedDate.add(Duration(hours: _selectedTime.hour, minutes: _selectedTime.minute));
-  String time(BuildContext context) => _selectedTime.format(context);
+  String get date => DateFormatter.getString(_selectedDate);
+  String get time => DateFormatter.timeString(_selectedTime);
   int get lessonDuration => _duration;
   int get price => _price;
   List<Tool> get tools => _tools;
@@ -169,7 +170,7 @@ class LessonDateCreationPageController extends BaseController {
     final tools = _tools.where((t) => t.marked).toList();
     final places = _places.where((p) => p.marked).toList();
 
-    final lessonDate = LessonDate.init(teacher.userId, date,
+    final lessonDate = LessonDate.init(teacher.userId, DateFormatter.addTime(_selectedDate, _selectedTime),
         isCycled, getCycleByValue(freqBloc.state), price, tools, places);
 
     final lessonDateKey = await dataManager.database.addLessonDate(lessonDate);

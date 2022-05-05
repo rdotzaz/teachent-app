@@ -1,5 +1,6 @@
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
+import 'package:teachent_app/common/date.dart';
 import 'package:teachent_app/common/enums.dart';
 import 'package:teachent_app/common/enum_functions.dart';
 import 'package:teachent_app/controller/controller.dart';
@@ -88,9 +89,8 @@ class StudentRequestPageController extends BaseRequestPageController {
   }
 
   String get teacherName => teacher?.name ?? '';
-  String get date => DateFormat('yyyy-MM-dd hh:mm').format(lessonDate!.date);
-  String get requestedDate =>
-      DateFormat('yyyy-MM-dd').format(otherDate ?? DateTime.now());
+  String get date => DateFormatter.getString(lessonDate!.date);
+  String get requestedDate => DateFormatter.getString(otherDate);
   String get statusInfo => request?.status.stringValue ?? '';
   String get additionalInfo => request?.dateStatus.stringValue ?? '';
   bool get isCycled => lessonDate?.isCycled ?? false;
@@ -160,17 +160,16 @@ class StudentRequestPageController extends BaseRequestPageController {
   }
 
   String getStatusAdditionalInfo() {
-    String message = '';
-    if (request!.status == RequestStatus.waiting &&
-        request!.requestedDate.isNotEmpty) {
-      message = 'Request date: ${request!.requestedDate}';
+    if (request!.dateStatus == RequestedDateStatus.requested) {
+      return 'Request date: ${request!.requestedDate}';
     }
-    if (request!.status == RequestStatus.responded &&
-        request!.requestedDate.isEmpty) {
-      message =
-          'Teacher did not accept\nyour request date: ${request!.requestedDate}';
+    if (request!.dateStatus == RequestedDateStatus.rejected) {
+      return 'Teacher did not accept\nyour request date: ${request!.requestedDate}';
     }
-    return message;
+    if (request!.dateStatus == RequestedDateStatus.accepted) {
+      return 'Teacher accepted\nyour request date: ${request!.requestedDate}';
+    }
+    return '';
   }
 
   @override
@@ -194,10 +193,9 @@ class StudentRequestPageController extends BaseRequestPageController {
     await dataManager.database
         .changeRequestStatus(request!.requestId, RequestStatus.waiting);
 
-    print('$reqestedDate == ${request!.requestedDate}');
-    if (reqestedDate != request!.requestedDate) {
+    if (otherDate! != request!.requestedDate) {
       await dataManager.database
-          .changeRequestedDate(request!.requestId, reqestedDate);
+          .changeRequestedDate(request!.requestId, otherDate!);
       await dataManager.database.changeRequestedDateStatus(
           request!.requestId, RequestedDateStatus.requested);
     }
@@ -211,19 +209,17 @@ class StudentRequestPageController extends BaseRequestPageController {
       return;
     }
 
-    final newDate = otherDate != null ? reqestedDate : '';
-
     request = Request.noKey(
         lessonDate?.lessonDateId ?? '',
         teacher?.userId ?? '',
         studentId ?? '',
         RequestStatus.waiting,
         topics[topicIndex],
-        date,
+        DateFormatter.parse(date),
         otherDate == null
             ? RequestedDateStatus.none
             : RequestedDateStatus.requested,
-        newDate,
+        DateFormatter.parse(requestedDate),
         [],
         []);
 

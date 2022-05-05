@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:teachent_app/controller/controller.dart';
 
-import 'error_widget.dart';
+import 'custom_button.dart';
+import 'error_message_widget.dart';
 import 'label.dart';
 import 'single_card.dart';
 
@@ -16,13 +17,13 @@ class Messages extends StatefulWidget {
 class _MessagesState extends State<Messages> {
   @override
   void init() {
-    controller.init();
+    widget.controller.init();
     widget.controller.refreshMessages = refresh;
   }
 
   @override
   void dispose() {
-    controller.dispose();
+    widget.controller.dispose();
   }
 
   void refresh() {
@@ -35,8 +36,8 @@ class _MessagesState extends State<Messages> {
       title: 'Messages',
       titleColor: Colors.black,
       startAlignment: false,
-      isNotEmptyCondition: controller.hasAnyMessages,
-      emptyWidget: ErrorWidget(text: 'No messages'),
+      isNotEmptyCondition: widget.controller.hasAnyMessages,
+      emptyWidget: ErrorMessageWidget(text: 'No messages'),
       bodyWidget: Column(
         children: [
           _messagesBody(),
@@ -45,14 +46,14 @@ class _MessagesState extends State<Messages> {
             children: [
               Expanded(
                 child: TextField(
-                  controller: controller.textController,
-                  onSubmitted: (value) => controller.setValue(value)
+                  controller: widget.controller.textController,
+                  onSubmitted: (value) => widget.controller.setValue(value)
                 ),
               ),
               CustomButton(
                 text: 'Send',
                 fontSize: 14,
-                onPressed: controller.sendMessage(context)
+                onPressed: () => widget.controller.sendMessage(context)
               )
             ]
           )
@@ -62,17 +63,17 @@ class _MessagesState extends State<Messages> {
   }
 
   Widget _messagesBody() {
-    final messages = controller.messages.sort((m1, m2) => m1.messageRecord.date.compareTo(m2.messageRecord.date));
+    final messages = widget.controller.messages;
     return ListView.builder(
       shrinkWrap: true,
-      itemCount: controller.messagesCount,
+      itemCount: widget.controller.messagesCount,
       itemBuilder: ((context, index) {
-        final isSender = controller.isSender(index);
+        final isSender = widget.controller.isSender(index);
         final message = messages[index].messageRecord.message;
         return Align(
           alignment: isSender ? Alignment.centerLeft : Alignment.centerRight,
           child: Container(
-            decorator: BoxDecoration(
+            decoration: BoxDecoration(
               color: isSender ? Colors.blue : Colors.green,
               borderRadius: BorderRadius.circular(8),
             ),
@@ -83,7 +84,7 @@ class _MessagesState extends State<Messages> {
               padding: 5
             )
           )
-        )
+        );
       })
     );
   }

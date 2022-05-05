@@ -15,10 +15,6 @@ mixin TeacherDatabaseMethods {
         DatabaseObjectName.teachers, teacher.key, teacher.toMap());
   }
 
-  void update(KeyId teacherId) {}
-
-  void deleteTeacher(KeyId teacherId) {}
-
   Map<String, dynamic> _getMapFromField(
       Map<dynamic, dynamic> values, String field) {
     if (values[field] == null) {
@@ -38,23 +34,6 @@ mixin TeacherDatabaseMethods {
       return null;
     }
     return Teacher.fromMap(userId, teacherValues);
-  }
-
-  Teacher _addTeacherToList(String login, Map values) {
-    final topics = _getMapFromField(values, 'topics');
-    final topicList =
-        topics.entries.map((topic) => Topic(topic.key, true)).toList();
-
-    final tools = _getMapFromField(values, 'tools');
-    final toolList =
-        tools.entries.map((tool) => Tool(tool.key.toString(), true)).toList();
-
-    final places = _getMapFromField(values, 'places');
-    final placeList = places.entries
-        .map((place) => Place(place.key.toString(), true))
-        .toList();
-    return Teacher.onlyKeyName(
-        login, values['name'] ?? '', topicList, toolList, placeList);
   }
 
   Future<List<Teacher>> getTeachersByNamePart(String name) async {
@@ -85,8 +64,6 @@ mixin TeacherDatabaseMethods {
       final commonTopics = topicSet.intersection(topics.toSet());
       final commonPlaces = placeSet.intersection(places.toSet());
 
-      print(
-          'Cond 1: ${toolSet.length}, ${topicSet.length}, ${placeSet.length}');
       if ((commonTools.length > 0 ||
               commonTopics.length > 0 ||
               commonPlaces.length > 0) ||

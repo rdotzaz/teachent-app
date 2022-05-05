@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:teachent_app/common/date.dart';
 import 'package:teachent_app/common/enums.dart';
 import 'package:teachent_app/common/enum_functions.dart';
 import 'package:teachent_app/controller/pages/student_home_page/student_home_page_controller.dart';
@@ -128,12 +129,13 @@ class _StudentHomePageState extends State<StudentHomePage> {
       emptyInfo: 'No lessons',
       emptyIcon: Icons.free_breakfast,
       elementBuilder: (context, index) {
+        final date = DateFormatter.getString(_studentHomePageController.lessons[index].date);
         return GestureDetector(
             onTap: () =>
                 _studentHomePageController.goToLessonPage(context, index),
             child:
                 Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              Text(_studentHomePageController.lessons[index].date,
+              Text(date,
                   style: const TextStyle(fontSize: 14, color: Colors.black)),
               const SizedBox(height: 20),
               Text(
@@ -194,8 +196,9 @@ class _StudentHomePageState extends State<StudentHomePage> {
       emptyIcon: Icons.free_breakfast,
       elementBuilder: (context, index) {
         final request = _studentHomePageController.requests[index];
+        final currentDate = DateFormatter.getString(request.currentDate);
         return ListTile(
-            title: Text(request.currentDate,
+            title: Text(currentDate,
                 style: const TextStyle(fontSize: 20, color: Colors.white)),
             leading: Icon(Icons.send, size: 30, color: Colors.white),
             onTap: () =>

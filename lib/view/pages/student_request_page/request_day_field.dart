@@ -18,7 +18,7 @@ class RequestDayField extends StatelessWidget {
             await requestPageController.enableDatePicker(context);
             context.read<RequestDayBloc>().add(ToggleRequestDayField());
           },
-          child: Text(requestPageController.reqestedDate,
+          child: Text(requestPageController.requestedDate,
               style: const TextStyle(fontSize: 18, color: Colors.black)),
         ),
         CustomButton(

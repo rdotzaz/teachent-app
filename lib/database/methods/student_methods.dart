@@ -15,18 +15,6 @@ mixin StudentDatabaseMethods {
     return;
   }
 
-  /// Returns newly created map object based on map object stored in [field]
-  Map<String, dynamic> _getMapFromField(
-      Map<dynamic, dynamic> values, String field) {
-    if (values[field] == null) {
-      return {};
-    }
-    return {
-      for (var entry in (values[field] as Map<dynamic, dynamic>).entries)
-        (entry.key as String): true
-    };
-  }
-
   /// Returns Student object based on [userId]
   /// If object with [userId] does not exist in database, returns null
   Future<Student?> getStudent(KeyId userId) async {

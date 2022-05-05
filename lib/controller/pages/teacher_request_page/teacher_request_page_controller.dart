@@ -1,5 +1,6 @@
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
+import 'package:teachent_app/common/date.dart';
 import 'package:teachent_app/common/enums.dart';
 import 'package:teachent_app/common/enum_functions.dart';
 import 'package:teachent_app/controller/controller.dart';
@@ -23,14 +24,12 @@ class TeacherRequestPageController extends BaseRequestPageController {
   Request request;
 
   bool isNewDateAccepted = true;
-  String requestedDate = '';
 
   TeacherRequestPageController(
       this.request, this.teacherId, this.student, this.lessonDate);
 
   @override
   Future<void> init() async {
-    requestedDate = request.requestedDate;
     if (student == null) {
       await initStudent();
     }
@@ -61,8 +60,8 @@ class TeacherRequestPageController extends BaseRequestPageController {
   }
 
   String get studentName => student?.name ?? '';
-  String get date =>
-      '${lessonDate?.weekday ?? ''}, ${lessonDate?.hourTime ?? ''}';
+  String get date => DateFormatter.getString(lessonDate?.date);
+  String get requestedDate => DateFormatter.onlyDateString(request.requestedDate);
   bool get isCycled => lessonDate?.isCycled ?? false;
   int get price => lessonDate?.price ?? 0;
   List<Tool> get tools => lessonDate?.tools ?? [];
@@ -80,7 +79,11 @@ class TeacherRequestPageController extends BaseRequestPageController {
   int get messagesCount => request.teacherMessages.length + request.studentMessages.length;
 
   @override
-  List<MessageField> get messages => request.teacherMessages.map((m) => MessageField(m, true)).toList() + request.studentMessages.map((m) => MessageField(m, false)).toList();
+  List<MessageField> get messages {
+    final mergedList = request.teacherMessages.map((m) => MessageField(m, true)).toList() + request.studentMessages.map((m) => MessageField(m, false)).toList();
+    mergedList.sort((m1, m2) => m1.messageRecord.date.compareTo(m2.messageRecord.date));
+    return mergedList;
+  }
 
   Color getStatusColor() {
     if (request == null) {
@@ -112,7 +115,7 @@ class TeacherRequestPageController extends BaseRequestPageController {
 
   @override
   Future<void> sendMessage(BuildContext context) async {
-    await dataManager.database.addTeacherMessage(request.requestId, messageText);
+    await dataManager.database.addTeacherMessage(request.requestId, MessageRecord(messageText, DateTime.now()));
     textController.clear();
     refreshMessages!();
   }
@@ -132,15 +135,15 @@ class TeacherRequestPageController extends BaseRequestPageController {
   }
 
   Future<void> acceptRequest(BuildContext context) async {
-    if (request.requestedDate.isNotEmpty) {
+    if (request.requestedDate != null) {
       await dataManager.database.changeLessonDate(
-          lessonDate?.lessonDateId ?? '', request.requestedDate);
+          lessonDate?.lessonDateId ?? '', request.requestedDate!);
     }
 
     await dataManager.database
         .changeRequestStatus(request.requestId, RequestStatus.accepted);
     await dataManager.database
-        .changeCurrentDate(request.requestId, request.requestedDate);
+        .changeCurrentDate(request.requestId, request.requestedDate!);
 
     await showSuccessMessageAsync(context, 'Request has been accepted');
     Navigator.of(context).pop();
