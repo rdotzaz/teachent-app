@@ -28,7 +28,7 @@ class LessonPage extends StatelessWidget {
       _userInformation(context),
       _status(),
       const Expanded(child: SizedBox()),
-      _cancelLessonButton(),
+      _cancelLessonButton(context),
     ]);
   }
 
@@ -74,11 +74,11 @@ class LessonPage extends StatelessWidget {
         buttonColor: lessonPageController.getStatusColor());
   }
 
-  Widget _cancelLessonButton() {
+  Widget _cancelLessonButton(BuildContext context) {
     return CustomButton(
         text: 'Cancel this lesson',
         fontSize: 18,
-        onPressed: () => lessonPageController.cancelLesson(),
+        onPressed: () => lessonPageController.cancelLesson(context),
         isEnabled: lessonPageController.isNotCancelled,
         buttonColor: Colors.red);
   }

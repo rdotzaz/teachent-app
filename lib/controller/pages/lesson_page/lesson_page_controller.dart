@@ -3,11 +3,13 @@ import 'package:teachent_app/common/date.dart';
 import 'package:teachent_app/common/enums.dart';
 import 'package:teachent_app/common/enum_functions.dart';
 import 'package:teachent_app/controller/controller.dart';
+import 'package:teachent_app/controller/managers/lesson_manager.dart';
 import 'package:teachent_app/model/db_objects/lesson.dart';
 import 'package:teachent_app/model/db_objects/student.dart';
 import 'package:teachent_app/model/db_objects/teacher.dart';
 import 'package:teachent_app/view/pages/student_profile_page/student_profile_page.dart';
 import 'package:teachent_app/view/pages/teacher_profile_page/teacher_profile_page.dart';
+import 'package:teachent_app/view/widgets/status_bottom_sheet.dart';
 
 class LessonPageController extends BaseController {
   final Lesson lesson;
@@ -43,5 +45,17 @@ class LessonPageController extends BaseController {
             : StudentProfilePage(student)));
   }
 
-  void cancelLesson() {}
+  Future<void> cancelLesson(BuildContext context) async {
+    final lessonDate = await dataManager.database.getLessonDate(lesson.lessonDateId);
+    if (lessonDate == null) {
+      print('Cannot find lessonDate with ${lesson.lessonDateId}');
+      return;
+    }
+    if (isTeacher) {
+      await LessonManager.cancelLessonByTeacher(dataManager, lessonDate, lesson);
+    } else {
+      await LessonManager.cancelLessonByStudent(dataManager, lessonDate, lesson);
+    }
+    await showSuccessMessageAsync(context, 'Lesson has been cancelled');
+  }
 }
