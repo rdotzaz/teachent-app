@@ -4,11 +4,13 @@ import 'package:teachent_app/common/date.dart';
 import 'package:teachent_app/common/enums.dart';
 import 'package:teachent_app/common/enum_functions.dart';
 import 'package:teachent_app/controller/controller.dart';
+import 'package:teachent_app/controller/managers/request_manager.dart';
 import 'package:teachent_app/controller/pages/student_request_page/bloc/request_topic_bloc.dart';
 import 'package:teachent_app/model/db_objects/db_object.dart';
 import 'package:teachent_app/model/db_objects/lesson_date.dart';
 import 'package:teachent_app/model/db_objects/request.dart';
 import 'package:teachent_app/model/db_objects/teacher.dart';
+import 'package:teachent_app/model/objects/message.dart';
 import 'package:teachent_app/model/objects/tool.dart';
 import 'package:teachent_app/model/objects/topic.dart';
 import 'package:teachent_app/model/objects/place.dart';
@@ -25,6 +27,7 @@ class StudentRequestPageController extends BaseRequestPageController {
   DateTime? otherDate;
   int topicIndex = -1;
   bool hasChangesProvided = false;
+  final List<MessageRecord> _preRequestMessages = [];
 
   late RequestTopicBloc requestTopicBloc;
 
@@ -173,32 +176,47 @@ class StudentRequestPageController extends BaseRequestPageController {
   }
 
   @override
-  void sendMessage(BuildContext context) {
-
+  bool get hasAnyMessages {
+    if (request == null) {
+      return false;
+    }
+    return request!.teacherMessages.isNotEmpty || request!.studentMessages.isNotEmpty;
   }
 
   @override
-  void getSenderMessages() {
-
+  int get messagesCount {
+    if (request == null) {
+      return 0;
+    }
+    return request!.teacherMessages.length + request!.studentMessages.length;
   }
 
   @override
-  void getRecieverMessages() {
-    
+  List<MessageField> get messages {
+    if (request == null) {
+      return [];
+    }
+    final mergedList = request!.teacherMessages.map((m) => MessageField(m, true)).toList() + request!.studentMessages.map((m) => MessageField(m, false)).toList();
+    mergedList.sort((m1, m2) => m1.messageRecord.date.compareTo(m2.messageRecord.date));
+    return mergedList;
+  }
+
+  @override
+  Future<void> sendMessage() async {
+    if (request == null) {
+      _preRequestMessages.add(MessageRecord(messageText, DateTime.now()));
+    } else {
+      RequestManager.sendStudentMessage(dataManager, request!, messageText);
+    }
+    textController.clear();
+    refreshMessages!();
   }
 
   Future<void> sendResponse(BuildContext context) async {
     assert(hasChangesProvided && request != null);
 
-    await dataManager.database
-        .changeRequestStatus(request!.requestId, RequestStatus.waiting);
+    await RequestManager.sendStudentResponse(dataManager, request!, otherDate!, topics[topicIndex]);
 
-    if (otherDate! != request!.requestedDate) {
-      await dataManager.database
-          .changeRequestedDate(request!.requestId, otherDate!);
-      await dataManager.database.changeRequestedDateStatus(
-          request!.requestId, RequestedDateStatus.requested);
-    }
     await showSuccessMessageAsync(context, 'Request has been updated');
     Navigator.of(context).pop();
   }
@@ -219,19 +237,11 @@ class StudentRequestPageController extends BaseRequestPageController {
         otherDate == null
             ? RequestedDateStatus.none
             : RequestedDateStatus.requested,
-        DateFormatter.parse(requestedDate),
+        DateFormatter.tryParse(requestedDate),
         [],
-        []);
+        _preRequestMessages);
 
-    final requestKey = await dataManager.database.addRequest(request!);
-
-    if (requestKey == null) {
-      return;
-    }
-    await dataManager.database
-        .addRequestIdToTeacher(teacher?.userId ?? '', requestKey);
-    await dataManager.database
-        .addRequestIdToStudent(studentId ?? '', requestKey);
+    await RequestManager.sendNew(dataManager, request!, teacher, studentId);
 
     await showSuccessMessageAsync(context, 'Request has successfully sent');
     Navigator.of(context).pop();

@@ -42,7 +42,7 @@ abstract class BaseRequestPageController extends BaseController {
   int get messagesCount => 0;
   List<MessageField> get messages => [];
 
-  void sendMessage(BuildContext context);
+  void sendMessage();
   
   bool isSender(int index) {
     return messages[index].isSender;

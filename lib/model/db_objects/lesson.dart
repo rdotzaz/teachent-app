@@ -9,6 +9,7 @@ import 'package:teachent_app/model/db_objects/db_object.dart';
 /// Object representation of next lesson
 /// Contains information of next lesson between teacher and student
 class Lesson extends DatabaseObject {
+  final KeyId lessonId;
   final KeyId lessonDateId;
   final KeyId teacherId;
   final KeyId studentId;
@@ -16,15 +17,16 @@ class Lesson extends DatabaseObject {
   final LessonStatus status;
   final KeyId reportId;
 
-  Lesson(this.lessonDateId, this.teacherId, this.studentId, this.date,
+  Lesson(this.lessonId, this.lessonDateId, this.teacherId, this.studentId, this.date,
       this.status, this.reportId);
 
   Lesson.noKey(
-      this.teacherId, this.studentId, this.date, this.status, this.reportId)
-      : lessonDateId = DatabaseConsts.emptyKey;
+      this.lessonDateId, this.teacherId, this.studentId, this.date, this.status, this.reportId)
+      : lessonId = DatabaseConsts.emptyKey;
 
-  Lesson.fromMap(this.lessonDateId, Map<dynamic, dynamic> values)
-      : teacherId = values['teacherId'] ?? '',
+  Lesson.fromMap(this.lessonId, Map<dynamic, dynamic> values)
+      : lessonDateId = values['lessonDateId'] ?? '', 
+        teacherId = values['teacherId'] ?? '',
         studentId = values['studentId'] ?? '',
         date = DateFormatter.parse(values['date']),
         status = values['status'] ?? 0,
@@ -34,11 +36,12 @@ class Lesson extends DatabaseObject {
   String get collectionName => DatabaseObjectName.lessons;
 
   @override
-  String get key => lessonDateId;
+  String get key => lessonId;
 
   @override
   Map<String, dynamic> toMap() {
     return {
+      'lessonDateId': lessonDateId,
       'teacherId': teacherId,
       'studentId': studentId,
       'date': DateFormatter.getString(date),

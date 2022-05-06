@@ -5,6 +5,7 @@ import 'package:teachent_app/common/enum_functions.dart';
 import 'package:teachent_app/database/adapters/firebase_adapter.dart';
 import 'package:teachent_app/model/db_objects/db_object.dart';
 import 'package:teachent_app/model/db_objects/request.dart';
+import 'package:teachent_app/model/objects/topic.dart';
 
 /// Methods to maintain Request object in database
 mixin RequestDatabaseMethods {
@@ -70,5 +71,11 @@ mixin RequestDatabaseMethods {
   Future<void> changeCurrentDate(KeyId requestId, DateTime newDate) async {
     await FirebaseRealTimeDatabaseAdapter.updateField(
         DatabaseObjectName.requests, requestId, 'currentDate', DateFormatter.getString(newDate));
+  }
+
+  /// Update current topic from request with [requestId] with [topic]
+  Future<void> changeTopic(KeyId requestId, Topic topic) async {
+    await FirebaseRealTimeDatabaseAdapter.updateField(
+        DatabaseObjectName.requests, requestId, 'topic', {topic.name: true});
   }
 }

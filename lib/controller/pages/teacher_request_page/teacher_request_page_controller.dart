@@ -4,6 +4,8 @@ import 'package:teachent_app/common/date.dart';
 import 'package:teachent_app/common/enums.dart';
 import 'package:teachent_app/common/enum_functions.dart';
 import 'package:teachent_app/controller/controller.dart';
+import 'package:teachent_app/controller/managers/lesson_manager.dart';
+import 'package:teachent_app/controller/managers/request_manager.dart';
 import 'package:teachent_app/controller/pages/student_request_page/bloc/request_topic_bloc.dart';
 import 'package:teachent_app/model/db_objects/db_object.dart';
 import 'package:teachent_app/model/db_objects/lesson_date.dart';
@@ -114,45 +116,26 @@ class TeacherRequestPageController extends BaseRequestPageController {
   }
 
   @override
-  Future<void> sendMessage(BuildContext context) async {
-    await dataManager.database.addTeacherMessage(request.requestId, MessageRecord(messageText, DateTime.now()));
+  Future<void> sendMessage() async {
+    RequestManager.sendTeacherMessage(dataManager, request, messageText);
     textController.clear();
     refreshMessages!();
   }
 
   Future<void> sendResponse(BuildContext context) async {
-    await dataManager.database.changeRequestedDateStatus(
-        request.requestId,
-        isNewDateAccepted
-            ? RequestedDateStatus.accepted
-            : RequestedDateStatus.rejected);
-
-    await dataManager.database
-        .changeRequestStatus(request.requestId, RequestStatus.responded);
-
-    await showSuccessMessageAsync(context, 'Response has been sent');
+    RequestManager.sendTeacherResponse(dataManager, request, isNewDateAccepted);
     Navigator.of(context).pop();
   }
 
   Future<void> acceptRequest(BuildContext context) async {
-    if (request.requestedDate != null) {
-      await dataManager.database.changeLessonDate(
-          lessonDate?.lessonDateId ?? '', request.requestedDate!);
-    }
-
-    await dataManager.database
-        .changeRequestStatus(request.requestId, RequestStatus.accepted);
-    await dataManager.database
-        .changeCurrentDate(request.requestId, request.requestedDate!);
-
+    RequestManager.acceptRequest(dataManager, request, lessonDate);
+    LessonManager.createFirst(dataManager, lessonDate!);
     await showSuccessMessageAsync(context, 'Request has been accepted');
     Navigator.of(context).pop();
   }
 
   Future<void> rejectRequest(BuildContext context) async {
-    await dataManager.database
-        .changeRequestStatus(request.requestId, RequestStatus.rejected);
-
+    RequestManager.rejectRequest(dataManager, request);
     await showSuccessMessageAsync(context, 'Request has been rejected');
     Navigator.of(context).pop();
   }

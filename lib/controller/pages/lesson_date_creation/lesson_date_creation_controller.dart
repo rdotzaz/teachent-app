@@ -1,7 +1,5 @@
-import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:teachent_app/common/date.dart';
-import 'package:teachent_app/common/enums.dart';
 import 'package:teachent_app/common/enum_functions.dart';
 import 'package:teachent_app/controller/controller.dart';
 import 'package:teachent_app/controller/pages/lesson_date_creation/bloc/freq_bloc.dart';
@@ -56,7 +54,7 @@ class LessonDateCreationPageController extends BaseController {
   }
 
   /// Lesson date established by teacher
-  String get date => DateFormatter.getString(_selectedDate);
+  String get date => DateFormatter.onlyDateString(_selectedDate);
   String get time => DateFormatter.timeString(_selectedTime);
   int get lessonDuration => _duration;
   int get price => _price;

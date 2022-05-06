@@ -53,7 +53,7 @@ class _MessagesState extends State<Messages> {
               CustomButton(
                 text: 'Send',
                 fontSize: 14,
-                onPressed: () => widget.controller.sendMessage(context)
+                onPressed: () => widget.controller.sendMessage()
               )
             ]
           )

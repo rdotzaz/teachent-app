@@ -23,7 +23,8 @@ class DateFormatter {
     }
 
     static String timeString(TimeOfDay? timeOfDay) {
-        return '${timeOfDay?.hour ?? ''}:${timeOfDay?.minute ?? ''}';
+        final minute = timeOfDay?.minute ?? 0;
+        return '${timeOfDay?.hour ?? ''}:${minute != 0 ? minute : '00'}';
     }
 
     static String onlyTimeString(DateTime? dateTime) {
