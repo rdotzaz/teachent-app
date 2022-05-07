@@ -45,10 +45,14 @@ mixin LessonDateDatabaseMethods {
   /// Update current date with [newDate]t for lesson date by [lessonDateId]
   Future<void> changeLessonDate(KeyId lessonDateId, DateTime newDate) async {
     await FirebaseRealTimeDatabaseAdapter.updateField(
-        DatabaseObjectName.lessonDates, lessonDateId, 'date', DateFormatter.getString(newDate));
+        DatabaseObjectName.lessonDates,
+        lessonDateId,
+        'date',
+        DateFormatter.getString(newDate));
   }
 
-  Future<void> assignStudentToLessonDate(KeyId lessonDateId, KeyId studentId) async {
+  Future<void> assignStudentToLessonDate(
+      KeyId lessonDateId, KeyId studentId) async {
     await FirebaseRealTimeDatabaseAdapter.updateField(
         DatabaseObjectName.lessonDates, lessonDateId, 'studentId', studentId);
   }

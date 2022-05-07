@@ -24,8 +24,9 @@ class TeacherSearchPage extends StatelessWidget {
         child: Scaffold(
             resizeToAvoidBottomInset: true,
             appBar: AppBar(
-                iconTheme: IconThemeData(color: Colors.black),
-                title: Text('Search', style: TextStyle(color: Colors.black)),
+                iconTheme: const IconThemeData(color: Colors.black),
+                title:
+                    const Text('Search', style: TextStyle(color: Colors.black)),
                 elevation: 0,
                 backgroundColor: Colors.transparent),
             body: Column(

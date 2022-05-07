@@ -10,12 +10,18 @@ mixin MessageDatabaseMethods {
   /// Add [message] teacher to request with [requestId]
   Future<void> addTeacherMessage(KeyId requestId, MessageRecord message) async {
     await FirebaseRealTimeDatabaseAdapter.updateField(
-        DatabaseObjectName.requests, requestId, 'teacherMessages', {message.message: DateFormatter.getString(message.date)});
+        DatabaseObjectName.requests,
+        requestId,
+        'teacherMessages',
+        {message.message: DateFormatter.getString(message.date)});
   }
 
   /// Add [message] student to request with [requestId]
   Future<void> addStudentMessage(KeyId requestId, MessageRecord message) async {
     await FirebaseRealTimeDatabaseAdapter.updateField(
-        DatabaseObjectName.requests, requestId, 'studentMessages', {message.message: DateFormatter.getString(message.date)});
+        DatabaseObjectName.requests,
+        requestId,
+        'studentMessages',
+        {message.message: DateFormatter.getString(message.date)});
   }
 }

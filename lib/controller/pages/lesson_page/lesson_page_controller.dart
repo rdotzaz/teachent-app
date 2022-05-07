@@ -46,7 +46,8 @@ class LessonPageController extends BaseController {
   }
 
   Future<void> cancelLesson(BuildContext context) async {
-    final lessonDate = await dataManager.database.getLessonDate(lesson.lessonDateId);
+    final lessonDate =
+        await dataManager.database.getLessonDate(lesson.lessonDateId);
     if (lessonDate == null) {
       print('Cannot find lessonDate with ${lesson.lessonDateId}');
       return;
@@ -55,9 +56,11 @@ class LessonPageController extends BaseController {
       return;
     }
     if (isTeacher) {
-      await LessonManager.cancelLessonByTeacher(dataManager, lessonDate, lesson);
+      await LessonManager.cancelLessonByTeacher(
+          dataManager, lessonDate, lesson);
     } else {
-      await LessonManager.cancelLessonByStudent(dataManager, lessonDate, lesson);
+      await LessonManager.cancelLessonByStudent(
+          dataManager, lessonDate, lesson);
     }
     await showSuccessMessageAsync(context, 'Lesson has been cancelled');
   }

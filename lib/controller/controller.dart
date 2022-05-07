@@ -27,7 +27,6 @@ abstract class BaseSearchController extends BaseController {
   Future<void> updateFoundList(PersonType type) async {}
   Future<void> updateFoundTeacherList(List<String> topicNames,
       List<String> toolNames, List<String> placeNames) async {}
-  
 
   @override
   void dispose() {
@@ -41,7 +40,7 @@ abstract class BaseRequestPageController extends BaseController {
   List<MessageField> get messages => [];
 
   void sendMessageAndRefresh(Function refresh);
-  
+
   bool isSender(int index) {
     return messages[index].isSender;
   }
@@ -59,4 +58,4 @@ abstract class BaseRequestPageController extends BaseController {
   void dispose() {
     _textController.dispose();
   }
-} 
+}

@@ -3,14 +3,10 @@ import 'package:teachent_app/database/adapters/firebase_adapter.dart';
 import '../../common/consts.dart';
 import '../../model/db_objects/db_object.dart';
 import '../../model/db_objects/teacher.dart';
-import '../../model/objects/topic.dart';
-import '../../model/objects/tool.dart';
-import '../../model/objects/place.dart';
 
 /// Methods to maintain Teacher object in database
 mixin TeacherDatabaseMethods {
   Future<void> addTeacher(Teacher teacher) async {
-    print('Teacher');
     final wasAdded = await FirebaseRealTimeDatabaseAdapter.addDatabaseObject(
         DatabaseObjectName.teachers, teacher.key, teacher.toMap());
   }
@@ -30,7 +26,6 @@ mixin TeacherDatabaseMethods {
     final teacherValues = await FirebaseRealTimeDatabaseAdapter.getObject(
         DatabaseObjectName.teachers, userId);
     if (teacherValues.isEmpty) {
-      print('No teacherValues found');
       return null;
     }
     return Teacher.fromMap(userId, teacherValues);
@@ -64,9 +59,9 @@ mixin TeacherDatabaseMethods {
       final commonTopics = topicSet.intersection(topics.toSet());
       final commonPlaces = placeSet.intersection(places.toSet());
 
-      if ((commonTools.length > 0 ||
-              commonTopics.length > 0 ||
-              commonPlaces.length > 0) ||
+      if ((commonTools.isNotEmpty ||
+              commonTopics.isNotEmpty ||
+              commonPlaces.isNotEmpty) ||
           (topics.isEmpty && tools.isEmpty && places.isEmpty)) {
         filteredTeachers.add(teacher);
       }

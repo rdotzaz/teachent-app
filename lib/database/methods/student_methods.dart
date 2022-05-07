@@ -9,10 +9,8 @@ import '../../model/db_objects/student.dart';
 mixin StudentDatabaseMethods {
   /// Add student to database
   Future<void> addStudent(Student student) async {
-    print('Student');
-    var wasAdded = await FirebaseRealTimeDatabaseAdapter.addDatabaseObject(
+    await FirebaseRealTimeDatabaseAdapter.addDatabaseObject(
         DatabaseObjectName.students, student.key, student.toMap());
-    return;
   }
 
   /// Returns Student object based on [userId]
@@ -76,7 +74,8 @@ mixin StudentDatabaseMethods {
         {requestId: true});
   }
 
-  Future<void> addLessonDateIdToStudent(KeyId studentId, KeyId lessonDateId) async {
+  Future<void> addLessonDateIdToStudent(
+      KeyId studentId, KeyId lessonDateId) async {
     await FirebaseRealTimeDatabaseAdapter.updateField(
         DatabaseObjectName.students,
         studentId,

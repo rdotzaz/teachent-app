@@ -1,4 +1,3 @@
-import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:teachent_app/common/date.dart';
 import 'package:teachent_app/common/enums.dart';
@@ -6,7 +5,6 @@ import 'package:teachent_app/common/enum_functions.dart';
 import 'package:teachent_app/controller/controller.dart';
 import 'package:teachent_app/controller/managers/lesson_manager.dart';
 import 'package:teachent_app/controller/managers/request_manager.dart';
-import 'package:teachent_app/controller/pages/student_request_page/bloc/request_topic_bloc.dart';
 import 'package:teachent_app/model/db_objects/db_object.dart';
 import 'package:teachent_app/model/db_objects/lesson_date.dart';
 import 'package:teachent_app/model/db_objects/request.dart';
@@ -64,7 +62,8 @@ class TeacherRequestPageController extends BaseRequestPageController {
 
   String get studentName => student?.name ?? '';
   String get date => DateFormatter.getString(lessonDate?.date);
-  String get requestedDate => DateFormatter.onlyDateString(request.requestedDate);
+  String get requestedDate =>
+      DateFormatter.onlyDateString(request.requestedDate);
   bool get isCycled => lessonDate?.isCycled ?? false;
   int get price => lessonDate?.price ?? 0;
   List<Tool> get tools => lessonDate?.tools ?? [];
@@ -76,16 +75,26 @@ class TeacherRequestPageController extends BaseRequestPageController {
   String get additionalInfo => request.dateStatus.stringValue;
 
   @override
-  bool get hasAnyMessages => request.teacherMessages.isNotEmpty || request.studentMessages.isNotEmpty || _newMessages.isNotEmpty;
+  bool get hasAnyMessages =>
+      request.teacherMessages.isNotEmpty ||
+      request.studentMessages.isNotEmpty ||
+      _newMessages.isNotEmpty;
 
   @override
-  int get messagesCount => request.teacherMessages.length + request.studentMessages.length + _newMessages.length;
+  int get messagesCount =>
+      request.teacherMessages.length +
+      request.studentMessages.length +
+      _newMessages.length;
 
   @override
   List<MessageField> get messages {
-    final newMessages = _newMessages.map((m) => MessageField(m, false)).toList();
-    final mergedList = request.teacherMessages.map((m) => MessageField(m, false)).toList() + request.studentMessages.map((m) => MessageField(m, true)).toList();
-    mergedList.sort((m1, m2) => m1.messageRecord.date.compareTo(m2.messageRecord.date));
+    final newMessages =
+        _newMessages.map((m) => MessageField(m, false)).toList();
+    final mergedList =
+        request.teacherMessages.map((m) => MessageField(m, false)).toList() +
+            request.studentMessages.map((m) => MessageField(m, true)).toList();
+    mergedList.sort(
+        (m1, m2) => m1.messageRecord.date.compareTo(m2.messageRecord.date));
     return mergedList + newMessages;
   }
 
@@ -120,19 +129,23 @@ class TeacherRequestPageController extends BaseRequestPageController {
   @override
   Future<void> sendMessageAndRefresh(Function refresh) async {
     _newMessages.add(MessageRecord(textController.text, DateTime.now()));
-    await RequestManager.sendTeacherMessage(dataManager, request, textController.text);
+    await RequestManager.sendTeacherMessage(
+        dataManager, request, textController.text);
     textController.clear();
     refresh();
   }
 
   Future<void> sendResponse(BuildContext context) async {
-    await RequestManager.sendTeacherResponse(dataManager, request, isNewDateAccepted);
+    await RequestManager.sendTeacherResponse(
+        dataManager, request, isNewDateAccepted);
     Navigator.of(context).pop();
   }
 
   Future<void> acceptRequest(BuildContext context) async {
-    await RequestManager.acceptRequest(dataManager, request, student?.userId ?? '', lessonDate);
-    await LessonManager.createFirst(dataManager, student?.userId ?? '', lessonDate!);
+    await RequestManager.acceptRequest(
+        dataManager, request, student?.userId ?? '', lessonDate);
+    await LessonManager.createFirst(
+        dataManager, student?.userId ?? '', lessonDate!);
     await showSuccessMessageAsync(context, 'Request has been accepted');
     Navigator.of(context).pop();
   }

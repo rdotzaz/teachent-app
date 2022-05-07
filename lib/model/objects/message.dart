@@ -5,7 +5,6 @@ class MessageField {
   MessageField(this.messageRecord, this.isSender);
 }
 
-
 class MessageRecord {
   final String message;
   final DateTime date;

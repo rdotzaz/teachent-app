@@ -27,11 +27,7 @@ class StudentHomePageController extends BaseController {
   @override
   Future<void> init() async {
     final possibleStudent = await dataManager.database.getStudent(userId);
-    if (possibleStudent == null) {
-      // TODO - Raise error
-      print('ERROR: Student not found');
-      return;
-    }
+    assert(possibleStudent == null);
     student = possibleStudent;
 
     await initLessons();
@@ -43,9 +39,6 @@ class StudentHomePageController extends BaseController {
     lessons.clear();
     final foundLessons = await dataManager.database
         .getLessonsByDates(student?.lessonDates ?? [], LessonStatus.open);
-    if (foundLessons.isEmpty) {
-      print('No lessons found');
-    }
     lessons.addAll(foundLessons);
   }
 
@@ -53,9 +46,6 @@ class StudentHomePageController extends BaseController {
     teachers.clear();
     final foundTeachers = await dataManager.database
         .getTeachersByDates(student?.lessonDates ?? []);
-    if (foundTeachers.isEmpty) {
-      print('No teachers found');
-    }
     teachers.addAll(foundTeachers);
   }
 
@@ -63,9 +53,6 @@ class StudentHomePageController extends BaseController {
     requests.clear();
     final foundRequests =
         await dataManager.database.getRequests(student?.requests ?? []);
-    if (foundRequests.isEmpty) {
-      print('No requests found');
-    }
     requests.addAll(foundRequests);
   }
 

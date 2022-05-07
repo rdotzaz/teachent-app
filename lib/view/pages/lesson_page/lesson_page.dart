@@ -24,20 +24,18 @@ class LessonPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     return Scaffold(
-      body: Column(
-        children: [
-          _appBar(size.height),
-          _userInformation(context),
-          _status(),
-          _cancelLessonButton(context),
-      ])
-    );
+        body: Column(children: [
+      _appBar(size.height),
+      _userInformation(context),
+      _status(),
+      _cancelLessonButton(context),
+    ]));
   }
 
   Widget _appBar(double height) {
     return Container(
         height: height / 6,
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           color: Colors.blue,
           borderRadius: BorderRadius.only(
               bottomLeft: Radius.circular(15),

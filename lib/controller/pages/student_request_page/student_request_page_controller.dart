@@ -1,4 +1,3 @@
-import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:teachent_app/common/date.dart';
 import 'package:teachent_app/common/enums.dart';
@@ -43,7 +42,6 @@ class StudentRequestPageController extends BaseRequestPageController {
     } else {
       final foundRequest = await dataManager.database.getRequest(requestId!);
       if (foundRequest == null) {
-        print('ERROR: No request found. Creation mode');
         return;
       }
       request = foundRequest;
@@ -180,7 +178,9 @@ class StudentRequestPageController extends BaseRequestPageController {
     if (request == null) {
       return _newMessages.isNotEmpty;
     }
-    return request!.teacherMessages.isNotEmpty || request!.studentMessages.isNotEmpty || _newMessages.isNotEmpty;
+    return request!.teacherMessages.isNotEmpty ||
+        request!.studentMessages.isNotEmpty ||
+        _newMessages.isNotEmpty;
   }
 
   @override
@@ -188,17 +188,24 @@ class StudentRequestPageController extends BaseRequestPageController {
     if (request == null) {
       return _newMessages.length;
     }
-    return request!.teacherMessages.length + request!.studentMessages.length + _newMessages.length;
+    return request!.teacherMessages.length +
+        request!.studentMessages.length +
+        _newMessages.length;
   }
 
   @override
   List<MessageField> get messages {
-    final newMessageFields = _newMessages.map((m) => MessageField(m, false)).toList();
+    final newMessageFields =
+        _newMessages.map((m) => MessageField(m, false)).toList();
     if (request == null) {
       return newMessageFields;
     }
-    final mergedList = request!.teacherMessages.map((m) => MessageField(m, true)).toList() + request!.studentMessages.map((m) => MessageField(m, false)).toList();
-    mergedList.sort((m1, m2) => m1.messageRecord.date.compareTo(m2.messageRecord.date));
+    final mergedList = request!.teacherMessages
+            .map((m) => MessageField(m, true))
+            .toList() +
+        request!.studentMessages.map((m) => MessageField(m, false)).toList();
+    mergedList.sort(
+        (m1, m2) => m1.messageRecord.date.compareTo(m2.messageRecord.date));
     return mergedList + newMessageFields;
   }
 
@@ -206,7 +213,8 @@ class StudentRequestPageController extends BaseRequestPageController {
   Future<void> sendMessageAndRefresh(Function refresh) async {
     _newMessages.add(MessageRecord(textController.text, DateTime.now()));
     if (request != null) {
-      await RequestManager.sendStudentMessage(dataManager, request!, textController.text);
+      await RequestManager.sendStudentMessage(
+          dataManager, request!, textController.text);
     }
     textController.clear();
     refresh();
@@ -215,7 +223,8 @@ class StudentRequestPageController extends BaseRequestPageController {
   Future<void> sendResponse(BuildContext context) async {
     assert(hasChangesProvided && request != null);
 
-    await RequestManager.sendStudentResponse(dataManager, request!, otherDate!, topics[topicIndex]);
+    await RequestManager.sendStudentResponse(
+        dataManager, request!, otherDate!, topics[topicIndex]);
 
     await showSuccessMessageAsync(context, 'Request has been updated');
     Navigator.of(context).pop();

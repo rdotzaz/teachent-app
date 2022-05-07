@@ -1,4 +1,3 @@
-import 'package:intl/intl.dart';
 import 'package:teachent_app/common/consts.dart'
     show DatabaseConsts, DatabaseObjectName;
 import 'package:teachent_app/common/date.dart';

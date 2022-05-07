@@ -1,14 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:teachent_app/common/enums.dart';
-import 'package:teachent_app/common/enum_functions.dart';
 import 'package:teachent_app/controller/pages/student_request_page/student_request_page_controller.dart';
 import 'package:teachent_app/controller/pages/student_request_page/bloc/request_day_bloc.dart';
 import 'package:teachent_app/controller/pages/student_request_page/bloc/request_topic_bloc.dart';
 import 'package:teachent_app/model/db_objects/db_object.dart';
 import 'package:teachent_app/model/db_objects/lesson_date.dart';
 import 'package:teachent_app/model/db_objects/teacher.dart';
-import 'package:teachent_app/view/widgets/custom_button.dart';
 import 'package:teachent_app/view/widgets/label.dart';
 import 'package:teachent_app/view/widgets/chip_list.dart';
 import 'package:teachent_app/view/widgets/messages.dart';
@@ -86,13 +83,6 @@ class StudentRequestPage extends StatelessWidget {
                 child: Text(_requestPageController!.additionalInfo,
                     style: const TextStyle(fontSize: 18, color: Colors.white))),
         ]));
-  }
-
-  Widget _textLabel(String text) {
-    return Padding(
-        padding: const EdgeInsets.all(15),
-        child: Text(text,
-            style: const TextStyle(color: Colors.black, fontSize: 18)));
   }
 
   Widget _tools() {

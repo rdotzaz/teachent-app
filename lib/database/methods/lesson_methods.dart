@@ -11,17 +11,18 @@ mixin LessonDatabaseMethods {
   /// Note: Poor performance due to "double" searching in database
   /// First retrieved all lessons with [lessonDateIds], afterwards
   /// filter lessons with specific status
-  Future<Iterable<Lesson>> getLessonsByDates(List<KeyId> lessonDateIds, LessonStatus status) async {
+  Future<Iterable<Lesson>> getLessonsByDates(
+      List<KeyId> lessonDateIds, LessonStatus status) async {
     final lessons = <Lesson>[];
     for (final lessonDateId in lessonDateIds) {
-      final lessonsValues = await FirebaseRealTimeDatabaseAdapter.getObjectsByProperty(
-          DatabaseObjectName.lessons, 'lessonDateId', lessonDateId);
+      final lessonsValues =
+          await FirebaseRealTimeDatabaseAdapter.getObjectsByProperty(
+              DatabaseObjectName.lessons, 'lessonDateId', lessonDateId);
 
       print(lessonsValues.entries);
       lessonsValues.forEach((key, lessonValues) {
-        print('Status ${lessonValues['status']}');
-        if (lessonValues.isEmpty || (lessonValues['status'] ?? -1) != status.value) {
-          print('HERE');
+        if (lessonValues.isEmpty ||
+            (lessonValues['status'] ?? -1) != status.value) {
           return;
         }
         lessons.add(Lesson.fromMap(key, lessonValues));
@@ -42,7 +43,8 @@ mixin LessonDatabaseMethods {
     return key;
   }
 
-  Future<void> updateLessonStatus(KeyId lessonId, LessonStatus lessonStatus) async {
+  Future<void> updateLessonStatus(
+      KeyId lessonId, LessonStatus lessonStatus) async {
     await FirebaseRealTimeDatabaseAdapter.updateField(
         DatabaseObjectName.lessons, lessonId, 'status', lessonStatus.value);
   }

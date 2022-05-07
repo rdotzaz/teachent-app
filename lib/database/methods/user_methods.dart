@@ -31,10 +31,8 @@ mixin UserDatabaseMethods {
   }
 
   Future<void> addUser(User user) async {
-    print('User');
-    var wasAdded = await FirebaseRealTimeDatabaseAdapter.addDatabaseObject(
+    await FirebaseRealTimeDatabaseAdapter.addDatabaseObject(
         DatabaseObjectName.users, user.key, user.toMap());
-    return;
   }
 
   Future<User?> getUser(KeyId userId) async {
@@ -46,8 +44,4 @@ mixin UserDatabaseMethods {
     }
     return User.fromMap(userId, userValues as Map<String, dynamic>);
   }
-
-  void update(KeyId userId) {}
-
-  void deleteUser(KeyId userId) {}
 }

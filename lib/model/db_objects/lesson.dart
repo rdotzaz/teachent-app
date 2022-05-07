@@ -1,4 +1,3 @@
-import 'package:intl/intl.dart';
 import 'package:teachent_app/common/consts.dart'
     show DatabaseConsts, DatabaseObjectName;
 import 'package:teachent_app/common/date.dart';
@@ -17,15 +16,15 @@ class Lesson extends DatabaseObject {
   final LessonStatus status;
   final KeyId reportId;
 
-  Lesson(this.lessonId, this.lessonDateId, this.teacherId, this.studentId, this.date,
-      this.status, this.reportId);
+  Lesson(this.lessonId, this.lessonDateId, this.teacherId, this.studentId,
+      this.date, this.status, this.reportId);
 
-  Lesson.noKey(
-      this.lessonDateId, this.teacherId, this.studentId, this.date, this.status, this.reportId)
+  Lesson.noKey(this.lessonDateId, this.teacherId, this.studentId, this.date,
+      this.status, this.reportId)
       : lessonId = DatabaseConsts.emptyKey;
 
   Lesson.fromMap(this.lessonId, Map<dynamic, dynamic> values)
-      : lessonDateId = values['lessonDateId'] ?? '', 
+      : lessonDateId = values['lessonDateId'] ?? '',
         teacherId = values['teacherId'] ?? '',
         studentId = values['studentId'] ?? '',
         date = DateFormatter.parse(values['date']),
