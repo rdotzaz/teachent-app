@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:teachent_app/common/enums.dart';
 import 'package:teachent_app/controller/controller.dart';
 import 'package:teachent_app/model/db_objects/db_object.dart';
 import 'package:teachent_app/model/db_objects/teacher.dart';
@@ -42,6 +43,7 @@ class StudentSearchPageController extends BaseSearchController {
   Future<void> updateFoundTeacherList(List<String> topicNames,
       List<String> toolNames, List<String> placeNames) async {
     _foundTeachers.clear();
+    print('$topicNames, $toolNames, $placeNames');
     final teachers = await dataManager.database
         .getTeachersByParams(phrase, topicNames, toolNames, placeNames);
     _foundTeachers.addAll(teachers);

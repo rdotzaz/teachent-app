@@ -1,15 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:teachent_app/common/enums.dart';
-import 'package:teachent_app/common/enum_functions.dart';
 import 'package:teachent_app/controller/pages/teacher_request_page/teacher_request_page_controller.dart';
 import 'package:teachent_app/controller/pages/teacher_request_page/bloc/refresh_bloc.dart';
 import 'package:teachent_app/model/db_objects/db_object.dart';
 import 'package:teachent_app/model/db_objects/lesson_date.dart';
 import 'package:teachent_app/model/db_objects/request.dart';
 import 'package:teachent_app/model/db_objects/student.dart';
-import 'package:teachent_app/view/widgets/custom_button.dart';
 import 'package:teachent_app/view/widgets/chip_list.dart';
+import 'package:teachent_app/view/widgets/messages.dart';
 
 import 'other_day_widget.dart';
 import 'buttons.dart';
@@ -64,9 +62,9 @@ class TeacherRequestPage extends StatelessWidget {
       if (_requestPageController!.places.isNotEmpty) _places(),
       if (_requestPageController!.wasOtherDateRequested)
         OtherDayWidget(controller: _requestPageController!),
-      _teacherMessage(),
-      if (_requestPageController!.hasStudentMessage) _studentMessage(),
-      Buttons(controller: _requestPageController!)
+      Buttons(controller: _requestPageController!),
+      const SizedBox(height: 50),
+      Messages(controller: _requestPageController!)
     ]));
   }
 
@@ -106,38 +104,6 @@ class TeacherRequestPage extends StatelessWidget {
                   style: const TextStyle(fontSize: 18, color: Colors.white)),
               backgroundColor: Colors.blue);
         });
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(10),
-        boxShadow: [
-          BoxShadow(
-              color: Colors.grey.withOpacity(0.5),
-              spreadRadius: 2,
-              blurRadius: 4,
-              offset: const Offset(2, 2))
-        ],
-      ),
-      margin: const EdgeInsets.all(8),
-      padding: const EdgeInsets.all(10),
-      child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-        const Padding(padding: EdgeInsets.all(5), child: Text('Tools')),
-        Container(
-            height: 70,
-            padding: const EdgeInsets.all(5),
-            child: ListView.builder(
-                scrollDirection: Axis.horizontal,
-                itemCount: _requestPageController!.tools.length,
-                itemBuilder: (_, index) {
-                  return Chip(
-                      padding: const EdgeInsets.all(12.0),
-                      label: Text(_requestPageController!.tools[index].name,
-                          style: const TextStyle(
-                              fontSize: 18, color: Colors.white)),
-                      backgroundColor: Colors.blue);
-                }))
-      ]),
-    );
   }
 
   Widget _places() {
@@ -153,52 +119,6 @@ class TeacherRequestPage extends StatelessWidget {
                   style: const TextStyle(fontSize: 18, color: Colors.white)),
               backgroundColor: Colors.blue);
         });
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(10),
-        boxShadow: [
-          BoxShadow(
-              color: Colors.grey.withOpacity(0.5),
-              spreadRadius: 2,
-              blurRadius: 4,
-              offset: const Offset(2, 2))
-        ],
-      ),
-      margin: const EdgeInsets.all(8),
-      padding: const EdgeInsets.all(10),
-      child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-        const Padding(padding: EdgeInsets.all(5), child: Text('Places')),
-        Container(
-            height: 70,
-            padding: const EdgeInsets.all(5),
-            child: ListView.builder(
-                scrollDirection: Axis.horizontal,
-                itemCount: _requestPageController!.places.length,
-                itemBuilder: (_, index) {
-                  return Chip(
-                      padding: const EdgeInsets.fromLTRB(10, 5, 10, 5),
-                      label: Text(_requestPageController!.places[index].name,
-                          style: const TextStyle(
-                              fontSize: 18, color: Colors.white)),
-                      backgroundColor: Colors.blue);
-                }))
-      ]),
-    );
-  }
-
-  Widget _studentMessage() {
-    return Container();
-  }
-
-  Widget _teacherMessage() {
-    return Container(
-        margin: const EdgeInsets.all(15),
-        child: CustomButton(
-            text: 'Add message for student',
-            fontSize: 18,
-            onPressed: () {},
-            buttonColor: Colors.blue));
   }
 
   Widget _errorWidget(String errorMessage) {

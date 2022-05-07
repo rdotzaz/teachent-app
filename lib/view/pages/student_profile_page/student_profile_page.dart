@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:teachent_app/controller/pages/student_profile_page/student_profile_page_controller.dart';
-import 'package:teachent_app/model/db_objects/db_object.dart';
 import 'package:teachent_app/model/db_objects/student.dart';
-import 'package:teachent_app/view/widgets/custom_button.dart';
 import 'package:teachent_app/view/widgets/label.dart';
 
 class StudentProfilePage extends StatelessWidget {

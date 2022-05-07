@@ -9,22 +9,8 @@ import '../../model/db_objects/student.dart';
 mixin StudentDatabaseMethods {
   /// Add student to database
   Future<void> addStudent(Student student) async {
-    print('Student');
-    var wasAdded = await FirebaseRealTimeDatabaseAdapter.addDatabaseObject(
+    await FirebaseRealTimeDatabaseAdapter.addDatabaseObject(
         DatabaseObjectName.students, student.key, student.toMap());
-    return;
-  }
-
-  /// Returns newly created map object based on map object stored in [field]
-  Map<String, dynamic> _getMapFromField(
-      Map<dynamic, dynamic> values, String field) {
-    if (values[field] == null) {
-      return {};
-    }
-    return {
-      for (var entry in (values[field] as Map<dynamic, dynamic>).entries)
-        (entry.key as String): true
-    };
   }
 
   /// Returns Student object based on [userId]
@@ -55,11 +41,11 @@ mixin StudentDatabaseMethods {
 
   Future<void> addLessonDateKeyToStudent(
       KeyId studentId, KeyId lessonDateId) async {
-    await FirebaseRealTimeDatabaseAdapter.addForeignKey(
+    await FirebaseRealTimeDatabaseAdapter.updateField(
         DatabaseObjectName.students,
         studentId,
         DatabaseObjectName.lessonDates,
-        lessonDateId);
+        {lessonDateId: true});
   }
 
   Future<Iterable<Student>> getStudentsByDates(
@@ -81,10 +67,19 @@ mixin StudentDatabaseMethods {
   }
 
   Future<void> addRequestIdToStudent(KeyId studentId, KeyId requestId) async {
-    await FirebaseRealTimeDatabaseAdapter.addForeignKey(
+    await FirebaseRealTimeDatabaseAdapter.updateField(
         DatabaseObjectName.students,
         studentId,
         DatabaseObjectName.requests,
-        requestId);
+        {requestId: true});
+  }
+
+  Future<void> addLessonDateIdToStudent(
+      KeyId studentId, KeyId lessonDateId) async {
+    await FirebaseRealTimeDatabaseAdapter.updateField(
+        DatabaseObjectName.students,
+        studentId,
+        DatabaseObjectName.lessonDates,
+        {lessonDateId: true});
   }
 }

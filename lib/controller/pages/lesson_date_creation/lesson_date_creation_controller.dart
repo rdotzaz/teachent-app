@@ -1,6 +1,5 @@
-import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
-import 'package:teachent_app/common/enums.dart';
+import 'package:teachent_app/common/date.dart';
 import 'package:teachent_app/common/enum_functions.dart';
 import 'package:teachent_app/controller/controller.dart';
 import 'package:teachent_app/controller/pages/lesson_date_creation/bloc/freq_bloc.dart';
@@ -20,7 +19,7 @@ class LessonDateCreationPageController extends BaseController {
   final _formKey = GlobalKey<FormState>();
   final List<Tool> _tools = [];
   final List<Place> _places = [];
-  
+
   /// Available lesson frequences.
   /// TODO - Move [_freqs] list to database
   final List<String> _freqs = [
@@ -34,7 +33,7 @@ class LessonDateCreationPageController extends BaseController {
   /// Key for form widget
   GlobalKey<FormState> get formKey => _formKey;
   DateTime _selectedDate = DateTime.now();
-  TimeOfDay _selectedTime = TimeOfDay.now();
+  TimeOfDay _selectedTime = TimeOfDay(hour: 12, minute: 0);
   int _duration = 60;
   int _price = 50;
   bool _isCycled = false;
@@ -55,8 +54,8 @@ class LessonDateCreationPageController extends BaseController {
   }
 
   /// Lesson date established by teacher
-  String get date => DateFormat('yyyy-MM-dd').format(_selectedDate);
-  String time(BuildContext context) => _selectedTime.format(context);
+  String get date => DateFormatter.onlyDateString(_selectedDate);
+  String get time => DateFormatter.timeString(_selectedTime);
   int get lessonDuration => _duration;
   int get price => _price;
   List<Tool> get tools => _tools;
@@ -151,7 +150,7 @@ class LessonDateCreationPageController extends BaseController {
   }
 
   /// Get color for selected checkbox based on checkbox state
-  /// Return blue if chekcbox selected, white otherwise 
+  /// Return blue if chekcbox selected, white otherwise
   Color getCycledCheckBoxColor(Set<MaterialState> checkBoxStates) {
     if (checkBoxStates.contains(MaterialState.pressed)) {
       return Colors.white;
@@ -169,8 +168,14 @@ class LessonDateCreationPageController extends BaseController {
     final tools = _tools.where((t) => t.marked).toList();
     final places = _places.where((p) => p.marked).toList();
 
-    final lessonDate = LessonDate.init(teacher.userId, date, time(context),
-        isCycled, getCycleByValue(freqBloc.state), price, tools, places);
+    final lessonDate = LessonDate.init(
+        teacher.userId,
+        DateFormatter.addTime(_selectedDate, _selectedTime),
+        isCycled,
+        getCycleByValue(freqBloc.state),
+        price,
+        tools,
+        places);
 
     final lessonDateKey = await dataManager.database.addLessonDate(lessonDate);
     await dataManager.database

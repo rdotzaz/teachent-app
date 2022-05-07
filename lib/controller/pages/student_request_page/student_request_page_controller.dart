@@ -1,20 +1,22 @@
-import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
+import 'package:teachent_app/common/date.dart';
 import 'package:teachent_app/common/enums.dart';
 import 'package:teachent_app/common/enum_functions.dart';
 import 'package:teachent_app/controller/controller.dart';
+import 'package:teachent_app/controller/managers/request_manager.dart';
 import 'package:teachent_app/controller/pages/student_request_page/bloc/request_topic_bloc.dart';
 import 'package:teachent_app/model/db_objects/db_object.dart';
 import 'package:teachent_app/model/db_objects/lesson_date.dart';
 import 'package:teachent_app/model/db_objects/request.dart';
 import 'package:teachent_app/model/db_objects/teacher.dart';
+import 'package:teachent_app/model/objects/message.dart';
 import 'package:teachent_app/model/objects/tool.dart';
 import 'package:teachent_app/model/objects/topic.dart';
 import 'package:teachent_app/model/objects/place.dart';
 import 'package:teachent_app/view/widgets/status_bottom_sheet.dart';
 
 /// Controller for Student Ruquest Page
-class StudentRequestPageController extends BaseController {
+class StudentRequestPageController extends BaseRequestPageController {
   KeyId? requestId;
   KeyId? studentId;
   Teacher? teacher;
@@ -24,6 +26,7 @@ class StudentRequestPageController extends BaseController {
   DateTime? otherDate;
   int topicIndex = -1;
   bool hasChangesProvided = false;
+  final List<MessageRecord> _newMessages = [];
 
   late RequestTopicBloc requestTopicBloc;
 
@@ -39,7 +42,6 @@ class StudentRequestPageController extends BaseController {
     } else {
       final foundRequest = await dataManager.database.getRequest(requestId!);
       if (foundRequest == null) {
-        print('ERROR: No request found. Creation mode');
         return;
       }
       request = foundRequest;
@@ -81,21 +83,15 @@ class StudentRequestPageController extends BaseController {
   }
 
   String get exactDay {
-    final lessonDateExactDay = lessonDate?.weekday ?? '';
     if (request == null) {
-      return lessonDateExactDay;
+      return date;
     }
-    if (request!.dateStatus == RequestedDateStatus.accepted) {
-      return request!.requestedDate;
-    }
-    return lessonDateExactDay;
+    return requestedDate;
   }
 
   String get teacherName => teacher?.name ?? '';
-  String get date =>
-      '${lessonDate?.weekday ?? ''}, ${lessonDate?.hourTime ?? ''}';
-  String get reqestedDate =>
-      DateFormat('yyyy-MM-dd').format(otherDate ?? DateTime.now());
+  String get date => DateFormatter.getString(lessonDate!.date);
+  String get requestedDate => DateFormatter.getString(otherDate);
   String get statusInfo => request?.status.stringValue ?? '';
   String get additionalInfo => request?.dateStatus.stringValue ?? '';
   bool get isCycled => lessonDate?.isCycled ?? false;
@@ -165,32 +161,71 @@ class StudentRequestPageController extends BaseController {
   }
 
   String getStatusAdditionalInfo() {
-    String message = '';
-    if (request!.status == RequestStatus.waiting &&
-        request!.requestedDate.isNotEmpty) {
-      message = 'Request date: ${request!.requestedDate}';
+    if (request!.dateStatus == RequestedDateStatus.requested) {
+      return 'Request date: ${request!.requestedDate}';
     }
-    if (request!.status == RequestStatus.responded &&
-        request!.requestedDate.isEmpty) {
-      message =
-          'Teacher did not accept\nyour request date: ${request!.requestedDate}';
+    if (request!.dateStatus == RequestedDateStatus.rejected) {
+      return 'Teacher did not accept\nyour request date: ${request!.requestedDate}';
     }
-    return message;
+    if (request!.dateStatus == RequestedDateStatus.accepted) {
+      return 'Teacher accepted\nyour request date: ${request!.requestedDate}';
+    }
+    return '';
+  }
+
+  @override
+  bool get hasAnyMessages {
+    if (request == null) {
+      return _newMessages.isNotEmpty;
+    }
+    return request!.teacherMessages.isNotEmpty ||
+        request!.studentMessages.isNotEmpty ||
+        _newMessages.isNotEmpty;
+  }
+
+  @override
+  int get messagesCount {
+    if (request == null) {
+      return _newMessages.length;
+    }
+    return request!.teacherMessages.length +
+        request!.studentMessages.length +
+        _newMessages.length;
+  }
+
+  @override
+  List<MessageField> get messages {
+    final newMessageFields =
+        _newMessages.map((m) => MessageField(m, false)).toList();
+    if (request == null) {
+      return newMessageFields;
+    }
+    final mergedList = request!.teacherMessages
+            .map((m) => MessageField(m, true))
+            .toList() +
+        request!.studentMessages.map((m) => MessageField(m, false)).toList();
+    mergedList.sort(
+        (m1, m2) => m1.messageRecord.date.compareTo(m2.messageRecord.date));
+    return mergedList + newMessageFields;
+  }
+
+  @override
+  Future<void> sendMessageAndRefresh(Function refresh) async {
+    _newMessages.add(MessageRecord(textController.text, DateTime.now()));
+    if (request != null) {
+      await RequestManager.sendStudentMessage(
+          dataManager, request!, textController.text);
+    }
+    textController.clear();
+    refresh();
   }
 
   Future<void> sendResponse(BuildContext context) async {
     assert(hasChangesProvided && request != null);
 
-    await dataManager.database
-        .changeRequestStatus(request!.requestId, RequestStatus.waiting);
+    await RequestManager.sendStudentResponse(
+        dataManager, request!, otherDate!, topics[topicIndex]);
 
-    print('$reqestedDate == ${request!.requestedDate}');
-    if (reqestedDate != request!.requestedDate) {
-      await dataManager.database
-          .changeRequestedDate(request!.requestId, reqestedDate);
-      await dataManager.database.changeRequestedDateStatus(
-          request!.requestId, RequestedDateStatus.requested);
-    }
     await showSuccessMessageAsync(context, 'Request has been updated');
     Navigator.of(context).pop();
   }
@@ -201,31 +236,21 @@ class StudentRequestPageController extends BaseController {
       return;
     }
 
-    final newDate = otherDate != null ? reqestedDate : '';
-
     request = Request.noKey(
         lessonDate?.lessonDateId ?? '',
         teacher?.userId ?? '',
         studentId ?? '',
         RequestStatus.waiting,
         topics[topicIndex],
-        date,
+        DateFormatter.parse(date),
         otherDate == null
             ? RequestedDateStatus.none
             : RequestedDateStatus.requested,
-        newDate,
+        DateFormatter.tryParse(requestedDate),
         [],
-        []);
+        _newMessages);
 
-    final requestKey = await dataManager.database.addRequest(request!);
-
-    if (requestKey == null) {
-      return;
-    }
-    await dataManager.database
-        .addRequestIdToTeacher(teacher?.userId ?? '', requestKey);
-    await dataManager.database
-        .addRequestIdToStudent(studentId ?? '', requestKey);
+    await RequestManager.sendNew(dataManager, request!, teacher, studentId);
 
     await showSuccessMessageAsync(context, 'Request has successfully sent');
     Navigator.of(context).pop();

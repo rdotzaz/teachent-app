@@ -57,12 +57,10 @@ class FirebaseRealTimeDatabaseAdapter {
     var foundEventValue = event.snapshot.value;
 
     if (!isKeyExists) {
-      print('[FirebaseAdapter] No login found');
       return {'error': 'login'};
     }
 
     if (foundEventValue == null) {
-      print('[FirebaseAdapter] No body found');
       return {};
     }
 
@@ -70,14 +68,12 @@ class FirebaseRealTimeDatabaseAdapter {
         (foundEventValue as DBValues)['password'] ?? DatabaseConsts.emptyField;
 
     if (encryptedPassword == DatabaseConsts.emptyField) {
-      print('[FirebaseAdapter] No password found');
       return {};
     }
 
     var comparsionResult = isPasswordCorrect(password, encryptedPassword);
 
     if (!comparsionResult) {
-      print('[FirebaseAdapter] Password does not match');
       return {'error': 'password'};
     }
     return foundEventValue;
@@ -100,12 +96,10 @@ class FirebaseRealTimeDatabaseAdapter {
     var foundValues = event.snapshot.value as Map<String, dynamic>;
 
     if (!isKeyExists) {
-      print('[FirebaseAdapter] Key $collectionName does not exist');
       return {};
     }
 
     if (foundValues.isEmpty) {
-      print('[FirebaseAdapter] No $collectionName available');
       return {};
     }
     return {
@@ -128,7 +122,6 @@ class FirebaseRealTimeDatabaseAdapter {
     final isKeyExists = event.snapshot.exists;
 
     if (isKeyExists) {
-      print('[FirebaseAdapter] User is already exists');
       return false;
     }
 
@@ -169,7 +162,6 @@ class FirebaseRealTimeDatabaseAdapter {
     final isKeyExists = event.snapshot.exists;
 
     if (!isKeyExists) {
-      print('[FirebaseAdapter] Object $collectionName/$key does not exist');
       return {};
     }
 
@@ -197,13 +189,35 @@ class FirebaseRealTimeDatabaseAdapter {
     return values as Map<dynamic, dynamic>;
   }
 
-  /// Method adds or updates [foreginId] key to [collectionName]/[id]/[property]
-  static Future<void> addForeignKey(String collectionName, String id,
-      String property, String foreginId) async {
+  /// Returns map representation of objects from [collectionName]
+  /// where id/[property] has [value]
+  /// Returns empty map if objects have not been found
+  static Future<Map> getObjectsByProperty<Value>(
+      String collectionName, String property, Value value) async {
     DatabaseReference databaseReference =
-        FirebaseDatabase.instance.ref().child('$collectionName/$id/$property');
+        FirebaseDatabase.instance.ref().child(collectionName);
 
-    await databaseReference.update({foreginId: true});
+    final query = databaseReference.orderByChild(property).equalTo(value);
+    final event = await query.once();
+    final values = event.snapshot.value;
+
+    if (values == null) {
+      return {};
+    }
+    return values as Map<dynamic, dynamic>;
+  }
+
+  /// Method adds or updates [value] key to [collectionName]/[id]/[path]
+  static Future<void> updateField<Value>(
+      String collectionName, String id, String path, Value value) async {
+    DatabaseReference databaseReference =
+        FirebaseDatabase.instance.ref().child('$collectionName/$id/$path');
+
+    if (value is Map<String, Object?>) {
+      await databaseReference.update(value);
+    } else {
+      await databaseReference.set(value);
+    }
   }
 
   /// Method retrives foreign key from [collectionName]/[id]/[property]
@@ -216,19 +230,10 @@ class FirebaseRealTimeDatabaseAdapter {
     final isKeyExists = event.snapshot.exists;
 
     if (!isKeyExists) {
-      print('[FirebaseAdapter] Foreign key does not exist');
       return DatabaseConsts.emptyKey;
     }
 
     return event.snapshot.value as String;
-  }
-
-  /// Method updates field [collectionName]/[id]/[path] by [value]
-  static Future<void> updateField<Value>(String collectionName, String id, String path, Value value) async {
-    DatabaseReference databaseReference =
-        FirebaseDatabase.instance.ref().child('$collectionName/$id/$path');
-
-    await databaseReference.set(value);
   }
 
   static void clear() {}

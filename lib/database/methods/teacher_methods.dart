@@ -3,21 +3,13 @@ import 'package:teachent_app/database/adapters/firebase_adapter.dart';
 import '../../common/consts.dart';
 import '../../model/db_objects/db_object.dart';
 import '../../model/db_objects/teacher.dart';
-import '../../model/objects/topic.dart';
-import '../../model/objects/tool.dart';
-import '../../model/objects/place.dart';
 
 /// Methods to maintain Teacher object in database
 mixin TeacherDatabaseMethods {
   Future<void> addTeacher(Teacher teacher) async {
-    print('Teacher');
     final wasAdded = await FirebaseRealTimeDatabaseAdapter.addDatabaseObject(
         DatabaseObjectName.teachers, teacher.key, teacher.toMap());
   }
-
-  void update(KeyId teacherId) {}
-
-  void deleteTeacher(KeyId teacherId) {}
 
   Map<String, dynamic> _getMapFromField(
       Map<dynamic, dynamic> values, String field) {
@@ -34,27 +26,9 @@ mixin TeacherDatabaseMethods {
     final teacherValues = await FirebaseRealTimeDatabaseAdapter.getObject(
         DatabaseObjectName.teachers, userId);
     if (teacherValues.isEmpty) {
-      print('No teacherValues found');
       return null;
     }
     return Teacher.fromMap(userId, teacherValues);
-  }
-
-  Teacher _addTeacherToList(String login, Map values) {
-    final topics = _getMapFromField(values, 'topics');
-    final topicList =
-        topics.entries.map((topic) => Topic(topic.key, true)).toList();
-
-    final tools = _getMapFromField(values, 'tools');
-    final toolList =
-        tools.entries.map((tool) => Tool(tool.key.toString(), true)).toList();
-
-    final places = _getMapFromField(values, 'places');
-    final placeList = places.entries
-        .map((place) => Place(place.key.toString(), true))
-        .toList();
-    return Teacher.onlyKeyName(
-        login, values['name'] ?? '', topicList, toolList, placeList);
   }
 
   Future<List<Teacher>> getTeachersByNamePart(String name) async {
@@ -85,11 +59,9 @@ mixin TeacherDatabaseMethods {
       final commonTopics = topicSet.intersection(topics.toSet());
       final commonPlaces = placeSet.intersection(places.toSet());
 
-      print(
-          'Cond 1: ${toolSet.length}, ${topicSet.length}, ${placeSet.length}');
-      if ((commonTools.length > 0 ||
-              commonTopics.length > 0 ||
-              commonPlaces.length > 0) ||
+      if ((commonTools.isNotEmpty ||
+              commonTopics.isNotEmpty ||
+              commonPlaces.isNotEmpty) ||
           (topics.isEmpty && tools.isEmpty && places.isEmpty)) {
         filteredTeachers.add(teacher);
       }
@@ -99,11 +71,11 @@ mixin TeacherDatabaseMethods {
 
   Future<void> addLessonDateKeyToTeacher(
       KeyId teacherId, KeyId lessonDateId) async {
-    await FirebaseRealTimeDatabaseAdapter.addForeignKey(
+    await FirebaseRealTimeDatabaseAdapter.updateField(
         DatabaseObjectName.teachers,
         teacherId,
         DatabaseObjectName.lessonDates,
-        lessonDateId);
+        {lessonDateId: true});
   }
 
   Future<List<Teacher>> getTeachersByDates(List<KeyId> lessonDateIds) async {
@@ -124,10 +96,10 @@ mixin TeacherDatabaseMethods {
   }
 
   Future<void> addRequestIdToTeacher(KeyId teacherId, KeyId requestId) async {
-    await FirebaseRealTimeDatabaseAdapter.addForeignKey(
+    await FirebaseRealTimeDatabaseAdapter.updateField(
         DatabaseObjectName.teachers,
         teacherId,
         DatabaseObjectName.requests,
-        requestId);
+        {requestId: true});
   }
 }

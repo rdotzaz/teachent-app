@@ -1,4 +1,5 @@
 import 'package:teachent_app/common/consts.dart';
+import 'package:teachent_app/common/date.dart';
 import 'package:teachent_app/database/adapters/firebase_adapter.dart';
 import 'package:teachent_app/model/db_objects/db_object.dart';
 import 'package:teachent_app/model/db_objects/lesson_date.dart';
@@ -41,9 +42,23 @@ mixin LessonDateDatabaseMethods {
     return key;
   }
 
-  /// Update current date with [newDate]t for lesson date by [lessonDateId] 
-  Future<void> changeLessonDate(KeyId lessonDateId, String newDate) async {
+  /// Update current date with [newDate]t for lesson date by [lessonDateId]
+  Future<void> changeLessonDate(KeyId lessonDateId, DateTime newDate) async {
     await FirebaseRealTimeDatabaseAdapter.updateField(
-        DatabaseObjectName.lessonDates, lessonDateId, 'weekday', newDate);
+        DatabaseObjectName.lessonDates,
+        lessonDateId,
+        'date',
+        DateFormatter.getString(newDate));
+  }
+
+  Future<void> assignStudentToLessonDate(
+      KeyId lessonDateId, KeyId studentId) async {
+    await FirebaseRealTimeDatabaseAdapter.updateField(
+        DatabaseObjectName.lessonDates, lessonDateId, 'studentId', studentId);
+  }
+
+  Future<void> changeLessonDateIsFree(KeyId lessonDateId, bool isFree) async {
+    await FirebaseRealTimeDatabaseAdapter.updateField(
+        DatabaseObjectName.lessonDates, lessonDateId, 'isFree', isFree);
   }
 }

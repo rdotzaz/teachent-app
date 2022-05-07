@@ -1,4 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:teachent_app/common/enums.dart';
 import 'package:teachent_app/controller/controller.dart';
 
 /// Event for ItemsBloc
@@ -39,6 +40,7 @@ class ItemsBloc extends Bloc<BaseItemsSearchEvent, String> {
       }
       searchController.phrase = event.newPhrase;
       await searchController.updateFoundList(event.personType);
+      emit('');
       emit(event.newPhrase);
     }));
 
@@ -50,6 +52,7 @@ class ItemsBloc extends Bloc<BaseItemsSearchEvent, String> {
       searchController.phrase = event.newPhrase;
       await searchController.updateFoundTeacherList(
           event.topicNames, event.toolNames, event.placeNames);
+      emit('');
       emit(event.newPhrase);
     }));
   }

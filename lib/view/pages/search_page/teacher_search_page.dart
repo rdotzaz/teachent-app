@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:teachent_app/common/enums.dart';
 import 'package:teachent_app/controller/controller.dart';
 import 'package:teachent_app/controller/pages/search_page/bloc/items_bloc.dart';
 import 'package:teachent_app/controller/pages/search_page/bloc/person_type_bloc.dart';
@@ -23,8 +24,9 @@ class TeacherSearchPage extends StatelessWidget {
         child: Scaffold(
             resizeToAvoidBottomInset: true,
             appBar: AppBar(
-                iconTheme: IconThemeData(color: Colors.black),
-                title: Text('Search', style: TextStyle(color: Colors.black)),
+                iconTheme: const IconThemeData(color: Colors.black),
+                title:
+                    const Text('Search', style: TextStyle(color: Colors.black)),
                 elevation: 0,
                 backgroundColor: Colors.transparent),
             body: Column(

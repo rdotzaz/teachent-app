@@ -20,7 +20,7 @@ class SingleCardWidget extends StatelessWidget {
       required this.bodyWidget,
       this.emptyWidget = const SizedBox(),
       this.titleColor = Colors.white,
-      this.shadowColor = Colors.white,
+      this.shadowColor = Colors.grey,
       this.startAlignment = true,
       this.rightButton,
       this.margin = 12,

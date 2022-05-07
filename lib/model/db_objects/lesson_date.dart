@@ -1,5 +1,6 @@
 import 'package:teachent_app/common/consts.dart'
     show DatabaseConsts, DatabaseObjectName;
+import 'package:teachent_app/common/date.dart';
 import 'package:teachent_app/common/enums.dart';
 import 'package:teachent_app/common/enum_functions.dart';
 import 'package:teachent_app/model/db_objects/db_object.dart';
@@ -15,8 +16,7 @@ class LessonDate extends DatabaseObject {
   final KeyId teacherId;
   final KeyId studentId;
   final bool isFree;
-  final String weekday; // [TODO] Change this name
-  final String hourTime;
+  final DateTime date;
   final bool isCycled;
   final CycleType cycleType;
   final int price;
@@ -28,39 +28,28 @@ class LessonDate extends DatabaseObject {
       this.teacherId,
       this.studentId,
       this.isFree,
-      this.weekday,
-      this.hourTime,
+      this.date,
       this.isCycled,
       this.cycleType,
       this.price,
       this.tools,
       this.places);
 
-  LessonDate.init(this.teacherId, this.weekday, this.hourTime, this.isCycled,
-      this.cycleType, this.price, this.tools, this.places)
+  LessonDate.init(this.teacherId, this.date, this.isCycled, this.cycleType,
+      this.price, this.tools, this.places)
       : lessonDateId = DatabaseConsts.emptyKey,
         studentId = DatabaseConsts.emptyKey,
         isFree = true;
 
-  LessonDate.noKey(
-      this.teacherId,
-      this.studentId,
-      this.isFree,
-      this.weekday,
-      this.hourTime,
-      this.isCycled,
-      this.cycleType,
-      this.price,
-      this.tools,
-      this.places)
+  LessonDate.noKey(this.teacherId, this.studentId, this.isFree, this.date,
+      this.isCycled, this.cycleType, this.price, this.tools, this.places)
       : lessonDateId = DatabaseConsts.emptyKey;
 
   LessonDate.fromMap(this.lessonDateId, Map<dynamic, dynamic> values)
       : teacherId = values['teacherId'] ?? '',
         studentId = values['studentId'] ?? '',
         isFree = values['isFree'] ?? true,
-        weekday = values['weekDay'] ?? '',
-        hourTime = values['hourTime'] ?? '',
+        date = DateFormatter.parse(values['date']),
         isCycled = values['isCycled'] ?? false,
         cycleType = getCycleByValue(values['cycleType'] ?? -1),
         price = values['price'] ?? '',
@@ -85,8 +74,7 @@ class LessonDate extends DatabaseObject {
       'teacherId': teacherId,
       'studentId': studentId,
       'isFree': isFree,
-      'weekDay': weekday,
-      'hourTime': hourTime,
+      'date': DateFormatter.getString(date),
       'isCycled': isCycled,
       'cycleType': cycleType.value,
       'price': price,

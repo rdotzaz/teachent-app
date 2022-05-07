@@ -1,51 +1,51 @@
 import 'package:teachent_app/common/consts.dart'
     show DatabaseConsts, DatabaseObjectName;
+import 'package:teachent_app/common/date.dart';
+import 'package:teachent_app/common/enums.dart';
+import 'package:teachent_app/common/enum_functions.dart';
 import 'package:teachent_app/model/db_objects/db_object.dart';
 
 /// Object representation of next lesson
 /// Contains information of next lesson between teacher and student
 class Lesson extends DatabaseObject {
+  final KeyId lessonId;
   final KeyId lessonDateId;
   final KeyId teacherId;
   final KeyId studentId;
-  final String date;
-  final bool isPlanned;
-  final bool isFinished;
-  final List<KeyId> reports;
+  final DateTime date;
+  final LessonStatus status;
+  final KeyId reportId;
 
-  Lesson(this.lessonDateId, this.teacherId, this.studentId, this.date,
-      this.isPlanned, this.isFinished, this.reports);
+  Lesson(this.lessonId, this.lessonDateId, this.teacherId, this.studentId,
+      this.date, this.status, this.reportId);
 
-  Lesson.noKey(this.teacherId, this.studentId, this.date, this.isPlanned,
-      this.isFinished, this.reports)
-      : lessonDateId = DatabaseConsts.emptyKey;
+  Lesson.noKey(this.lessonDateId, this.teacherId, this.studentId, this.date,
+      this.status, this.reportId)
+      : lessonId = DatabaseConsts.emptyKey;
 
-  Lesson.fromMap(this.lessonDateId, Map<dynamic, dynamic> values)
-      : teacherId = values['teacherId'] ?? '',
+  Lesson.fromMap(this.lessonId, Map<dynamic, dynamic> values)
+      : lessonDateId = values['lessonDateId'] ?? '',
+        teacherId = values['teacherId'] ?? '',
         studentId = values['studentId'] ?? '',
-        date = values['date'] ?? '',
-        isPlanned = values['isPlanned'] ?? false,
-        isFinished = values['isFinished'] ?? false,
-        reports = DatabaseObject.getMapFromField(values, 'reports')
-            .entries
-            .map((r) => r.key)
-            .toList();
+        date = DateFormatter.parse(values['date']),
+        status = getLessonStatusStatusByValue(values['status'] ?? -1),
+        reportId = values['reportId'] ?? '';
 
   @override
   String get collectionName => DatabaseObjectName.lessons;
 
   @override
-  String get key => lessonDateId;
+  String get key => lessonId;
 
   @override
   Map<String, dynamic> toMap() {
     return {
+      'lessonDateId': lessonDateId,
       'teacherId': teacherId,
       'studentId': studentId,
-      'date': date,
-      'isPlanned': isPlanned,
-      'isFinished': isFinished,
-      'reports': {for (final reportId in reports) reportId: true}
+      'date': DateFormatter.getString(date),
+      'status': status.value,
+      'reportId': reportId
     };
   }
 }

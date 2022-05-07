@@ -1,5 +1,6 @@
 import 'package:teachent_app/common/consts.dart'
     show DatabaseConsts, DatabaseObjectName;
+import 'package:teachent_app/common/date.dart';
 import 'package:teachent_app/common/enums.dart';
 import 'package:teachent_app/common/enum_functions.dart';
 import 'package:teachent_app/model/db_objects/db_object.dart';
@@ -15,9 +16,9 @@ class Request extends DatabaseObject {
   final KeyId studentId;
   final RequestStatus status;
   final Topic topic;
-  final String currentDate;
+  final DateTime currentDate;
   final RequestedDateStatus dateStatus;
-  final String requestedDate;
+  final DateTime? requestedDate;
   final List<MessageRecord> teacherMessages;
   final List<MessageRecord> studentMessages;
 
@@ -52,19 +53,19 @@ class Request extends DatabaseObject {
         teacherId = values['teacherId'] ?? '',
         studentId = values['studentId'] ?? '',
         status = getRequestStatusByValue(values['status'] ?? -1),
-        topic = Topic(values['topic'].keys.firstWhere((_) => true) ?? '', true),
-        currentDate = values['currentDate'] ?? '',
+        topic = Topic(values['topic'] ?? '', true),
+        currentDate = DateFormatter.parse(values['currentDate']),
         dateStatus = getRequestedDateStatusByValue(values['dateStatus'] ?? -1),
-        requestedDate = values['requestedDate'] ?? '',
+        requestedDate = DateFormatter.tryParse(values['requestedDate']),
         teacherMessages =
             DatabaseObject.getMapFromField(values, 'teacherMessages')
                 .entries
-                .map((m) => MessageRecord(m.key, m.value))
+                .map((m) => MessageRecord(m.key, DateFormatter.parse(m.value)))
                 .toList(),
         studentMessages =
             DatabaseObject.getMapFromField(values, 'studentMessages')
                 .entries
-                .map((m) => MessageRecord(m.key, m.value))
+                .map((m) => MessageRecord(m.key, DateFormatter.parse(m.value)))
                 .toList();
 
   @override
@@ -80,17 +81,17 @@ class Request extends DatabaseObject {
       'teacherId': teacherId,
       'studentId': studentId,
       'status': status.value,
-      'topic': {topic.name: true},
-      'currentDate': currentDate,
+      'topic': topic.name,
+      'currentDate': DateFormatter.getString(currentDate),
       'dateStatus': dateStatus.value,
-      'requestedDate': requestedDate,
+      'requestedDate': DateFormatter.getString(requestedDate),
       'teacherMessages': {
         for (final teacherMessage in teacherMessages)
-          teacherMessage.message: teacherMessage.date
+          teacherMessage.message: DateFormatter.getString(teacherMessage.date)
       },
       'studentMessages': {
         for (final studentMessage in studentMessages)
-          studentMessage.message: studentMessage.date
+          studentMessage.message: DateFormatter.getString(studentMessage.date)
       },
     };
   }

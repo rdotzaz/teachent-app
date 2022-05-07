@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:teachent_app/common/enums.dart';
+import 'package:teachent_app/common/date.dart';
 import 'package:teachent_app/common/enum_functions.dart';
 import 'package:teachent_app/controller/pages/teacher_home_page/teacher_home_page_controller.dart';
 import 'package:teachent_app/model/db_objects/db_object.dart';
@@ -44,9 +44,7 @@ class _TeacherHomePageState extends State<TeacherHomePage> {
           }),
       floatingActionButton: FloatingActionButton.extended(
           backgroundColor: Colors.blue,
-          onPressed: () {
-            print('PRESSED');
-          },
+          onPressed: () {},
           icon: const Icon(Icons.add, color: Colors.white),
           label: const Text('Report', style: TextStyle(color: Colors.white))),
     );
@@ -138,15 +136,21 @@ class _TeacherHomePageState extends State<TeacherHomePage> {
       emptyInfo: 'No lessons',
       emptyIcon: Icons.free_breakfast,
       elementBuilder: (context, index) {
-        return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          Text(_teacherHomePageController.lessons[index].date,
-              style: const TextStyle(fontSize: 20, color: Colors.white)),
-          const SizedBox(height: 10),
-          Text(
-              _teacherHomePageController.getStudentName(
-                  _teacherHomePageController.lessons[index].studentId),
-              style: const TextStyle(fontSize: 14, color: Colors.white)),
-        ]);
+        final date = DateFormatter.getString(
+            _teacherHomePageController.lessons[index].date);
+        return GestureDetector(
+            onTap: () =>
+                _teacherHomePageController.goToLessonPage(context, index),
+            child:
+                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+              Text(date,
+                  style: const TextStyle(fontSize: 20, color: Colors.white)),
+              const SizedBox(height: 10),
+              Text(
+                  _teacherHomePageController.getStudentName(
+                      _teacherHomePageController.lessons[index].studentId),
+                  style: const TextStyle(fontSize: 14, color: Colors.white)),
+            ]));
       },
     );
   }
@@ -243,8 +247,9 @@ class _TeacherHomePageState extends State<TeacherHomePage> {
       emptyIcon: Icons.free_breakfast,
       elementBuilder: (context, index) {
         final request = _teacherHomePageController.requests[index];
+        final currentDate = DateFormatter.getString(request.currentDate);
         return ListTile(
-            title: Text(request.currentDate,
+            title: Text(currentDate,
                 style: const TextStyle(fontSize: 20, color: Colors.white)),
             leading: Icon(Icons.send, size: 30, color: Colors.white),
             onTap: () =>

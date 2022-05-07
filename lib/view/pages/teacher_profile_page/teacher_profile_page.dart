@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:teachent_app/common/date.dart';
 import 'package:teachent_app/controller/pages/teacher_profile_page/teacher_profile_page_controller.dart';
 import 'package:teachent_app/model/db_objects/db_object.dart';
 import 'package:teachent_app/model/db_objects/teacher.dart';
@@ -280,6 +281,8 @@ class TeacherProfilePage extends StatelessWidget {
                   itemBuilder: (context, index) {
                     final lessonDate =
                         _teacherProfilePageController!.lessonDates[index];
+                    final date = DateFormatter.onlyDateString(lessonDate.date);
+                    final time = DateFormatter.onlyTimeString(lessonDate.date);
                     return Container(
                         padding: const EdgeInsets.all(20),
                         margin: const EdgeInsets.all(5),
@@ -298,11 +301,11 @@ class TeacherProfilePage extends StatelessWidget {
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: [
-                                        Text(lessonDate.weekday,
+                                        Text(date,
                                             style: const TextStyle(
                                                 fontSize: 18,
                                                 color: Colors.white)),
-                                        Text(lessonDate.hourTime,
+                                        Text(time,
                                             style: const TextStyle(
                                                 fontSize: 20,
                                                 color: Colors.white)),
@@ -330,10 +333,10 @@ class TeacherProfilePage extends StatelessWidget {
                         child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(lessonDate.weekday,
+                              Text(date,
                                   style: const TextStyle(
                                       fontSize: 18, color: Colors.white)),
-                              Text(lessonDate.hourTime,
+                              Text(time,
                                   style: const TextStyle(
                                       fontSize: 20, color: Colors.white)),
                               const SizedBox(height: 20),

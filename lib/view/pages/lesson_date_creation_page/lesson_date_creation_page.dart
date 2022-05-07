@@ -126,7 +126,7 @@ class _LessonDateCreationPageState extends State<LessonDateCreationPage> {
           alignment: Alignment.centerLeft,
           padding: const EdgeInsets.all(5.0),
           child: Text(
-            _lessonDateCreationController.time(context),
+            _lessonDateCreationController.time,
             style: const TextStyle(fontSize: 18, color: Colors.black),
           ),
         ));

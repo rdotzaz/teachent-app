@@ -27,7 +27,7 @@ enum RequestStatus { newReq, waiting, responded, rejected, accepted, invalid }
 /// [rejected] - new date rejected by teacher
 /// [accepted] - new date accepted by teacher
 /// [invalid] - status when some unexpected error occured
-enum RequestedDateStatus {none, requested, accepted, rejected, invalid}
+enum RequestedDateStatus { none, requested, accepted, rejected, invalid }
 
 /// Enum for lesson cycle mode
 /// [single] - single non-cycled lesson
@@ -36,3 +36,15 @@ enum RequestedDateStatus {none, requested, accepted, rejected, invalid}
 /// [biweekly] - lesson repeats every two weeks
 /// [monthly] - lesson repeats every month
 enum CycleType { single, daily, weekly, biweekly, monthly }
+
+/// Enum for lesson status
+/// [open] - lesson is planned in the future
+/// [teacherCancelled] - lesson has been cancelled by teacher
+/// [studentCancelled] - lesson has been cancelled by student
+enum LessonStatus { open, teacherCancelled, studentCancelled, finished }
+
+/// Enum for person type in search page
+/// [all] - search all users, teachers and students either
+/// [teachers] - search only teachers
+/// [students] - search only students
+enum PersonType { all, teachers, students }

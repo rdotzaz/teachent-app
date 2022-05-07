@@ -19,7 +19,7 @@ abstract class DatabaseObject {
     }
     return {
       for (var entry in (values[field] as Map<dynamic, dynamic>).entries)
-        (entry.key as String): true
+        (entry.key as String): entry.value
     };
   }
 }

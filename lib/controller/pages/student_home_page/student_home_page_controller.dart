@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:teachent_app/common/enums.dart';
 import 'package:teachent_app/controller/controller.dart';
 import 'package:teachent_app/model/db_objects/db_object.dart';
 import 'package:teachent_app/model/db_objects/lesson.dart';
 import 'package:teachent_app/model/db_objects/request.dart';
 import 'package:teachent_app/model/db_objects/student.dart';
 import 'package:teachent_app/model/db_objects/teacher.dart';
+import 'package:teachent_app/view/pages/lesson_page/lesson_page.dart';
 import 'package:teachent_app/view/pages/search_page/student_search_page.dart';
 import 'package:teachent_app/view/pages/settings_page/settings_page.dart';
 import 'package:teachent_app/view/pages/teacher_profile_page/teacher_profile_page.dart';
@@ -25,11 +27,7 @@ class StudentHomePageController extends BaseController {
   @override
   Future<void> init() async {
     final possibleStudent = await dataManager.database.getStudent(userId);
-    if (possibleStudent == null) {
-      // TODO - Raise error
-      print('ERROR: Student not found');
-      return;
-    }
+    assert(possibleStudent == null);
     student = possibleStudent;
 
     await initLessons();
@@ -40,10 +38,7 @@ class StudentHomePageController extends BaseController {
   Future<void> initLessons() async {
     lessons.clear();
     final foundLessons = await dataManager.database
-        .getLessonsByDates(student?.lessonDates ?? []);
-    if (foundLessons.isEmpty) {
-      print('No lessons found');
-    }
+        .getLessonsByDates(student?.lessonDates ?? [], LessonStatus.open);
     lessons.addAll(foundLessons);
   }
 
@@ -51,9 +46,6 @@ class StudentHomePageController extends BaseController {
     teachers.clear();
     final foundTeachers = await dataManager.database
         .getTeachersByDates(student?.lessonDates ?? []);
-    if (foundTeachers.isEmpty) {
-      print('No teachers found');
-    }
     teachers.addAll(foundTeachers);
   }
 
@@ -61,9 +53,6 @@ class StudentHomePageController extends BaseController {
     requests.clear();
     final foundRequests =
         await dataManager.database.getRequests(student?.requests ?? []);
-    if (foundRequests.isEmpty) {
-      print('No requests found');
-    }
     requests.addAll(foundRequests);
   }
 
@@ -103,6 +92,19 @@ class StudentHomePageController extends BaseController {
     await Navigator.of(context).push(MaterialPageRoute(
         builder: (_) => StudentRequestPage(
             requestId: request.requestId, studentId: student?.userId ?? '')));
+    refresh();
+  }
+
+  Future<void> goToLessonPage(BuildContext context, int lessonIndex) async {
+    final lesson = lessons[lessonIndex];
+    final teacher = teachers.firstWhere((t) => t.userId == lesson.teacherId);
+
+    await Navigator.of(context).push(MaterialPageRoute(
+        builder: (_) => LessonPage(
+            lesson: lesson,
+            teacher: teacher,
+            student: student!,
+            isTeacher: false)));
     refresh();
   }
 }
