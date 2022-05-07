@@ -27,7 +27,7 @@ class StudentRequestPageController extends BaseRequestPageController {
   DateTime? otherDate;
   int topicIndex = -1;
   bool hasChangesProvided = false;
-  final List<MessageRecord> _preRequestMessages = [];
+  final List<MessageRecord> _newMessages = [];
 
   late RequestTopicBloc requestTopicBloc;
 
@@ -178,38 +178,38 @@ class StudentRequestPageController extends BaseRequestPageController {
   @override
   bool get hasAnyMessages {
     if (request == null) {
-      return false;
+      return _newMessages.isNotEmpty;
     }
-    return request!.teacherMessages.isNotEmpty || request!.studentMessages.isNotEmpty;
+    return request!.teacherMessages.isNotEmpty || request!.studentMessages.isNotEmpty || _newMessages.isNotEmpty;
   }
 
   @override
   int get messagesCount {
     if (request == null) {
-      return 0;
+      return _newMessages.length;
     }
-    return request!.teacherMessages.length + request!.studentMessages.length;
+    return request!.teacherMessages.length + request!.studentMessages.length + _newMessages.length;
   }
 
   @override
   List<MessageField> get messages {
+    final newMessageFields = _newMessages.map((m) => MessageField(m, false)).toList();
     if (request == null) {
-      return [];
+      return newMessageFields;
     }
     final mergedList = request!.teacherMessages.map((m) => MessageField(m, true)).toList() + request!.studentMessages.map((m) => MessageField(m, false)).toList();
     mergedList.sort((m1, m2) => m1.messageRecord.date.compareTo(m2.messageRecord.date));
-    return mergedList;
+    return mergedList + newMessageFields;
   }
 
   @override
-  Future<void> sendMessage() async {
-    if (request == null) {
-      _preRequestMessages.add(MessageRecord(messageText, DateTime.now()));
-    } else {
-      RequestManager.sendStudentMessage(dataManager, request!, messageText);
+  Future<void> sendMessageAndRefresh(Function refresh) async {
+    _newMessages.add(MessageRecord(textController.text, DateTime.now()));
+    if (request != null) {
+      await RequestManager.sendStudentMessage(dataManager, request!, textController.text);
     }
     textController.clear();
-    refreshMessages!();
+    refresh();
   }
 
   Future<void> sendResponse(BuildContext context) async {
@@ -239,7 +239,7 @@ class StudentRequestPageController extends BaseRequestPageController {
             : RequestedDateStatus.requested,
         DateFormatter.tryParse(requestedDate),
         [],
-        _preRequestMessages);
+        _newMessages);
 
     await RequestManager.sendNew(dataManager, request!, teacher, studentId);
 

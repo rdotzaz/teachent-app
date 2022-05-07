@@ -26,6 +26,7 @@ class TeacherRequestPageController extends BaseRequestPageController {
   Request request;
 
   bool isNewDateAccepted = true;
+  final List<MessageRecord> _newMessages = [];
 
   TeacherRequestPageController(
       this.request, this.teacherId, this.student, this.lessonDate);
@@ -75,16 +76,17 @@ class TeacherRequestPageController extends BaseRequestPageController {
   String get additionalInfo => request.dateStatus.stringValue;
 
   @override
-  bool get hasAnyMessages => request.teacherMessages.isNotEmpty || request.studentMessages.isNotEmpty;
+  bool get hasAnyMessages => request.teacherMessages.isNotEmpty || request.studentMessages.isNotEmpty || _newMessages.isNotEmpty;
 
   @override
-  int get messagesCount => request.teacherMessages.length + request.studentMessages.length;
+  int get messagesCount => request.teacherMessages.length + request.studentMessages.length + _newMessages.length;
 
   @override
   List<MessageField> get messages {
-    final mergedList = request.teacherMessages.map((m) => MessageField(m, true)).toList() + request.studentMessages.map((m) => MessageField(m, false)).toList();
+    final newMessages = _newMessages.map((m) => MessageField(m, false)).toList();
+    final mergedList = request.teacherMessages.map((m) => MessageField(m, false)).toList() + request.studentMessages.map((m) => MessageField(m, true)).toList();
     mergedList.sort((m1, m2) => m1.messageRecord.date.compareTo(m2.messageRecord.date));
-    return mergedList;
+    return mergedList + newMessages;
   }
 
   Color getStatusColor() {
@@ -116,26 +118,27 @@ class TeacherRequestPageController extends BaseRequestPageController {
   }
 
   @override
-  Future<void> sendMessage() async {
-    RequestManager.sendTeacherMessage(dataManager, request, messageText);
+  Future<void> sendMessageAndRefresh(Function refresh) async {
+    _newMessages.add(MessageRecord(textController.text, DateTime.now()));
+    await RequestManager.sendTeacherMessage(dataManager, request, textController.text);
     textController.clear();
-    refreshMessages!();
+    refresh();
   }
 
   Future<void> sendResponse(BuildContext context) async {
-    RequestManager.sendTeacherResponse(dataManager, request, isNewDateAccepted);
+    await RequestManager.sendTeacherResponse(dataManager, request, isNewDateAccepted);
     Navigator.of(context).pop();
   }
 
   Future<void> acceptRequest(BuildContext context) async {
-    RequestManager.acceptRequest(dataManager, request, lessonDate);
-    LessonManager.createFirst(dataManager, lessonDate!);
+    await RequestManager.acceptRequest(dataManager, request, student?.userId ?? '', lessonDate);
+    await LessonManager.createFirst(dataManager, student?.userId ?? '', lessonDate!);
     await showSuccessMessageAsync(context, 'Request has been accepted');
     Navigator.of(context).pop();
   }
 
   Future<void> rejectRequest(BuildContext context) async {
-    RequestManager.rejectRequest(dataManager, request);
+    await RequestManager.rejectRequest(dataManager, request);
     await showSuccessMessageAsync(context, 'Request has been rejected');
     Navigator.of(context).pop();
   }

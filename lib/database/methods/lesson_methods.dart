@@ -8,16 +8,24 @@ import 'package:teachent_app/model/db_objects/lesson.dart';
 /// Methods to maintain Lesson object in database
 mixin LessonDatabaseMethods {
   /// Get all lessons objects by [lessonDateIds]
-  Future<Iterable<Lesson>> getLessonsByDates(List<KeyId> lessonDateIds) async {
+  /// Note: Poor performance due to "double" searching in database
+  /// First retrieved all lessons with [lessonDateIds], afterwards
+  /// filter lessons with specific status
+  Future<Iterable<Lesson>> getLessonsByDates(List<KeyId> lessonDateIds, LessonStatus status) async {
     final lessons = <Lesson>[];
     for (final lessonDateId in lessonDateIds) {
-      final lessonValues = await FirebaseRealTimeDatabaseAdapter.getObject(
-          DatabaseObjectName.lessons, lessonDateId);
+      final lessonsValues = await FirebaseRealTimeDatabaseAdapter.getObjectsByProperty(
+          DatabaseObjectName.lessons, 'lessonDateId', lessonDateId);
 
-      if (lessonValues.isEmpty) {
-        continue;
-      }
-      lessons.add(Lesson.fromMap(lessonDateId, lessonValues));
+      print(lessonsValues.entries);
+      lessonsValues.forEach((_, lessonValues) {
+        print('Status ${lessonValues['status']}');
+        if (lessonValues.isEmpty || (lessonValues['status'] ?? -1) != status.value) {
+          print('HERE');
+          return;
+        }
+        lessons.add(Lesson.fromMap(lessonDateId, lessonValues));
+      });
     }
     return lessons;
   }

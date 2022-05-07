@@ -51,13 +51,17 @@ class RequestManager {
             .changeRequestStatus(request.requestId, RequestStatus.responded);
     }
 
-    static Future<void> acceptRequest(DataManager dataManager, Request request, LessonDate? lessonDate) async {
+    static Future<void> acceptRequest(DataManager dataManager, Request request, KeyId studentId, LessonDate? lessonDate) async {
         if (request.requestedDate != null) {
             await dataManager.database.changeLessonDate(
                 lessonDate?.lessonDateId ?? '', request.requestedDate!);
             await dataManager.database
                 .changeCurrentDate(request.requestId, request.requestedDate!);
         }
+        await dataManager.database
+            .assignStudentToLessonDate(lessonDate?.lessonDateId ?? '', studentId);
+        await dataManager.database
+            .addLessonDateIdToStudent(studentId, lessonDate?.lessonDateId ?? '');
         await dataManager.database
             .changeRequestStatus(request.requestId, RequestStatus.accepted);
     }

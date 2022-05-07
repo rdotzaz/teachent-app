@@ -29,7 +29,7 @@ class Lesson extends DatabaseObject {
         teacherId = values['teacherId'] ?? '',
         studentId = values['studentId'] ?? '',
         date = DateFormatter.parse(values['date']),
-        status = values['status'] ?? 0,
+        status = getLessonStatusStatusByValue(values['status'] ?? -1),
         reportId = values['reportId'] ?? '';
 
   @override

@@ -10,6 +10,7 @@ import 'package:teachent_app/model/db_objects/request.dart';
 import 'package:teachent_app/model/db_objects/student.dart';
 import 'package:teachent_app/view/widgets/custom_button.dart';
 import 'package:teachent_app/view/widgets/chip_list.dart';
+import 'package:teachent_app/view/widgets/messages.dart';
 
 import 'other_day_widget.dart';
 import 'buttons.dart';
@@ -66,7 +67,7 @@ class TeacherRequestPage extends StatelessWidget {
         OtherDayWidget(controller: _requestPageController!),
       Buttons(controller: _requestPageController!),
       const SizedBox(height: 50),
-      _teacherMessage()
+      Messages(controller: _requestPageController!)
     ]));
   }
 
@@ -185,10 +186,6 @@ class TeacherRequestPage extends StatelessWidget {
                 }))
       ]),
     );
-  }
-
-  Widget _teacherMessage() {
-    return Container();
   }
 
   Widget _errorWidget(String errorMessage) {

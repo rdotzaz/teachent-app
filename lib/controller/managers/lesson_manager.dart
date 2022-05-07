@@ -8,11 +8,11 @@ import 'package:teachent_app/model/db_objects/lesson_date.dart';
 
 class LessonManager {
     static Future<void> createFirst(
-           DataManager dataManager, LessonDate lessonDate) async {
+           DataManager dataManager, KeyId studentId, LessonDate lessonDate) async {
         final lesson = Lesson.noKey(
             lessonDate.lessonDateId,
             lessonDate.teacherId,
-            lessonDate.studentId,
+            studentId,
             lessonDate.date,
             LessonStatus.open,
             DatabaseConsts.emptyKey

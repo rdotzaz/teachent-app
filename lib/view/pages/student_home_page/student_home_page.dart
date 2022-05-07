@@ -136,12 +136,12 @@ class _StudentHomePageState extends State<StudentHomePage> {
             child:
                 Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
               Text(date,
-                  style: const TextStyle(fontSize: 14, color: Colors.black)),
+                  style: const TextStyle(fontSize: 14, color: Colors.white)),
               const SizedBox(height: 20),
               Text(
                   _studentHomePageController.getTeacherName(
                       _studentHomePageController.lessons[index].teacherId),
-                  style: const TextStyle(fontSize: 12, color: Colors.black)),
+                  style: const TextStyle(fontSize: 12, color: Colors.white)),
             ]));
       },
     );

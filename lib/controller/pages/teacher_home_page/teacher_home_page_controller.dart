@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:teachent_app/common/enums.dart';
 import 'package:teachent_app/controller/controller.dart';
 import 'package:teachent_app/model/db_objects/db_object.dart';
 import 'package:teachent_app/model/db_objects/lesson.dart';
@@ -47,7 +48,7 @@ class TeacherHomePageController extends BaseController {
   Future<void> _initLessons() async {
     lessons.clear();
     final foundLessons = await dataManager.database
-        .getLessonsByDates(teacher?.lessonDates ?? []);
+        .getLessonsByDates(teacher?.lessonDates ?? [], LessonStatus.open);
     if (foundLessons.isEmpty) {
       print('No lessons found');
     }

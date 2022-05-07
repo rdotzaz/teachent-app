@@ -36,13 +36,11 @@ abstract class BaseSearchController extends BaseController {
 }
 
 abstract class BaseRequestPageController extends BaseController {
-  void Function()? refreshMessages;
-
   bool get hasAnyMessages => false;
   int get messagesCount => 0;
   List<MessageField> get messages => [];
 
-  void sendMessage();
+  void sendMessageAndRefresh(Function refresh);
   
   bool isSender(int index) {
     return messages[index].isSender;

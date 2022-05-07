@@ -15,16 +15,6 @@ class Messages extends StatefulWidget {
 }
 
 class _MessagesState extends State<Messages> {
-  @override
-  void init() {
-    widget.controller.init();
-    widget.controller.refreshMessages = refresh;
-  }
-
-  @override
-  void dispose() {
-    widget.controller.dispose();
-  }
 
   void refresh() {
     setState(() {});
@@ -36,8 +26,6 @@ class _MessagesState extends State<Messages> {
       title: 'Messages',
       titleColor: Colors.black,
       startAlignment: false,
-      isNotEmptyCondition: widget.controller.hasAnyMessages,
-      emptyWidget: ErrorMessageWidget(text: 'No messages'),
       bodyWidget: Column(
         children: [
           _messagesBody(),
@@ -46,14 +34,15 @@ class _MessagesState extends State<Messages> {
             children: [
               Expanded(
                 child: TextField(
-                  controller: widget.controller.textController,
-                  onSubmitted: (value) => widget.controller.setValue(value)
+                  controller: widget.controller.textController
                 ),
               ),
               CustomButton(
                 text: 'Send',
                 fontSize: 14,
-                onPressed: () => widget.controller.sendMessage()
+                onPressed: () {
+                  widget.controller.sendMessageAndRefresh(refresh);
+                }
               )
             ]
           )
@@ -63,6 +52,12 @@ class _MessagesState extends State<Messages> {
   }
 
   Widget _messagesBody() {
+    if (!widget.controller.hasAnyMessages) {
+      return ErrorMessageWidget(
+        text: 'No messages',
+        backgroundColor: Colors.white,
+        color: Colors.red);
+    }
     final messages = widget.controller.messages;
     return ListView.builder(
       shrinkWrap: true,
@@ -77,11 +72,12 @@ class _MessagesState extends State<Messages> {
               color: isSender ? Colors.blue : Colors.green,
               borderRadius: BorderRadius.circular(8),
             ),
+            margin: const EdgeInsets.all(8),
             child: Label(
               text: message,
               color: Colors.white,
-              fontSize: 10,
-              padding: 5
+              fontSize: 14,
+              padding: 8
             )
           )
         );

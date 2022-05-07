@@ -54,19 +54,19 @@ class Request extends DatabaseObject {
         teacherId = values['teacherId'] ?? '',
         studentId = values['studentId'] ?? '',
         status = getRequestStatusByValue(values['status'] ?? -1),
-        topic = Topic(values['topic'].keys.firstWhere((_) => true) ?? '', true),
+        topic = Topic(values['topic'] ?? '', true),
         currentDate = DateFormatter.parse(values['currentDate']),
         dateStatus = getRequestedDateStatusByValue(values['dateStatus'] ?? -1),
         requestedDate = DateFormatter.tryParse(values['requestedDate']),
         teacherMessages =
             DatabaseObject.getMapFromField(values, 'teacherMessages')
                 .entries
-                .map((m) => MessageRecord(m.key, m.value))
+                .map((m) => MessageRecord(m.key, DateFormatter.parse(m.value)))
                 .toList(),
         studentMessages =
             DatabaseObject.getMapFromField(values, 'studentMessages')
                 .entries
-                .map((m) => MessageRecord(m.key, m.value))
+                .map((m) => MessageRecord(m.key, DateFormatter.parse(m.value)))
                 .toList();
 
   @override
@@ -82,7 +82,7 @@ class Request extends DatabaseObject {
       'teacherId': teacherId,
       'studentId': studentId,
       'status': status.value,
-      'topic': {topic.name: true},
+      'topic': topic.name,
       'currentDate': DateFormatter.getString(currentDate),
       'dateStatus': dateStatus.value,
       'requestedDate': DateFormatter.getString(requestedDate),

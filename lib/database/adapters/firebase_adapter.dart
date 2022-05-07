@@ -197,6 +197,26 @@ class FirebaseRealTimeDatabaseAdapter {
     return values as Map<dynamic, dynamic>;
   }
 
+  /// Returns map representation of objects from [collectionName]
+  /// where id/[property] has [value]
+  /// Returns empty map if objects have not been found
+  static Future<Map> getObjectsByProperty<Value>(
+      String collectionName, String property, Value value) async {
+    DatabaseReference databaseReference =
+        FirebaseDatabase.instance.ref().child(collectionName);
+
+    final query = databaseReference
+        .orderByChild(property)
+        .equalTo(value);
+    final event = await query.once();
+    final values = event.snapshot.value;
+
+    if (values == null) {
+      return {};
+    }
+    return values as Map<dynamic, dynamic>;
+  }
+
   /// Method adds or updates [value] key to [collectionName]/[id]/[path]
   static Future<void> updateField<Value>(String collectionName, String id,
       String path, Value value) async {

@@ -47,4 +47,9 @@ mixin LessonDateDatabaseMethods {
     await FirebaseRealTimeDatabaseAdapter.updateField(
         DatabaseObjectName.lessonDates, lessonDateId, 'date', DateFormatter.getString(newDate));
   }
+
+  Future<void> assignStudentToLessonDate(KeyId lessonDateId, KeyId studentId) async {
+    await FirebaseRealTimeDatabaseAdapter.updateField(
+        DatabaseObjectName.lessonDates, lessonDateId, 'studentId', studentId);
+  }
 }

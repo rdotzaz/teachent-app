@@ -11,6 +11,7 @@ import 'package:teachent_app/model/db_objects/teacher.dart';
 import 'package:teachent_app/view/widgets/custom_button.dart';
 import 'package:teachent_app/view/widgets/label.dart';
 import 'package:teachent_app/view/widgets/chip_list.dart';
+import 'package:teachent_app/view/widgets/messages.dart';
 
 import 'confirm_button.dart';
 
@@ -65,8 +66,7 @@ class StudentRequestPage extends StatelessWidget {
       _places(),
       _requestDay(),
       _topicSelecting(),
-      _studentMessage(),
-      if (_requestPageController!.hasTeacherMessage) _teacherMessage(),
+      Messages(controller: _requestPageController!),
       _sendRequestButton()
     ]));
   }
@@ -157,20 +157,6 @@ class StudentRequestPage extends StatelessWidget {
                     .add(ToggleTopicEvent(index)));
           });
     });
-  }
-
-  Widget _studentMessage() {
-    return Container(
-        margin: const EdgeInsets.all(15),
-        child: CustomButton(
-            text: 'Add message for teacher',
-            fontSize: 18,
-            onPressed: () {},
-            buttonColor: Colors.blue));
-  }
-
-  Widget _teacherMessage() {
-    return Container();
   }
 
   Widget _sendRequestButton() {

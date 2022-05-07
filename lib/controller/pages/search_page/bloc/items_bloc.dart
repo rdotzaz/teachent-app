@@ -40,6 +40,7 @@ class ItemsBloc extends Bloc<BaseItemsSearchEvent, String> {
       }
       searchController.phrase = event.newPhrase;
       await searchController.updateFoundList(event.personType);
+      emit('');
       emit(event.newPhrase);
     }));
 
@@ -51,6 +52,7 @@ class ItemsBloc extends Bloc<BaseItemsSearchEvent, String> {
       searchController.phrase = event.newPhrase;
       await searchController.updateFoundTeacherList(
           event.topicNames, event.toolNames, event.placeNames);
+      emit('');
       emit(event.newPhrase);
     }));
   }
