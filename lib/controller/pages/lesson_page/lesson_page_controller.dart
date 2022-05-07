@@ -51,6 +51,9 @@ class LessonPageController extends BaseController {
       print('Cannot find lessonDate with ${lesson.lessonDateId}');
       return;
     }
+    if (lesson.status != LessonStatus.open) {
+      return;
+    }
     if (isTeacher) {
       await LessonManager.cancelLessonByTeacher(dataManager, lessonDate, lesson);
     } else {

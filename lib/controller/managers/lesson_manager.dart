@@ -32,8 +32,9 @@ class LessonManager {
 
     static Future<void> _cancelLesson(
             DataManager dataManager, LessonDate lessonDate, Lesson lesson, bool isTeacher) async {
+        print('HERE: ${lesson.lessonId}');
         await dataManager.database.updateLessonStatus(
-            lesson.lessonDateId,
+            lesson.lessonId,
             isTeacher ? LessonStatus.teacherCancelled : LessonStatus.studentCancelled);
         
         if (lessonDate.isCycled) {
@@ -54,7 +55,7 @@ class LessonManager {
     static DateTime _getNewDate(LessonDate lessonDate, Lesson lesson) {
         int daysToAdd = 0;
         final cycleType = lessonDate.cycleType;
-        assert (cycleType == CycleType.single);
+        assert (cycleType != CycleType.single);
         if (cycleType == CycleType.daily) {
             daysToAdd = 1;
         } else if (cycleType == CycleType.weekly) {

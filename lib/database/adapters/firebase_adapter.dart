@@ -223,6 +223,7 @@ class FirebaseRealTimeDatabaseAdapter {
     DatabaseReference databaseReference =
         FirebaseDatabase.instance.ref().child('$collectionName/$id/$path');
 
+    print('PATH: $collectionName/$id/$path');
     if (value is Map<String, Object?>) {
       await databaseReference.update(value);
     } else {

@@ -52,4 +52,9 @@ mixin LessonDateDatabaseMethods {
     await FirebaseRealTimeDatabaseAdapter.updateField(
         DatabaseObjectName.lessonDates, lessonDateId, 'studentId', studentId);
   }
+
+  Future<void> changeLessonDateIsFree(KeyId lessonDateId, bool isFree) async {
+    await FirebaseRealTimeDatabaseAdapter.updateField(
+        DatabaseObjectName.lessonDates, lessonDateId, 'isFree', isFree);
+  }
 }

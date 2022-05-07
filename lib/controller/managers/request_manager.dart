@@ -63,6 +63,8 @@ class RequestManager {
         await dataManager.database
             .addLessonDateIdToStudent(studentId, lessonDate?.lessonDateId ?? '');
         await dataManager.database
+            .changeLessonDateIsFree(lessonDate?.lessonDateId ?? '', false);
+        await dataManager.database
             .changeRequestStatus(request.requestId, RequestStatus.accepted);
     }
 

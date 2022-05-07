@@ -168,8 +168,14 @@ class LessonDateCreationPageController extends BaseController {
     final tools = _tools.where((t) => t.marked).toList();
     final places = _places.where((p) => p.marked).toList();
 
-    final lessonDate = LessonDate.init(teacher.userId, DateFormatter.addTime(_selectedDate, _selectedTime),
-        isCycled, getCycleByValue(freqBloc.state), price, tools, places);
+    final lessonDate = LessonDate.init(
+        teacher.userId,
+        DateFormatter.addTime(_selectedDate, _selectedTime),
+        isCycled,
+        getCycleByValue(freqBloc.state),
+        price,
+        tools,
+        places);
 
     final lessonDateKey = await dataManager.database.addLessonDate(lessonDate);
     await dataManager.database

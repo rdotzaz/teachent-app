@@ -18,13 +18,13 @@ mixin LessonDatabaseMethods {
           DatabaseObjectName.lessons, 'lessonDateId', lessonDateId);
 
       print(lessonsValues.entries);
-      lessonsValues.forEach((_, lessonValues) {
+      lessonsValues.forEach((key, lessonValues) {
         print('Status ${lessonValues['status']}');
         if (lessonValues.isEmpty || (lessonValues['status'] ?? -1) != status.value) {
           print('HERE');
           return;
         }
-        lessons.add(Lesson.fromMap(lessonDateId, lessonValues));
+        lessons.add(Lesson.fromMap(key, lessonValues));
       });
     }
     return lessons;
