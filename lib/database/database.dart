@@ -4,6 +4,7 @@ import 'package:teachent_app/database/methods/education_level_methods.dart';
 import 'package:teachent_app/database/methods/lesson_methods.dart';
 import 'package:teachent_app/database/methods/lesson_date_methods.dart';
 import 'package:teachent_app/database/methods/message_methods.dart';
+import 'package:teachent_app/database/methods/notification_methods.dart';
 import 'package:teachent_app/database/methods/place_methods.dart';
 import 'package:teachent_app/database/methods/request_methods.dart';
 import 'package:teachent_app/database/methods/student_methods.dart';
@@ -39,6 +40,7 @@ class MainDatabase extends IDatabase
         LessonDatabaseMethods,
         LessonDateDatabaseMethods,
         MessageDatabaseMethods,
+        NotificationMethods,
         RequestDatabaseMethods {
   @override
   Future<void> init(DBMode dbMode) async {

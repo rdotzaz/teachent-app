@@ -32,6 +32,8 @@ class DatabaseObjectName {
   static const tools = 'tools';
   static const places = 'places';
   static const levels = 'levels';
+  static const notifications = 'notifications';
+  static const userToNotifications = 'userToNotifications';
 }
 
 /// Constans related to database required parameters

@@ -1,4 +1,8 @@
+import 'package:teachent_app/model/db_objects/db_object.dart';
 import 'package:teachent_app/model/db_objects/user.dart';
+
+
+import 'consts.dart';
 
 /// Enum for status of login result
 enum LoginStatus { success, loginNotFound, invalidPassword, logicError }
@@ -48,3 +52,25 @@ enum LessonStatus { open, teacherCancelled, studentCancelled, finished }
 /// [teachers] - search only teachers
 /// [students] - search only students
 enum PersonType { all, teachers, students }
+
+/// Enum for notification action
+/// [none] - no notification for specific user
+/// [lessonCancelled] - notification about lesson cancellation
+/// [newRequest] - notification about new raised request by student
+/// [acceptRequest] - notification about teacher request acceptance
+/// [rejectRequest] - notification about teacher request rejection
+enum NotificationAction { none, lessonCancelled, newRequest, acceptRequest, rejectRequest }
+
+
+/// Enum for checked value in database
+/// [none] - no norification for user
+/// [present] - there is notification for user
+/// [invalid] - there is an error during checking notifications
+enum NotificationStatus { none, present, invalid }
+
+class NotificationEntity {
+  KeyId userId;
+  NotificationStatus status;
+
+  NotificationEntity({required this.userId, required this.status});
+}
