@@ -51,9 +51,13 @@ class SplashPageController extends BaseController {
 
     print('[Testing data] Adding data...');
     await dataManager.database.addTopics(allTopics);
+    print('[Testing data] Added topics');
     await dataManager.database.addTools(allTools);
+    print('[Testing data] Added tools');
     await dataManager.database.addPlaces(allPlaces);
+    print('[Testing data] Added places');
     await dataManager.database.addLevels(educationLevels);
+    print('[Testing data] Added levels');
 
     /// --------------------------------------------------------------------
     await Future.delayed(const Duration(seconds: 2));

@@ -68,17 +68,20 @@ class _StudentHomePageState extends State<StudentHomePage> {
   }
 
   Widget homeWidget(BuildContext context) {
-    return CustomScrollView(slivers: [
-      appBar(context),
-      SliverList(
-          delegate: SliverChildListDelegate([
-        searchBarWidget(),
-        nextLessonsWidget(),
-        teachersWidget(),
-        requestsWidget(),
-        //reportsWidget()
-      ]))
-    ]);
+    return RefreshIndicator(
+      onRefresh: () async => refresh(),
+      child: CustomScrollView(slivers: [
+        appBar(context),
+        SliverList(
+            delegate: SliverChildListDelegate([
+          searchBarWidget(),
+          nextLessonsWidget(),
+          teachersWidget(),
+          requestsWidget(),
+          //reportsWidget()
+        ]))
+      ])
+    );
   }
 
   Widget searchBarWidget() {

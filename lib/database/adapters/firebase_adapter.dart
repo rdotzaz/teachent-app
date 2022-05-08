@@ -36,7 +36,7 @@ class FirebaseRealTimeDatabaseAdapter {
       await Firebase.initializeApp(options: firebaseOptions);
     }
 
-    if (dbMode == DBMode.testing) {
+    if (dbMode == DBMode.testing && defaultTargetPlatform != TargetPlatform.android) {
       var databaseHost = _getHost(dbMode);
       print('[Host] $databaseHost');
       FirebaseDatabase.instance

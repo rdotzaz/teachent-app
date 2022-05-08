@@ -76,20 +76,6 @@ class _TeacherHomePageState extends State<TeacherHomePage> {
   }
 
   Widget _homeWidget(BuildContext context) {
-    return CustomScrollView(
-        //physics: BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
-        slivers: [
-          _appBar(context),
-          SliverList(
-              delegate: SliverChildListDelegate([
-            _searchBarWidget(),
-            _nextLessonsWidget(),
-            _lessonDateWidget(context),
-            _studentsWidget(),
-            _requestsWidget()
-            //reportsWidget()
-          ]))
-      ]);
     return RefreshIndicator(
       onRefresh: () async => refresh(),
       child: CustomScrollView(
