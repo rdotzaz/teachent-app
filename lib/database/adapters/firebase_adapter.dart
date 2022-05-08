@@ -30,13 +30,9 @@ class FirebaseRealTimeDatabaseAdapter {
         ? androidFirebaseOption // ignore: undefined_identifier
         : webFirebaseOption; // ignore: undefined_identifier
 
-    if (defaultTargetPlatform == TargetPlatform.android) {
-      await Firebase.initializeApp();
-    } else {
-      await Firebase.initializeApp(options: firebaseOptions);
-    }
+    await Firebase.initializeApp(options: firebaseOptions);
 
-    if (dbMode == DBMode.testing) {
+    if (dbMode == DBMode.testing && defaultTargetPlatform != TargetPlatform.android) {
       var databaseHost = _getHost(dbMode);
       print('[Host] $databaseHost');
       FirebaseDatabase.instance
@@ -157,7 +153,6 @@ class FirebaseRealTimeDatabaseAdapter {
     DatabaseReference databaseReference =
         FirebaseDatabase.instance.ref().child('$collectionName/$key');
 
-    print('[Firebase Adapter] Key: $collectionName/$key');
     final event = await databaseReference.once();
     final isKeyExists = event.snapshot.exists;
 
