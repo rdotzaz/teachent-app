@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:teachent_app/controller/controller.dart';
+import 'package:teachent_app/controller/notifications/notification_manager.dart';
 import 'package:teachent_app/model/objects/education_level.dart';
 import 'package:teachent_app/model/objects/topic.dart';
 import 'package:teachent_app/model/objects/tool.dart';
@@ -60,6 +61,7 @@ class SplashPageController extends BaseController {
 
   void nextPage(BuildContext context) async {
     await someLogic();
+    //await NotificationManager.configure();
 
     bool isTeacher = true;
     if (isAppConfigAlreadyExists) {
