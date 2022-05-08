@@ -27,7 +27,7 @@ class StudentHomePageController extends BaseController {
   @override
   Future<void> init() async {
     final possibleStudent = await dataManager.database.getStudent(userId);
-    assert(possibleStudent == null);
+    assert(possibleStudent != null);
     student = possibleStudent;
 
     await initLessons();

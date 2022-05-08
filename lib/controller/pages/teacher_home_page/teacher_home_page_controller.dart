@@ -30,7 +30,7 @@ class TeacherHomePageController extends BaseController {
   @override
   Future<void> init() async {
     final possibleTeacher = await dataManager.database.getTeacher(userId);
-    assert(possibleTeacher == null);
+    assert(possibleTeacher != null);
     teacher = possibleTeacher;
 
     await _initLessons();
