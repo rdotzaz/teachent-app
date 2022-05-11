@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:teachent_app/common/consts.dart' show NameConsts;
+import 'package:teachent_app/controller/notifications/notification_manager.dart';
 import 'package:teachent_app/view/pages/splash_page/splash_page.dart';
 
 /// Main UI class
@@ -9,6 +10,7 @@ class TeachentApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    NotificationManager.startListen(context);
     return const MaterialApp(
       title: NameConsts.appName,
       home: SplashPage(),

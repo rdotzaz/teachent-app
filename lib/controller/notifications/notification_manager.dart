@@ -1,9 +1,12 @@
+import 'package:flutter/material.dart';
+import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:background_fetch/background_fetch.dart';
 import 'package:teachent_app/common/data_manager.dart';
 import 'package:teachent_app/common/enums.dart';
 import 'package:teachent_app/model/db_objects/db_object.dart';
 import 'package:teachent_app/model/db_objects/notification_field.dart';
 import 'package:teachent_app/model/db_objects/user_to_notifications.dart';
+import 'package:teachent_app/view/widgets/notification_bar.dart';
 
 class NotificationManager {
     /// Based on https://pub.dev/packages/background_fetch example
@@ -23,6 +26,42 @@ class NotificationManager {
     static void register() {
         BackgroundFetch.registerHeadlessTask(
             _notificationBackgroundTask);
+        /// Based on https://pub.dev/packages/awesome_notifications
+        AwesomeNotifications().initialize(
+            null,
+            [
+                NotificationChannel(
+                    channelGroupKey: 'app_channel_group',
+                    channelKey: 'app_channel',
+                    channelName: 'Teachent Notifications',
+                    channelDescription: 'Main notification channel',
+                    defaultColor: Colors.white,
+                    ledColor: Colors.white
+                )
+            ],
+            debug: true
+        );
+    }
+
+    static void setRequestPermissionResult(bool isAccepted) async {
+        if (!isAccepted) {
+            AwesomeNotifications().requestPermissionToSendNotifications();
+        }
+    }
+
+    static Future<bool> isNotificationsAlreadyPermitted() async {
+        return AwesomeNotifications().isNotificationAllowed();
+    }
+
+    /// Based on https://pub.dev/packages/awesome_notifications
+    static void startListen(BuildContext context) async {
+        AwesomeNotifications().actionStream.listen(
+            (notification) {
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (_) => NotificationBar()
+                ));
+            }
+        );
     }
 
     /// Based on https://pub.dev/packages/background_fetch example
@@ -38,10 +77,11 @@ class NotificationManager {
             enableHeadless: true,
             requiresBatteryNotLow: true,
             requiredNetworkType: NetworkType.ANY
-        ), (taskId) {
-            print('EVENT received $taskId');
+        ), (taskId) async {
+            await _checkNotifications();
             BackgroundFetch.finish(taskId);
         }, (taskId) {
+            print('TIMEOUT task $taskId');
             BackgroundFetch.finish(taskId);
         });
         return configStatus;

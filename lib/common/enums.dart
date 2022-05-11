@@ -2,8 +2,6 @@ import 'package:teachent_app/model/db_objects/db_object.dart';
 import 'package:teachent_app/model/db_objects/user.dart';
 
 
-import 'consts.dart';
-
 /// Enum for status of login result
 enum LoginStatus { success, loginNotFound, invalidPassword, logicError }
 
