@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:teachent_app/controller/controller.dart';
+import 'package:teachent_app/controller/notifications/notification_manager.dart';
 import 'package:teachent_app/model/objects/education_level.dart';
 import 'package:teachent_app/model/objects/topic.dart';
 import 'package:teachent_app/model/objects/tool.dart';
@@ -50,9 +51,13 @@ class SplashPageController extends BaseController {
 
     print('[Testing data] Adding data...');
     await dataManager.database.addTopics(allTopics);
+    print('[Testing data] Added topics');
     await dataManager.database.addTools(allTools);
+    print('[Testing data] Added tools');
     await dataManager.database.addPlaces(allPlaces);
+    print('[Testing data] Added places');
     await dataManager.database.addLevels(educationLevels);
+    print('[Testing data] Added levels');
 
     /// --------------------------------------------------------------------
     await Future.delayed(const Duration(seconds: 2));
@@ -60,6 +65,7 @@ class SplashPageController extends BaseController {
 
   void nextPage(BuildContext context) async {
     await someLogic();
+    //await NotificationManager.configure();
 
     bool isTeacher = true;
     if (isAppConfigAlreadyExists) {

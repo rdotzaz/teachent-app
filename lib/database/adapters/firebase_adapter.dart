@@ -140,6 +140,20 @@ class FirebaseRealTimeDatabaseAdapter {
     return newKey;
   }
 
+  static Future<String> addSubObjectWithNewKey(
+      String collectionName, String path, DBValues values) async {
+    DatabaseReference databaseReference =
+        FirebaseDatabase.instance.ref().child('$collectionName/$path');
+
+    final newKey = databaseReference.push().key;
+    if (newKey == null) {
+      return DatabaseConsts.emptyKey;
+    }
+    await databaseReference.child(newKey).update(values);
+
+    return newKey;
+  }
+
   static Future<void> addObjects(String collectionName, DBValues values) async {
     var databaseReference = FirebaseDatabase.instance.ref(collectionName);
 
@@ -161,6 +175,24 @@ class FirebaseRealTimeDatabaseAdapter {
     }
 
     return event.snapshot.value as Map<dynamic, dynamic>;
+  }
+
+  /// Returns value of [collectionName]/[key]
+  /// If [collectionName]/[key] record does not exist in database method returns null
+  /// NOTE: It can be used only with primitive types like int, string etc.
+  /// Value type cannot be map
+  static Future<Value?> getValue<Value>(String collectionName, String key) async {
+    DatabaseReference databaseReference =
+        FirebaseDatabase.instance.ref().child('$collectionName/$key');
+
+    final event = await databaseReference.once();
+    final isKeyExists = event.snapshot.exists;
+
+    if (!isKeyExists) {
+      return null;
+    }
+
+    return event.snapshot.value as Value;
   }
 
   /// Returns map representation of object from [collectionName]/{teachers/students}
@@ -213,6 +245,15 @@ class FirebaseRealTimeDatabaseAdapter {
     } else {
       await databaseReference.set(value);
     }
+  }
+
+  /// Method adds or updates [value] under [collectionName]/[id]
+  static Future<void> updateValue<Value>(
+      String collectionName, String id, Value value) async {
+    DatabaseReference databaseReference =
+        FirebaseDatabase.instance.ref().child('$collectionName/$id');
+
+      await databaseReference.set(value);
   }
 
   /// Method retrives foreign key from [collectionName]/[id]/[property]

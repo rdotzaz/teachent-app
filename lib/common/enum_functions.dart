@@ -124,6 +124,24 @@ extension LessonStatusExt on LessonStatus {
   }
 }
 
+extension NotificationActionExt on NotificationAction {
+  int get value {
+    if (this == NotificationAction.none) {
+      return 0;
+    }
+    if (this == NotificationAction.lessonCancelled) {
+      return 1;
+    }
+    if (this == NotificationAction.newRequest) {
+      return 2;
+    }
+    if (this == NotificationAction.acceptRequest) {
+      return 3;
+    }
+    return 4;
+  }
+}
+
 /// Returns CycleType enum based on value from database
 CycleType getCycleByValue(int value) {
   if (value == 0) {
@@ -190,4 +208,20 @@ LessonStatus getLessonStatusStatusByValue(int value) {
     return LessonStatus.studentCancelled;
   }
   return LessonStatus.finished;
+}
+
+NotificationAction getActionByValue(int value) {
+  if (value == 0) {
+    return NotificationAction.none;
+  }
+  if (value == 1) {
+    return NotificationAction.lessonCancelled;
+  }
+  if (value == 2) {
+    return NotificationAction.newRequest;
+  }
+  if (value == 3) {
+    return NotificationAction.acceptRequest;
+  }
+  return NotificationAction.rejectRequest;
 }
