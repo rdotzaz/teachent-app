@@ -9,6 +9,7 @@ import 'package:teachent_app/model/db_objects/student.dart';
 import 'package:teachent_app/model/db_objects/teacher.dart';
 import 'package:teachent_app/view/pages/lesson_date_creation_page/lesson_date_creation_page.dart';
 import 'package:teachent_app/view/pages/lesson_page/lesson_page.dart';
+import 'package:teachent_app/view/pages/report_creation_page/report_creation_page.dart';
 import 'package:teachent_app/view/pages/search_page/teacher_search_page.dart';
 import 'package:teachent_app/view/pages/settings_page/settings_page.dart';
 import 'package:teachent_app/view/pages/teacher_request_page/teacher_request_page.dart';
@@ -127,6 +128,13 @@ class TeacherHomePageController extends BaseController {
             teacher: teacher!,
             student: student,
             isTeacher: true)));
+    refresh();
+  }
+
+  Future<void> goToReportPage(BuildContext context) async {
+    await Navigator.of(context).push(MaterialPageRoute(
+      builder: (_) => ReportCreationPage(lessonDateIds: lessonDates.map((date) => date.lessonDateId).toList())
+    ));
     refresh();
   }
 }
