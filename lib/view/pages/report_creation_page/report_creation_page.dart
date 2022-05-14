@@ -43,8 +43,7 @@ class _ReportCreationPageState extends State<ReportCreationPage> {
           } else if (snapshot.connectionState == ConnectionState.done) {
             return Scaffold(
                 appBar: AppBar(title: Text('Create report')),
-                body: Column(
-                  children: [
+                body: Column(children: [
                   reportController.hasLessons
                       ? _selectLessonField()
                       : _emptyLesson(),
@@ -69,8 +68,7 @@ class _ReportCreationPageState extends State<ReportCreationPage> {
             ]),
         margin: const EdgeInsets.all(15),
         padding: const EdgeInsets.all(15),
-        child: Column(
-          children: [
+        child: Column(children: [
           Padding(
               padding: const EdgeInsets.all(25),
               child: Icon(Icons.my_library_books, size: 40)),

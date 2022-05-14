@@ -45,23 +45,23 @@ class LoginFormController extends BaseController {
 
       Future.delayed(const Duration(seconds: 1), () async {
         final result =
-          await dataManager.database.checkLoginAndPassword(login, password);
-          Navigator.of(context).pop();
+            await dataManager.database.checkLoginAndPassword(login, password);
+        Navigator.of(context).pop();
 
-          if (result.status == LoginStatus.logicError) {
-            showErrorMessage(context, LoginPageConsts.logicError);
-          } else if (result.status == LoginStatus.loginNotFound) {
-            showErrorMessage(context, LoginPageConsts.loginNotFound);
-          } else if (result.status == LoginStatus.invalidPassword) {
-            showErrorMessage(context, LoginPageConsts.invalidPassword);
-          } else {
-            final user = result.user!;
-            Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (_) {
-              return user.isTeacher
-                  ? TeacherHomePage(userId: user.key)
-                  : StudentHomePage(userId: user.key);
-            }));
-          }
+        if (result.status == LoginStatus.logicError) {
+          showErrorMessage(context, LoginPageConsts.logicError);
+        } else if (result.status == LoginStatus.loginNotFound) {
+          showErrorMessage(context, LoginPageConsts.loginNotFound);
+        } else if (result.status == LoginStatus.invalidPassword) {
+          showErrorMessage(context, LoginPageConsts.invalidPassword);
+        } else {
+          final user = result.user!;
+          Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (_) {
+            return user.isTeacher
+                ? TeacherHomePage(userId: user.key)
+                : StudentHomePage(userId: user.key);
+          }));
+        }
       });
       return;
     }

@@ -26,7 +26,7 @@ Future<void> showLoadingDialog(BuildContext context, String info) async {
       backgroundColor: Colors.transparent,
       builder: (_) =>
           StatusBottomSheet(info: info, status: BottomSheetStatus.loading));
-} 
+}
 
 class StatusBottomSheet extends StatelessWidget {
   final String info;
