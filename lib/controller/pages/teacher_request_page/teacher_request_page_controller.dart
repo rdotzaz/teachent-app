@@ -99,9 +99,6 @@ class TeacherRequestPageController extends BaseRequestPageController {
   }
 
   Color getStatusColor() {
-    if (request == null) {
-      return Colors.white;
-    }
     if (request.status == RequestStatus.newReq ||
         request.status == RequestStatus.waiting) {
       return Colors.blue;

@@ -39,6 +39,8 @@ mixin LessonDateDatabaseMethods {
     if (key != DatabaseConsts.emptyKey) {
       print('LessonDate has been added');
     }
+    //await FirebaseRealTimeDatabaseAdapter.addDatabaseObject(
+    //    DatabaseObjectName.dateToReports, lessonDate.lessonDateId, {});
     return key;
   }
 

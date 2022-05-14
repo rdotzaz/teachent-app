@@ -30,24 +30,30 @@ class _TeacherHomePageState extends State<TeacherHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.grey[200],
-      body: FutureBuilder(
-          future: _teacherHomePageController.init(),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const CircularProgressIndicator();
-            } else if (snapshot.connectionState == ConnectionState.done) {
-              return _homeWidget(context);
-            }
-            return _errorWidget(snapshot.error.toString());
-          }),
-      floatingActionButton: FloatingActionButton.extended(
-          backgroundColor: Colors.blue,
-          onPressed: () {},
-          icon: const Icon(Icons.add, color: Colors.white),
-          label: const Text('Report', style: TextStyle(color: Colors.white))),
-    );
+    return FutureBuilder(
+        future: _teacherHomePageController.init(),
+        builder: (context, snapshot) {
+          return Scaffold(
+            backgroundColor: Colors.grey[200],
+            body: _body(context, snapshot),
+            floatingActionButton: FloatingActionButton.extended(
+                backgroundColor: Colors.blue,
+                onPressed: () =>
+                    _teacherHomePageController.goToReportPage(context),
+                icon: const Icon(Icons.add, color: Colors.white),
+                label: const Text('Report',
+                    style: TextStyle(color: Colors.white))),
+          );
+        });
+  }
+
+  Widget _body(BuildContext context, AsyncSnapshot snapshot) {
+    if (snapshot.connectionState == ConnectionState.waiting) {
+      return const CircularProgressIndicator();
+    } else if (snapshot.connectionState == ConnectionState.done) {
+      return _homeWidget(context);
+    }
+    return _errorWidget(snapshot.error.toString());
   }
 
   Widget _appBar(BuildContext context) {
@@ -85,7 +91,6 @@ class _TeacherHomePageState extends State<TeacherHomePage> {
         _lessonDateWidget(context),
         _studentsWidget(),
         _requestsWidget()
-        //reportsWidget()
       ]))
     ]);
   }
@@ -186,18 +191,6 @@ class _TeacherHomePageState extends State<TeacherHomePage> {
               Text(_teacherHomePageController.students[index].name,
                   style: const TextStyle(fontSize: 18, color: Colors.white)),
             ]));
-        return Column(children: [
-          const Padding(
-              padding: EdgeInsets.all(10),
-              child: Icon(
-                Icons.person,
-                color: Colors.white,
-                size: 60,
-              )),
-          const SizedBox(height: 20),
-          Text(_teacherHomePageController.students[index].name,
-              style: const TextStyle(fontSize: 18, color: Colors.white)),
-        ]);
       },
     );
   }

@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 
 class SingleCardWidget extends StatelessWidget {
@@ -90,6 +92,8 @@ class SingleCardListWidget extends StatelessWidget {
   final Color titleColor;
   final double padding;
   final double margin;
+  final int maxElements;
+  final bool addMoreButton;
   const SingleCardListWidget(
       {Key? key,
       this.backgroundColor = Colors.white,
@@ -109,7 +113,9 @@ class SingleCardListWidget extends StatelessWidget {
       this.padding = 12,
       this.margin = 12,
       this.elementPadding = 12,
-      this.elementBottomMargin = 10})
+      this.elementBottomMargin = 10,
+      this.maxElements = 5,
+      this.addMoreButton = false})
       : super(key: key);
 
   @override
@@ -137,7 +143,7 @@ class SingleCardListWidget extends StatelessWidget {
   Widget listBuilderWidget() {
     return ListView.builder(
         shrinkWrap: elementHeight == 0.0,
-        itemCount: listLength,
+        itemCount: min(listLength, maxElements),
         scrollDirection: scrollDirection,
         itemBuilder: ((context, index) {
           if (elementWidth == 0.0) {

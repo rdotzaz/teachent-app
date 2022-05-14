@@ -5,6 +5,8 @@ import 'package:teachent_app/model/db_objects/db_object.dart';
 import 'package:teachent_app/model/db_objects/lesson.dart';
 import 'package:teachent_app/model/db_objects/lesson_date.dart';
 
+import 'lesson_date_manager.dart';
+
 class LessonManager {
   static Future<void> createFirst(
       DataManager dataManager, KeyId studentId, LessonDate lessonDate) async {
@@ -23,14 +25,8 @@ class LessonManager {
     await LessonManager._cancelLesson(dataManager, lessonDate, lesson, false);
   }
 
-  static Future<void> _cancelLesson(DataManager dataManager,
-      LessonDate lessonDate, Lesson lesson, bool isTeacher) async {
-    await dataManager.database.updateLessonStatus(
-        lesson.lessonId,
-        isTeacher
-            ? LessonStatus.teacherCancelled
-            : LessonStatus.studentCancelled);
-
+  static Future<void> createNextLesson(
+      DataManager dataManager, LessonDate lessonDate, Lesson lesson) async {
     if (lessonDate.isCycled) {
       final newDate = LessonManager._getNewDate(lessonDate, lesson);
       final newLesson = Lesson.noKey(
@@ -42,7 +38,25 @@ class LessonManager {
           DatabaseConsts.emptyKey);
 
       await dataManager.database.addLesson(newLesson);
+    } else {
+      await LessonDateManager.setDateAsFree(dataManager, lessonDate);
     }
+  }
+
+  static Future<void> markLessonAsDone(
+      DataManager dataManager, Lesson lesson) async {
+    await dataManager.database
+        .updateLessonStatus(lesson.lessonId, LessonStatus.finished);
+  }
+
+  static Future<void> _cancelLesson(DataManager dataManager,
+      LessonDate lessonDate, Lesson lesson, bool isTeacher) async {
+    await dataManager.database.updateLessonStatus(
+        lesson.lessonId,
+        isTeacher
+            ? LessonStatus.teacherCancelled
+            : LessonStatus.studentCancelled);
+    await createNextLesson(dataManager, lessonDate, lesson);
   }
 
   static DateTime _getNewDate(LessonDate lessonDate, Lesson lesson) {

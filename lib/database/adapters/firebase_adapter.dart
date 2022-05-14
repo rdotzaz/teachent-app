@@ -32,7 +32,8 @@ class FirebaseRealTimeDatabaseAdapter {
 
     await Firebase.initializeApp(options: firebaseOptions);
 
-    if (dbMode == DBMode.testing && defaultTargetPlatform != TargetPlatform.android) {
+    if (dbMode == DBMode.testing &&
+        defaultTargetPlatform != TargetPlatform.android) {
       var databaseHost = _getHost(dbMode);
       print('[Host] $databaseHost');
       FirebaseDatabase.instance
@@ -213,6 +214,15 @@ class FirebaseRealTimeDatabaseAdapter {
     } else {
       await databaseReference.set(value);
     }
+  }
+
+  /// Method adds or updates [value] key to [collectionName]/[id]
+  static Future<void> updateMapField(
+      String collectionName, String id, Map<String, Object?> value) async {
+    DatabaseReference databaseReference =
+        FirebaseDatabase.instance.ref().child('$collectionName/$id');
+
+    await databaseReference.update(value);
   }
 
   /// Method retrives foreign key from [collectionName]/[id]/[property]

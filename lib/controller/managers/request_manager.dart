@@ -7,6 +7,8 @@ import 'package:teachent_app/model/db_objects/teacher.dart';
 import 'package:teachent_app/model/objects/topic.dart';
 import 'package:teachent_app/model/objects/message.dart';
 
+import 'lesson_date_manager.dart';
+
 class RequestManager {
   static Future<void> sendNew(DataManager dataManager, Request request,
       Teacher? teacher, KeyId? studentId) async {
@@ -63,9 +65,9 @@ class RequestManager {
     await dataManager.database
         .addLessonDateIdToStudent(studentId, lessonDate?.lessonDateId ?? '');
     await dataManager.database
-        .changeLessonDateIsFree(lessonDate?.lessonDateId ?? '', false);
-    await dataManager.database
         .changeRequestStatus(request.requestId, RequestStatus.accepted);
+
+    await LessonDateManager.setDateAsNotFree(dataManager, lessonDate);
   }
 
   static Future<void> rejectRequest(
