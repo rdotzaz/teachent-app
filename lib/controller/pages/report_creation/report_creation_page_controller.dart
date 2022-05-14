@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:teachent_app/common/enums.dart';
 import 'package:teachent_app/common/date.dart';
 import 'package:teachent_app/controller/controller.dart';
+import 'package:teachent_app/controller/managers/lesson_manager.dart';
 import 'package:teachent_app/controller/managers/report_manager.dart';
 import 'package:teachent_app/model/db_objects/db_object.dart';
 import 'package:teachent_app/model/db_objects/lesson.dart';
@@ -85,6 +86,12 @@ class ReportCreationPageController extends BaseController {
       assert(lessonMap.containsKey(selectedMapKey));
       await ReportManager.create(
           dataManager, lessonMap[selectedMapKey]!.lesson, title, description);
+      await LessonManager.markLessonAsDone(
+          dataManager, lessonMap[selectedMapKey]!.lesson);
+      await LessonManager.createNextLesson(
+          dataManager,
+          lessonMap[selectedMapKey]!.lessonDate,
+          lessonMap[selectedMapKey]!.lesson);
       await showSuccessMessageAsync(context, 'Report created');
       Navigator.of(context).pop();
       return;

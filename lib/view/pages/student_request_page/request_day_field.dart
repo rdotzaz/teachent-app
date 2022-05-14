@@ -11,14 +11,14 @@ class RequestDayField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final requestedDate = requestPageController.requestedDate.isNotEmpty
+        ? requestPageController.requestedDate
+        : requestPageController.date;
     return Row(
       children: [
         GestureDetector(
-          onTap: () async {
-            await requestPageController.enableDatePicker(context);
-            context.read<RequestDayBloc>().add(ToggleRequestDayField());
-          },
-          child: Text(requestPageController.requestedDate,
+          onTap: () => requestPageController.toggleRequestDatePicker(context),
+          child: Text(requestedDate,
               style: const TextStyle(fontSize: 18, color: Colors.black)),
         ),
         CustomButton(

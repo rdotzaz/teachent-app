@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:teachent_app/common/date.dart';
 import 'package:teachent_app/common/enums.dart';
 import 'package:teachent_app/common/enum_functions.dart';
 import 'package:teachent_app/controller/controller.dart';
 import 'package:teachent_app/controller/managers/request_manager.dart';
 import 'package:teachent_app/controller/pages/student_request_page/bloc/request_topic_bloc.dart';
+import 'package:teachent_app/controller/pages/student_request_page/bloc/request_day_bloc.dart';
 import 'package:teachent_app/model/db_objects/db_object.dart';
 import 'package:teachent_app/model/db_objects/lesson_date.dart';
 import 'package:teachent_app/model/db_objects/request.dart';
@@ -102,10 +104,10 @@ class StudentRequestPageController extends BaseRequestPageController {
   bool get hasTeacherMessage => false;
   bool get canCheckStatus => request != null;
 
-  Future<void> enableDatePicker(BuildContext context) async {
+  Future<void> _enableDatePicker(BuildContext context) async {
     final pickedDate = await showDatePicker(
         context: context,
-        initialDate: otherDate ?? DateTime.now(),
+        initialDate: otherDate ?? lessonDate!.date,
         firstDate: DateTime.now(),
         lastDate: DateTime(2040));
 
@@ -218,6 +220,11 @@ class StudentRequestPageController extends BaseRequestPageController {
     }
     textController.clear();
     refresh();
+  }
+
+  void toggleRequestDatePicker(BuildContext context) async {
+    await _enableDatePicker(context);
+    context.read<RequestDayBloc>().add(ToggleRequestDayField());
   }
 
   Future<void> sendResponse(BuildContext context) async {

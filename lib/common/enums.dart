@@ -41,6 +41,7 @@ enum CycleType { single, daily, weekly, biweekly, monthly }
 /// [open] - lesson is planned in the future
 /// [teacherCancelled] - lesson has been cancelled by teacher
 /// [studentCancelled] - lesson has been cancelled by student
+/// [finished] - lesson finished
 enum LessonStatus { open, teacherCancelled, studentCancelled, finished }
 
 /// Enum for person type in search page
