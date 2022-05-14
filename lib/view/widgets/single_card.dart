@@ -2,8 +2,6 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 
-import 'custom_button.dart';
-
 class SingleCardWidget extends StatelessWidget {
   final Color backgroundColor;
   final String title;

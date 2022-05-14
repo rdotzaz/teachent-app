@@ -324,26 +324,6 @@ class TeacherProfilePage extends StatelessWidget {
                                             .goToRequestPage(context, index),
                                     buttonColor: Colors.blue[600]!),
                             ]));
-                    return Container(
-                        padding: const EdgeInsets.all(20),
-                        margin: const EdgeInsets.all(5),
-                        decoration: BoxDecoration(
-                            color: Colors.blue,
-                            borderRadius: BorderRadius.circular(10)),
-                        child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(date,
-                                  style: const TextStyle(
-                                      fontSize: 18, color: Colors.white)),
-                              Text(time,
-                                  style: const TextStyle(
-                                      fontSize: 20, color: Colors.white)),
-                              const SizedBox(height: 20),
-                              Text('Price: ${lessonDate.price}',
-                                  style: const TextStyle(
-                                      fontSize: 20, color: Colors.white)),
-                            ]));
                   }))
     ]);
   }

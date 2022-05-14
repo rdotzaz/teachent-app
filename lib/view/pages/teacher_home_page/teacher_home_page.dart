@@ -191,18 +191,6 @@ class _TeacherHomePageState extends State<TeacherHomePage> {
               Text(_teacherHomePageController.students[index].name,
                   style: const TextStyle(fontSize: 18, color: Colors.white)),
             ]));
-        return Column(children: [
-          const Padding(
-              padding: EdgeInsets.all(10),
-              child: Icon(
-                Icons.person,
-                color: Colors.white,
-                size: 60,
-              )),
-          const SizedBox(height: 20),
-          Text(_teacherHomePageController.students[index].name,
-              style: const TextStyle(fontSize: 18, color: Colors.white)),
-        ]);
       },
     );
   }
