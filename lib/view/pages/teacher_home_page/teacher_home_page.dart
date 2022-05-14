@@ -216,7 +216,7 @@ class _TeacherHomePageState extends State<TeacherHomePage> {
       elementBuilder: (context, index) {
         final isFree = _teacherHomePageController.lessonDates[index].isFree;
         return GestureDetector(
-            onTap: () {},
+            onTap: () => _teacherHomePageController.goToLessonDatePage(context, index),
             child:
                 Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
               if (!isFree)

@@ -63,8 +63,8 @@ class LessonDatePage extends StatelessWidget {
             Label(
                 text: 'Start date: ${lessonDateController.startDate}',
                 color: Colors.white),
-            _tools(),
-            _places()
+            //_tools(),
+            //_places()
           ])),
       const SizedBox(height: 50),
       SingleCardListWidget(
@@ -72,7 +72,7 @@ class LessonDatePage extends StatelessWidget {
         shadowColor: Colors.grey,
         title: 'Reports',
         titleColor: Colors.black,
-        boxHeight: 80,
+        boxHeight: 100,
         isNotEmptyCondition: lessonDateController.areReports,
         listLength: lessonDateController.reports.length,
         elementBackgroundColor: Colors.grey,
