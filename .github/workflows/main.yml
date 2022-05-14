@@ -33,7 +33,7 @@ jobs:
       - name: Flutter action by https://github.com/subosito/flutter-action
         uses: subosito/flutter-action@v2.3.0
         with:
-          flutter-version: '2.10.0'
+          flutter-version: '2.10.4'
       
       - uses: dart-lang/setup-dart@v1
       - name: Dart pub get

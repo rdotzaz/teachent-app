@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'custom_button.dart';
 
-enum BottomSheetStatus { error, success, info }
+enum BottomSheetStatus { error, success, info, loading }
 
 Future<void> showSuccessMessageAsync(BuildContext context, String info) async {
   await showModalBottomSheet(
@@ -20,6 +20,14 @@ void showErrorMessage(BuildContext context, String info) {
           StatusBottomSheet(info: info, status: BottomSheetStatus.error));
 }
 
+Future<void> showLoadingDialog(BuildContext context, String info) async {
+  await showModalBottomSheet(
+      context: context,
+      backgroundColor: Colors.transparent,
+      builder: (_) =>
+          StatusBottomSheet(info: info, status: BottomSheetStatus.loading));
+}
+
 class StatusBottomSheet extends StatelessWidget {
   final String info;
   final BottomSheetStatus status;
@@ -29,12 +37,14 @@ class StatusBottomSheet extends StatelessWidget {
     required this.status,
   }) : super(key: key);
 
-  Icon _getIcon() {
+  Widget _getIcon() {
     switch (status) {
       case BottomSheetStatus.error:
         return const Icon(Icons.error_outline, color: Colors.red, size: 150);
       case BottomSheetStatus.success:
         return const Icon(Icons.done, color: Colors.green, size: 150);
+      case BottomSheetStatus.loading:
+        return const CircularProgressIndicator();
       default:
         return const Icon(Icons.info, color: Colors.blue, size: 150);
     }

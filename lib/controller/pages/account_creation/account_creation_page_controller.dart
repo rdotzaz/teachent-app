@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:teachent_app/common/algorithms.dart';
 import 'package:teachent_app/controller/controller.dart';
 import 'package:teachent_app/model/db_objects/db_object.dart';
 import 'package:teachent_app/model/db_objects/student.dart';
 import 'package:teachent_app/model/db_objects/teacher.dart';
 import 'package:teachent_app/model/db_objects/user.dart';
 import 'package:teachent_app/view/pages/welcome_page/welcome_page.dart';
+import 'package:teachent_app/view/widgets/status_bottom_sheet.dart';
 
 /// Controller for Account Creation Page
 class AccountCreationPageController extends BaseController {
@@ -78,23 +80,32 @@ class AccountCreationPageController extends BaseController {
 
   Future<void> buttonValidator(BuildContext context) async {
     if (_creationKey.currentState?.validate() ?? false) {
-      await addPossibleMissingObjects();
-      await addUserToDatabase();
-      await addTeacherOrStudentToDatabase();
+      showLoadingDialog(context, 'Loading...');
+      Future.delayed(const Duration(seconds: 1), () async {
+        _hashData();
+        await _addPossibleMissingObjects();
+        await _addUserToDatabase();
+        await _addTeacherOrStudentToDatabase();
+        Navigator.of(context).pop();
 
-      Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (_) {
-        if (teacher != null) {
-          return WelcomePage(dbObject: teacher!);
-        } else {
-          return WelcomePage(dbObject: student!);
-        }
-      }));
+        Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (_) {
+          if (teacher != null) {
+            return WelcomePage(dbObject: teacher!);
+          } else {
+            return WelcomePage(dbObject: student!);
+          }
+        }));
+      });
     }
+  }
+
+  void _hashData() {
+    password = getHashedPassword(password);
   }
 
   /// Method adds topic, tool and place objects
   /// which are not already present in database
-  Future<void> addPossibleMissingObjects() async {
+  Future<void> _addPossibleMissingObjects() async {
     if (teacher != null) {
       final topics = teacher?.topics ?? [];
       final tools = teacher?.tools ?? [];
@@ -108,7 +119,7 @@ class AccountCreationPageController extends BaseController {
 
   /// Method adds user object to database
   /// This allows to log in using user's login and password
-  Future<void> addUserToDatabase() async {
+  Future<void> _addUserToDatabase() async {
     final isTeacher = teacher != null;
     final user = User(login, false, isTeacher, password);
 
@@ -117,7 +128,7 @@ class AccountCreationPageController extends BaseController {
 
   /// Method adds student/teacher object to database
   /// Such objects will be retrived later e.g. in home pages
-  Future<void> addTeacherOrStudentToDatabase() async {
+  Future<void> _addTeacherOrStudentToDatabase() async {
     if (teacher != null) {
       teacher?.userId = login;
       await dataManager.database.addTeacher(teacher!);
