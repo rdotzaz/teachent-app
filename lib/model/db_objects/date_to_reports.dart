@@ -9,8 +9,8 @@ class DateToReports extends DatabaseObject {
 
   DateToReports(this.lessonDateId, this.reportIds);
 
-  DateToReports.fromMap(this.lessonDateId, Map<dynamic, dynamic> values) :
-    reportIds = values.keys.map((k) => k.toString()).toList();
+  DateToReports.fromMap(this.lessonDateId, Map<dynamic, dynamic> values)
+      : reportIds = values.keys.map((k) => k.toString()).toList();
 
   @override
   String get collectionName => DatabaseObjectName.dateToReports;

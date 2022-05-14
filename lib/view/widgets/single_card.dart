@@ -144,30 +144,30 @@ class SingleCardListWidget extends StatelessWidget {
 
   Widget listBuilderWidget() {
     return ListView.builder(
-          shrinkWrap: elementHeight == 0.0,
-          itemCount: min(listLength, maxElements),
-          scrollDirection: scrollDirection,
-          itemBuilder: ((context, index) {
-            if (elementWidth == 0.0) {
-              return Container(
-                  decoration: BoxDecoration(
-                    color: elementBackgroundColor,
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  padding: EdgeInsets.all(elementPadding),
-                  margin: EdgeInsets.fromLTRB(0, 0, 0, elementBottomMargin),
-                  child: elementBuilder(context, index));
-            }
+        shrinkWrap: elementHeight == 0.0,
+        itemCount: min(listLength, maxElements),
+        scrollDirection: scrollDirection,
+        itemBuilder: ((context, index) {
+          if (elementWidth == 0.0) {
             return Container(
-                width: elementWidth,
                 decoration: BoxDecoration(
                   color: elementBackgroundColor,
                   borderRadius: BorderRadius.circular(12),
                 ),
                 padding: EdgeInsets.all(elementPadding),
-                margin: const EdgeInsets.fromLTRB(5, 0, 5, 0),
+                margin: EdgeInsets.fromLTRB(0, 0, 0, elementBottomMargin),
                 child: elementBuilder(context, index));
-          }));
+          }
+          return Container(
+              width: elementWidth,
+              decoration: BoxDecoration(
+                color: elementBackgroundColor,
+                borderRadius: BorderRadius.circular(12),
+              ),
+              padding: EdgeInsets.all(elementPadding),
+              margin: const EdgeInsets.fromLTRB(5, 0, 5, 0),
+              child: elementBuilder(context, index));
+        }));
   }
 
   Widget emptyWidget() {

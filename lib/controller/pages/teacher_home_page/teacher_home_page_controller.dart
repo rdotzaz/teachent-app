@@ -132,8 +132,9 @@ class TeacherHomePageController extends BaseController {
 
   Future<void> goToReportPage(BuildContext context) async {
     await Navigator.of(context).push(MaterialPageRoute(
-      builder: (_) => ReportCreationPage(lessonDateIds: lessonDates.map((date) => date.lessonDateId).toList())
-    ));
+        builder: (_) => ReportCreationPage(
+            lessonDateIds:
+                lessonDates.map((date) => date.lessonDateId).toList())));
     refresh();
   }
 }

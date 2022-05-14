@@ -15,18 +15,19 @@ mixin ReportDatabaseMethods {
 
     final reports = <Report>[];
     dateToReports.reportIds.forEach((id) async {
-        final reportValues = await FirebaseRealTimeDatabaseAdapter.getObject(
-            DatabaseObjectName.reports, id);
-        reports.add(Report.fromMap(id, reportValues));
+      final reportValues = await FirebaseRealTimeDatabaseAdapter.getObject(
+          DatabaseObjectName.reports, id);
+      reports.add(Report.fromMap(id, reportValues));
     });
     return reports;
   }
 
   Future<KeyId> addReport(Report report) async {
-    final key = await FirebaseRealTimeDatabaseAdapter.addDatabaseObjectWithNewKey(
-        DatabaseObjectName.reports, report.toMap());
+    final key =
+        await FirebaseRealTimeDatabaseAdapter.addDatabaseObjectWithNewKey(
+            DatabaseObjectName.reports, report.toMap());
     await FirebaseRealTimeDatabaseAdapter.updateMapField(
-      DatabaseObjectName.dateToReports, report.lessonDateId, {key: true});
+        DatabaseObjectName.dateToReports, report.lessonDateId, {key: true});
     return key;
   }
 }

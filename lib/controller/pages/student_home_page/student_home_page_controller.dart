@@ -61,8 +61,8 @@ class StudentHomePageController extends BaseController {
 
   Future<void> initLessonDates() async {
     lessonDates.clear();
-    final foundLessonDates = await dataManager.database
-        .getLessonDates(student?.lessonDates ?? []);
+    final foundLessonDates =
+        await dataManager.database.getLessonDates(student?.lessonDates ?? []);
     lessonDates.addAll(foundLessonDates);
   }
 

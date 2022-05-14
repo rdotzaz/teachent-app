@@ -12,9 +12,11 @@ class Report extends DatabaseObject {
   final String description;
   final DateTime date;
 
-  Report(this.reportId, this.lessonDateId, this.lessonId, this.title, this.description, this.date);
+  Report(this.reportId, this.lessonDateId, this.lessonId, this.title,
+      this.description, this.date);
 
-  Report.noKey(this.lessonDateId, this.lessonId, this.title, this.description, this.date)
+  Report.noKey(
+      this.lessonDateId, this.lessonId, this.title, this.description, this.date)
       : reportId = DatabaseConsts.emptyKey;
 
   Report.fromMap(this.reportId, Map<dynamic, dynamic> values)
@@ -32,6 +34,12 @@ class Report extends DatabaseObject {
 
   @override
   Map<String, dynamic> toMap() {
-    return {'lessonDateId': lessonDateId, 'lessonId': lessonId, 'title': title, 'description': description, 'date': DateFormatter.getString(date)};
+    return {
+      'lessonDateId': lessonDateId,
+      'lessonId': lessonId,
+      'title': title,
+      'description': description,
+      'date': DateFormatter.getString(date)
+    };
   }
 }

@@ -169,14 +169,14 @@ class _StudentHomePageState extends State<StudentHomePage> {
                   style: const TextStyle(fontSize: 12, color: Colors.white)),
               const SizedBox(height: 20),
               Padding(
-                padding: const EdgeInsets.all(8),
-                child: Chip(
-                  label: Text(
-                    _studentHomePageController.lessonDates[index].cycleType.stringValue,
-                    style: const TextStyle(fontSize: 12, color: Colors.white)),
-                  backgroundColor: Colors.red
-                )
-              )
+                  padding: const EdgeInsets.all(8),
+                  child: Chip(
+                      label: Text(
+                          _studentHomePageController
+                              .lessonDates[index].cycleType.stringValue,
+                          style: const TextStyle(
+                              fontSize: 12, color: Colors.white)),
+                      backgroundColor: Colors.red))
             ]));
       },
     );

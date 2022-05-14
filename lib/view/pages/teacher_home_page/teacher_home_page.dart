@@ -31,28 +31,29 @@ class _TeacherHomePageState extends State<TeacherHomePage> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      future: _teacherHomePageController.init(),
-      builder: (context, snapshot) {
-        return Scaffold(
-          backgroundColor: Colors.grey[200],
-          body: _body(context, snapshot),
-          floatingActionButton: FloatingActionButton.extended(
-            backgroundColor: Colors.blue,
-            onPressed: () => _teacherHomePageController.goToReportPage(context),
-            icon: const Icon(Icons.add, color: Colors.white),
-            label: const Text('Report', style: TextStyle(color: Colors.white))),
-        );
-      }
-    );
+        future: _teacherHomePageController.init(),
+        builder: (context, snapshot) {
+          return Scaffold(
+            backgroundColor: Colors.grey[200],
+            body: _body(context, snapshot),
+            floatingActionButton: FloatingActionButton.extended(
+                backgroundColor: Colors.blue,
+                onPressed: () =>
+                    _teacherHomePageController.goToReportPage(context),
+                icon: const Icon(Icons.add, color: Colors.white),
+                label: const Text('Report',
+                    style: TextStyle(color: Colors.white))),
+          );
+        });
   }
 
   Widget _body(BuildContext context, AsyncSnapshot snapshot) {
     if (snapshot.connectionState == ConnectionState.waiting) {
-              return const CircularProgressIndicator();
-            } else if (snapshot.connectionState == ConnectionState.done) {
-              return _homeWidget(context);
-            }
-            return _errorWidget(snapshot.error.toString());
+      return const CircularProgressIndicator();
+    } else if (snapshot.connectionState == ConnectionState.done) {
+      return _homeWidget(context);
+    }
+    return _errorWidget(snapshot.error.toString());
   }
 
   Widget _appBar(BuildContext context) {

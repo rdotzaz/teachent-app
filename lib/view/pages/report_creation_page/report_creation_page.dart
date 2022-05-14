@@ -7,7 +7,7 @@ import 'package:teachent_app/view/widgets/label.dart';
 
 class ReportCreationPage extends StatefulWidget {
   final List<KeyId> lessonDateIds;
-  ReportCreationPage({ Key? key, required this.lessonDateIds}) : super(key: key);
+  ReportCreationPage({Key? key, required this.lessonDateIds}) : super(key: key);
 
   @override
   _ReportCreationPageState createState() => _ReportCreationPageState();
@@ -19,7 +19,8 @@ class _ReportCreationPageState extends State<ReportCreationPage> {
   @override
   void initState() {
     super.initState();
-    reportController = ReportCreationPageController(refresh, widget.lessonDateIds);
+    reportController =
+        ReportCreationPageController(refresh, widget.lessonDateIds);
   }
 
   @override
@@ -35,103 +36,85 @@ class _ReportCreationPageState extends State<ReportCreationPage> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      future: reportController.init(),
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return const CircularProgressIndicator();
-        } else if (snapshot.connectionState == ConnectionState.done) {
-          return Scaffold(
-            appBar: AppBar(title: Text('Create report')),
-            body: Column(
-                children: [
-                  reportController.hasLessons ? _selectLessonField() : _emptyLesson(),
-                  if (reportController.isLessonSelected)
-                    _reportForm(context)
-                ]
-              )
-          );
-        }
-        return _errorWidget(snapshot.error.toString());
-      }
-    );
+        future: reportController.init(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const CircularProgressIndicator();
+          } else if (snapshot.connectionState == ConnectionState.done) {
+            return Scaffold(
+                appBar: AppBar(title: Text('Create report')),
+                body: Column(children: [
+                  reportController.hasLessons
+                      ? _selectLessonField()
+                      : _emptyLesson(),
+                  if (reportController.isLessonSelected) _reportForm(context)
+                ]));
+          }
+          return _errorWidget(snapshot.error.toString());
+        });
   }
 
   Widget _emptyLesson() {
     return Container(
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withOpacity(0.5),
-            spreadRadius: 2,
-            blurRadius: 4,
-            offset: const Offset(2, 2)
-          )
-        ]
-      ),
-      margin: const EdgeInsets.all(15),
-      padding: const EdgeInsets.all(15),
-      child: Column(
-        children: [
+        decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(12),
+            boxShadow: [
+              BoxShadow(
+                  color: Colors.grey.withOpacity(0.5),
+                  spreadRadius: 2,
+                  blurRadius: 4,
+                  offset: const Offset(2, 2))
+            ]),
+        margin: const EdgeInsets.all(15),
+        padding: const EdgeInsets.all(15),
+        child: Column(children: [
           Padding(
-            padding: const EdgeInsets.all(25),
-            child: Icon(Icons.my_library_books, size: 40)
-          ),
+              padding: const EdgeInsets.all(25),
+              child: Icon(Icons.my_library_books, size: 40)),
           Label(text: 'You do not have lessons to report')
-        ]
-      )
-    );
+        ]));
   }
 
   Widget _selectLessonField() {
     return Padding(
-      padding: const EdgeInsets.all(10),
-      child: DropdownButton<String>(
-        value: reportController.initialLessonValue,
-        icon: const Icon(Icons.arrow_downward),
-        onChanged: (value) => reportController.selectLessonValue(value),
-        items: reportController.lessonItems.map((value) {
-          return DropdownMenuItem<String>(
-            value: value,
-            child: Text(value)
-          );
-        }).toList()
-      )
-    );
+        padding: const EdgeInsets.all(10),
+        child: DropdownButton<String>(
+            value: reportController.initialLessonValue,
+            icon: const Icon(Icons.arrow_downward),
+            onChanged: (value) => reportController.selectLessonValue(value),
+            items: reportController.lessonItems.map((value) {
+              return DropdownMenuItem<String>(value: value, child: Text(value));
+            }).toList()));
   }
 
   Widget _reportForm(BuildContext context) {
     return Form(
-      key: reportController.formKey,
-      child: Column(
-        children: [
+        key: reportController.formKey,
+        child: Column(children: [
           Padding(
-              padding: const EdgeInsets.all(15),
-              child: TextFormField(
+            padding: const EdgeInsets.all(15),
+            child: TextFormField(
                 keyboardType: TextInputType.text,
-                validator: (title) => reportController.validateTitle(title), 
+                validator: (title) => reportController.validateTitle(title),
                 onChanged: (title) => reportController.setTitle(title),
-                decoration: blackInputDecorator('Lesson title')
-              ),
+                decoration: blackInputDecorator('Lesson title')),
           ),
           Padding(
-              padding: const EdgeInsets.all(15),
-              child: TextFormField(
-                keyboardType: TextInputType.text,
-                onChanged: (description) => reportController.setDescription(description),
-                decoration: blackInputDecorator('Something about lesson'),
-              ),
+            padding: const EdgeInsets.all(15),
+            child: TextFormField(
+              keyboardType: TextInputType.text,
+              onChanged: (description) =>
+                  reportController.setDescription(description),
+              decoration: blackInputDecorator('Something about lesson'),
+            ),
           ),
           CustomButton(
-            text: 'Save',
-            fontSize: 18,
-            onPressed: () => reportController.saveReport(context),
-            buttonColor: Colors.blue
-          )
-        ]
-      )
-    );
+              text: 'Save',
+              fontSize: 18,
+              onPressed: () => reportController.saveReport(context),
+              buttonColor: Colors.blue)
+        ]));
   }
 
   Widget _errorWidget(String errorMessage) {
