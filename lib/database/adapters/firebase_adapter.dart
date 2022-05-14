@@ -215,6 +215,15 @@ class FirebaseRealTimeDatabaseAdapter {
     }
   }
 
+  /// Method adds or updates [value] key to [collectionName]/[id]
+  static Future<void> updateMapField(
+      String collectionName, String id, Map<String, Object?> value) async {
+    DatabaseReference databaseReference =
+        FirebaseDatabase.instance.ref().child('$collectionName/$id');
+
+    await databaseReference.update(value);
+  }
+
   /// Method retrives foreign key from [collectionName]/[id]/[property]
   static Future<String> getForeignKey(
       String collectionName, String id, String property) async {

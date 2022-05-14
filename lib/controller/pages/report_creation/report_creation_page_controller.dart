@@ -47,7 +47,13 @@ class ReportCreationPageController extends BaseController {
     bool get hasLessons => lessonMap.isNotEmpty;
     bool get isLessonSelected => selectedMapKey != null;
     String get initialLessonValue => selectedMapKey == null ? '-- Select lesson --' : selectedMapKey!;
-    List<String> get lessonItems => lessonMap.keys.toList();
+    List<String> get lessonItems {
+        final items = ['-- Select lesson --'];
+        if (lessonMap.isNotEmpty) {
+            items.addAll(lessonMap.keys.toList());
+        }
+        return items;
+    }
     GlobalKey<FormState> get formKey => _formKey;
 
     String _lessonString(LessonEntity entity) => '${DateFormatter.getString(entity.lesson.date)}, ${entity.student.name}';
@@ -59,16 +65,14 @@ class ReportCreationPageController extends BaseController {
 
     void setDescription(String? value) {
         description = value ?? '';
-        refresh();
     }
 
     void setTitle(String? value) {
         title = value ?? '';
-        refresh();
     }
 
     String? validateTitle(String? value) {
-        return value == null ? 'Title cannot be null' : '';
+        return value?.isEmpty ?? true ? 'Title cannot be null' : null;
     }
 
     void saveReport(BuildContext context) async {

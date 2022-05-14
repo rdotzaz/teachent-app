@@ -3,6 +3,7 @@ import 'package:teachent_app/common/enums.dart';
 import 'package:teachent_app/controller/controller.dart';
 import 'package:teachent_app/model/db_objects/db_object.dart';
 import 'package:teachent_app/model/db_objects/lesson.dart';
+import 'package:teachent_app/model/db_objects/lesson_date.dart';
 import 'package:teachent_app/model/db_objects/request.dart';
 import 'package:teachent_app/model/db_objects/student.dart';
 import 'package:teachent_app/model/db_objects/teacher.dart';
@@ -23,6 +24,7 @@ class StudentHomePageController extends BaseController {
   final List<Teacher> teachers = [];
   final List<Lesson> lessons = [];
   final List<Request> requests = [];
+  final List<LessonDate> lessonDates = [];
 
   @override
   Future<void> init() async {
@@ -33,6 +35,7 @@ class StudentHomePageController extends BaseController {
     await initLessons();
     await initTeachers();
     await initRequests();
+    await initLessonDates();
   }
 
   Future<void> initLessons() async {
@@ -56,11 +59,18 @@ class StudentHomePageController extends BaseController {
     requests.addAll(foundRequests);
   }
 
+  Future<void> initLessonDates() async {
+    lessonDates.clear();
+    final foundLessonDates = await dataManager.database
+        .getLessonDates(student?.lessonDates ?? []);
+    lessonDates.addAll(foundLessonDates);
+  }
+
   String get studentName => student?.name ?? '';
   bool get areLessons => lessons.isNotEmpty;
   bool get areTeachers => teachers.isNotEmpty;
   bool get areRequests => requests.isNotEmpty;
-  bool get areReports => false;
+  bool get areDates => lessonDates.isNotEmpty;
 
   String getTeacherName(String teacherId) {
     final teacher =

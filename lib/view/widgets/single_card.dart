@@ -1,4 +1,8 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
+
+import 'custom_button.dart';
 
 class SingleCardWidget extends StatelessWidget {
   final Color backgroundColor;
@@ -90,6 +94,8 @@ class SingleCardListWidget extends StatelessWidget {
   final Color titleColor;
   final double padding;
   final double margin;
+  final int maxElements;
+  final bool addMoreButton;
   const SingleCardListWidget(
       {Key? key,
       this.backgroundColor = Colors.white,
@@ -109,7 +115,9 @@ class SingleCardListWidget extends StatelessWidget {
       this.padding = 12,
       this.margin = 12,
       this.elementPadding = 12,
-      this.elementBottomMargin = 10})
+      this.elementBottomMargin = 10,
+      this.maxElements = 5,
+      this.addMoreButton = false})
       : super(key: key);
 
   @override
@@ -136,30 +144,30 @@ class SingleCardListWidget extends StatelessWidget {
 
   Widget listBuilderWidget() {
     return ListView.builder(
-        shrinkWrap: elementHeight == 0.0,
-        itemCount: listLength,
-        scrollDirection: scrollDirection,
-        itemBuilder: ((context, index) {
-          if (elementWidth == 0.0) {
+          shrinkWrap: elementHeight == 0.0,
+          itemCount: min(listLength, maxElements),
+          scrollDirection: scrollDirection,
+          itemBuilder: ((context, index) {
+            if (elementWidth == 0.0) {
+              return Container(
+                  decoration: BoxDecoration(
+                    color: elementBackgroundColor,
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  padding: EdgeInsets.all(elementPadding),
+                  margin: EdgeInsets.fromLTRB(0, 0, 0, elementBottomMargin),
+                  child: elementBuilder(context, index));
+            }
             return Container(
+                width: elementWidth,
                 decoration: BoxDecoration(
                   color: elementBackgroundColor,
                   borderRadius: BorderRadius.circular(12),
                 ),
                 padding: EdgeInsets.all(elementPadding),
-                margin: EdgeInsets.fromLTRB(0, 0, 0, elementBottomMargin),
+                margin: const EdgeInsets.fromLTRB(5, 0, 5, 0),
                 child: elementBuilder(context, index));
-          }
-          return Container(
-              width: elementWidth,
-              decoration: BoxDecoration(
-                color: elementBackgroundColor,
-                borderRadius: BorderRadius.circular(12),
-              ),
-              padding: EdgeInsets.all(elementPadding),
-              margin: const EdgeInsets.fromLTRB(5, 0, 5, 0),
-              child: elementBuilder(context, index));
-        }));
+          }));
   }
 
   Widget emptyWidget() {

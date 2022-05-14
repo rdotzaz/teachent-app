@@ -34,15 +34,53 @@ class _ReportCreationPageState extends State<ReportCreationPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text('Create report')),
-      body: Column(
-          children: [
-            reportController.hasLessons ? _selectLessonField() : Label(text: 'You do not have lessons to report'),
-            if (reportController.isLessonSelected)
-              _reportForm(context)
-          ]
-        )
+    return FutureBuilder(
+      future: reportController.init(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const CircularProgressIndicator();
+        } else if (snapshot.connectionState == ConnectionState.done) {
+          return Scaffold(
+            appBar: AppBar(title: Text('Create report')),
+            body: Column(
+                children: [
+                  reportController.hasLessons ? _selectLessonField() : _emptyLesson(),
+                  if (reportController.isLessonSelected)
+                    _reportForm(context)
+                ]
+              )
+          );
+        }
+        return _errorWidget(snapshot.error.toString());
+      }
+    );
+  }
+
+  Widget _emptyLesson() {
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(12),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.5),
+            spreadRadius: 2,
+            blurRadius: 4,
+            offset: const Offset(2, 2)
+          )
+        ]
+      ),
+      margin: const EdgeInsets.all(15),
+      padding: const EdgeInsets.all(15),
+      child: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(25),
+            child: Icon(Icons.my_library_books, size: 40)
+          ),
+          Label(text: 'You do not have lessons to report')
+        ]
+      )
     );
   }
 
@@ -77,16 +115,14 @@ class _ReportCreationPageState extends State<ReportCreationPage> {
                 decoration: blackInputDecorator('Lesson title')
               ),
           ),
-          Expanded(
-            child: Padding(
+          Padding(
               padding: const EdgeInsets.all(15),
               child: TextFormField(
                 keyboardType: TextInputType.text,
                 onChanged: (description) => reportController.setDescription(description),
                 decoration: blackInputDecorator('Something about lesson'),
-                expands: true,
               ),
-          )),
+          ),
           CustomButton(
             text: 'Save',
             fontSize: 18,
@@ -95,6 +131,18 @@ class _ReportCreationPageState extends State<ReportCreationPage> {
           )
         ]
       )
+    );
+  }
+
+  Widget _errorWidget(String errorMessage) {
+    return Container(
+      color: Colors.red,
+      child: Column(children: [
+        const Padding(
+            padding: EdgeInsets.all(30),
+            child: Icon(Icons.error, color: Colors.white)),
+        Text(errorMessage),
+      ]),
     );
   }
 }

@@ -90,7 +90,6 @@ class _TeacherHomePageState extends State<TeacherHomePage> {
         _lessonDateWidget(context),
         _studentsWidget(),
         _requestsWidget()
-        //reportsWidget()
       ]))
     ]);
   }

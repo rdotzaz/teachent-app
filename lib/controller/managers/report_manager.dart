@@ -12,7 +12,8 @@ class ReportManager {
       Lesson lesson,
       String title,
       String description) async {
-    final report = Report.noKey(lesson.lessonId, title, description, lesson.date);
-    // TODO - add report
+    final report = Report.noKey(
+      lesson.lessonDateId, lesson.lessonId, title, description, lesson.date);
+    await dataManager.database.addReport(report);
   }
 }

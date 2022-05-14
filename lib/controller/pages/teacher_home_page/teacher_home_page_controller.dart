@@ -74,7 +74,6 @@ class TeacherHomePageController extends BaseController {
   bool get areStudents => students.isNotEmpty;
   bool get areRequests => requests.isNotEmpty;
   int get freeDates => lessonDates.where((d) => d.isFree).length;
-  bool get areReports => false;
 
   String getStudentName(String studentId) {
     final student =

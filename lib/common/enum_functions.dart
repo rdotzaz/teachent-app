@@ -93,6 +93,22 @@ extension CycleTypeExt on CycleType {
     }
     return 4;
   }
+
+  String get stringValue {
+    if (this == CycleType.single) {
+      return 'Single';
+    }
+    if (this == CycleType.daily) {
+      return 'Daily';
+    }
+    if (this == CycleType.weekly) {
+      return 'Weekly';
+    }
+    if (this == CycleType.biweekly) {
+      return 'Biweekly';
+    }
+    return 'Monthly';
+  }
 }
 
 /// Extend LessonStatus enum with useful getters

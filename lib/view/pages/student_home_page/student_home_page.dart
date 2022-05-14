@@ -36,17 +36,17 @@ class _StudentHomePageState extends State<StudentHomePage> {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return const CircularProgressIndicator();
               } else if (snapshot.connectionState == ConnectionState.done) {
-                return homeWidget(context);
+                return _homeWidget(context);
               }
-              return errorWidget(snapshot.error.toString());
+              return _errorWidget(snapshot.error.toString());
             }));
   }
 
-  Widget appBar(BuildContext context) {
+  Widget _appBar(BuildContext context) {
     return SliverAppBar(
       expandedHeight: 150,
       backgroundColor: Colors.white,
-      actions: [settings(context)],
+      actions: [_settings(context)],
       flexibleSpace: FlexibleSpaceBar(
           title: Text('Hi\n${_studentHomePageController.studentName}',
               style: const TextStyle(color: Colors.black)),
@@ -54,7 +54,7 @@ class _StudentHomePageState extends State<StudentHomePage> {
     );
   }
 
-  Widget settings(BuildContext context) {
+  Widget _settings(BuildContext context) {
     return GestureDetector(
       onTap: () => _studentHomePageController.goToSettingsPage(context),
       child: const Padding(
@@ -67,21 +67,21 @@ class _StudentHomePageState extends State<StudentHomePage> {
     );
   }
 
-  Widget homeWidget(BuildContext context) {
+  Widget _homeWidget(BuildContext context) {
     return CustomScrollView(slivers: [
-      appBar(context),
+      _appBar(context),
       SliverList(
           delegate: SliverChildListDelegate([
-        searchBarWidget(),
-        nextLessonsWidget(),
-        teachersWidget(),
-        requestsWidget(),
-        //reportsWidget()
+        _searchBarWidget(),
+        _nextLessonsWidget(),
+        _lessonDatesWidget(),
+        _teachersWidget(),
+        _requestsWidget()
       ]))
     ]);
   }
 
-  Widget searchBarWidget() {
+  Widget _searchBarWidget() {
     return GestureDetector(
         onTap: () => _studentHomePageController.goToSearchPage(context),
         child: Hero(
@@ -114,7 +114,7 @@ class _StudentHomePageState extends State<StudentHomePage> {
             )));
   }
 
-  Widget nextLessonsWidget() {
+  Widget _nextLessonsWidget() {
     return SingleCardListWidget(
       backgroundColor: Colors.white,
       shadowColor: Colors.grey,
@@ -146,7 +146,43 @@ class _StudentHomePageState extends State<StudentHomePage> {
     );
   }
 
-  Widget teachersWidget() {
+  Widget _lessonDatesWidget() {
+    return SingleCardListWidget(
+      backgroundColor: Colors.white,
+      shadowColor: Colors.grey,
+      title: 'Your cooperations',
+      titleColor: Colors.black,
+      boxHeight: 200.0,
+      isNotEmptyCondition: _studentHomePageController.areDates,
+      listLength: _studentHomePageController.lessonDates.length,
+      elementBackgroundColor: Colors.red,
+      emptyInfo: 'No cooperations',
+      emptyIcon: Icons.free_breakfast,
+      elementBuilder: (context, index) {
+        return GestureDetector(
+            onTap: () {},
+            child:
+                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+              Text(
+                  _studentHomePageController.getTeacherName(
+                      _studentHomePageController.lessons[index].teacherId),
+                  style: const TextStyle(fontSize: 12, color: Colors.white)),
+              const SizedBox(height: 20),
+              Padding(
+                padding: const EdgeInsets.all(8),
+                child: Chip(
+                  label: Text(
+                    _studentHomePageController.lessonDates[index].cycleType.stringValue,
+                    style: const TextStyle(fontSize: 12, color: Colors.white)),
+                  backgroundColor: Colors.red
+                )
+              )
+            ]));
+      },
+    );
+  }
+
+  Widget _teachersWidget() {
     return SingleCardListWidget(
       backgroundColor: Colors.white,
       shadowColor: Colors.grey,
@@ -181,7 +217,7 @@ class _StudentHomePageState extends State<StudentHomePage> {
     );
   }
 
-  Widget requestsWidget() {
+  Widget _requestsWidget() {
     return SingleCardListWidget(
       backgroundColor: Colors.white,
       shadowColor: Colors.grey,
@@ -208,7 +244,7 @@ class _StudentHomePageState extends State<StudentHomePage> {
     );
   }
 
-  Widget errorWidget(String errorMessage) {
+  Widget _errorWidget(String errorMessage) {
     return Container(
       color: Colors.red,
       child: Column(children: [
