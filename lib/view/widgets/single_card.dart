@@ -94,6 +94,7 @@ class SingleCardListWidget extends StatelessWidget {
   final double margin;
   final int maxElements;
   final bool addMoreButton;
+  final Widget? rightButton;
   const SingleCardListWidget(
       {Key? key,
       this.backgroundColor = Colors.white,
@@ -105,6 +106,7 @@ class SingleCardListWidget extends StatelessWidget {
       required this.elementBuilder,
       required this.emptyInfo,
       this.emptyIcon,
+      this.rightButton,
       this.shadowColor = Colors.grey,
       this.titleColor = Colors.white,
       this.elementHeight = 0.0,
@@ -128,6 +130,7 @@ class SingleCardListWidget extends StatelessWidget {
       titleColor: titleColor,
       padding: padding,
       margin: margin,
+      rightButton: rightButton,
       bodyWidget: bodyWidget(),
       emptyWidget: emptyWidget(),
     );
