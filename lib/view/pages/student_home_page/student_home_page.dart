@@ -160,7 +160,8 @@ class _StudentHomePageState extends State<StudentHomePage> {
       emptyIcon: Icons.free_breakfast,
       elementBuilder: (context, index) {
         return GestureDetector(
-            onTap: () => _studentHomePageController.goToLessonDatePage(context, index),
+            onTap: () =>
+                _studentHomePageController.goToLessonDatePage(context, index),
             child:
                 Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
               Text(

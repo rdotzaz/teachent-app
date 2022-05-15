@@ -216,13 +216,15 @@ class _TeacherHomePageState extends State<TeacherHomePage> {
       elementBuilder: (context, index) {
         final isFree = _teacherHomePageController.lessonDates[index].isFree;
         return GestureDetector(
-            onTap: () => _teacherHomePageController.goToLessonDatePage(context, index),
+            onTap: () =>
+                _teacherHomePageController.goToLessonDatePage(context, index),
             child:
                 Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
               if (!isFree)
                 Text(
                     _teacherHomePageController.getStudentName(
-                        _teacherHomePageController.lessonDates[index].studentId),
+                        _teacherHomePageController
+                            .lessonDates[index].studentId),
                     style: const TextStyle(fontSize: 12, color: Colors.white)),
               Padding(
                   padding: const EdgeInsets.all(8),

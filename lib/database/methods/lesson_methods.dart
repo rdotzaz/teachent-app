@@ -31,6 +31,30 @@ mixin LessonDatabaseMethods {
     return lessons;
   }
 
+  Future<List<Lesson>> getLessonsByDate(KeyId lessonDateId) async {
+    final lessons = <Lesson>[];
+    final lessonsValues =
+        await FirebaseRealTimeDatabaseAdapter.getObjectsByProperty(
+            DatabaseObjectName.lessons, 'lessonDateId', lessonDateId);
+    lessonsValues.forEach((key, lessonValues) {
+      if (lessonValues.isEmpty) {
+        return;
+      }
+      lessons.add(Lesson.fromMap(key, lessonValues));
+    });
+    return lessons;
+  }
+
+  /// Get lesson object based on [lessonId]
+  Future<Lesson?> getLesson(KeyId lessonId) async {
+    final lessonValues = await FirebaseRealTimeDatabaseAdapter.getObject(
+        DatabaseObjectName.lessons, lessonId);
+    if (lessonValues.isEmpty) {
+      return null;
+    }
+    return Lesson.fromMap(lessonId, lessonValues);
+  }
+
   /// Add lesson object to database
   Future<KeyId> addLesson(Lesson lesson) async {
     final key =
@@ -47,5 +71,10 @@ mixin LessonDatabaseMethods {
       KeyId lessonId, LessonStatus lessonStatus) async {
     await FirebaseRealTimeDatabaseAdapter.updateField(
         DatabaseObjectName.lessons, lessonId, 'status', lessonStatus.value);
+  }
+
+  Future<void> updateReportId(KeyId lessonId, KeyId reportId) async {
+    await FirebaseRealTimeDatabaseAdapter.updateField(
+        DatabaseObjectName.lessons, lessonId, 'reportId', reportId);
   }
 }

@@ -22,6 +22,18 @@ mixin ReportDatabaseMethods {
     return reports;
   }
 
+  /// Get report with [lessonId]
+  /// If such report does not exist, return null
+  Future<Report?> getReport(KeyId reportId) async {
+    print("HERE: $reportId");
+    final reportValues = await FirebaseRealTimeDatabaseAdapter.getObject(
+        DatabaseObjectName.reports, reportId);
+    if (reportValues.isEmpty) {
+      return null;
+    }
+    return Report.fromMap(reportId, reportValues);
+  }
+
   Future<KeyId> addReport(Report report) async {
     final key =
         await FirebaseRealTimeDatabaseAdapter.addDatabaseObjectWithNewKey(
