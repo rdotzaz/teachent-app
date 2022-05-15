@@ -4,6 +4,6 @@ import 'package:teachent_app/view/teachent_app.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await MainDatabase().init(DBMode.testing);
+  await MainDatabase().init(DBMode.release);
   runApp(const TeachentApp());
 }
