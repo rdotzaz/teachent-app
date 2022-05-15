@@ -8,6 +8,7 @@ import 'package:teachent_app/model/db_objects/request.dart';
 import 'package:teachent_app/model/db_objects/student.dart';
 import 'package:teachent_app/model/db_objects/teacher.dart';
 import 'package:teachent_app/view/pages/lesson_date_creation_page/lesson_date_creation_page.dart';
+import 'package:teachent_app/view/pages/lesson_date/lesson_date_page.dart';
 import 'package:teachent_app/view/pages/lesson_page/lesson_page.dart';
 import 'package:teachent_app/view/pages/report_creation_page/report_creation_page.dart';
 import 'package:teachent_app/view/pages/search_page/teacher_search_page.dart';
@@ -73,7 +74,7 @@ class TeacherHomePageController extends BaseController {
   bool get areLessons => lessons.isNotEmpty;
   bool get areStudents => students.isNotEmpty;
   bool get areRequests => requests.isNotEmpty;
-  int get freeDates => lessonDates.where((d) => d.isFree).length;
+  bool get areDates => lessonDates.isNotEmpty;
 
   String getStudentName(String studentId) {
     final student =
@@ -135,6 +136,12 @@ class TeacherHomePageController extends BaseController {
         builder: (_) => ReportCreationPage(
             lessonDateIds:
                 lessonDates.map((date) => date.lessonDateId).toList())));
+    refresh();
+  }
+
+  Future<void> goToLessonDatePage(BuildContext context, int dateIndex) async {
+    await Navigator.of(context).push(MaterialPageRoute(
+        builder: (_) => LessonDatePage(lessonDates[dateIndex], true)));
     refresh();
   }
 }

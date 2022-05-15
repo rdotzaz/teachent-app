@@ -196,34 +196,56 @@ class _TeacherHomePageState extends State<TeacherHomePage> {
   }
 
   Widget _lessonDateWidget(BuildContext context) {
-    return SingleCardWidget(
-        titleColor: Colors.black,
-        backgroundColor: Colors.white,
-        startAlignment: false,
-        rightButton: CustomButton(
-            text: 'Add',
-            fontSize: 18,
-            onPressed: () =>
-                _teacherHomePageController.goToLessonPageCreationPage(context),
-            buttonColor: Colors.blue),
-        title: 'Your lesson dates',
-        bodyWidget: GestureDetector(
-            onTap: () {},
+    return SingleCardListWidget(
+      backgroundColor: Colors.white,
+      shadowColor: Colors.grey,
+      title: 'Your cooperations',
+      titleColor: Colors.black,
+      boxHeight: 200.0,
+      isNotEmptyCondition: _teacherHomePageController.areDates,
+      listLength: _teacherHomePageController.lessonDates.length,
+      elementBackgroundColor: Colors.blue,
+      emptyInfo: 'No cooperations',
+      emptyIcon: Icons.free_breakfast,
+      rightButton: CustomButton(
+          text: 'Add',
+          fontSize: 18,
+          onPressed: () =>
+              _teacherHomePageController.goToLessonPageCreationPage(context),
+          buttonColor: Colors.blue),
+      elementBuilder: (context, index) {
+        final isFree = _teacherHomePageController.lessonDates[index].isFree;
+        return GestureDetector(
+            onTap: () =>
+                _teacherHomePageController.goToLessonDatePage(context, index),
             child:
-                Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-              Text(
-                  'Number of dates: ${_teacherHomePageController.lessonDates.length}',
-                  style: const TextStyle(color: Colors.black, fontSize: 18)),
-              const SizedBox(height: 20),
-              Text('Free dates: ${_teacherHomePageController.freeDates}',
-                  style: const TextStyle(color: Colors.black, fontSize: 18)),
-              const SizedBox(height: 20),
-              CustomButton(
-                  text: 'Check lesson dates',
-                  buttonColor: Colors.blue,
-                  fontSize: 18,
-                  onPressed: () {})
-            ])));
+                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+              if (!isFree)
+                Text(
+                    _teacherHomePageController.getStudentName(
+                        _teacherHomePageController
+                            .lessonDates[index].studentId),
+                    style: const TextStyle(fontSize: 12, color: Colors.white)),
+              Padding(
+                  padding: const EdgeInsets.all(8),
+                  child: Chip(
+                      label: Text(
+                          _teacherHomePageController
+                              .lessonDates[index].cycleType.stringValue,
+                          style: const TextStyle(
+                              fontSize: 12, color: Colors.blue)),
+                      backgroundColor: Colors.white)),
+              if (isFree)
+                Padding(
+                    padding: const EdgeInsets.all(8),
+                    child: Chip(
+                        label: Text('Waiting for cooperator',
+                            style: const TextStyle(
+                                fontSize: 12, color: Colors.blue)),
+                        backgroundColor: Colors.white))
+            ]));
+      },
+    );
   }
 
   Widget _requestsWidget() {

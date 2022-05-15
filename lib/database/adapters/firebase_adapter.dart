@@ -151,17 +151,22 @@ class FirebaseRealTimeDatabaseAdapter {
   /// It means that method returns values from [collectionName]/[key]
   /// If [collectionName]/[key] record does not exist in database method returns empty map object
   static Future<Map> getObject(String collectionName, String key) async {
+    print('KEY: $key');
+    if (key == DatabaseConsts.emptyKey) {
+      return {};
+    }
     DatabaseReference databaseReference =
         FirebaseDatabase.instance.ref().child('$collectionName/$key');
 
-    final event = await databaseReference.once();
-    final isKeyExists = event.snapshot.exists;
+    print('BEFORE Event $collectionName/$key');
+    final snapshot = await databaseReference.get();
+    final isKeyExists = snapshot.exists;
 
     if (!isKeyExists) {
       return {};
     }
 
-    return event.snapshot.value as Map<dynamic, dynamic>;
+    return snapshot.value as Map<dynamic, dynamic>;
   }
 
   /// Returns map representation of object from [collectionName]/{teachers/students}
@@ -193,10 +198,13 @@ class FirebaseRealTimeDatabaseAdapter {
     DatabaseReference databaseReference =
         FirebaseDatabase.instance.ref().child(collectionName);
 
+    if (value is String && value == DatabaseConsts.emptyField) {
+      return {};
+    }
+
     final query = databaseReference.orderByChild(property).equalTo(value);
     final event = await query.once();
     final values = event.snapshot.value;
-
     if (values == null) {
       return {};
     }

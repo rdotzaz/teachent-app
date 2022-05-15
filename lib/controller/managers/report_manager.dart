@@ -7,6 +7,7 @@ class ReportManager {
       String title, String description) async {
     final report = Report.noKey(
         lesson.lessonDateId, lesson.lessonId, title, description, lesson.date);
-    await dataManager.database.addReport(report);
+    final reportKey = await dataManager.database.addReport(report);
+    await dataManager.database.updateReportId(lesson.lessonId, reportKey);
   }
 }
