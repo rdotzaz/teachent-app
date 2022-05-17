@@ -7,6 +7,7 @@ import 'package:teachent_app/model/db_objects/lesson_date.dart';
 import 'package:teachent_app/model/db_objects/request.dart';
 import 'package:teachent_app/model/db_objects/student.dart';
 import 'package:teachent_app/model/db_objects/teacher.dart';
+import 'package:teachent_app/view/animations/loading_animation.dart';
 import 'package:teachent_app/view/pages/lesson_date_creation_page/lesson_date_creation_page.dart';
 import 'package:teachent_app/view/pages/lesson_date/lesson_date_page.dart';
 import 'package:teachent_app/view/pages/lesson_page/lesson_page.dart';
@@ -26,8 +27,9 @@ class TeacherHomePageController extends BaseController {
   final List<Student> students = [];
   final List<Request> requests = [];
 
-  void Function() refresh;
-  TeacherHomePageController(this.userId, this.refresh);
+  final void Function() refresh;
+  final LoadingAnimationController loadingAnimation;
+  TeacherHomePageController(this.userId, this.refresh, this.loadingAnimation);
 
   @override
   Future<void> init() async {
@@ -39,6 +41,12 @@ class TeacherHomePageController extends BaseController {
     await _initStudents();
     await _initDates();
     await _initRequests();
+
+    Future.delayed(const Duration(seconds: 2), () {});
+
+    if (loadingAnimation.isAnimating) {
+      loadingAnimation.stop();
+    }
   }
 
   Future<void> _initLessons() async {

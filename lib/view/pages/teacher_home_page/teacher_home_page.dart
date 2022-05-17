@@ -3,6 +3,7 @@ import 'package:teachent_app/common/date.dart';
 import 'package:teachent_app/common/enum_functions.dart';
 import 'package:teachent_app/controller/pages/teacher_home_page/teacher_home_page_controller.dart';
 import 'package:teachent_app/model/db_objects/db_object.dart';
+import 'package:teachent_app/view/animations/loading_animation.dart';
 import 'package:teachent_app/view/widgets/custom_button.dart';
 import 'package:teachent_app/view/widgets/single_card.dart';
 
@@ -14,14 +15,22 @@ class TeacherHomePage extends StatefulWidget {
   State<TeacherHomePage> createState() => _TeacherHomePageState();
 }
 
-class _TeacherHomePageState extends State<TeacherHomePage> {
+class _TeacherHomePageState extends State<TeacherHomePage> with TickerProviderStateMixin {
   late TeacherHomePageController _teacherHomePageController;
+  final _loadingAnimationController = LoadingAnimationController();
 
   @override
   void initState() {
     super.initState();
     _teacherHomePageController =
-        TeacherHomePageController(widget.userId, refresh);
+        TeacherHomePageController(widget.userId, refresh, _loadingAnimationController);
+    _loadingAnimationController.startAnimation(this, refresh);
+  }
+
+  @override
+  void dispose() {
+    _loadingAnimationController.dispose();
+    super.dispose();
   }
 
   void refresh() {
@@ -82,6 +91,36 @@ class _TeacherHomePageState extends State<TeacherHomePage> {
   }
 
   Widget _homeWidget(BuildContext context) {
+    return CustomScrollView(slivers: [
+      _appBar(context),
+      SliverList(
+          delegate: SliverChildListDelegate([
+        _searchBarWidget(),
+        CardLoadingWidget(
+          title: 'Next lessons',
+          height: 200,
+          backgroundColor: _loadingAnimationController.animationValue
+        ),
+        CardLoadingWidget(
+          title: 'Your cooperations',
+          height: 200,
+          backgroundColor: _loadingAnimationController.animationValue
+        ),
+        CardLoadingWidget(
+          title: 'Your students',
+          height: 150,
+          backgroundColor: _loadingAnimationController.animationValue
+        ),
+        CardLoadingWidget(
+          title: 'Requests',
+          height: 300,
+          backgroundColor: _loadingAnimationController.animationValue
+        ),
+      ]))
+    ]);
+  }
+
+  Widget _homeLoadingWidget(BuildContext context) {
     return CustomScrollView(slivers: [
       _appBar(context),
       SliverList(

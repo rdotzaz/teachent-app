@@ -2,6 +2,39 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 
+class CardLoadingWidget extends StatelessWidget {
+  final Color backgroundColor;
+  final String title;
+  final double height;
+  final double margin;
+  const CardLoadingWidget(
+    {Key? key,
+    required this.backgroundColor,
+    this.title = '',
+    this.height = 100,
+    this.margin = 12}) : super(key: key);
+  
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+          color: backgroundColor,
+          borderRadius: BorderRadius.circular(12),
+          boxShadow: [
+            BoxShadow(
+                color: backgroundColor.withOpacity(0.5),
+                spreadRadius: 2,
+                blurRadius: 4,
+                offset: const Offset(2, 2))
+          ],
+        ),
+        margin: EdgeInsets.all(margin),
+        height: height
+    );
+  }
+}
+
 class SingleCardWidget extends StatelessWidget {
   final Color backgroundColor;
   final String title;
