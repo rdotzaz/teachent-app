@@ -7,17 +7,17 @@ class BaseAnimation<Value> {
   @protected
   late AnimationController animController;
 
-  Value get value => _animation != null ? _animation.value : _animController.value;
-  bool isAnimating => _animController.isAnimating;
+  Value get value => animation != null ? animation.value : animController.value;
+  bool get isAnimating => animController.isAnimating;
 
   final Duration duration;
   final Animation<Value>? animation;
   BaseAnimation({required this.duration, this.animation});
 
-  void startAnimation(TickerProvider tickerProvider, void Function refresh) {
+  void startAnimation(TickerProvider tickerProvider, void Function() refresh) {
     animController = AnimationController(vsync: tickerProvider, duration: duration);
     if (animation != null) {
-      animation.animate(_animController);
+      animation!.animate(animController);
     }
     animController.addListener(refresh);
     actions();
