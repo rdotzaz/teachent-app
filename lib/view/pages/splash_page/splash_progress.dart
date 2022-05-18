@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:teachent_app/controller/pages/splash_page/splash_indicator_controller.dart';
+import 'package:teachent_app/controller/animations/splash_indicator_controller.dart';
 
 class SplashProgressIndicatorWidget extends StatefulWidget {
   const SplashProgressIndicatorWidget({Key? key}) : super(key: key);
