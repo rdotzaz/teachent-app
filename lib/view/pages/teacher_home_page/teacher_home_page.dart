@@ -99,22 +99,22 @@ class _TeacherHomePageState extends State<TeacherHomePage> with TickerProviderSt
         CardLoadingWidget(
           title: 'Next lessons',
           height: 200,
-          backgroundColor: _loadingAnimationController.value
+          backgroundColor: _loadingAnimationController.value!
         ),
         CardLoadingWidget(
           title: 'Your cooperations',
           height: 200,
-          backgroundColor: _loadingAnimationController.value
+          backgroundColor: _loadingAnimationController.value!
         ),
         CardLoadingWidget(
           title: 'Your students',
           height: 150,
-          backgroundColor: _loadingAnimationController.value
+          backgroundColor: _loadingAnimationController.value!
         ),
         CardLoadingWidget(
           title: 'Requests',
           height: 300,
-          backgroundColor: _loadingAnimationController.value
+          backgroundColor: _loadingAnimationController.value!
         ),
       ]))
     ]);

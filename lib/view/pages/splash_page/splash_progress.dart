@@ -36,7 +36,7 @@ class _SplashProgressIndicatorWidgetState
     return Padding(
         padding: const EdgeInsets.all(15.0),
         child: CircularProgressIndicator(
-          value: splashProgressController.animationValue,
+          value: splashProgressController.value,
           valueColor: const AlwaysStoppedAnimation(Colors.black),
         ));
   }

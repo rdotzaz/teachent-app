@@ -4,10 +4,10 @@ import 'base_animation.dart';
 
 /// Controller for loading widgets animation
 /// Can be used in every page when there are loaded some data in background
-class LoadingAnimationController extends BaseAnimation<Color> {
+class LoadingAnimationController extends BaseAnimationWithTween<Color> {
   LoadingAnimationController()
     : super(duration: const Duration(milliseconds: 500),
-            animation: ColorTween(begin: Colors.white, end: Colors.grey));
+            animationTween: ColorTween(begin: Colors.white, end: Colors.grey));
   
   @override
   void actions() {
