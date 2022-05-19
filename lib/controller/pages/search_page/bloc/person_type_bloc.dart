@@ -1,6 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:teachent_app/common/enums.dart';
-import 'package:teachent_app/controller/controller.dart';
 import 'package:teachent_app/controller/pages/search_page/teacher_search_page_controller.dart';
 
 /// Base event for PersonTypeBloc

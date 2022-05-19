@@ -1,7 +1,6 @@
 import 'package:teachent_app/common/date.dart';
 import 'package:teachent_app/common/enum_functions.dart';
 import 'package:teachent_app/controller/controller.dart';
-import 'package:teachent_app/model/db_objects/db_object.dart';
 import 'package:teachent_app/model/db_objects/lesson_date.dart';
 import 'package:teachent_app/model/db_objects/lesson.dart';
 import 'package:teachent_app/model/db_objects/report.dart';
@@ -45,7 +44,6 @@ class LessonDatePageController extends BaseController {
 
     for (final lesson in foundLessons) {
       final report = await dataManager.database.getReport(lesson.reportId);
-      print('REPORT: $report');
       lessonEntities.add(LessonEntity(lesson, report));
     }
     lessonEntities.sort((e1, e2) => e2.lesson.date.compareTo(e1.lesson.date));
@@ -54,7 +52,6 @@ class LessonDatePageController extends BaseController {
         await dataManager.database.getStudent(lessonDate.studentId);
 
     if (foundStudent == null) {
-      print('ERROR: No student found');
       return;
     }
     student = foundStudent;
@@ -63,7 +60,6 @@ class LessonDatePageController extends BaseController {
         await dataManager.database.getTeacher(lessonDate.teacherId);
 
     if (foundTeacher == null) {
-      print('ERROR: No teacher found');
       return;
     }
     teacher = foundTeacher;

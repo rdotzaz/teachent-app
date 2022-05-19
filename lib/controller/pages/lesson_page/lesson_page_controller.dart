@@ -49,7 +49,6 @@ class LessonPageController extends BaseController {
     final lessonDate =
         await dataManager.database.getLessonDate(lesson.lessonDateId);
     if (lessonDate == null) {
-      print('Cannot find lessonDate with ${lesson.lessonDateId}');
       return;
     }
     if (lesson.status != LessonStatus.open) {

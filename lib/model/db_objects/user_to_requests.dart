@@ -1,5 +1,3 @@
-import 'package:teachent_app/common/consts.dart'
-    show DatabaseConsts, DatabaseObjectName;
 import 'package:teachent_app/model/db_objects/db_object.dart';
 
 class UserToRequstsMap extends DatabaseObject {

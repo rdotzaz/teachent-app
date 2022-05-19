@@ -33,7 +33,7 @@ class LessonDateCreationPageController extends BaseController {
   /// Key for form widget
   GlobalKey<FormState> get formKey => _formKey;
   DateTime _selectedDate = DateTime.now();
-  TimeOfDay _selectedTime = TimeOfDay(hour: 12, minute: 0);
+  TimeOfDay _selectedTime = const TimeOfDay(hour: 12, minute: 0);
   int _duration = 60;
   int _price = 50;
   bool _isCycled = false;

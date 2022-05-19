@@ -274,7 +274,7 @@ class _StudentHomePageState extends State<StudentHomePage> with SingleTickerProv
         return ListTile(
             title: Text(currentDate,
                 style: const TextStyle(fontSize: 20, color: Colors.white)),
-            leading: Icon(Icons.send, size: 30, color: Colors.white),
+            leading: const Icon(Icons.send, size: 30, color: Colors.white),
             onTap: () =>
                 _studentHomePageController.goToRequestPage(context, index),
             subtitle: Text(request.status.stringValue,

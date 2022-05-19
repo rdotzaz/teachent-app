@@ -12,6 +12,7 @@ import 'package:teachent_app/view/widgets/messages.dart';
 import 'other_day_widget.dart';
 import 'buttons.dart';
 
+// ignore: must_be_immutable
 class TeacherRequestPage extends StatelessWidget {
   TeacherRequestPage(
       {required Request request,

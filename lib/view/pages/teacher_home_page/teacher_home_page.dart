@@ -275,11 +275,11 @@ class _TeacherHomePageState extends State<TeacherHomePage> with SingleTickerProv
                               fontSize: 12, color: Colors.blue)),
                       backgroundColor: Colors.white)),
               if (isFree)
-                Padding(
-                    padding: const EdgeInsets.all(8),
+                const Padding(
+                    padding: EdgeInsets.all(8),
                     child: Chip(
                         label: Text('Waiting for cooperator',
-                            style: const TextStyle(
+                            style: TextStyle(
                                 fontSize: 12, color: Colors.blue)),
                         backgroundColor: Colors.white))
             ]));
@@ -305,7 +305,7 @@ class _TeacherHomePageState extends State<TeacherHomePage> with SingleTickerProv
         return ListTile(
             title: Text(currentDate,
                 style: const TextStyle(fontSize: 20, color: Colors.white)),
-            leading: Icon(Icons.send, size: 30, color: Colors.white),
+            leading: const Icon(Icons.send, size: 30, color: Colors.white),
             onTap: () =>
                 _teacherHomePageController.goToRequestPage(context, index),
             subtitle: Text(request.status.stringValue,

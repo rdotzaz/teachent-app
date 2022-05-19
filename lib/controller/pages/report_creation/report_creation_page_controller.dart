@@ -38,8 +38,6 @@ class ReportCreationPageController extends BaseController {
           await dataManager.database.getLessonDate(lesson.lessonDateId);
       final student = await dataManager.database.getStudent(lesson.studentId);
       if (student == null || lessonDate == null) {
-        print(
-            'No student ${lesson.studentId} or lessondate ${lesson.lessonDateId} found');
         continue;
       }
       final entity = LessonEntity(lesson, lessonDate, student);

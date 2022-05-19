@@ -1,5 +1,3 @@
-import 'package:teachent_app/common/consts.dart'
-    show DatabaseConsts, DatabaseObjectName;
 import 'package:teachent_app/model/db_objects/db_object.dart';
 
 class UserToDatesMap extends DatabaseObject {
@@ -11,7 +9,7 @@ class UserToDatesMap extends DatabaseObject {
   UserToDatesMap.fromMap(this.userId, Map<dynamic, dynamic> values)
       : lessonDateIds = DatabaseObject.getMapFromField(values, 'lessonDateIds')
             .entries
-            .map((id) => id.key as String)
+            .map((id) => id.key)
             .toList();
 
   @override

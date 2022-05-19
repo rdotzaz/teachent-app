@@ -7,19 +7,8 @@ import '../../model/db_objects/teacher.dart';
 /// Methods to maintain Teacher object in database
 mixin TeacherDatabaseMethods {
   Future<void> addTeacher(Teacher teacher) async {
-    final wasAdded = await FirebaseRealTimeDatabaseAdapter.addDatabaseObject(
+    await FirebaseRealTimeDatabaseAdapter.addDatabaseObject(
         DatabaseObjectName.teachers, teacher.key, teacher.toMap());
-  }
-
-  Map<String, dynamic> _getMapFromField(
-      Map<dynamic, dynamic> values, String field) {
-    if (values[field] == null) {
-      return {};
-    }
-    return {
-      for (var entry in (values[field] as Map<dynamic, dynamic>).entries)
-        (entry.key as String): true
-    };
   }
 
   Future<Teacher?> getTeacher(KeyId userId) async {
@@ -48,7 +37,6 @@ mixin TeacherDatabaseMethods {
       List<String> tools, List<String> places) async {
     final teachers = await getTeachersByNamePart(name);
 
-    print(teachers.map((teacher) => teacher.name).toList());
     final filteredTeachers = <Teacher>[];
     for (final teacher in teachers) {
       final toolSet = teacher.tools.map((tool) => tool.name).toSet();

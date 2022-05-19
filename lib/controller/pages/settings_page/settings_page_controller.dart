@@ -19,7 +19,6 @@ class SettingsPageController extends BaseController {
   Future<void> init() async {
     final possibleUser = await dataManager.database.getUser(userId);
     if (possibleUser == null) {
-      print('No User found');
       return;
     }
     user = possibleUser;

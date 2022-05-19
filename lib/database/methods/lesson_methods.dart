@@ -19,7 +19,6 @@ mixin LessonDatabaseMethods {
           await FirebaseRealTimeDatabaseAdapter.getObjectsByProperty(
               DatabaseObjectName.lessons, 'lessonDateId', lessonDateId);
 
-      print(lessonsValues.entries);
       lessonsValues.forEach((key, lessonValues) {
         if (lessonValues.isEmpty ||
             (lessonValues['status'] ?? -1) != status.value) {
@@ -60,10 +59,6 @@ mixin LessonDatabaseMethods {
     final key =
         await FirebaseRealTimeDatabaseAdapter.addDatabaseObjectWithNewKey(
             DatabaseObjectName.lessons, lesson.toMap());
-
-    if (key != DatabaseConsts.emptyKey) {
-      print('LessonDate has been added');
-    }
     return key;
   }
 
