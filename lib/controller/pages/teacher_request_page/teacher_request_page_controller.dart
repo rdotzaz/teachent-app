@@ -44,8 +44,7 @@ class TeacherRequestPageController extends BaseRequestPageController {
     final foundStudent =
         await dataManager.database.getStudent(request.studentId);
     if (foundStudent == null) {
-      print('ERROR: No student found');
-      return;
+      throw Exception('ERROR: No student found');
     }
     student = foundStudent;
   }
@@ -54,8 +53,7 @@ class TeacherRequestPageController extends BaseRequestPageController {
     final foundDate =
         await dataManager.database.getLessonDate(request.lessonDateId);
     if (foundDate == null) {
-      print('ERROR: No date found');
-      return;
+      throw Exception('ERROR: No date found');
     }
     lessonDate = foundDate;
   }

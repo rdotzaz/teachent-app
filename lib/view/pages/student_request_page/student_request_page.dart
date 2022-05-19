@@ -12,6 +12,7 @@ import 'package:teachent_app/view/widgets/messages.dart';
 
 import 'confirm_button.dart';
 
+// ignore: must_be_immutable
 class StudentRequestPage extends StatelessWidget {
   StudentRequestPage(
       {KeyId? requestId,

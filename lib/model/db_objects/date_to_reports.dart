@@ -1,7 +1,6 @@
 import 'package:teachent_app/common/consts.dart'
-    show DatabaseConsts, DatabaseObjectName;
+    show DatabaseObjectName;
 import 'package:teachent_app/model/db_objects/db_object.dart';
-import 'package:teachent_app/model/db_objects/report.dart';
 
 class DateToReports extends DatabaseObject {
   final KeyId lessonDateId;

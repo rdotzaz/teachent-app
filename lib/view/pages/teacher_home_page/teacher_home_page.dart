@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:teachent_app/common/date.dart';
 import 'package:teachent_app/common/enum_functions.dart';
+import 'package:teachent_app/controller/animations/loading_animation.dart';
 import 'package:teachent_app/controller/pages/teacher_home_page/teacher_home_page_controller.dart';
 import 'package:teachent_app/model/db_objects/db_object.dart';
 import 'package:teachent_app/view/widgets/custom_button.dart';
@@ -14,14 +15,22 @@ class TeacherHomePage extends StatefulWidget {
   State<TeacherHomePage> createState() => _TeacherHomePageState();
 }
 
-class _TeacherHomePageState extends State<TeacherHomePage> {
+class _TeacherHomePageState extends State<TeacherHomePage> with SingleTickerProviderStateMixin {
   late TeacherHomePageController _teacherHomePageController;
+  final _loadingAnimationController = LoadingAnimationController();
 
   @override
   void initState() {
     super.initState();
     _teacherHomePageController =
-        TeacherHomePageController(widget.userId, refresh);
+        TeacherHomePageController(widget.userId, refresh, _loadingAnimationController);
+    _loadingAnimationController.startAnimation(this, refresh);
+  }
+
+  @override
+  void dispose() {
+    _loadingAnimationController.dispose();
+    super.dispose();
   }
 
   void refresh() {
@@ -49,7 +58,7 @@ class _TeacherHomePageState extends State<TeacherHomePage> {
 
   Widget _body(BuildContext context, AsyncSnapshot snapshot) {
     if (snapshot.connectionState == ConnectionState.waiting) {
-      return const CircularProgressIndicator();
+      return _homeLoadingWidget(context);
     } else if (snapshot.connectionState == ConnectionState.done) {
       return _homeWidget(context);
     }
@@ -79,6 +88,36 @@ class _TeacherHomePageState extends State<TeacherHomePage> {
         ),
       ),
     );
+  }
+
+  Widget _homeLoadingWidget(BuildContext context) {
+    return CustomScrollView(slivers: [
+      _appBar(context),
+      SliverList(
+          delegate: SliverChildListDelegate([
+        _searchBarWidget(),
+        CardLoadingWidget(
+          title: 'Next lessons',
+          height: 200,
+          backgroundColor: _loadingAnimationController.value!
+        ),
+        CardLoadingWidget(
+          title: 'Your cooperations',
+          height: 200,
+          backgroundColor: _loadingAnimationController.value!
+        ),
+        CardLoadingWidget(
+          title: 'Your students',
+          height: 150,
+          backgroundColor: _loadingAnimationController.value!
+        ),
+        CardLoadingWidget(
+          title: 'Requests',
+          height: 300,
+          backgroundColor: _loadingAnimationController.value!
+        ),
+      ]))
+    ]);
   }
 
   Widget _homeWidget(BuildContext context) {
@@ -236,11 +275,11 @@ class _TeacherHomePageState extends State<TeacherHomePage> {
                               fontSize: 12, color: Colors.blue)),
                       backgroundColor: Colors.white)),
               if (isFree)
-                Padding(
-                    padding: const EdgeInsets.all(8),
+                const Padding(
+                    padding: EdgeInsets.all(8),
                     child: Chip(
                         label: Text('Waiting for cooperator',
-                            style: const TextStyle(
+                            style: TextStyle(
                                 fontSize: 12, color: Colors.blue)),
                         backgroundColor: Colors.white))
             ]));
@@ -266,7 +305,7 @@ class _TeacherHomePageState extends State<TeacherHomePage> {
         return ListTile(
             title: Text(currentDate,
                 style: const TextStyle(fontSize: 20, color: Colors.white)),
-            leading: Icon(Icons.send, size: 30, color: Colors.white),
+            leading: const Icon(Icons.send, size: 30, color: Colors.white),
             onTap: () =>
                 _teacherHomePageController.goToRequestPage(context, index),
             subtitle: Text(request.status.stringValue,

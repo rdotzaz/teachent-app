@@ -5,6 +5,7 @@ import 'package:teachent_app/model/db_objects/db_object.dart';
 import 'package:teachent_app/model/db_objects/teacher.dart';
 import 'package:teachent_app/view/widgets/custom_button.dart';
 
+// ignore: must_be_immutable
 class TeacherProfilePage extends StatelessWidget {
   TeacherProfilePageController? _teacherProfilePageController;
   TeacherProfilePage({required Teacher teacher, KeyId? studentId, Key? key})

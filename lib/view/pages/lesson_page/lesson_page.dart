@@ -7,6 +7,7 @@ import 'package:teachent_app/view/widgets/label.dart';
 import 'package:teachent_app/view/widgets/single_card.dart';
 import 'package:teachent_app/view/widgets/custom_button.dart';
 
+// ignore: must_be_immutable
 class LessonPage extends StatelessWidget {
   late LessonPageController lessonPageController;
   LessonPage(
@@ -45,7 +46,7 @@ class LessonPage extends StatelessWidget {
         child: Align(
             alignment: Alignment.bottomLeft,
             child: Column(children: [
-              Label(text: 'Lesson', color: Colors.white, fontSize: 14),
+              const Label(text: 'Lesson', color: Colors.white, fontSize: 14),
               Label(
                   text: lessonPageController.date,
                   color: Colors.white,

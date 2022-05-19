@@ -55,10 +55,10 @@ class _LessonDateCreationPageState extends State<LessonDateCreationPage> {
         ClipPath(
             clipper: CreationHeaderClipper(),
             child: Container(height: height / 8, color: Colors.blue)),
-        Padding(
-            padding: const EdgeInsets.all(25),
+        const Padding(
+            padding: EdgeInsets.all(25),
             child: Text('Create new lesson date',
-                style: const TextStyle(fontSize: 23, color: Colors.white)))
+                style: TextStyle(fontSize: 23, color: Colors.white)))
       ],
     );
   }
@@ -254,17 +254,6 @@ class _LessonDateCreationPageState extends State<LessonDateCreationPage> {
     );
   }
 
-  Widget _toolsLabel() {
-    return Container(
-      alignment: Alignment.centerLeft,
-      padding: const EdgeInsets.all(5.0),
-      child: const Text(
-        'Tools',
-        style: TextStyle(fontSize: 16, color: Colors.black),
-      ),
-    );
-  }
-
   Widget _toolsSelecting() {
     return Container(
       decoration: BoxDecoration(
@@ -305,17 +294,6 @@ class _LessonDateCreationPageState extends State<LessonDateCreationPage> {
                   });
             }))
       ]),
-    );
-  }
-
-  Widget _placesLabel() {
-    return Container(
-      alignment: Alignment.centerLeft,
-      padding: const EdgeInsets.all(5.0),
-      child: const Text(
-        'Places',
-        style: TextStyle(fontSize: 16, color: Colors.black),
-      ),
     );
   }
 

@@ -13,10 +13,10 @@ class OtherDayWidget extends StatelessWidget {
     return Padding(
         padding: const EdgeInsets.all(10),
         child: Column(children: [
-          Padding(
-              padding: const EdgeInsets.all(8),
+          const Padding(
+              padding: EdgeInsets.all(8),
               child: Text('Student has requested other day',
-                  style: const TextStyle(fontSize: 18, color: Colors.black))),
+                  style: TextStyle(fontSize: 18, color: Colors.black))),
           BlocBuilder<RefreshBloc, bool>(builder: (context, wasRejected) {
             return Padding(
                 padding: const EdgeInsets.all(8),

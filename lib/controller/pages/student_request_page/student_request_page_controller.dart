@@ -39,9 +39,7 @@ class StudentRequestPageController extends BaseRequestPageController {
 
   @override
   Future<void> init() async {
-    if (requestId == null) {
-      print('No requestId passed');
-    } else {
+    if (requestId != null) {
       final foundRequest = await dataManager.database.getRequest(requestId!);
       if (foundRequest == null) {
         return;
@@ -62,8 +60,7 @@ class StudentRequestPageController extends BaseRequestPageController {
     final foundTeacher =
         await dataManager.database.getTeacher(request?.teacherId ?? '');
     if (foundTeacher == null) {
-      print('ERROR: No teacher found');
-      return;
+      throw Exception('ERROR: No teacher found');
     }
     teacher = foundTeacher;
 
@@ -78,8 +75,7 @@ class StudentRequestPageController extends BaseRequestPageController {
     final foundDate =
         await dataManager.database.getLessonDate(request?.lessonDateId ?? '');
     if (foundDate == null) {
-      print('ERROR: No date found');
-      return;
+      throw Exception('ERROR: No date found');
     }
     lessonDate = foundDate;
   }

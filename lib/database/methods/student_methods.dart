@@ -1,5 +1,4 @@
 import 'package:teachent_app/database/adapters/firebase_adapter.dart';
-import 'package:teachent_app/model/objects/education_level.dart';
 
 import '../../common/consts.dart';
 import '../../model/db_objects/db_object.dart';

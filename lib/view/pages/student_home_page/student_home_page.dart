@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:teachent_app/common/date.dart';
 import 'package:teachent_app/common/enum_functions.dart';
+import 'package:teachent_app/controller/animations/loading_animation.dart';
 import 'package:teachent_app/controller/pages/student_home_page/student_home_page_controller.dart';
 import 'package:teachent_app/model/db_objects/db_object.dart';
 import 'package:teachent_app/view/widgets/single_card.dart';
@@ -13,18 +14,26 @@ class StudentHomePage extends StatefulWidget {
   _StudentHomePageState createState() => _StudentHomePageState();
 }
 
-class _StudentHomePageState extends State<StudentHomePage> {
+class _StudentHomePageState extends State<StudentHomePage> with SingleTickerProviderStateMixin {
   late StudentHomePageController _studentHomePageController;
+  final _loadingAnimationController = LoadingAnimationController();
 
   @override
   void initState() {
     super.initState();
     _studentHomePageController =
-        StudentHomePageController(widget.userId, refresh);
+        StudentHomePageController(widget.userId, refresh, _loadingAnimationController);
+    _loadingAnimationController.startAnimation(this, refresh);
   }
 
   void refresh() {
     setState(() {});
+  }
+
+  @override
+  void dispose() {
+    _loadingAnimationController.dispose();
+    super.dispose();
   }
 
   @override
@@ -34,7 +43,7 @@ class _StudentHomePageState extends State<StudentHomePage> {
             future: _studentHomePageController.init(),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
-                return const CircularProgressIndicator();
+                return _homeLoadingWidget(context);
               } else if (snapshot.connectionState == ConnectionState.done) {
                 return _homeWidget(context);
               }
@@ -65,6 +74,36 @@ class _StudentHomePageState extends State<StudentHomePage> {
         ),
       ),
     );
+  }
+
+  Widget _homeLoadingWidget(BuildContext context) {
+    return CustomScrollView(slivers: [
+      _appBar(context),
+      SliverList(
+          delegate: SliverChildListDelegate([
+        _searchBarWidget(),
+        CardLoadingWidget(
+          title: 'Next lessons',
+          height: 200,
+          backgroundColor: _loadingAnimationController.value!
+        ),
+        CardLoadingWidget(
+          title: 'Your cooperations',
+          height: 200,
+          backgroundColor: _loadingAnimationController.value!
+        ),
+        CardLoadingWidget(
+          title: 'Your students',
+          height: 150,
+          backgroundColor: _loadingAnimationController.value!
+        ),
+        CardLoadingWidget(
+          title: 'Requests',
+          height: 300,
+          backgroundColor: _loadingAnimationController.value!
+        ),
+      ]))
+    ]);
   }
 
   Widget _homeWidget(BuildContext context) {
@@ -235,7 +274,7 @@ class _StudentHomePageState extends State<StudentHomePage> {
         return ListTile(
             title: Text(currentDate,
                 style: const TextStyle(fontSize: 20, color: Colors.white)),
-            leading: Icon(Icons.send, size: 30, color: Colors.white),
+            leading: const Icon(Icons.send, size: 30, color: Colors.white),
             onTap: () =>
                 _studentHomePageController.goToRequestPage(context, index),
             subtitle: Text(request.status.stringValue,

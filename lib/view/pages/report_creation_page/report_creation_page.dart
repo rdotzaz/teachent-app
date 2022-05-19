@@ -7,7 +7,7 @@ import 'package:teachent_app/view/widgets/label.dart';
 
 class ReportCreationPage extends StatefulWidget {
   final List<KeyId> lessonDateIds;
-  ReportCreationPage({Key? key, required this.lessonDateIds}) : super(key: key);
+  const ReportCreationPage({Key? key, required this.lessonDateIds}) : super(key: key);
 
   @override
   _ReportCreationPageState createState() => _ReportCreationPageState();
@@ -42,7 +42,7 @@ class _ReportCreationPageState extends State<ReportCreationPage> {
             return const CircularProgressIndicator();
           } else if (snapshot.connectionState == ConnectionState.done) {
             return Scaffold(
-                appBar: AppBar(title: Text('Create report')),
+                appBar: AppBar(title: const Text('Create report')),
                 body: Column(children: [
                   reportController.hasLessons
                       ? _selectLessonField()
@@ -68,9 +68,9 @@ class _ReportCreationPageState extends State<ReportCreationPage> {
             ]),
         margin: const EdgeInsets.all(15),
         padding: const EdgeInsets.all(15),
-        child: Column(children: [
+        child: Column(children: const [
           Padding(
-              padding: const EdgeInsets.all(25),
+              padding: EdgeInsets.all(25),
               child: Icon(Icons.my_library_books, size: 40)),
           Label(text: 'You do not have lessons to report')
         ]));

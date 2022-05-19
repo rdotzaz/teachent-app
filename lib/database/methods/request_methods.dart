@@ -41,7 +41,6 @@ mixin RequestDatabaseMethods {
         await FirebaseRealTimeDatabaseAdapter.addDatabaseObjectWithNewKey(
             DatabaseObjectName.requests, request.toMap());
     if (newKey == DatabaseConsts.emptyKey) {
-      print('Request has not been added');
       return null;
     }
     return newKey;

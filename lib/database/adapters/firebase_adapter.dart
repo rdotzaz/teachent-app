@@ -35,7 +35,6 @@ class FirebaseRealTimeDatabaseAdapter {
     if (dbMode == DBMode.testing &&
         defaultTargetPlatform != TargetPlatform.android) {
       var databaseHost = _getHost(dbMode);
-      print('[Host] $databaseHost');
       FirebaseDatabase.instance
           .useDatabaseEmulator(databaseHost, DatabaseConsts.emulatorPort);
     }
@@ -151,14 +150,12 @@ class FirebaseRealTimeDatabaseAdapter {
   /// It means that method returns values from [collectionName]/[key]
   /// If [collectionName]/[key] record does not exist in database method returns empty map object
   static Future<Map> getObject(String collectionName, String key) async {
-    print('KEY: $key');
     if (key == DatabaseConsts.emptyKey) {
       return {};
     }
     DatabaseReference databaseReference =
         FirebaseDatabase.instance.ref().child('$collectionName/$key');
 
-    print('BEFORE Event $collectionName/$key');
     final snapshot = await databaseReference.get();
     final isKeyExists = snapshot.exists;
 
