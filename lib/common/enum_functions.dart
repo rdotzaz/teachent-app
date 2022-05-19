@@ -140,6 +140,24 @@ extension LessonStatusExt on LessonStatus {
   }
 }
 
+extension ReviewRateExt on ReviewRate {
+  int get value {
+    if (this == ReviewRate.one) {
+      return 1;
+    }
+    if (this == ReviewRate.two) {
+      return 2;
+    }
+    if (this == ReviewRate.three) {
+      return 3;
+    }
+    if (this == ReviewRate.four) {
+      return 4;
+    }
+    return 5;
+  }
+}
+
 /// Returns CycleType enum based on value from database
 CycleType getCycleByValue(int value) {
   if (value == 0) {
@@ -206,4 +224,21 @@ LessonStatus getLessonStatusStatusByValue(int value) {
     return LessonStatus.studentCancelled;
   }
   return LessonStatus.finished;
+}
+
+/// Returns ReviewRate enum based on value from database
+ReviewRate getReviewRateByValue(int value) {
+  if (value == 1) {
+    return ReviewRate.one;
+  }
+  if (value == 2) {
+    return ReviewRate.two;
+  }
+  if (value == 3) {
+    return ReviewRate.three;
+  }
+  if (value == 4) {
+    return ReviewRate.four;
+  }
+  return ReviewRate.five;
 }
