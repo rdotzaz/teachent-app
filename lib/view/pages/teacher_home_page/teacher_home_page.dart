@@ -15,7 +15,7 @@ class TeacherHomePage extends StatefulWidget {
   State<TeacherHomePage> createState() => _TeacherHomePageState();
 }
 
-class _TeacherHomePageState extends State<TeacherHomePage> with TickerProviderStateMixin {
+class _TeacherHomePageState extends State<TeacherHomePage> with SingleTickerProviderStateMixin {
   late TeacherHomePageController _teacherHomePageController;
   final _loadingAnimationController = LoadingAnimationController();
 
@@ -58,7 +58,7 @@ class _TeacherHomePageState extends State<TeacherHomePage> with TickerProviderSt
 
   Widget _body(BuildContext context, AsyncSnapshot snapshot) {
     if (snapshot.connectionState == ConnectionState.waiting) {
-      return const CircularProgressIndicator();
+      return _homeLoadingWidget(context);
     } else if (snapshot.connectionState == ConnectionState.done) {
       return _homeWidget(context);
     }
@@ -90,7 +90,7 @@ class _TeacherHomePageState extends State<TeacherHomePage> with TickerProviderSt
     );
   }
 
-  Widget _homeWidget(BuildContext context) {
+  Widget _homeLoadingWidget(BuildContext context) {
     return CustomScrollView(slivers: [
       _appBar(context),
       SliverList(
@@ -120,7 +120,7 @@ class _TeacherHomePageState extends State<TeacherHomePage> with TickerProviderSt
     ]);
   }
 
-  Widget _homeLoadingWidget(BuildContext context) {
+  Widget _homeWidget(BuildContext context) {
     return CustomScrollView(slivers: [
       _appBar(context),
       SliverList(

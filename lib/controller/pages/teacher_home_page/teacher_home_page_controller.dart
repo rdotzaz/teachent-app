@@ -42,8 +42,6 @@ class TeacherHomePageController extends BaseController {
     await _initDates();
     await _initRequests();
 
-    Future.delayed(const Duration(seconds: 2), () {});
-
     if (loadingAnimation.isAnimating) {
       loadingAnimation.stop();
     }

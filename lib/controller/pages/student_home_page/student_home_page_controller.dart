@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:teachent_app/common/enums.dart';
+import 'package:teachent_app/controller/animations/loading_animation.dart';
 import 'package:teachent_app/controller/controller.dart';
 import 'package:teachent_app/model/db_objects/db_object.dart';
 import 'package:teachent_app/model/db_objects/lesson.dart';
@@ -20,7 +21,8 @@ class StudentHomePageController extends BaseController {
   Student? student;
   final void Function() refresh;
 
-  StudentHomePageController(this.userId, this.refresh);
+  final LoadingAnimationController loadingAnimation;
+  StudentHomePageController(this.userId, this.refresh, this.loadingAnimation);
 
   final List<Teacher> teachers = [];
   final List<Lesson> lessons = [];
@@ -37,6 +39,10 @@ class StudentHomePageController extends BaseController {
     await initTeachers();
     await initRequests();
     await initLessonDates();
+
+    if (loadingAnimation.isAnimating) {
+      loadingAnimation.stop();
+    }
   }
 
   Future<void> initLessons() async {

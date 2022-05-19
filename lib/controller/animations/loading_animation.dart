@@ -7,7 +7,7 @@ import 'base_animation.dart';
 class LoadingAnimationController extends BaseAnimationWithTween<Color> {
   LoadingAnimationController()
     : super(duration: const Duration(milliseconds: 500),
-            animationTween: ColorTween(begin: Colors.white, end: Colors.grey));
+            animationTween: ColorTween(begin: Colors.grey[100], end: Colors.grey[300]));
   
   @override
   void actions() {
