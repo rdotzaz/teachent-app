@@ -6,7 +6,7 @@ import 'package:teachent_app/common/enum_functions.dart';
 import 'package:teachent_app/model/db_objects/db_object.dart';
 
 /// Object representation of review from student about teacher
-class Report extends DatabaseObject {
+class Review extends DatabaseObject {
   final KeyId reviewId;
   final KeyId studentId;
   final KeyId teacherId;
@@ -28,7 +28,7 @@ class Report extends DatabaseObject {
         title = values['title'] ?? '',
         description = values['description'] ?? '',
         date = DateFormatter.parse(values['date'] ?? ''),
-        rate = getReviewRateByValue(value['rate'] ?? 0);
+        rate = getReviewRateByValue(values['rate'] ?? 0);
 
   @override
   String get collectionName => DatabaseObjectName.reviews;
