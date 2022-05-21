@@ -22,12 +22,14 @@ class TeacherProfilePageController extends BaseController {
   TeacherProfilePageController(this.refresh, this.teacher, this.studentId);
 
   Future<void> initDates() async {
+    lessonDates.clear();
     final dates =
         await dataManager.database.getLessonDates(teacher.lessonDates);
     lessonDates.addAll(dates.where((d) => d.isFree));
   }
 
   Future<void> initReviews() async {
+    reviews.clear();
     final foundReviews =
         await dataManager.database.getReviewsByTeacherId(teacher.userId);
     reviews.addAll(foundReviews);

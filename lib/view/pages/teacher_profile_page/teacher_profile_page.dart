@@ -5,6 +5,7 @@ import 'package:teachent_app/controller/pages/teacher_profile_page/teacher_profi
 import 'package:teachent_app/model/db_objects/db_object.dart';
 import 'package:teachent_app/model/db_objects/teacher.dart';
 import 'package:teachent_app/view/widgets/custom_button.dart';
+import 'package:teachent_app/view/widgets/error_message_widget.dart';
 import 'package:teachent_app/view/widgets/label.dart';
 import 'package:teachent_app/view/widgets/single_card.dart';
 
@@ -258,6 +259,23 @@ class _TeacherProfilePageState extends State<TeacherProfilePage> {
   }
 
   Widget _reviews(BuildContext context) {
+    return FutureBuilder(
+        future: _teacherProfilePageController.initReviews(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const CardLoadingWidget(
+                title: 'Reviews', backgroundColor: Colors.white);
+          } else if (snapshot.connectionState == ConnectionState.done) {
+            return _reviewsBody(context);
+          }
+          return ErrorMessageWidget(
+              text: snapshot.error.toString(),
+              backgroundColor: Colors.white,
+              color: Colors.red);
+        });
+  }
+
+  Widget _reviewsBody(BuildContext context) {
     return SingleCardListWidget(
         title: 'Reviews',
         boxHeight: 150,
@@ -267,22 +285,30 @@ class _TeacherProfilePageState extends State<TeacherProfilePage> {
         elementBuilder: (context, index) {
           final review = _teacherProfilePageController.reviews[index];
           return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Label(text: review.title),
-              Label(text: 'Author: ${review.studentId}', fontSize: 12),
-              ListView.builder(
-                  itemCount: 5,
-                  scrollDirection: Axis.horizontal,
-                  itemBuilder: (_, index) {
-                    return Padding(
-                        padding: const EdgeInsets.all(8),
-                        child: Icon(Icons.star,
-                            size: 25,
-                            color: index + 1 < review.rate.value
-                                ? Colors.yellow
-                                : Colors.white));
-                  }),
-              Label(text: review.description, fontSize: 14)
+              Label(text: review.title, padding: 8),
+              Label(
+                  text: 'Author: ${review.studentId}',
+                  fontSize: 12,
+                  padding: 8),
+              SizedBox(
+                height: 40,
+                child: ListView.builder(
+                    itemCount: 5,
+                    shrinkWrap: true,
+                    scrollDirection: Axis.horizontal,
+                    itemBuilder: (_, index) {
+                      return Padding(
+                          padding: const EdgeInsets.all(8),
+                          child: Icon(Icons.star,
+                              size: 25,
+                              color: index + 1 <= review.rate.value
+                                  ? Colors.yellow
+                                  : Colors.white));
+                    }),
+              ),
+              Label(text: review.description, fontSize: 14, padding: 8)
             ],
           );
         },

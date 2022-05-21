@@ -9,9 +9,8 @@ import 'package:teachent_app/view/widgets/status_bottom_sheet.dart';
 class ReviewCreationPageController extends BaseController {
   final KeyId teacherId;
   final KeyId studentId;
-  final void Function() refresh;
 
-  ReviewCreationPageController(this.refresh, this.teacherId, this.studentId);
+  ReviewCreationPageController(this.teacherId, this.studentId);
 
   String title = '';
   String description = '';
@@ -49,7 +48,7 @@ class ReviewCreationPageController extends BaseController {
     return value?.isEmpty ?? true ? 'Title cannot be null' : null;
   }
 
-  void setRateNumber(int index) {
+  void setRateNumber(int index, void Function() refresh) {
     rate = index + 1;
     refresh();
   }
