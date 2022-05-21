@@ -6,6 +6,10 @@ import 'package:teachent_app/model/db_objects/lesson_date.dart';
 import 'package:teachent_app/view/widgets/single_card.dart';
 import 'package:teachent_app/view/widgets/label.dart';
 
+/// Page with informations related to lesson date - cooperation between teacher and student
+/// Input:
+/// [lessonDate] - lesson date (cooperation) object
+/// [isTeacher] - Specify if it is view from teacher point of view
 // ignore: must_be_immutable
 class LessonDatePage extends StatelessWidget {
   late LessonDatePageController lessonDateController;

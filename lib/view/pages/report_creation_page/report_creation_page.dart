@@ -5,6 +5,9 @@ import 'package:teachent_app/view/widgets/black_input_decorator.dart';
 import 'package:teachent_app/view/widgets/custom_button.dart';
 import 'package:teachent_app/view/widgets/label.dart';
 
+/// Page where teacher can create new report about lesson
+/// [lessonDateIds] - list of lesson date ids from teacher object.
+/// Based on these ids, teacher can select for which lesson would like to create report
 class ReportCreationPage extends StatefulWidget {
   final List<KeyId> lessonDateIds;
   const ReportCreationPage({Key? key, required this.lessonDateIds})

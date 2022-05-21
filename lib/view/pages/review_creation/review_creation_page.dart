@@ -8,6 +8,10 @@ import 'package:teachent_app/view/widgets/error_message_widget.dart';
 import 'package:teachent_app/view/widgets/label.dart';
 import 'package:teachent_app/view/widgets/single_card.dart';
 
+/// Page where student can create new review about teacher
+/// Input:
+/// [teacherId] - teacher id
+/// [studentId] - student id
 class ReviewCreationPage extends StatefulWidget {
   final KeyId teacherId;
   final KeyId studentId;
