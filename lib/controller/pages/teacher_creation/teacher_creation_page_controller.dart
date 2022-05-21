@@ -212,7 +212,7 @@ class TeacherCreationPageController extends BaseController {
         topics.map((name) => Topic(name, true)).toList(),
         tools.map((name) => Tool(name, true)).toList(),
         places.map((name) => Place(name, true)).toList(),
-        TeacherConsts.emptyRate, [], []);
+        TeacherConsts.emptyRate, [], [], []);
 
     Navigator.of(context).pushReplacement(
         MaterialPageRoute(builder: (_) => AccountCreationPage(teacher)));

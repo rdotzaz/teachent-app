@@ -18,9 +18,9 @@ class Review extends DatabaseObject {
   Review(this.reviewId, this.studentId, this.teacherId, this.title,
       this.description, this.date, this.rate);
 
-  Review.noKey(this.studentId, this.teacherId, this.title,
-      this.description, this.date, this.rate)
-    : reviewId = DatabaseConsts.emptyKey;
+  Review.noKey(this.studentId, this.teacherId, this.title, this.description,
+      this.date, this.rate)
+      : reviewId = DatabaseConsts.emptyKey;
 
   Review.fromMap(this.reviewId, Map<dynamic, dynamic> values)
       : studentId = values['studentId'] ?? '',
