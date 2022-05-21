@@ -1,5 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 
+
 /// Firebase options for web app required to access database
 /// IMPORTANT: These data should not be reveal in public repo
 ///
