@@ -78,7 +78,7 @@ class StudentCreationPageController extends BaseController {
     }
 
     var student =
-        Student.noKey(name, EducationLevel(educationLevel, true), [], []);
+        Student.noKey(name, EducationLevel(educationLevel, true), [], [], []);
     Navigator.of(context).pushReplacement(
         MaterialPageRoute(builder: (_) => AccountCreationPage(student)));
   }

@@ -14,23 +14,42 @@ class Teacher extends DatabaseObject {
   final List<Topic> topics;
   final List<Tool> tools;
   final List<Place> places;
-  final int averageRate;
+  final double averageRate;
   final List<KeyId> requests;
   final List<KeyId> lessonDates;
+  final List<KeyId> reviews;
 
-  Teacher(this.userId, this.name, this.description, this.topics, this.tools,
-      this.places, this.averageRate, this.requests, this.lessonDates);
+  Teacher(
+      this.userId,
+      this.name,
+      this.description,
+      this.topics,
+      this.tools,
+      this.places,
+      this.averageRate,
+      this.requests,
+      this.lessonDates,
+      this.reviews);
 
-  Teacher.noKey(this.name, this.description, this.topics, this.tools,
-      this.places, this.averageRate, this.requests, this.lessonDates);
+  Teacher.noKey(
+      this.name,
+      this.description,
+      this.topics,
+      this.tools,
+      this.places,
+      this.averageRate,
+      this.requests,
+      this.lessonDates,
+      this.reviews)
+      : userId = DatabaseConsts.emptyKey;
 
-  // TODO - Remove this
   Teacher.onlyKeyName(
       this.userId, this.name, this.topics, this.tools, this.places)
       : description = '',
-        averageRate = -1,
+        averageRate = 0.0,
         requests = [],
-        lessonDates = [];
+        lessonDates = [],
+        reviews = [];
 
   Teacher.fromMap(this.userId, Map<dynamic, dynamic> values)
       : name = values['name'] ?? '',
@@ -47,12 +66,16 @@ class Teacher extends DatabaseObject {
             .entries
             .map((p) => Place(p.key, true))
             .toList(),
-        averageRate = values['averageRate'] ?? -1,
+        averageRate = values['averageRate'] ?? 0.0,
         requests = DatabaseObject.getMapFromField(values, 'requests')
             .entries
             .map((id) => id.key.toString())
             .toList(),
         lessonDates = DatabaseObject.getMapFromField(values, 'lessonDates')
+            .entries
+            .map((id) => id.key.toString())
+            .toList(),
+        reviews = DatabaseObject.getMapFromField(values, 'reviews')
             .entries
             .map((id) => id.key.toString())
             .toList();
@@ -73,7 +96,8 @@ class Teacher extends DatabaseObject {
       'places': {for (var place in places) place.name: true},
       'averageRate': averageRate,
       'requests': {for (var key in requests) key: true},
-      'lessonDates': {for (var date in lessonDates) date: true}
+      'lessonDates': {for (var date in lessonDates) date: true},
+      'reviews': {for (var review in reviews) review: true}
     };
   }
 }

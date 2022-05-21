@@ -7,7 +7,8 @@ import 'package:teachent_app/view/widgets/label.dart';
 
 class ReportCreationPage extends StatefulWidget {
   final List<KeyId> lessonDateIds;
-  const ReportCreationPage({Key? key, required this.lessonDateIds}) : super(key: key);
+  const ReportCreationPage({Key? key, required this.lessonDateIds})
+      : super(key: key);
 
   @override
   _ReportCreationPageState createState() => _ReportCreationPageState();

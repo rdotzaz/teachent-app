@@ -15,15 +15,16 @@ class TeacherHomePage extends StatefulWidget {
   State<TeacherHomePage> createState() => _TeacherHomePageState();
 }
 
-class _TeacherHomePageState extends State<TeacherHomePage> with SingleTickerProviderStateMixin {
+class _TeacherHomePageState extends State<TeacherHomePage>
+    with SingleTickerProviderStateMixin {
   late TeacherHomePageController _teacherHomePageController;
   final _loadingAnimationController = LoadingAnimationController();
 
   @override
   void initState() {
     super.initState();
-    _teacherHomePageController =
-        TeacherHomePageController(widget.userId, refresh, _loadingAnimationController);
+    _teacherHomePageController = TeacherHomePageController(
+        widget.userId, refresh, _loadingAnimationController);
     _loadingAnimationController.startAnimation(this, refresh);
   }
 
@@ -97,25 +98,21 @@ class _TeacherHomePageState extends State<TeacherHomePage> with SingleTickerProv
           delegate: SliverChildListDelegate([
         _searchBarWidget(),
         CardLoadingWidget(
-          title: 'Next lessons',
-          height: 200,
-          backgroundColor: _loadingAnimationController.value!
-        ),
+            title: 'Next lessons',
+            height: 200,
+            backgroundColor: _loadingAnimationController.value!),
         CardLoadingWidget(
-          title: 'Your cooperations',
-          height: 200,
-          backgroundColor: _loadingAnimationController.value!
-        ),
+            title: 'Your cooperations',
+            height: 200,
+            backgroundColor: _loadingAnimationController.value!),
         CardLoadingWidget(
-          title: 'Your students',
-          height: 150,
-          backgroundColor: _loadingAnimationController.value!
-        ),
+            title: 'Your students',
+            height: 150,
+            backgroundColor: _loadingAnimationController.value!),
         CardLoadingWidget(
-          title: 'Requests',
-          height: 300,
-          backgroundColor: _loadingAnimationController.value!
-        ),
+            title: 'Requests',
+            height: 300,
+            backgroundColor: _loadingAnimationController.value!),
       ]))
     ]);
   }
@@ -279,8 +276,7 @@ class _TeacherHomePageState extends State<TeacherHomePage> with SingleTickerProv
                     padding: EdgeInsets.all(8),
                     child: Chip(
                         label: Text('Waiting for cooperator',
-                            style: TextStyle(
-                                fontSize: 12, color: Colors.blue)),
+                            style: TextStyle(fontSize: 12, color: Colors.blue)),
                         backgroundColor: Colors.white))
             ]));
       },

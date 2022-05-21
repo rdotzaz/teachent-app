@@ -11,17 +11,18 @@ class Student extends DatabaseObject {
   final EducationLevel educationLevel;
   final List<KeyId> requests;
   final List<KeyId> lessonDates;
+  final List<KeyId> reviews;
 
   Student(this.userId, this.name, this.educationLevel, this.requests,
-      this.lessonDates);
+      this.lessonDates, this.reviews);
 
-  Student.noKey(
-      this.name, this.educationLevel, this.requests, this.lessonDates);
+  Student.noKey(this.name, this.educationLevel, this.requests, this.lessonDates,
+      this.reviews);
 
-  // TODO - Remove this
   Student.onlyKeyName(this.userId, this.name, this.educationLevel)
       : requests = [],
-        lessonDates = [];
+        lessonDates = [],
+        reviews = [];
 
   Student.fromMap(this.userId, Map<dynamic, dynamic> values)
       : name = values['name'] ?? '',
@@ -31,6 +32,10 @@ class Student extends DatabaseObject {
             .map((id) => id.key.toString())
             .toList(),
         lessonDates = DatabaseObject.getMapFromField(values, 'lessonDates')
+            .entries
+            .map((id) => id.key.toString())
+            .toList(),
+        reviews = DatabaseObject.getMapFromField(values, 'reviews')
             .entries
             .map((id) => id.key.toString())
             .toList();
@@ -47,7 +52,8 @@ class Student extends DatabaseObject {
       'name': name,
       'educationLevel': educationLevel.name,
       'requests': {for (var request in requests) request: true},
-      'lessonDates': {for (var date in lessonDates) date: true}
+      'lessonDates': {for (var date in lessonDates) date: true},
+      'reviews': {for (var review in reviews) review: true}
     };
   }
 }

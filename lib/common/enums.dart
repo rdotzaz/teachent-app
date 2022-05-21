@@ -49,3 +49,11 @@ enum LessonStatus { open, teacherCancelled, studentCancelled, finished }
 /// [teachers] - search only teachers
 /// [students] - search only students
 enum PersonType { all, teachers, students }
+
+/// Enum for reviews
+/// [one] - one star review
+/// [two] - two stars review
+/// [three] - three stars review
+/// [four] - four stars review
+/// [five] - five stars review
+enum ReviewRate { one, two, three, four, five }

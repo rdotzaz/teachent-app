@@ -16,6 +16,7 @@ class SplashPageController extends BaseController {
   @override
   void init() {
     if (!dataManager.database.isAppConfigurationAlreadyExists()) {
+      // ignore: avoid_print
       print('[SplashPageController] App configuration doesn\'t exists');
       isAppConfigAlreadyExists = false;
     }
@@ -48,6 +49,7 @@ class SplashPageController extends BaseController {
       EducationLevel('University', false)
     ];
 
+    // ignore: avoid_print
     print('[Testing data] Adding data...');
     await dataManager.database.addTopics(allTopics);
     await dataManager.database.addTools(allTools);

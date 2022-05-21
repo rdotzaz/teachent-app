@@ -90,4 +90,18 @@ mixin TeacherDatabaseMethods {
         DatabaseObjectName.requests,
         {requestId: true});
   }
+
+  Future<void> addReviewIdToTeacher(KeyId teacherId, KeyId reviewId) async {
+    await FirebaseRealTimeDatabaseAdapter.updateField(
+        DatabaseObjectName.teachers,
+        teacherId,
+        DatabaseObjectName.reviews,
+        {reviewId: true});
+  }
+
+  /// Update current average rate from teacher with [teacherId] with [newAverageRate] value
+  Future<void> updateAverageRate(KeyId teacherId, double newAverageRate) async {
+    await FirebaseRealTimeDatabaseAdapter.updateField(
+        DatabaseObjectName.teachers, teacherId, 'averageRate', newAverageRate);
+  }
 }

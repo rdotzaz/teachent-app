@@ -14,15 +14,16 @@ class StudentHomePage extends StatefulWidget {
   _StudentHomePageState createState() => _StudentHomePageState();
 }
 
-class _StudentHomePageState extends State<StudentHomePage> with SingleTickerProviderStateMixin {
+class _StudentHomePageState extends State<StudentHomePage>
+    with SingleTickerProviderStateMixin {
   late StudentHomePageController _studentHomePageController;
   final _loadingAnimationController = LoadingAnimationController();
 
   @override
   void initState() {
     super.initState();
-    _studentHomePageController =
-        StudentHomePageController(widget.userId, refresh, _loadingAnimationController);
+    _studentHomePageController = StudentHomePageController(
+        widget.userId, refresh, _loadingAnimationController);
     _loadingAnimationController.startAnimation(this, refresh);
   }
 
@@ -83,25 +84,21 @@ class _StudentHomePageState extends State<StudentHomePage> with SingleTickerProv
           delegate: SliverChildListDelegate([
         _searchBarWidget(),
         CardLoadingWidget(
-          title: 'Next lessons',
-          height: 200,
-          backgroundColor: _loadingAnimationController.value!
-        ),
+            title: 'Next lessons',
+            height: 200,
+            backgroundColor: _loadingAnimationController.value!),
         CardLoadingWidget(
-          title: 'Your cooperations',
-          height: 200,
-          backgroundColor: _loadingAnimationController.value!
-        ),
+            title: 'Your cooperations',
+            height: 200,
+            backgroundColor: _loadingAnimationController.value!),
         CardLoadingWidget(
-          title: 'Your students',
-          height: 150,
-          backgroundColor: _loadingAnimationController.value!
-        ),
+            title: 'Your students',
+            height: 150,
+            backgroundColor: _loadingAnimationController.value!),
         CardLoadingWidget(
-          title: 'Requests',
-          height: 300,
-          backgroundColor: _loadingAnimationController.value!
-        ),
+            title: 'Requests',
+            height: 300,
+            backgroundColor: _loadingAnimationController.value!),
       ]))
     ]);
   }

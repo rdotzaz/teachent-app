@@ -14,10 +14,12 @@ abstract class BaseAnimationWithTween<Value> {
 
   final Duration duration;
   final Animatable<Value?> animationTween;
-  BaseAnimationWithTween({required this.duration, required this.animationTween});
+  BaseAnimationWithTween(
+      {required this.duration, required this.animationTween});
 
   void startAnimation(TickerProvider tickerProvider, void Function() refresh) {
-    animController = AnimationController(vsync: tickerProvider, duration: duration);
+    animController =
+        AnimationController(vsync: tickerProvider, duration: duration);
     animation = animationTween.animate(animController);
     animController.addListener(refresh);
     actions();
@@ -48,7 +50,8 @@ abstract class BaseAnimation {
   BaseAnimation({required this.duration});
 
   void startAnimation(TickerProvider tickerProvider, void Function() refresh) {
-    animController = AnimationController(vsync: tickerProvider, duration: duration);
+    animController =
+        AnimationController(vsync: tickerProvider, duration: duration);
     animController.addListener(refresh);
     actions();
   }
@@ -63,4 +66,3 @@ abstract class BaseAnimation {
     animController.dispose();
   }
 }
-

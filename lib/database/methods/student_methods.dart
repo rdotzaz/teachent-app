@@ -81,4 +81,12 @@ mixin StudentDatabaseMethods {
         DatabaseObjectName.lessonDates,
         {lessonDateId: true});
   }
+
+  Future<void> addReviewIdToStudent(KeyId studentId, KeyId reviewId) async {
+    await FirebaseRealTimeDatabaseAdapter.updateField(
+        DatabaseObjectName.students,
+        studentId,
+        DatabaseObjectName.reviews,
+        {reviewId: true});
+  }
 }

@@ -8,17 +8,17 @@ class CardLoadingWidget extends StatelessWidget {
   final double height;
   final double margin;
   const CardLoadingWidget(
-    {Key? key,
-    required this.backgroundColor,
-    this.title = '',
-    this.height = 100,
-    this.margin = 12}) : super(key: key);
-  
+      {Key? key,
+      required this.backgroundColor,
+      this.title = '',
+      this.height = 100,
+      this.margin = 12})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: BoxDecoration(
+        decoration: BoxDecoration(
           color: backgroundColor,
           borderRadius: BorderRadius.circular(12),
           boxShadow: [
@@ -30,8 +30,7 @@ class CardLoadingWidget extends StatelessWidget {
           ],
         ),
         margin: EdgeInsets.all(margin),
-        height: height
-    );
+        height: height);
   }
 }
 
