@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "472666586305",
+    "firebase_url": "https://teachentapp-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "teachentapp",
+    "storage_bucket": "teachentapp.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:472666586305:android:a63bc940607d07217a2840",
+        "android_client_info": {
+          "package_name": "com.example.teachent_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "472666586305-r4d55t9hd9g7bdliegta37103qd1heck.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCxqK28vbsmVe3aDWFqiKYhdqTNbvOO2Vo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "472666586305-r4d55t9hd9g7bdliegta37103qd1heck.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
