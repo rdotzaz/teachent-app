@@ -46,4 +46,4 @@ jobs:
         run: flutter test
       - name: Build in release mode
         run: flutter build apk
-      - run: flutter build apkbundle
+      - run: flutter build appbundle
