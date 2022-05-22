@@ -9,6 +9,10 @@ import 'package:teachent_app/view/pages/student_creation_page/name_student_sub_p
 import 'package:teachent_app/view/widgets/custom_button.dart';
 import 'package:teachent_app/view/widgets/header_clipper.dart';
 
+/// Page to create student type account
+/// This page contains PageView widget two sub pages
+/// - education level sub page
+/// - name sub page
 class StudentCreationPage extends StatefulWidget {
   const StudentCreationPage({Key? key}) : super(key: key);
 

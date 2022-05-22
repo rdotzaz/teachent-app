@@ -5,7 +5,7 @@ import 'package:teachent_app/view/pages/splash_page/splash_progress.dart';
 import 'splash_name.dart';
 
 /// First page after launching app
-/// Displaying logo and loading requiered componentes
+/// Display logo and load requiered componentes
 class SplashPage extends StatefulWidget {
   const SplashPage({Key? key}) : super(key: key);
 

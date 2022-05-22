@@ -28,6 +28,10 @@ Future<void> showLoadingDialog(BuildContext context, String info) async {
           StatusBottomSheet(info: info, status: BottomSheetStatus.loading));
 }
 
+/// Bottom status sheet with information and icon
+/// Input:
+/// [info] - information for user
+/// [status] - information status (error, success, info, loading)
 class StatusBottomSheet extends StatelessWidget {
   final String info;
   final BottomSheetStatus status;

@@ -12,6 +12,10 @@ import 'package:teachent_app/view/widgets/messages.dart';
 import 'other_day_widget.dart';
 import 'buttons.dart';
 
+/// Page for teacher to accept/reject cooperation with student
+/// Also on this page teacher manages request. After receiving request from student, teacher can
+/// - accept or reject new request date by student
+/// - write private message to student
 // ignore: must_be_immutable
 class TeacherRequestPage extends StatelessWidget {
   TeacherRequestPage(

@@ -2,6 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:teachent_app/model/db_objects/student.dart';
 import 'package:teachent_app/model/db_objects/teacher.dart';
 
+/// Card widger for found teachers
+/// Contains basic infomrations about teacher like
+/// name, topics, tools, places
+/// Input:
+/// [teacher] - teacher object
+/// [onPressed] - action after clicking this card by user
 class TeacherCardWidget extends StatelessWidget {
   final Teacher teacher;
   final void Function() onPressed;
@@ -96,6 +102,12 @@ class TeacherCardWidget extends StatelessWidget {
   }
 }
 
+/// Card widger for found students
+/// Contains basic infomrations about student like
+/// name, education level
+/// Input:
+/// [student] - student object
+/// [onPressed] - action after clicking this card by user
 class StudentCardWidget extends StatelessWidget {
   final Student student;
   final void Function() onPressed;

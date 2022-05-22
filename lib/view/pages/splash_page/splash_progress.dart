@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:teachent_app/controller/animations/splash_indicator_controller.dart';
 
+/// Widget on splash screen responsible for animating circular indicator
 class SplashProgressIndicatorWidget extends StatefulWidget {
   const SplashProgressIndicatorWidget({Key? key}) : super(key: key);
 

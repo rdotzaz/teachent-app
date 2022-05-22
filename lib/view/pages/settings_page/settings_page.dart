@@ -3,6 +3,10 @@ import 'package:teachent_app/controller/pages/settings_page/settings_page_contro
 import 'package:teachent_app/model/db_objects/db_object.dart';
 import 'package:teachent_app/view/widgets/custom_button.dart';
 
+/// Page with available settings from user perspective
+/// Also page gets access to widget with all licence informations (see 'About app' button)
+/// Input:
+/// [userId] - user id (teacher or student id)
 class SettingsPage extends StatefulWidget {
   final KeyId userId;
   const SettingsPage({Key? key, required this.userId}) : super(key: key);

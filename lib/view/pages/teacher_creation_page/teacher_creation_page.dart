@@ -12,6 +12,11 @@ import 'package:teachent_app/view/widgets/custom_button.dart';
 import 'name_sub_page.dart';
 import '../../widgets/header_clipper.dart';
 
+/// Page to create teacher type account
+/// This page contains PageView widget two three pages
+/// - name sub page
+/// - topic selection sub page
+/// - tools or places selection sub page
 class TeacherCreationPage extends StatefulWidget {
   const TeacherCreationPage({Key? key}) : super(key: key);
 

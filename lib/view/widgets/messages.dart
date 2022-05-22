@@ -6,6 +6,9 @@ import 'error_message_widget.dart';
 import 'label.dart';
 import 'single_card.dart';
 
+/// Widget for displaying chat inside teacher/student request page
+/// Input:
+/// [controller] - controller from teacher/student request page
 class Messages extends StatefulWidget {
   final BaseRequestPageController controller;
   const Messages({Key? key, required this.controller}) : super(key: key);

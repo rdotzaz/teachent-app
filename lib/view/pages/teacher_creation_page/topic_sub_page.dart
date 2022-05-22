@@ -7,6 +7,9 @@ import 'package:teachent_app/controller/pages/teacher_creation/bloc/topic_bloc.d
 import 'package:teachent_app/model/objects/topic.dart';
 import 'package:teachent_app/view/widgets/custom_button.dart';
 
+/// Sub page with form
+/// User specifies lesson topics
+/// This is one of the pages from PageView widget from teacher creation page
 Widget topicSubPage(TeacherCreationPageController teacherController) {
   return BlocBuilder<TopicBloc, List<Topic>>(builder: (_, topics) {
     return Padding(

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+/// Wrapper for big profile (teacher or student) buttons
 class ProfileButton extends StatelessWidget {
   final String profile;
   final IconData icon;

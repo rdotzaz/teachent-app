@@ -6,6 +6,11 @@ import 'package:teachent_app/controller/pages/search_page/bloc/tool_bloc.dart';
 import 'package:teachent_app/controller/pages/search_page/bloc/place_bloc.dart';
 import 'package:teachent_app/controller/pages/search_page/student_search_page_controller.dart';
 
+/// Search bar widget from student perspective
+/// Teacher and Student have separate search widgets due to different search filters
+/// Student can addionally specify topics, tools and places
+/// Input:
+/// [controller] - controller from student search page 
 class StudentSearchBarWidget extends StatelessWidget {
   final StudentSearchPageController controller;
   const StudentSearchBarWidget({Key? key, required this.controller})

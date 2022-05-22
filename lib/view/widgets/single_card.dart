@@ -2,6 +2,13 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 
+/// Loading placeholder for SingleCardWidget.
+/// This widget will be painted till future function from FutureBuilder will return
+/// Input:
+/// [backgroundColor] - card background color
+/// [title] - card title
+/// [height] - placeholder card height
+/// [margin] - placeholder card margin
 class CardLoadingWidget extends StatelessWidget {
   final Color backgroundColor;
   final String title;

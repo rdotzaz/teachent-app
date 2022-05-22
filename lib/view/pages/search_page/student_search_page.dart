@@ -10,6 +10,10 @@ import 'package:teachent_app/model/db_objects/db_object.dart';
 import 'student_search_bar_widget.dart';
 import 'user_card.dart';
 
+/// Student search page with search bar and available filters for better searching
+/// Input:
+/// [studentId] - student id
+/// This page shows after clicking on search bar in student home page
 class StudentSearchPage extends StatefulWidget {
   final KeyId studentId;
   const StudentSearchPage(this.studentId, {Key? key}) : super(key: key);

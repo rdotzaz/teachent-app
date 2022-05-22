@@ -4,6 +4,10 @@ import 'package:teachent_app/common/enum_functions.dart';
 import 'package:teachent_app/controller/pages/student_request_page/student_request_page_controller.dart';
 import 'package:teachent_app/view/widgets/custom_button.dart';
 
+/// Custom button used in Student request page
+/// Button behaviour changes in case of request state
+/// Input:
+/// [controller] - controller from student request page
 class ConfirmButton extends StatelessWidget {
   final StudentRequestPageController controller;
   const ConfirmButton({required this.controller, Key? key}) : super(key: key);

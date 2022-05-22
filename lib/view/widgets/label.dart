@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+/// Simple wrapper for Text widget with padding
 class Label extends StatelessWidget {
   final String text;
   final Color color;
