@@ -3,6 +3,9 @@ import 'package:teachent_app/common/consts.dart';
 import 'package:teachent_app/controller/pages/welcome_page/welcome_page.dart';
 import 'package:teachent_app/model/db_objects/db_object.dart';
 
+/// Page shows after successful account creation
+/// Input:
+/// [dbObject] - teacher or student object 
 class WelcomePage extends StatefulWidget {
   final DatabaseObject dbObject;
   const WelcomePage({Key? key, required this.dbObject}) : super(key: key);

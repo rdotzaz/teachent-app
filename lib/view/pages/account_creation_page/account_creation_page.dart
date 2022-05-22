@@ -6,6 +6,12 @@ import 'package:teachent_app/view/pages/login_page/header_clipper.dart';
 import 'package:teachent_app/view/widgets/black_input_decorator.dart';
 import 'package:teachent_app/view/widgets/custom_button.dart';
 
+/// Page which is showing after TeacherCreationPage or StudentCreationPage
+/// Input:
+/// [dbObject] - teacher or student object created in previous page
+///
+/// On page user specifies login and password.
+/// After subitting teacher and related objects are stored in database
 class AccountCreationPage extends StatefulWidget {
   final DatabaseObject dbObject;
   const AccountCreationPage(this.dbObject, {Key? key}) : super(key: key);

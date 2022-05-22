@@ -4,6 +4,7 @@ import 'package:teachent_app/controller/pages/profile_select_page/profile_select
 
 import '../../widgets/profile_button.dart';
 
+/// Page where user can specify what type of user would like to create
 class ProfileSelectPage extends StatelessWidget {
   ProfileSelectPage({Key? key}) : super(key: key);
 

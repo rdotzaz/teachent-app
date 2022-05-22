@@ -7,6 +7,13 @@ import 'package:teachent_app/view/widgets/label.dart';
 import 'package:teachent_app/view/widgets/single_card.dart';
 import 'package:teachent_app/view/widgets/custom_button.dart';
 
+/// Page with informations related to single lesson
+/// On this page user can cancel lesson
+/// Input:
+/// [lesson] - lesson object
+/// [teacher] - teacher object
+/// [student] - student object
+/// [isTeacher] - Specify if this will be done by teacher
 // ignore: must_be_immutable
 class LessonPage extends StatelessWidget {
   late LessonPageController lessonPageController;

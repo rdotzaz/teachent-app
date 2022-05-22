@@ -6,6 +6,9 @@ import 'package:teachent_app/controller/pages/student_home_page/student_home_pag
 import 'package:teachent_app/model/db_objects/db_object.dart';
 import 'package:teachent_app/view/widgets/single_card.dart';
 
+/// Home page from student perspective
+/// Input:
+/// [userId] - user id (student id)
 class StudentHomePage extends StatefulWidget {
   final KeyId userId;
   const StudentHomePage({Key? key, required this.userId}) : super(key: key);

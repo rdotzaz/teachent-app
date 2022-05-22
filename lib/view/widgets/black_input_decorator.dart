@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-/// Custom input decorator with black accent
+/// Custom input decorator for text fields with black accent
 InputDecoration blackInputDecorator(String label) {
   return InputDecoration(
       floatingLabelStyle: const TextStyle(color: Colors.black),

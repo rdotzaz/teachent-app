@@ -12,6 +12,11 @@ import 'package:teachent_app/view/widgets/messages.dart';
 
 import 'confirm_button.dart';
 
+/// Page for student to request cooperation with teacher
+/// Also on this page student manages request. After sending request to teacher, student can
+/// - request for new start date
+/// - write private message to teacher
+/// - select lesson topic
 // ignore: must_be_immutable
 class StudentRequestPage extends StatelessWidget {
   StudentRequestPage(

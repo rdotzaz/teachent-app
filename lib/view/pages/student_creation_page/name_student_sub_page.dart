@@ -3,6 +3,9 @@ import 'package:teachent_app/common/consts.dart';
 import 'package:teachent_app/controller/pages/student_creation/student_creation_page_controller.dart';
 import 'package:teachent_app/view/widgets/black_input_decorator.dart';
 
+/// Sub page with form
+/// User specifies name
+/// This is one of the pages from PageView widget from student creation page
 Widget nameStudentSubPage(StudentCreationPageController studentController) {
   return Form(
     key: studentController.formKey,

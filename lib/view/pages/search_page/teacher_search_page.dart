@@ -8,6 +8,10 @@ import 'package:teachent_app/controller/pages/search_page/teacher_search_page_co
 import 'teacher_search_bar.dart';
 import 'user_card.dart';
 
+/// Teacher search page with search bar and user type filter
+/// Input:
+/// [teacherId] - teacher id
+/// This page shows after clicking on search bar in teacher home page
 class TeacherSearchPage extends StatelessWidget {
   TeacherSearchPage({Key? key}) : super(key: key);
 

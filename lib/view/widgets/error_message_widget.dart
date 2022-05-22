@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+/// Main widget for error displaying. Could be used in FutureBuilder widget
 class ErrorMessageWidget extends StatelessWidget {
   final String text;
   final Color backgroundColor;

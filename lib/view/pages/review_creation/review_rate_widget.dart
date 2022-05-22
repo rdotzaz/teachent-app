@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:teachent_app/controller/pages/review_creation/review_creation_page_controller.dart';
 import 'package:teachent_app/view/widgets/single_card.dart';
 
+/// Widget used in review creation page
+/// User can rate teacher by selecting number of stars
+/// Input:
+/// [controller] - review creation page controller
 class ReviewRateWidget extends StatefulWidget {
   final ReviewCreationPageController controller;
   const ReviewRateWidget({Key? key, required this.controller})

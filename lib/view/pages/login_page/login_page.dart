@@ -6,6 +6,9 @@ import 'package:teachent_app/view/pages/login_page/header_clipper.dart';
 import '../../widgets/black_input_decorator.dart';
 import '../../widgets/custom_button.dart';
 
+/// Log in page
+/// Also user can go to page with account creation
+/// This page does not show after launching app if configuration is available
 class LoginPage extends StatelessWidget {
   const LoginPage({Key? key}) : super(key: key);
 

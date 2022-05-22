@@ -1,5 +1,8 @@
 import 'package:flutter/rendering.dart';
 
+/// Custom class of CustomClipper.
+/// This can be used in ClipPath widget.
+/// Path object specify how this widget will be painted
 class LoginHeaderClipper extends CustomClipper<Path> {
   @override
   Path getClip(Size size) {

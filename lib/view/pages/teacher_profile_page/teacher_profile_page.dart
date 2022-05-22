@@ -9,6 +9,10 @@ import 'package:teachent_app/view/widgets/error_message_widget.dart';
 import 'package:teachent_app/view/widgets/label.dart';
 import 'package:teachent_app/view/widgets/single_card.dart';
 
+/// Page with basic information about [teacher]
+/// Also optional input is [studentId].
+/// if this page is viewed by student account, then [studentId] is not null.
+/// Otherwise [studentId] is null
 // ignore: must_be_immutable
 class TeacherProfilePage extends StatefulWidget {
   final Teacher teacher;

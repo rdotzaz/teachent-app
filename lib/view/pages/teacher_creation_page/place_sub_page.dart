@@ -10,6 +10,9 @@ import 'package:teachent_app/model/objects/tool.dart';
 import 'package:teachent_app/view/widgets/custom_button.dart';
 import 'package:teachent_app/view/widgets/enabled_button.dart';
 
+/// Sub page with form
+/// User specifies places (where user would like to lead lessons) or tools (which tools user would like to use to lead remote lessons)
+/// This is one of the pages from PageView widget from teacher creation page
 Widget placeSubPage(TeacherCreationPageController teacherController) {
   return BlocBuilder<WorkModeBloc, int>(builder: (context, value) {
     return Padding(

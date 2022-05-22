@@ -3,6 +3,7 @@ import 'package:teachent_app/controller/pages/student_profile_page/student_profi
 import 'package:teachent_app/model/db_objects/student.dart';
 import 'package:teachent_app/view/widgets/label.dart';
 
+/// Page with basic information about [student]
 // ignore: must_be_immutable
 class StudentProfilePage extends StatelessWidget {
   StudentProfilePageController? _studentProfilePageController;

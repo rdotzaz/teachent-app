@@ -5,6 +5,8 @@ import 'package:teachent_app/controller/pages/student_creation/student_creation_
 import 'package:teachent_app/model/objects/education_level.dart';
 import 'package:teachent_app/view/widgets/custom_button.dart';
 
+/// Sub page for selecting education level
+/// This is one of the pages from PageView widget from student creation page
 Widget educationLevelSubPage(StudentCreationPageController studentController) {
   return BlocBuilder<EducationLevelBloc, EducationLevel?>(builder: (_, level) {
     return Padding(

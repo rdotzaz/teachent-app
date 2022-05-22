@@ -9,6 +9,9 @@ import 'package:teachent_app/view/widgets/black_input_decorator.dart';
 import 'package:teachent_app/view/widgets/custom_button.dart';
 import 'package:teachent_app/view/widgets/header_clipper.dart';
 
+/// Page with lesson date creation form
+/// Input:
+/// [teacher] - teacher for which lesson date will be created
 class LessonDateCreationPage extends StatefulWidget {
   final Teacher teacher;
   const LessonDateCreationPage(this.teacher, {Key? key}) : super(key: key);
