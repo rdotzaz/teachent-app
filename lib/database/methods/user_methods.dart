@@ -1,4 +1,4 @@
-import 'package:teachent_app/database/adapters/firebase_adapter.dart';
+import 'package:teachent_app/database/database.dart';
 
 import '../../common/consts.dart';
 import '../../common/enums.dart';
@@ -6,13 +6,13 @@ import '../../model/db_objects/db_object.dart';
 import '../../model/db_objects/user.dart';
 
 /// Methods to manage User object in database
-mixin UserDatabaseMethods {
+mixin UserDatabaseMethods on IDatabase {
   /// Method returns user when login and password are correct
   /// Otherwise returns null
   Future<LoginResult> checkLoginAndPassword(
       String login, String password) async {
     final userValues =
-        await FirebaseRealTimeDatabaseAdapter.findUserByLoginAndCheckPassword(
+        await firebaseAdapter.findUserByLoginAndCheckPassword(
             login, password);
     if (userValues.isEmpty) {
       return LoginResult(status: LoginStatus.logicError);
@@ -31,12 +31,12 @@ mixin UserDatabaseMethods {
   }
 
   Future<void> addUser(User user) async {
-    await FirebaseRealTimeDatabaseAdapter.addDatabaseObject(
+    await firebaseAdapter.addDatabaseObject(
         DatabaseObjectName.users, user.key, user.toMap());
   }
 
   Future<User?> getUser(KeyId userId) async {
-    final userValues = await FirebaseRealTimeDatabaseAdapter.getObject(
+    final userValues = await firebaseAdapter.getObject(
         DatabaseObjectName.users, userId);
 
     if (userValues.isEmpty) {

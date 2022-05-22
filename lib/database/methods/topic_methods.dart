@@ -1,13 +1,12 @@
 import 'package:teachent_app/common/consts.dart';
-import 'package:teachent_app/database/adapters/firebase_adapter.dart';
 import 'package:teachent_app/database/database.dart';
 import 'package:teachent_app/model/objects/topic.dart';
 
 /// Methods to maintain Topic object in database
-mixin TopicDatabaseMethods {
+mixin TopicDatabaseMethods on IDatabase {
   Future<Iterable<Topic>> getAvailableTopics() async {
     DBValues<bool> topicValues =
-        await FirebaseRealTimeDatabaseAdapter.getAvailableObjects(
+        await firebaseAdapter.getAvailableObjects(
             DatabaseObjectName.topics);
 
     return topicValues.entries
@@ -18,7 +17,7 @@ mixin TopicDatabaseMethods {
     Map<String, bool> topicValues = {
       for (var topic in topicsToAdd) topic.name: false
     };
-    await FirebaseRealTimeDatabaseAdapter.addObjects(
+    await firebaseAdapter.addObjects(
         DatabaseObjectName.topics, topicValues);
   }
 }

@@ -1,3 +1,5 @@
+import 'package:firebase_database/firebase_database.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:teachent_app/database/adapters/firebase_adapter.dart';
 import 'package:teachent_app/database/methods/configuration_methods.dart';
 import 'package:teachent_app/database/methods/education_level_methods.dart';
@@ -22,6 +24,9 @@ enum DBMode { testing, release }
 
 /// Abstract class for database. It allows to get protected values in mixins
 abstract class IDatabase {
+  @protected
+  final FirebaseRealTimeDatabaseAdapter firebaseAdapter = FirebaseRealTimeDatabaseAdapter();
+
   Future<void> init(DBMode dbMode);
   void clear();
 }
@@ -44,15 +49,18 @@ class MainDatabase extends IDatabase
         RequestDatabaseMethods,
         ReportDatabaseMethods,
         ReviewDatabaseMethods {
+  final FirebaseDatabase? instance;
+  MainDatabase({this.instance});
+
   @override
   Future<void> init(DBMode dbMode) async {
-    await FirebaseRealTimeDatabaseAdapter.init(dbMode);
+    await firebaseAdapter.init(instance, dbMode);
     await HiveDatabaseAdapter.init();
   }
 
   @override
   void clear() {
-    FirebaseRealTimeDatabaseAdapter.clear();
+    firebaseAdapter.clear();
     HiveDatabaseAdapter.clear();
   }
 }
