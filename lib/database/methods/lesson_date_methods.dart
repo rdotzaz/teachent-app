@@ -1,15 +1,15 @@
 import 'package:teachent_app/common/consts.dart';
 import 'package:teachent_app/common/date.dart';
-import 'package:teachent_app/database/adapters/firebase_adapter.dart';
+import 'package:teachent_app/database/database.dart';
 import 'package:teachent_app/model/db_objects/db_object.dart';
 import 'package:teachent_app/model/db_objects/lesson_date.dart';
 
 /// Methods to maintain LessonDate object in database
-mixin LessonDateDatabaseMethods {
+mixin LessonDateDatabaseMethods on IDatabase {
   /// Get lesson date by [lessonDateId]
   /// Return null if lesson date with [lessonDateId] does not exist
   Future<LessonDate?> getLessonDate(KeyId lessonDateId) async {
-    final dateValues = await FirebaseRealTimeDatabaseAdapter.getObject(
+    final dateValues = await firebaseAdapter.getObject(
         DatabaseObjectName.lessonDates, lessonDateId);
     if (dateValues.isEmpty) {
       return null;
@@ -33,7 +33,7 @@ mixin LessonDateDatabaseMethods {
   /// Add lesson date object to database
   Future<KeyId> addLessonDate(LessonDate lessonDate) async {
     final key =
-        await FirebaseRealTimeDatabaseAdapter.addDatabaseObjectWithNewKey(
+        await firebaseAdapter.addDatabaseObjectWithNewKey(
             DatabaseObjectName.lessonDates, lessonDate.toMap());
 
     //await FirebaseRealTimeDatabaseAdapter.addDatabaseObject(
@@ -43,7 +43,7 @@ mixin LessonDateDatabaseMethods {
 
   /// Update current date with [newDate]t for lesson date by [lessonDateId]
   Future<void> changeLessonDate(KeyId lessonDateId, DateTime newDate) async {
-    await FirebaseRealTimeDatabaseAdapter.updateField(
+    await firebaseAdapter.updateField(
         DatabaseObjectName.lessonDates,
         lessonDateId,
         'date',
@@ -52,12 +52,12 @@ mixin LessonDateDatabaseMethods {
 
   Future<void> assignStudentToLessonDate(
       KeyId lessonDateId, KeyId studentId) async {
-    await FirebaseRealTimeDatabaseAdapter.updateField(
+    await firebaseAdapter.updateField(
         DatabaseObjectName.lessonDates, lessonDateId, 'studentId', studentId);
   }
 
   Future<void> changeLessonDateIsFree(KeyId lessonDateId, bool isFree) async {
-    await FirebaseRealTimeDatabaseAdapter.updateField(
+    await firebaseAdapter.updateField(
         DatabaseObjectName.lessonDates, lessonDateId, 'isFree', isFree);
   }
 }

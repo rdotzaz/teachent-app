@@ -1,21 +1,21 @@
-import 'package:teachent_app/database/adapters/firebase_adapter.dart';
+import 'package:teachent_app/database/database.dart';
 
 import '../../common/consts.dart';
 import '../../model/db_objects/db_object.dart';
 import '../../model/db_objects/student.dart';
 
 /// Methods to maintain Student object in database
-mixin StudentDatabaseMethods {
+mixin StudentDatabaseMethods on IDatabase {
   /// Add student to database
   Future<void> addStudent(Student student) async {
-    await FirebaseRealTimeDatabaseAdapter.addDatabaseObject(
+    await firebaseAdapter.addDatabaseObject(
         DatabaseObjectName.students, student.key, student.toMap());
   }
 
   /// Returns Student object based on [userId]
   /// If object with [userId] does not exist in database, returns null
   Future<Student?> getStudent(KeyId userId) async {
-    final studentValues = await FirebaseRealTimeDatabaseAdapter.getObject(
+    final studentValues = await firebaseAdapter.getObject(
         DatabaseObjectName.students, userId);
     if (studentValues.isEmpty) {
       return null;
@@ -27,7 +27,7 @@ mixin StudentDatabaseMethods {
   /// Returns list of students with matching pattern [name]
   Future<List<Student>> getStudentsByNamePart(String name) async {
     final studentValues =
-        await FirebaseRealTimeDatabaseAdapter.getObjectsByName(
+        await firebaseAdapter.getObjectsByName(
             DatabaseObjectName.students, 'name', name);
     final students = <Student>[];
     studentValues.forEach((login, studentValue) {
@@ -40,7 +40,7 @@ mixin StudentDatabaseMethods {
 
   Future<void> addLessonDateKeyToStudent(
       KeyId studentId, KeyId lessonDateId) async {
-    await FirebaseRealTimeDatabaseAdapter.updateField(
+    await firebaseAdapter.updateField(
         DatabaseObjectName.students,
         studentId,
         DatabaseObjectName.lessonDates,
@@ -51,7 +51,7 @@ mixin StudentDatabaseMethods {
       List<KeyId> lessonDateIds) async {
     final students = <Student>[];
     for (final lessonDateId in lessonDateIds) {
-      final studentId = await FirebaseRealTimeDatabaseAdapter.getForeignKey(
+      final studentId = await firebaseAdapter.getForeignKey(
           DatabaseObjectName.lessonDates, lessonDateId, 'studentId');
       if (studentId == DatabaseConsts.emptyKey) {
         continue;
@@ -66,7 +66,7 @@ mixin StudentDatabaseMethods {
   }
 
   Future<void> addRequestIdToStudent(KeyId studentId, KeyId requestId) async {
-    await FirebaseRealTimeDatabaseAdapter.updateField(
+    await firebaseAdapter.updateField(
         DatabaseObjectName.students,
         studentId,
         DatabaseObjectName.requests,
@@ -75,7 +75,7 @@ mixin StudentDatabaseMethods {
 
   Future<void> addLessonDateIdToStudent(
       KeyId studentId, KeyId lessonDateId) async {
-    await FirebaseRealTimeDatabaseAdapter.updateField(
+    await firebaseAdapter.updateField(
         DatabaseObjectName.students,
         studentId,
         DatabaseObjectName.lessonDates,
@@ -83,7 +83,7 @@ mixin StudentDatabaseMethods {
   }
 
   Future<void> addReviewIdToStudent(KeyId studentId, KeyId reviewId) async {
-    await FirebaseRealTimeDatabaseAdapter.updateField(
+    await firebaseAdapter.updateField(
         DatabaseObjectName.students,
         studentId,
         DatabaseObjectName.reviews,

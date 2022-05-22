@@ -1,13 +1,12 @@
 import 'package:teachent_app/common/consts.dart';
-import 'package:teachent_app/database/adapters/firebase_adapter.dart';
 import 'package:teachent_app/database/database.dart';
 import 'package:teachent_app/model/objects/tool.dart';
 
 /// Methods to maintain Tool object in database
-mixin ToolsDatabaseMethods {
+mixin ToolsDatabaseMethods on IDatabase {
   Future<Iterable<Tool>> getAvailableTools() async {
     DBValues<bool> toolValues =
-        await FirebaseRealTimeDatabaseAdapter.getAvailableObjects(
+        await firebaseAdapter.getAvailableObjects(
             DatabaseObjectName.tools);
 
     return toolValues.entries
@@ -18,7 +17,7 @@ mixin ToolsDatabaseMethods {
     Map<String, bool> toolValues = {
       for (var tool in toolsToAdd) tool.name: false
     };
-    await FirebaseRealTimeDatabaseAdapter.addObjects(
+    await firebaseAdapter.addObjects(
         DatabaseObjectName.tools, toolValues);
   }
 }

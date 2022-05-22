@@ -1,14 +1,13 @@
 import 'package:teachent_app/common/consts.dart';
-import 'package:teachent_app/database/adapters/firebase_adapter.dart';
 import 'package:teachent_app/database/database.dart';
 import 'package:teachent_app/model/objects/place.dart';
 
 /// Methods to maintain Place object in database
-mixin PlaceDatabaseMethods {
+mixin PlaceDatabaseMethods on IDatabase {
   /// Get all available places from database
   Future<Iterable<Place>> getAvailablePlaces() async {
     DBValues<bool> placeValues =
-        await FirebaseRealTimeDatabaseAdapter.getAvailableObjects(
+        await firebaseAdapter.getAvailableObjects(
             DatabaseObjectName.places);
 
     return placeValues.entries
@@ -20,7 +19,7 @@ mixin PlaceDatabaseMethods {
     Map<String, bool> placeValues = {
       for (var place in placesToAdd) place.name: false
     };
-    await FirebaseRealTimeDatabaseAdapter.addObjects(
+    await firebaseAdapter.addObjects(
         DatabaseObjectName.places, placeValues);
   }
 }

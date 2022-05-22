@@ -1,10 +1,10 @@
 import 'package:teachent_app/common/consts.dart';
-import 'package:teachent_app/database/adapters/firebase_adapter.dart';
+import 'package:teachent_app/database/database.dart';
 import 'package:teachent_app/model/db_objects/db_object.dart';
 import 'package:teachent_app/model/db_objects/review.dart';
 
 /// Methods to maintain Review object in database
-mixin ReviewDatabaseMethods {
+mixin ReviewDatabaseMethods on IDatabase {
   /// Method returns all reviews which have [teacherId]
   Future<List<Review>> getReviewsByTeacherId(KeyId teacherId) async {
     return await _getReviewsByUserId('teacherId', teacherId);
@@ -18,7 +18,7 @@ mixin ReviewDatabaseMethods {
   /// Method adds new reivew to database
   Future<KeyId> addReview(Review review) async {
     final key =
-        await FirebaseRealTimeDatabaseAdapter.addDatabaseObjectWithNewKey(
+        await firebaseAdapter.addDatabaseObjectWithNewKey(
             DatabaseObjectName.reviews, review.toMap());
     return key;
   }
@@ -26,7 +26,7 @@ mixin ReviewDatabaseMethods {
   Future<List<Review>> _getReviewsByUserId(
       String property, KeyId userId) async {
     final reviewsValues =
-        await FirebaseRealTimeDatabaseAdapter.getObjectsByProperty(
+        await firebaseAdapter.getObjectsByProperty(
             DatabaseObjectName.reviews, property, userId);
 
     final reviews = <Review>[];
