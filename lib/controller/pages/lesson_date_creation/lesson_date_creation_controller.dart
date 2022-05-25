@@ -78,7 +78,10 @@ class LessonDateCreationPageController extends BaseController {
         initialDate: _selectedDate,
         firstDate: _selectedDate,
         lastDate: DateTime(2040));
+    setPossibleNewDate(pickedDate);
+  }
 
+  void setPossibleNewDate(DateTime? pickedDate) {
     if (pickedDate == null) {
       return;
     }
@@ -101,7 +104,10 @@ class LessonDateCreationPageController extends BaseController {
                   MediaQuery.of(context).copyWith(alwaysUse24HourFormat: true),
               child: child!);
         });
+    setPossibleNewTime(pickedTime);
+  }
 
+  void setPossibleNewTime(TimeOfDay? pickedTime) {
     if (pickedTime == null) {
       return;
     }
@@ -133,7 +139,7 @@ class LessonDateCreationPageController extends BaseController {
   String? validatePrice(String? price) {
     final priceInt = int.tryParse(price ?? '');
     if (priceInt == null) {
-      return null;
+      return 'Price cannot be null';
     }
     if (priceInt < 0) {
       return 'Price cannot be negative';

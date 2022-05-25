@@ -43,7 +43,7 @@ jobs:
       - name: Run Flutter pub get
         run: flutter pub get
       - name: Run test
-        run: flutter test
+        run: flutter test --reporter expanded
       - name: Build in release mode
         run: flutter build apk
       - run: flutter build apkbundle
