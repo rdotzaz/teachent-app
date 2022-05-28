@@ -156,7 +156,7 @@ class SingleCardListWidget extends StatelessWidget {
       this.margin = 12,
       this.elementPadding = 12,
       this.elementBottomMargin = 10,
-      this.maxElements = 3})
+      this.maxElements = 5})
       : super(key: key);
 
   @override

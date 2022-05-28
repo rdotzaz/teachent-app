@@ -71,6 +71,7 @@ class TeacherRequestPageController extends BaseRequestPageController {
       request.dateStatus == RequestedDateStatus.requested;
   String get statusInfo => request.status.stringValue;
   String get additionalInfo => request.dateStatus.stringValue;
+  bool get isEnabled => request.status != RequestStatus.accepted && request.status != RequestStatus.rejected;
 
   @override
   bool get hasAnyMessages =>
@@ -114,10 +115,16 @@ class TeacherRequestPageController extends BaseRequestPageController {
   }
 
   void rejectNewDate() {
+    if (!isEnabled) {
+      return;
+    }
     isNewDateAccepted = false;
   }
 
   void restoreNewDate() {
+    if (!isEnabled) {
+      return;
+    }
     isNewDateAccepted = true;
   }
 
@@ -131,12 +138,18 @@ class TeacherRequestPageController extends BaseRequestPageController {
   }
 
   Future<void> sendResponse(BuildContext context) async {
+    if (!isEnabled) {
+      return;
+    }
     await RequestManager.sendTeacherResponse(
         dataManager, request, isNewDateAccepted);
     Navigator.of(context).pop();
   }
 
   Future<void> acceptRequest(BuildContext context) async {
+    if (!isEnabled) {
+      return;
+    }
     await RequestManager.acceptRequest(
         dataManager, request, student?.userId ?? '', lessonDate);
     await LessonManager.createFirst(
@@ -146,6 +159,9 @@ class TeacherRequestPageController extends BaseRequestPageController {
   }
 
   Future<void> rejectRequest(BuildContext context) async {
+    if (!isEnabled) {
+      return;
+    }
     await RequestManager.rejectRequest(dataManager, request);
     await showSuccessMessageAsync(context, 'Request has been rejected');
     Navigator.of(context).pop();
