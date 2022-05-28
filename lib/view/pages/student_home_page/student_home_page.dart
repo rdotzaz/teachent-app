@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:teachent_app/common/date.dart';
 import 'package:teachent_app/common/enum_functions.dart';
-import 'package:teachent_app/controller/animations/loading_animation.dart';
 import 'package:teachent_app/controller/pages/student_home_page/student_home_page_controller.dart';
 import 'package:teachent_app/model/db_objects/db_object.dart';
+import 'package:teachent_app/view/widgets/custom_button.dart';
 import 'package:teachent_app/view/widgets/single_card.dart';
 
 /// Home page from student perspective
@@ -20,24 +20,16 @@ class StudentHomePage extends StatefulWidget {
 class _StudentHomePageState extends State<StudentHomePage>
     with SingleTickerProviderStateMixin {
   late StudentHomePageController _studentHomePageController;
-  final _loadingAnimationController = LoadingAnimationController();
 
   @override
   void initState() {
     super.initState();
-    _studentHomePageController = StudentHomePageController(
-        widget.userId, refresh, _loadingAnimationController);
-    _loadingAnimationController.startAnimation(this, refresh);
+    _studentHomePageController =
+        StudentHomePageController(widget.userId, refresh);
   }
 
   void refresh() {
     setState(() {});
-  }
-
-  @override
-  void dispose() {
-    _loadingAnimationController.dispose();
-    super.dispose();
   }
 
   @override
@@ -86,22 +78,16 @@ class _StudentHomePageState extends State<StudentHomePage>
       SliverList(
           delegate: SliverChildListDelegate([
         _searchBarWidget(),
-        CardLoadingWidget(
-            title: 'Next lessons',
-            height: 200,
-            backgroundColor: _loadingAnimationController.value!),
-        CardLoadingWidget(
+        const CardLoadingWidget(
+            title: 'Next lessons', height: 200, backgroundColor: Colors.white),
+        const CardLoadingWidget(
             title: 'Your cooperations',
             height: 200,
-            backgroundColor: _loadingAnimationController.value!),
-        CardLoadingWidget(
-            title: 'Your students',
-            height: 150,
-            backgroundColor: _loadingAnimationController.value!),
-        CardLoadingWidget(
-            title: 'Requests',
-            height: 300,
-            backgroundColor: _loadingAnimationController.value!),
+            backgroundColor: Colors.white),
+        const CardLoadingWidget(
+            title: 'Your students', height: 150, backgroundColor: Colors.white),
+        const CardLoadingWidget(
+            title: 'Requests', height: 300, backgroundColor: Colors.white),
       ]))
     ]);
   }
@@ -155,132 +141,151 @@ class _StudentHomePageState extends State<StudentHomePage>
 
   Widget _nextLessonsWidget() {
     return SingleCardListWidget(
-      backgroundColor: Colors.white,
-      shadowColor: Colors.grey,
-      title: 'Next lessons',
-      titleColor: Colors.black,
-      boxHeight: 200.0,
-      isNotEmptyCondition: _studentHomePageController.areLessons,
-      listLength: _studentHomePageController.lessons.length,
-      elementBackgroundColor: Colors.red,
-      emptyInfo: 'No lessons',
-      emptyIcon: Icons.free_breakfast,
-      elementBuilder: (context, index) {
-        final date = DateFormatter.getString(
-            _studentHomePageController.lessons[index].date);
-        return GestureDetector(
-            onTap: () =>
-                _studentHomePageController.goToLessonPage(context, index),
-            child:
-                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              Text(date,
-                  style: const TextStyle(fontSize: 14, color: Colors.white)),
-              const SizedBox(height: 20),
-              Text(
-                  _studentHomePageController.getTeacherName(
-                      _studentHomePageController.lessons[index].teacherId),
-                  style: const TextStyle(fontSize: 12, color: Colors.white)),
-            ]));
-      },
-    );
+        backgroundColor: Colors.white,
+        shadowColor: Colors.grey,
+        title: 'Next lessons',
+        titleColor: Colors.black,
+        boxHeight: 200.0,
+        isNotEmptyCondition: _studentHomePageController.areLessons,
+        listLength: _studentHomePageController.lessons.length,
+        elementBackgroundColor: Colors.red,
+        emptyInfo: 'No lessons',
+        emptyIcon: Icons.free_breakfast,
+        moreButton: CustomButton(
+            text: 'More',
+            fontSize: 14,
+            onPressed: () => _studentHomePageController.showMoreLessons(
+                context, _lessonItemWidget)),
+        elementBuilder: (context, index) => _lessonItemWidget(context, index));
+  }
+
+  Widget _lessonItemWidget(BuildContext context, int index) {
+    final date =
+        DateFormatter.getString(_studentHomePageController.lessons[index].date);
+    return GestureDetector(
+        onTap: () => _studentHomePageController.goToLessonPage(context, index),
+        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+          Text(date, style: const TextStyle(fontSize: 14, color: Colors.white)),
+          const SizedBox(height: 20),
+          Text(
+              _studentHomePageController.getTeacherName(
+                  _studentHomePageController.lessons[index].teacherId),
+              style: const TextStyle(fontSize: 12, color: Colors.white)),
+        ]));
   }
 
   Widget _lessonDatesWidget() {
     return SingleCardListWidget(
-      backgroundColor: Colors.white,
-      shadowColor: Colors.grey,
-      title: 'Your cooperations',
-      titleColor: Colors.black,
-      boxHeight: 200.0,
-      isNotEmptyCondition: _studentHomePageController.areDates,
-      listLength: _studentHomePageController.lessonDates.length,
-      elementBackgroundColor: Colors.red,
-      emptyInfo: 'No cooperations',
-      emptyIcon: Icons.free_breakfast,
-      elementBuilder: (context, index) {
-        return GestureDetector(
-            onTap: () =>
-                _studentHomePageController.goToLessonDatePage(context, index),
-            child:
-                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              Text(
-                  _studentHomePageController.getTeacherName(
-                      _studentHomePageController.lessons[index].teacherId),
-                  style: const TextStyle(fontSize: 12, color: Colors.white)),
-              Padding(
-                  padding: const EdgeInsets.all(8),
-                  child: Chip(
-                      label: Text(
-                          _studentHomePageController
-                              .lessonDates[index].cycleType.stringValue,
-                          style:
-                              const TextStyle(fontSize: 12, color: Colors.red)),
-                      backgroundColor: Colors.white))
-            ]));
-      },
-    );
+        backgroundColor: Colors.white,
+        shadowColor: Colors.grey,
+        title: 'Your cooperations',
+        titleColor: Colors.black,
+        boxHeight: 200.0,
+        isNotEmptyCondition: _studentHomePageController.areDates,
+        listLength: _studentHomePageController.lessonDates.length,
+        elementBackgroundColor: Colors.red,
+        emptyInfo: 'No cooperations',
+        emptyIcon: Icons.free_breakfast,
+        moreButton: CustomButton(
+            text: 'More',
+            fontSize: 14,
+            onPressed: () => _studentHomePageController.showMoreLessonDates(
+                context, _lessonDateItemWidget)),
+        elementBuilder: (context, index) =>
+            _lessonDateItemWidget(context, index));
+  }
+
+  Widget _lessonDateItemWidget(BuildContext context, int index) {
+    return GestureDetector(
+        onTap: () =>
+            _studentHomePageController.goToLessonDatePage(context, index),
+        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+          Text(
+              _studentHomePageController.getTeacherName(
+                  _studentHomePageController.lessons[index].teacherId),
+              style: const TextStyle(fontSize: 12, color: Colors.white)),
+          Padding(
+              padding: const EdgeInsets.all(8),
+              child: Chip(
+                  label: Text(
+                      _studentHomePageController
+                          .lessonDates[index].cycleType.stringValue,
+                      style: const TextStyle(fontSize: 12, color: Colors.red)),
+                  backgroundColor: Colors.white))
+        ]));
   }
 
   Widget _teachersWidget() {
     return SingleCardListWidget(
-      backgroundColor: Colors.white,
-      shadowColor: Colors.grey,
-      title: 'Your teachers',
-      titleColor: Colors.black,
-      boxHeight: 150.0,
-      elementHeight: 150.0,
-      elementWidth: 150.0,
-      isNotEmptyCondition: _studentHomePageController.areTeachers,
-      listLength: _studentHomePageController.teachers.length,
-      elementBackgroundColor: Colors.red,
-      emptyInfo: 'No teachers',
-      emptyIcon: Icons.person,
-      scrollDirection: Axis.horizontal,
-      elementBuilder: (context, index) {
-        return GestureDetector(
-            onTap: () =>
-                _studentHomePageController.goToTeacherProfile(context, index),
-            child: Column(children: [
-              const Padding(
-                  padding: EdgeInsets.all(10),
-                  child: Icon(
-                    Icons.person,
-                    color: Colors.white,
-                    size: 50,
-                  )),
-              const SizedBox(height: 20),
-              Text(_studentHomePageController.teachers[index].name,
-                  style: const TextStyle(fontSize: 18, color: Colors.white)),
-            ]));
-      },
-    );
+        backgroundColor: Colors.white,
+        shadowColor: Colors.grey,
+        title: 'Your teachers',
+        titleColor: Colors.black,
+        boxHeight: 150.0,
+        elementHeight: 150.0,
+        elementWidth: 150.0,
+        isNotEmptyCondition: _studentHomePageController.areTeachers,
+        listLength: _studentHomePageController.teachers.length,
+        elementBackgroundColor: Colors.red,
+        emptyInfo: 'No teachers',
+        emptyIcon: Icons.person,
+        scrollDirection: Axis.horizontal,
+        moreButton: CustomButton(
+            text: 'More',
+            fontSize: 14,
+            onPressed: () => _studentHomePageController.showMoreTeachers(
+                context, _teacherItemWidget)),
+        elementBuilder: (context, index) => _teacherItemWidget(context, index));
+  }
+
+  Widget _teacherItemWidget(BuildContext context, int index) {
+    return GestureDetector(
+        onTap: () =>
+            _studentHomePageController.goToTeacherProfile(context, index),
+        child: Column(children: [
+          const Padding(
+              padding: EdgeInsets.all(10),
+              child: Icon(
+                Icons.person,
+                color: Colors.white,
+                size: 50,
+              )),
+          const SizedBox(height: 20),
+          Text(_studentHomePageController.teachers[index].name,
+              style: const TextStyle(fontSize: 18, color: Colors.white)),
+        ]));
   }
 
   Widget _requestsWidget() {
     return SingleCardListWidget(
-      backgroundColor: Colors.white,
-      shadowColor: Colors.grey,
-      title: 'Requests',
-      titleColor: Colors.black,
-      boxHeight: 300.0,
-      isNotEmptyCondition: _studentHomePageController.areRequests,
-      listLength: _studentHomePageController.requests.length,
-      elementBackgroundColor: Colors.red,
-      emptyInfo: 'No requests',
-      emptyIcon: Icons.free_breakfast,
-      elementBuilder: (context, index) {
-        final request = _studentHomePageController.requests[index];
-        final currentDate = DateFormatter.getString(request.currentDate);
-        return ListTile(
-            title: Text(currentDate,
-                style: const TextStyle(fontSize: 20, color: Colors.white)),
-            leading: const Icon(Icons.send, size: 30, color: Colors.white),
-            onTap: () =>
-                _studentHomePageController.goToRequestPage(context, index),
-            subtitle: Text(request.status.stringValue,
-                style: const TextStyle(fontSize: 14, color: Colors.white)));
-      },
-    );
+        backgroundColor: Colors.white,
+        shadowColor: Colors.grey,
+        title: 'Requests',
+        titleColor: Colors.black,
+        boxHeight: 300.0,
+        isNotEmptyCondition: _studentHomePageController.areRequests,
+        listLength: _studentHomePageController.requests.length,
+        elementBackgroundColor: Colors.red,
+        emptyInfo: 'No requests',
+        emptyIcon: Icons.free_breakfast,
+        moreButton: CustomButton(
+            text: 'More',
+            fontSize: 14,
+            onPressed: () => _studentHomePageController.showMoreRequests(
+                context, _requestItemWidget)),
+        elementBuilder: (context, index) => _requestItemWidget(context, index));
+  }
+
+  Widget _requestItemWidget(BuildContext context, int index) {
+    final request = _studentHomePageController.requests[index];
+    final currentDate = DateFormatter.getString(request.currentDate);
+    return ListTile(
+        title: Text(currentDate,
+            style: const TextStyle(fontSize: 20, color: Colors.white)),
+        leading: const Icon(Icons.send, size: 30, color: Colors.white),
+        onTap: () => _studentHomePageController.goToRequestPage(context, index),
+        subtitle: Text(request.status.stringValue,
+            style: const TextStyle(fontSize: 14, color: Colors.white)));
   }
 
   Widget _errorWidget(String errorMessage) {

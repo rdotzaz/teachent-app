@@ -96,18 +96,18 @@ extension CycleTypeExt on CycleType {
 
   String get stringValue {
     if (this == CycleType.single) {
-      return 'Single';
+      return 'Single lesson';
     }
     if (this == CycleType.daily) {
-      return 'Daily';
+      return 'Daily lessons';
     }
     if (this == CycleType.weekly) {
-      return 'Weekly';
+      return 'Weekly lessons';
     }
     if (this == CycleType.biweekly) {
-      return 'Biweekly';
+      return 'Biweekly lessons';
     }
-    return 'Monthly';
+    return 'Monthly lessons';
   }
 }
 
