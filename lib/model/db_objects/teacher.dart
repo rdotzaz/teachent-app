@@ -66,18 +66,18 @@ class Teacher extends DatabaseObject {
             .entries
             .map((p) => Place(p.key, true))
             .toList(),
-        averageRate = values['averageRate'] ?? 0.0,
+        averageRate = (values['averageRate'] as int? ?? 0).toDouble(),
         requests = DatabaseObject.getMapFromField(values, 'requests')
             .entries
-            .map((id) => id.key.toString())
+            .map((id) => id.key)
             .toList(),
         lessonDates = DatabaseObject.getMapFromField(values, 'lessonDates')
             .entries
-            .map((id) => id.key.toString())
+            .map((id) => id.key)
             .toList(),
         reviews = DatabaseObject.getMapFromField(values, 'reviews')
             .entries
-            .map((id) => id.key.toString())
+            .map((id) => id.key)
             .toList();
 
   @override

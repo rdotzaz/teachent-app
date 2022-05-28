@@ -82,7 +82,7 @@ class FirebaseRealTimeDatabaseAdapter {
     }
 
     String encryptedPassword =
-        (foundEventValue as DBValues)['password'] ?? DatabaseConsts.emptyField;
+        (foundEventValue as Map<dynamic, dynamic>)['password'] ?? DatabaseConsts.emptyField;
 
     if (encryptedPassword == DatabaseConsts.emptyField) {
       return FirebaseResponse(
