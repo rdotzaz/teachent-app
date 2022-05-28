@@ -1,18 +1,21 @@
 import 'package:teachent_app/common/consts.dart';
+import 'package:teachent_app/common/firebase_enums.dart';
 import 'package:teachent_app/database/adapters/firebase_adapter.dart';
-import 'package:teachent_app/database/database.dart';
 import 'package:teachent_app/model/objects/education_level.dart';
 
 /// Methods to maintain EducationLevel object in database
 mixin EducationLevelDatabaseMethods {
   /// Get all available education levels from database
-  Future<Iterable<EducationLevel>> getAvailableEducationLevel() async {
-    DBValues<bool> levelValues =
-        await FirebaseRealTimeDatabaseAdapter.getAvailableObjects(
-            DatabaseObjectName.levels);
+  Future<List<EducationLevel>> getAvailableEducationLevel() async {
+    final response = await FirebaseRealTimeDatabaseAdapter.getAvailableObjects(
+        DatabaseObjectName.levels);
 
-    return levelValues.entries
-        .map((levelEntry) => EducationLevel(levelEntry.key, levelEntry.value));
+    if (response.status == FirebaseResponseStatus.failure) {
+      return [];
+    }
+    return response.data.entries
+        .map((levelEntry) => EducationLevel(levelEntry.key, levelEntry.value))
+        .toList();
   }
 
   /// Add [levelsToAdd] levels to exited education levels.

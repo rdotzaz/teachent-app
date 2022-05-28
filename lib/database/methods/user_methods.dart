@@ -1,3 +1,4 @@
+import 'package:teachent_app/common/firebase_enums.dart';
 import 'package:teachent_app/database/adapters/firebase_adapter.dart';
 
 import '../../common/consts.dart';
@@ -11,23 +12,22 @@ mixin UserDatabaseMethods {
   /// Otherwise returns null
   Future<LoginResult> checkLoginAndPassword(
       String login, String password) async {
-    final userValues =
+    final response =
         await FirebaseRealTimeDatabaseAdapter.findUserByLoginAndCheckPassword(
             login, password);
-    if (userValues.isEmpty) {
+    if (response.loginResult?.status == LoginStatus.logicError) {
       return LoginResult(status: LoginStatus.logicError);
     }
 
-    if (userValues.containsKey('error')) {
-      return userValues['error'] == 'login'
-          ? LoginResult(status: LoginStatus.loginNotFound)
-          : LoginResult(status: LoginStatus.invalidPassword);
+    if (response.status == FirebaseResponseStatus.failure) {
+      return response.loginResult ??
+          LoginResult(status: LoginStatus.logicError);
     }
 
     return LoginResult(
         status: LoginStatus.success,
-        user: User(login, userValues['isDarkMode'] ?? false,
-            userValues['isTeacher'] ?? true, password));
+        user: User(login, response.data['isDarkMode'] ?? false,
+            response.data['isTeacher'] ?? true, password));
   }
 
   Future<void> addUser(User user) async {
@@ -36,12 +36,12 @@ mixin UserDatabaseMethods {
   }
 
   Future<User?> getUser(KeyId userId) async {
-    final userValues = await FirebaseRealTimeDatabaseAdapter.getObject(
+    final response = await FirebaseRealTimeDatabaseAdapter.getObject(
         DatabaseObjectName.users, userId);
 
-    if (userValues.isEmpty) {
+    if (response.status == FirebaseResponseStatus.failure) {
       return null;
     }
-    return User.fromMap(userId, userValues as Map<String, dynamic>);
+    return User.fromMap(userId, response.data as Map<String, dynamic>);
   }
 }

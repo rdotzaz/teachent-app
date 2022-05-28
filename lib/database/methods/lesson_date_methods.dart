@@ -1,5 +1,6 @@
 import 'package:teachent_app/common/consts.dart';
 import 'package:teachent_app/common/date.dart';
+import 'package:teachent_app/common/firebase_enums.dart';
 import 'package:teachent_app/database/adapters/firebase_adapter.dart';
 import 'package:teachent_app/model/db_objects/db_object.dart';
 import 'package:teachent_app/model/db_objects/lesson_date.dart';
@@ -9,12 +10,12 @@ mixin LessonDateDatabaseMethods {
   /// Get lesson date by [lessonDateId]
   /// Return null if lesson date with [lessonDateId] does not exist
   Future<LessonDate?> getLessonDate(KeyId lessonDateId) async {
-    final dateValues = await FirebaseRealTimeDatabaseAdapter.getObject(
+    final response = await FirebaseRealTimeDatabaseAdapter.getObject(
         DatabaseObjectName.lessonDates, lessonDateId);
-    if (dateValues.isEmpty) {
+    if (response.status == FirebaseResponseStatus.failure) {
       return null;
     }
-    return LessonDate.fromMap(lessonDateId, dateValues);
+    return LessonDate.fromMap(lessonDateId, response.data);
   }
 
   /// Get all lesson dates by [lessonDateIds]
@@ -32,13 +33,13 @@ mixin LessonDateDatabaseMethods {
 
   /// Add lesson date object to database
   Future<KeyId> addLessonDate(LessonDate lessonDate) async {
-    final key =
+    final response =
         await FirebaseRealTimeDatabaseAdapter.addDatabaseObjectWithNewKey(
             DatabaseObjectName.lessonDates, lessonDate.toMap());
 
     //await FirebaseRealTimeDatabaseAdapter.addDatabaseObject(
     //    DatabaseObjectName.dateToReports, lessonDate.lessonDateId, {});
-    return key;
+    return response.data;
   }
 
   /// Update current date with [newDate]t for lesson date by [lessonDateId]

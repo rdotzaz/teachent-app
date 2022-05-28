@@ -1,3 +1,4 @@
+import 'package:teachent_app/common/firebase_enums.dart';
 import 'package:teachent_app/database/adapters/firebase_adapter.dart';
 
 import '../../common/consts.dart';
@@ -15,22 +16,21 @@ mixin StudentDatabaseMethods {
   /// Returns Student object based on [userId]
   /// If object with [userId] does not exist in database, returns null
   Future<Student?> getStudent(KeyId userId) async {
-    final studentValues = await FirebaseRealTimeDatabaseAdapter.getObject(
+    final response = await FirebaseRealTimeDatabaseAdapter.getObject(
         DatabaseObjectName.students, userId);
-    if (studentValues.isEmpty) {
+    if (response.status == FirebaseResponseStatus.failure) {
       return null;
     }
 
-    return Student.fromMap(userId, studentValues);
+    return Student.fromMap(userId, response.data);
   }
 
   /// Returns list of students with matching pattern [name]
   Future<List<Student>> getStudentsByNamePart(String name) async {
-    final studentValues =
-        await FirebaseRealTimeDatabaseAdapter.getObjectsByName(
-            DatabaseObjectName.students, 'name', name);
+    final response = await FirebaseRealTimeDatabaseAdapter.getObjectsByName(
+        DatabaseObjectName.students, 'name', name);
     final students = <Student>[];
-    studentValues.forEach((login, studentValue) {
+    response.data.forEach((login, studentValue) {
       final student =
           Student.fromMap(login, studentValue as Map<dynamic, dynamic>);
       students.add(student);
@@ -51,12 +51,12 @@ mixin StudentDatabaseMethods {
       List<KeyId> lessonDateIds) async {
     final students = <Student>[];
     for (final lessonDateId in lessonDateIds) {
-      final studentId = await FirebaseRealTimeDatabaseAdapter.getForeignKey(
+      final response = await FirebaseRealTimeDatabaseAdapter.getForeignKey(
           DatabaseObjectName.lessonDates, lessonDateId, 'studentId');
-      if (studentId == DatabaseConsts.emptyKey) {
+      if (response.status == FirebaseResponseStatus.failure) {
         continue;
       }
-      final student = await getStudent(studentId);
+      final student = await getStudent(response.data);
       if (student == null) {
         continue;
       }

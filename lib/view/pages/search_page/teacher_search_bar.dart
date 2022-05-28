@@ -8,7 +8,7 @@ import 'package:teachent_app/controller/pages/search_page/teacher_search_page_co
 /// Search bar widget from teacher perspective
 /// Teacher and Student have separate search widgets due to different search filters
 /// Input:
-/// [controller] - controller from teacher search page 
+/// [controller] - controller from teacher search page
 class TeacherSearchBarWidget extends StatelessWidget {
   final TeacherSearchPageController controller;
   const TeacherSearchBarWidget({Key? key, required this.controller})

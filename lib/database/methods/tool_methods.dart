@@ -1,16 +1,14 @@
 import 'package:teachent_app/common/consts.dart';
 import 'package:teachent_app/database/adapters/firebase_adapter.dart';
-import 'package:teachent_app/database/database.dart';
 import 'package:teachent_app/model/objects/tool.dart';
 
 /// Methods to maintain Tool object in database
 mixin ToolsDatabaseMethods {
   Future<Iterable<Tool>> getAvailableTools() async {
-    DBValues<bool> toolValues =
-        await FirebaseRealTimeDatabaseAdapter.getAvailableObjects(
-            DatabaseObjectName.tools);
+    final response = await FirebaseRealTimeDatabaseAdapter.getAvailableObjects(
+        DatabaseObjectName.tools);
 
-    return toolValues.entries
+    return response.data.entries
         .map((toolEntry) => Tool(toolEntry.key, toolEntry.value));
   }
 
