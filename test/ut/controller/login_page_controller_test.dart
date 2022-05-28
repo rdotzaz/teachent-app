@@ -11,7 +11,8 @@ void main() {
     });
 
     test('Validate setting incorrect login', () {
-      expect(loginFormController.validateLogin(null), LoginPageConsts.loginError);
+      expect(
+          loginFormController.validateLogin(null), LoginPageConsts.loginError);
     });
 
     test('Validate setting login', () {
@@ -19,7 +20,8 @@ void main() {
     });
 
     test('Validate setting incorrect password', () {
-      expect(loginFormController.validatePassword(null), LoginPageConsts.passwordError);
+      expect(loginFormController.validatePassword(null),
+          LoginPageConsts.passwordError);
     });
 
     test('Validate setting password', () {
