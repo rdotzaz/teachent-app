@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:teachent_app/common/enums.dart';
-import 'package:teachent_app/controller/animations/loading_animation.dart';
 import 'package:teachent_app/controller/controller.dart';
 import 'package:teachent_app/model/db_objects/db_object.dart';
 import 'package:teachent_app/model/db_objects/lesson.dart';
@@ -10,6 +9,7 @@ import 'package:teachent_app/model/db_objects/student.dart';
 import 'package:teachent_app/model/db_objects/teacher.dart';
 import 'package:teachent_app/view/pages/lesson_page/lesson_page.dart';
 import 'package:teachent_app/view/pages/lesson_date/lesson_date_page.dart';
+import 'package:teachent_app/view/pages/list_page/list_page.dart';
 import 'package:teachent_app/view/pages/search_page/student_search_page.dart';
 import 'package:teachent_app/view/pages/settings_page/settings_page.dart';
 import 'package:teachent_app/view/pages/teacher_profile_page/teacher_profile_page.dart';
@@ -21,13 +21,14 @@ class StudentHomePageController extends BaseController {
   Student? student;
   final void Function() refresh;
 
-  final LoadingAnimationController loadingAnimation;
-  StudentHomePageController(this.userId, this.refresh, this.loadingAnimation);
+  StudentHomePageController(this.userId, this.refresh);
 
   final List<Teacher> teachers = [];
   final List<Lesson> lessons = [];
   final List<Request> requests = [];
   final List<LessonDate> lessonDates = [];
+
+  bool isMoreView = false;
 
   @override
   Future<void> init() async {
@@ -39,10 +40,6 @@ class StudentHomePageController extends BaseController {
     await initTeachers();
     await initRequests();
     await initLessonDates();
-
-    if (loadingAnimation.isAnimating) {
-      loadingAnimation.stop();
-    }
   }
 
   Future<void> initLessons() async {
@@ -88,7 +85,9 @@ class StudentHomePageController extends BaseController {
   Future<void> goToSearchPage(BuildContext context) async {
     await Navigator.of(context)
         .push(MaterialPageRoute(builder: (_) => StudentSearchPage(userId)));
-    refresh();
+    if (!isMoreView) {
+      refresh();
+    }
   }
 
   void goToSettingsPage(BuildContext context) {
@@ -100,7 +99,9 @@ class StudentHomePageController extends BaseController {
     await Navigator.of(context).push(MaterialPageRoute(
         builder: (_) =>
             TeacherProfilePage(teacher: teachers[index], studentId: userId)));
-    refresh();
+    if (!isMoreView) {
+      refresh();
+    }
   }
 
   Future<void> goToRequestPage(BuildContext context, int requestIndex) async {
@@ -109,7 +110,9 @@ class StudentHomePageController extends BaseController {
     await Navigator.of(context).push(MaterialPageRoute(
         builder: (_) => StudentRequestPage(
             requestId: request.requestId, studentId: student?.userId ?? '')));
-    refresh();
+    if (!isMoreView) {
+      refresh();
+    }
   }
 
   Future<void> goToLessonPage(BuildContext context, int lessonIndex) async {
@@ -122,12 +125,68 @@ class StudentHomePageController extends BaseController {
             teacher: teacher,
             student: student!,
             isTeacher: false)));
-    refresh();
+    if (!isMoreView) {
+      refresh();
+    }
   }
 
   Future<void> goToLessonDatePage(BuildContext context, int dateIndex) async {
     await Navigator.of(context).push(MaterialPageRoute(
         builder: (_) => LessonDatePage(lessonDates[dateIndex], false)));
-    refresh();
+    if (!isMoreView) {
+      refresh();
+    }
+  }
+
+  Future<void> showMoreLessons(BuildContext context,
+      Widget Function(BuildContext context, int index) itemBuilder) async {
+    isMoreView = true;
+    await Navigator.of(context).push(MaterialPageRoute(
+        builder: (_) => ListPage(
+            title: 'Lessons',
+            objects: lessons,
+            elementBuilder: itemBuilder,
+            init: init,
+            color: Colors.red)));
+    isMoreView = false;
+  }
+
+  Future<void> showMoreTeachers(BuildContext context,
+      Widget Function(BuildContext context, int index) itemBuilder) async {
+    isMoreView = true;
+    await Navigator.of(context).push(MaterialPageRoute(
+        builder: (_) => ListPage(
+            title: 'Teachers',
+            objects: teachers,
+            elementBuilder: itemBuilder,
+            init: init,
+            color: Colors.red)));
+    isMoreView = false;
+  }
+
+  Future<void> showMoreLessonDates(BuildContext context,
+      Widget Function(BuildContext context, int index) itemBuilder) async {
+    isMoreView = true;
+    await Navigator.of(context).push(MaterialPageRoute(
+        builder: (_) => ListPage(
+            title: 'Cooperations',
+            objects: lessonDates,
+            elementBuilder: itemBuilder,
+            init: init,
+            color: Colors.red)));
+    isMoreView = false;
+  }
+
+  Future<void> showMoreRequests(BuildContext context,
+      Widget Function(BuildContext context, int index) itemBuilder) async {
+    isMoreView = true;
+    await Navigator.of(context).push(MaterialPageRoute(
+        builder: (_) => ListPage(
+            title: 'Requests',
+            objects: requests,
+            elementBuilder: itemBuilder,
+            init: init,
+            color: Colors.red)));
+    isMoreView = false;
   }
 }

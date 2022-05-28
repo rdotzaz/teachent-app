@@ -132,7 +132,7 @@ class SingleCardListWidget extends StatelessWidget {
   final double padding;
   final double margin;
   final int maxElements;
-  final bool addMoreButton;
+  final Widget? moreButton;
   final Widget? rightButton;
   const SingleCardListWidget(
       {Key? key,
@@ -146,6 +146,7 @@ class SingleCardListWidget extends StatelessWidget {
       required this.emptyInfo,
       this.emptyIcon,
       this.rightButton,
+      this.moreButton,
       this.shadowColor = Colors.grey,
       this.titleColor = Colors.white,
       this.elementHeight = 0.0,
@@ -155,8 +156,7 @@ class SingleCardListWidget extends StatelessWidget {
       this.margin = 12,
       this.elementPadding = 12,
       this.elementBottomMargin = 10,
-      this.maxElements = 5,
-      this.addMoreButton = false})
+      this.maxElements = 3})
       : super(key: key);
 
   @override
@@ -176,15 +176,25 @@ class SingleCardListWidget extends StatelessWidget {
   }
 
   Widget bodyWidget() {
-    if (elementHeight == 0.0) {
-      return listBuilderWidget();
+    if (moreButton != null && listLength > maxElements) {
+      return Column(
+        children: [
+          elementHeight == 0.0
+              ? listBuilderWidget()
+              : SizedBox(height: elementHeight, child: listBuilderWidget()),
+          moreButton!
+        ],
+      );
+    } else {
+      return elementHeight == 0.0
+          ? listBuilderWidget()
+          : SizedBox(height: elementHeight, child: listBuilderWidget());
     }
-    return SizedBox(height: elementHeight, child: listBuilderWidget());
   }
 
   Widget listBuilderWidget() {
     return ListView.builder(
-        shrinkWrap: elementHeight == 0.0,
+        shrinkWrap: true,
         itemCount: min(listLength, maxElements),
         scrollDirection: scrollDirection,
         itemBuilder: ((context, index) {
