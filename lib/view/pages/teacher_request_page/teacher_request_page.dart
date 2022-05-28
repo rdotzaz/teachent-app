@@ -7,7 +7,9 @@ import 'package:teachent_app/model/db_objects/lesson_date.dart';
 import 'package:teachent_app/model/db_objects/request.dart';
 import 'package:teachent_app/model/db_objects/student.dart';
 import 'package:teachent_app/view/widgets/chip_list.dart';
+import 'package:teachent_app/view/widgets/label.dart';
 import 'package:teachent_app/view/widgets/messages.dart';
+import 'package:teachent_app/view/widgets/single_card.dart';
 
 import 'other_day_widget.dart';
 import 'buttons.dart';
@@ -56,18 +58,13 @@ class TeacherRequestPage extends StatelessWidget {
     return SingleChildScrollView(
         child: Column(children: [
       _checkStatus(),
-      _textLabel('Name: ${_requestPageController!.studentName}'),
-      _textLabel('Date: ${_requestPageController!.date}'),
-      _textLabel(_requestPageController!.isCycled
-          ? 'Lesson is cycled'
-          : 'One-time lesson'),
-      _textLabel('Price: ${_requestPageController!.price}'),
-      _textLabel('Topic: ${_requestPageController!.topic}'),
+      _infoCard(),
       if (_requestPageController!.tools.isNotEmpty) _tools(),
       if (_requestPageController!.places.isNotEmpty) _places(),
-      if (_requestPageController!.wasOtherDateRequested)
+      if (_requestPageController!.wasOtherDateRequested && _requestPageController!.isEnabled)
         OtherDayWidget(controller: _requestPageController!),
-      Buttons(controller: _requestPageController!),
+      if (_requestPageController!.isEnabled)
+        Buttons(controller: _requestPageController!),
       const SizedBox(height: 50),
       Messages(controller: _requestPageController!)
     ]));
@@ -89,11 +86,22 @@ class TeacherRequestPage extends StatelessWidget {
         ]));
   }
 
-  Widget _textLabel(String text) {
-    return Padding(
-        padding: const EdgeInsets.all(10),
-        child: Text(text,
-            style: const TextStyle(color: Colors.black, fontSize: 18)));
+  Widget _infoCard() {
+    return SingleCardWidget(
+      title: 'Request',
+      titleColor: Colors.black,
+      bodyWidget: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Label(text: 'Name: ${_requestPageController!.studentName}', fontSize: 22),
+          Label(text: 'Date: ${_requestPageController!.date}', fontSize: 20),
+          Label(text: _requestPageController!.isCycled
+              ? 'Lesson is cycled'
+              : 'One-time lesson'),
+          Label(text: 'Price: ${_requestPageController!.price}'),
+          Chip(label: Label(text: 'Topic: ${_requestPageController!.topic.name}', color: Colors.white, padding: 8), backgroundColor: Colors.blue)
+        ],
+      ));
   }
 
   Widget _tools() {

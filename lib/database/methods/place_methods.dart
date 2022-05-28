@@ -1,17 +1,15 @@
 import 'package:teachent_app/common/consts.dart';
 import 'package:teachent_app/database/adapters/firebase_adapter.dart';
-import 'package:teachent_app/database/database.dart';
 import 'package:teachent_app/model/objects/place.dart';
 
 /// Methods to maintain Place object in database
 mixin PlaceDatabaseMethods {
   /// Get all available places from database
   Future<Iterable<Place>> getAvailablePlaces() async {
-    DBValues<bool> placeValues =
-        await FirebaseRealTimeDatabaseAdapter.getAvailableObjects(
-            DatabaseObjectName.places);
+    final response = await FirebaseRealTimeDatabaseAdapter.getAvailableObjects(
+        DatabaseObjectName.places);
 
-    return placeValues.entries
+    return response.data.entries
         .map((placeEntry) => Place(placeEntry.key, placeEntry.value));
   }
 

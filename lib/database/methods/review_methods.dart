@@ -17,20 +17,19 @@ mixin ReviewDatabaseMethods {
 
   /// Method adds new reivew to database
   Future<KeyId> addReview(Review review) async {
-    final key =
+    final response =
         await FirebaseRealTimeDatabaseAdapter.addDatabaseObjectWithNewKey(
             DatabaseObjectName.reviews, review.toMap());
-    return key;
+    return response.data;
   }
 
   Future<List<Review>> _getReviewsByUserId(
       String property, KeyId userId) async {
-    final reviewsValues =
-        await FirebaseRealTimeDatabaseAdapter.getObjectsByProperty(
-            DatabaseObjectName.reviews, property, userId);
+    final response = await FirebaseRealTimeDatabaseAdapter.getObjectsByProperty(
+        DatabaseObjectName.reviews, property, userId);
 
     final reviews = <Review>[];
-    reviewsValues.forEach((key, reviewValues) {
+    response.data.forEach((key, reviewValues) {
       if (reviewValues.isEmpty) {
         return;
       }

@@ -31,8 +31,9 @@ class AccountCreationPageController extends BaseController {
       student = dbObject as Student;
     } else if (dbObject is Teacher) {
       teacher = dbObject as Teacher;
+    } else {
+      throw Exception('Unknown type of dbObject ${dbObject.runtimeType}');
     }
-    throw Exception('Unknown type of dbObject ${dbObject.runtimeType}');
   }
 
   @override

@@ -2,6 +2,7 @@ import 'package:teachent_app/common/consts.dart';
 import 'package:teachent_app/common/date.dart';
 import 'package:teachent_app/common/enums.dart';
 import 'package:teachent_app/common/enum_functions.dart';
+import 'package:teachent_app/common/firebase_enums.dart';
 import 'package:teachent_app/database/adapters/firebase_adapter.dart';
 import 'package:teachent_app/model/db_objects/db_object.dart';
 import 'package:teachent_app/model/db_objects/request.dart';
@@ -12,12 +13,12 @@ mixin RequestDatabaseMethods {
   /// Returns Request object by [requestId].
   /// If object with [requestId] does not exist, returns null
   Future<Request?> getRequest(KeyId requestId) async {
-    final requestValues = await FirebaseRealTimeDatabaseAdapter.getObject(
+    final response = await FirebaseRealTimeDatabaseAdapter.getObject(
         DatabaseObjectName.requests, requestId);
-    if (requestValues.isEmpty) {
+    if (response.status == FirebaseResponseStatus.failure) {
       return null;
     }
-    return Request.fromMap(requestId, requestValues);
+    return Request.fromMap(requestId, response.data);
   }
 
   /// Returns list of Request objects based on [requestIds]
@@ -37,13 +38,13 @@ mixin RequestDatabaseMethods {
   /// If request was successfully added, new request key is returned.
   /// Otherwise returns null
   Future<KeyId?> addRequest(Request request) async {
-    final newKey =
+    final response =
         await FirebaseRealTimeDatabaseAdapter.addDatabaseObjectWithNewKey(
             DatabaseObjectName.requests, request.toMap());
-    if (newKey == DatabaseConsts.emptyKey) {
+    if (response.status == FirebaseResponseStatus.failure) {
       return null;
     }
-    return newKey;
+    return response.data;
   }
 
   /// Update requested date from request with [requestId] with [newDate]

@@ -1,7 +1,11 @@
+import 'dart:async';
+
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/foundation.dart';
 import 'package:teachent_app/common/algorithms.dart';
+import 'package:teachent_app/common/enums.dart';
+import 'package:teachent_app/common/firebase_enums.dart';
 import 'package:teachent_app/common/firebase_options.dart'; // ignore: uri_does_not_exist
 import 'package:teachent_app/database/database.dart';
 
@@ -42,37 +46,66 @@ class FirebaseRealTimeDatabaseAdapter {
 
   /// Method returns User database object with key-values
   /// with matching login and password.
-  /// Return empty map if such user has not been found.
-  static Future<Map> findUserByLoginAndCheckPassword(
+  /// Returns firebase response with status and data.
+  static Future<FirebaseResponse<Map>> findUserByLoginAndCheckPassword(
       String login, String password) async {
-    var databaseReference =
+    final databaseReference =
         FirebaseDatabase.instance.ref('${DatabaseObjectName.users}/$login');
 
-    var event = await databaseReference.once();
-    var isKeyExists = event.snapshot.exists;
-    var foundEventValue = event.snapshot.value;
+    late DataSnapshot snapshot;
+    try {
+      snapshot =
+          await databaseReference.get().timeout(const Duration(seconds: 5));
+    } on TimeoutException {
+      return FirebaseResponse(
+          status: FirebaseResponseStatus.failure,
+          feedback: FirebaseFeedback.connectionError,
+          data: {});
+    }
+    final isKeyExists = snapshot.exists;
+    final foundEventValue = snapshot.value;
 
     if (!isKeyExists) {
-      return {'error': 'login'};
+      return FirebaseResponse(
+          status: FirebaseResponseStatus.failure,
+          feedback: FirebaseFeedback.noData,
+          data: {},
+          loginResult: LoginResult(status: LoginStatus.loginNotFound));
     }
 
     if (foundEventValue == null) {
-      return {};
+      return FirebaseResponse(
+          status: FirebaseResponseStatus.failure,
+          feedback: FirebaseFeedback.noData,
+          data: {},
+          loginResult: LoginResult(status: LoginStatus.logicError));
     }
 
     String encryptedPassword =
         (foundEventValue as DBValues)['password'] ?? DatabaseConsts.emptyField;
 
     if (encryptedPassword == DatabaseConsts.emptyField) {
-      return {};
+      return FirebaseResponse(
+          status: FirebaseResponseStatus.failure,
+          feedback: FirebaseFeedback.noData,
+          data: {},
+          loginResult: LoginResult(status: LoginStatus.logicError));
     }
 
-    var comparsionResult = isPasswordCorrect(password, encryptedPassword);
+    final comparsionResult = isPasswordCorrect(password, encryptedPassword);
 
     if (!comparsionResult) {
-      return {'error': 'password'};
+      return FirebaseResponse(
+          status: FirebaseResponseStatus.failure,
+          feedback: FirebaseFeedback.noData,
+          data: {},
+          loginResult: LoginResult(status: LoginStatus.invalidPassword));
     }
-    return foundEventValue;
+    return FirebaseResponse(
+        status: FirebaseResponseStatus.success,
+        feedback: FirebaseFeedback.none,
+        data: foundEventValue,
+        loginResult: LoginResult(status: LoginStatus.success));
   }
 
   /// Returns map object with values of type bool.
@@ -83,167 +116,330 @@ class FirebaseRealTimeDatabaseAdapter {
   ///   "Math": true,
   ///   "Computer Science": true
   /// }
-  static Future<DBValues<bool>> getAvailableObjects(
+  static Future<FirebaseResponse<Map>> getAvailableObjects(
       String collectionName) async {
-    var databaseReference = FirebaseDatabase.instance.ref(collectionName);
+    final databaseReference = FirebaseDatabase.instance.ref(collectionName);
 
-    var event = await databaseReference.once();
-    var isKeyExists = event.snapshot.exists;
-    var foundValues = event.snapshot.value as Map<String, dynamic>;
+    late DatabaseEvent event;
+    try {
+      event =
+          await databaseReference.once().timeout(const Duration(seconds: 8));
+    } on TimeoutException {
+      return FirebaseResponse(
+          status: FirebaseResponseStatus.failure,
+          feedback: FirebaseFeedback.connectionError,
+          data: {});
+    }
+    final isKeyExists = event.snapshot.exists;
+    final foundValues = event.snapshot.value as Map<String, dynamic>;
 
     if (!isKeyExists) {
-      return {};
+      return FirebaseResponse(
+          status: FirebaseResponseStatus.failure,
+          feedback: FirebaseFeedback.noData,
+          data: {});
     }
 
     if (foundValues.isEmpty) {
-      return {};
+      return FirebaseResponse(
+          status: FirebaseResponseStatus.failure,
+          feedback: FirebaseFeedback.noData,
+          data: {});
     }
-    return {
-      for (var entry in foundValues.entries) entry.key: (entry.value as bool)
-    };
+    return FirebaseResponse(
+        status: FirebaseResponseStatus.success,
+        feedback: FirebaseFeedback.none,
+        data: {
+          for (var entry in foundValues.entries)
+            entry.key: (entry.value as bool)
+        });
   }
 
-  /// Returns true if object has been successfully added to database.
+  /// Returns response with success status if object has been successfully added to database.
   /// [collectionName] like "teachers", "students"
   /// [keyId] key identifies object in [collectionName]
-  /// [userValues] map representation of object
-  static Future<bool> addDatabaseObject(
+  /// [values] map representation of object
+  static Future<FirebaseResponse<Map>> addDatabaseObject(
       String collectionName, String keyId, DBValues values) async {
     DatabaseReference databaseReference =
         FirebaseDatabase.instance.ref().child(collectionName);
 
     final possibleExistedKeyRef = databaseReference.child(keyId);
 
-    final event = await possibleExistedKeyRef.once();
+    late DatabaseEvent event;
+    try {
+      event =
+          await possibleExistedKeyRef.once().timeout(const Duration(seconds: 5));
+    } on TimeoutException {
+      return FirebaseResponse(
+          status: FirebaseResponseStatus.failure,
+          feedback: FirebaseFeedback.connectionError,
+          data: {});
+    }
     final isKeyExists = event.snapshot.exists;
 
     if (isKeyExists) {
-      return false;
+      return FirebaseResponse(
+          status: FirebaseResponseStatus.failure,
+          feedback: FirebaseFeedback.keyAlreadyExists,
+          data: {});
     }
 
-    /// TODO - RESOLVE PRINTED EXCEPTION HERE
     await databaseReference.update({keyId: values});
-    return true;
+    return FirebaseResponse(
+        status: FirebaseResponseStatus.success,
+        feedback: FirebaseFeedback.none,
+        data: {});
   }
 
-  static Future<String> addDatabaseObjectWithNewKey(
+  static Future<FirebaseResponse<String>> addDatabaseObjectWithNewKey(
       String collectionName, DBValues values) async {
     DatabaseReference databaseReference =
         FirebaseDatabase.instance.ref().child(collectionName);
 
     final newKey = databaseReference.push().key;
     if (newKey == null) {
-      return DatabaseConsts.emptyKey;
+      return FirebaseResponse(
+          status: FirebaseResponseStatus.failure,
+          feedback: FirebaseFeedback.none,
+          data: DatabaseConsts.emptyKey);
     }
-    await databaseReference.child(newKey).update(values);
 
-    return newKey;
+    try {
+      await databaseReference
+          .child(newKey)
+          .update(values)
+          .timeout(const Duration(seconds: 10));
+    } on TimeoutException {
+      return FirebaseResponse(
+          status: FirebaseResponseStatus.failure,
+          feedback: FirebaseFeedback.connectionError,
+          data: DatabaseConsts.emptyKey);
+    }
+
+    return FirebaseResponse(
+        status: FirebaseResponseStatus.success,
+        feedback: FirebaseFeedback.none,
+        data: newKey);
   }
 
-  static Future<void> addObjects(String collectionName, DBValues values) async {
-    var databaseReference = FirebaseDatabase.instance.ref(collectionName);
+  static Future<FirebaseResponse<bool>> addObjects(
+      String collectionName, DBValues values) async {
+    final databaseReference = FirebaseDatabase.instance.ref(collectionName);
 
-    await databaseReference.update(values);
+    try {
+      await databaseReference
+          .update(values)
+          .timeout(const Duration(seconds: 10));
+    } on TimeoutException {
+      return FirebaseResponse(
+          status: FirebaseResponseStatus.failure,
+          feedback: FirebaseFeedback.connectionError,
+          data: false);
+    }
+    return FirebaseResponse(
+        status: FirebaseResponseStatus.success,
+        feedback: FirebaseFeedback.none,
+        data: true);
   }
 
   /// Returns map representaion of object from [collectionName] with [key]
   /// It means that method returns values from [collectionName]/[key]
-  /// If [collectionName]/[key] record does not exist in database method returns empty map object
-  static Future<Map> getObject(String collectionName, String key) async {
+  /// If [collectionName]/[key] record does not exist in database method returns response with empty map object
+  static Future<FirebaseResponse<Map>> getObject(
+      String collectionName, String key) async {
     if (key == DatabaseConsts.emptyKey) {
-      return {};
+      return FirebaseResponse(
+          status: FirebaseResponseStatus.failure,
+          feedback: FirebaseFeedback.noData,
+          data: {});
     }
-    DatabaseReference databaseReference =
+
+    final databaseReference =
         FirebaseDatabase.instance.ref().child('$collectionName/$key');
 
-    final snapshot = await databaseReference.get();
-    final isKeyExists = snapshot.exists;
-
-    if (!isKeyExists) {
-      return {};
+    late DataSnapshot snapshot;
+    try {
+      snapshot =
+          await databaseReference.get().timeout(const Duration(seconds: 5));
+    } on TimeoutException {
+      return FirebaseResponse(
+          status: FirebaseResponseStatus.failure,
+          feedback: FirebaseFeedback.connectionError,
+          data: {});
     }
 
-    return snapshot.value as Map<dynamic, dynamic>;
+    final isKeyExists = snapshot.exists;
+    if (!isKeyExists) {
+      return FirebaseResponse(
+          status: FirebaseResponseStatus.failure,
+          feedback: FirebaseFeedback.noKeyFound,
+          data: {});
+    }
+
+    return FirebaseResponse(
+        status: FirebaseResponseStatus.success,
+        feedback: FirebaseFeedback.none,
+        data: snapshot.value as Map<dynamic, dynamic>);
   }
 
-  /// Returns map representation of object from [collectionName]/{teachers/students}
+  /// Returns reponse with map representation of object from [collectionName]/{teachers/students}
   /// where [collectionName]/{teachers/students}/name value is matching with [name]
-  /// Returns empty map if object has not been found
-  static Future<Map> getObjectsByName(
+  /// Returns response with empty map if object has not been found
+  static Future<FirebaseResponse<Map>> getObjectsByName(
       String collectionName, String property, String name) async {
-    DatabaseReference databaseReference =
+    final databaseReference =
         FirebaseDatabase.instance.ref().child(collectionName);
 
     final query = databaseReference
         .orderByChild(property)
         .startAt(name)
         .endAt(name + lastCharacter);
-    final event = await query.once();
+
+    late DatabaseEvent event;
+    try {
+      event = await query.once().timeout(const Duration(seconds: 20));
+    } on TimeoutException {
+      return FirebaseResponse(
+          status: FirebaseResponseStatus.failure,
+          feedback: FirebaseFeedback.connectionError,
+          data: {});
+    }
+
     final values = event.snapshot.value;
 
     if (values == null) {
-      return {};
+      return FirebaseResponse(
+          status: FirebaseResponseStatus.failure,
+          feedback: FirebaseFeedback.noData,
+          data: {});
     }
-    return values as Map<dynamic, dynamic>;
+
+    return FirebaseResponse(
+        status: FirebaseResponseStatus.success,
+        feedback: FirebaseFeedback.none,
+        data: values as Map<dynamic, dynamic>);
   }
 
-  /// Returns map representation of objects from [collectionName]
+  /// Returns response with map representation of objects from [collectionName]
   /// where id/[property] has [value]
-  /// Returns empty map if objects have not been found
-  static Future<Map> getObjectsByProperty<Value>(
+  /// Returns repsonse with empty map if objects have not been found
+  static Future<FirebaseResponse<Map>> getObjectsByProperty<Value>(
       String collectionName, String property, Value value) async {
-    DatabaseReference databaseReference =
+    final databaseReference =
         FirebaseDatabase.instance.ref().child(collectionName);
 
     if (value is String && value == DatabaseConsts.emptyField) {
-      return {};
+      return FirebaseResponse(
+          status: FirebaseResponseStatus.failure,
+          feedback: FirebaseFeedback.noData,
+          data: {});
     }
 
     final query = databaseReference.orderByChild(property).equalTo(value);
-    final event = await query.once();
+
+    late DatabaseEvent event;
+    try {
+      event = await query.once().timeout(const Duration(seconds: 10));
+    } on TimeoutException {
+      return FirebaseResponse(
+          status: FirebaseResponseStatus.failure,
+          feedback: FirebaseFeedback.connectionError,
+          data: {});
+    }
+
     final values = event.snapshot.value;
     if (values == null) {
-      return {};
+      return FirebaseResponse(
+          status: FirebaseResponseStatus.failure,
+          feedback: FirebaseFeedback.noData,
+          data: {});
     }
-    return values as Map<dynamic, dynamic>;
+
+    return FirebaseResponse(
+        status: FirebaseResponseStatus.success,
+        feedback: FirebaseFeedback.none,
+        data: values as Map<dynamic, dynamic>);
   }
 
   /// Method adds or updates [value] key to [collectionName]/[id]/[path]
-  static Future<void> updateField<Value>(
+  static Future<FirebaseResponse<bool>> updateField<Value>(
       String collectionName, String id, String path, Value value) async {
     DatabaseReference databaseReference =
         FirebaseDatabase.instance.ref().child('$collectionName/$id/$path');
 
-    if (value is Map<String, Object?>) {
-      await databaseReference.update(value);
-    } else {
-      await databaseReference.set(value);
+    try {
+      if (value is Map<String, Object?>) {
+        await databaseReference
+            .update(value)
+            .timeout(const Duration(seconds: 5));
+      } else {
+        await databaseReference.set(value).timeout(const Duration(seconds: 5));
+      }
+    } on TimeoutException {
+      return FirebaseResponse(
+          status: FirebaseResponseStatus.failure,
+          feedback: FirebaseFeedback.connectionError,
+          data: false);
     }
+
+    return FirebaseResponse(
+        status: FirebaseResponseStatus.success,
+        feedback: FirebaseFeedback.none,
+        data: true);
   }
 
   /// Method adds or updates [value] key to [collectionName]/[id]
-  static Future<void> updateMapField(
+  static Future<FirebaseResponse<bool>> updateMapField(
       String collectionName, String id, Map<String, Object?> value) async {
-    DatabaseReference databaseReference =
+    final databaseReference =
         FirebaseDatabase.instance.ref().child('$collectionName/$id');
 
-    await databaseReference.update(value);
+    try {
+      await databaseReference.update(value).timeout(const Duration(seconds: 8));
+    } on TimeoutException {
+      return FirebaseResponse(
+          status: FirebaseResponseStatus.failure,
+          feedback: FirebaseFeedback.connectionError,
+          data: false);
+    }
+
+    return FirebaseResponse(
+        status: FirebaseResponseStatus.success,
+        feedback: FirebaseFeedback.none,
+        data: true);
   }
 
   /// Method retrives foreign key from [collectionName]/[id]/[property]
-  static Future<String> getForeignKey(
+  static Future<FirebaseResponse<String>> getForeignKey(
       String collectionName, String id, String property) async {
-    DatabaseReference databaseReference =
+    final databaseReference =
         FirebaseDatabase.instance.ref().child('$collectionName/$id/$property');
 
-    final event = await databaseReference.once();
+    late DatabaseEvent event;
+    try {
+      event =
+          await databaseReference.once().timeout(const Duration(seconds: 5));
+    } on TimeoutException {
+      return FirebaseResponse(
+          status: FirebaseResponseStatus.failure,
+          feedback: FirebaseFeedback.connectionError,
+          data: DatabaseConsts.emptyKey);
+    }
+
     final isKeyExists = event.snapshot.exists;
 
     if (!isKeyExists) {
-      return DatabaseConsts.emptyKey;
+      return FirebaseResponse(
+          status: FirebaseResponseStatus.failure,
+          feedback: FirebaseFeedback.noKeyFound,
+          data: DatabaseConsts.emptyKey);
     }
 
-    return event.snapshot.value as String;
+    return FirebaseResponse(
+        status: FirebaseResponseStatus.success,
+        feedback: FirebaseFeedback.none,
+        data: event.snapshot.value as String);
   }
 
   static void clear() {}

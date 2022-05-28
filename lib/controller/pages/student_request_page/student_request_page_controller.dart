@@ -26,7 +26,7 @@ class StudentRequestPageController extends BaseRequestPageController {
   LessonDate? lessonDate;
 
   DateTime? otherDate;
-  int topicIndex = -1;
+  int topicIndex = 0;
   bool hasChangesProvided = false;
   final List<MessageRecord> _newMessages = [];
 
@@ -99,8 +99,12 @@ class StudentRequestPageController extends BaseRequestPageController {
   List<Topic> get topics => teacher?.topics ?? [];
   bool get hasTeacherMessage => false;
   bool get canCheckStatus => request != null;
+  bool get isEnabled => request?.status != RequestStatus.accepted && request?.status != RequestStatus.rejected;
 
   Future<void> _enableDatePicker(BuildContext context) async {
+    if (!isEnabled) {
+      return;
+    }
     final pickedDate = await showDatePicker(
         context: context,
         initialDate: otherDate ?? lessonDate!.date,
@@ -122,17 +126,26 @@ class StudentRequestPageController extends BaseRequestPageController {
   }
 
   void saveRequestedDate() {
+    if (!isEnabled) {
+      return;
+    }
     hasChangesProvided = true;
   }
 
   void cancelRequestedDate() {
+    if (!isEnabled) {
+      return;
+    }
     hasChangesProvided = false;
     otherDate = null;
   }
 
   void setTopicIndex(int index) {
+    if (!isEnabled) {
+      return;
+    }
     if (topicIndex == index) {
-      topicIndex = -1;
+      topicIndex = 0;
     } else {
       topicIndex = index;
     }
@@ -219,11 +232,17 @@ class StudentRequestPageController extends BaseRequestPageController {
   }
 
   void toggleRequestDatePicker(BuildContext context) async {
+    if (!isEnabled) {
+      return;
+    }
     await _enableDatePicker(context);
     context.read<RequestDayBloc>().add(ToggleRequestDayField());
   }
 
   Future<void> sendResponse(BuildContext context) async {
+    if (!isEnabled) {
+      return;
+    }
     assert(hasChangesProvided && request != null);
 
     await RequestManager.sendStudentResponse(
@@ -234,6 +253,9 @@ class StudentRequestPageController extends BaseRequestPageController {
   }
 
   Future<void> sendRequest(BuildContext context) async {
+    if (!isEnabled) {
+      return;
+    }
     if (topicIndex == -1) {
       showErrorMessage(context, 'Topic must be selected');
       return;

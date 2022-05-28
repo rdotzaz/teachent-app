@@ -1,3 +1,4 @@
+import 'package:teachent_app/common/firebase_enums.dart';
 import 'package:teachent_app/database/adapters/firebase_adapter.dart';
 
 import '../../common/consts.dart';
@@ -12,20 +13,19 @@ mixin TeacherDatabaseMethods {
   }
 
   Future<Teacher?> getTeacher(KeyId userId) async {
-    final teacherValues = await FirebaseRealTimeDatabaseAdapter.getObject(
+    final response = await FirebaseRealTimeDatabaseAdapter.getObject(
         DatabaseObjectName.teachers, userId);
-    if (teacherValues.isEmpty) {
+    if (response.status == FirebaseResponseStatus.failure) {
       return null;
     }
-    return Teacher.fromMap(userId, teacherValues);
+    return Teacher.fromMap(userId, response.data);
   }
 
   Future<List<Teacher>> getTeachersByNamePart(String name) async {
-    final teacherValues =
-        await FirebaseRealTimeDatabaseAdapter.getObjectsByName(
-            DatabaseObjectName.teachers, 'name', name);
+    final response = await FirebaseRealTimeDatabaseAdapter.getObjectsByName(
+        DatabaseObjectName.teachers, 'name', name);
     final teachers = <Teacher>[];
-    teacherValues.forEach((login, teacherValue) {
+    response.data.forEach((login, teacherValue) {
       final teacher =
           Teacher.fromMap(login, teacherValue as Map<dynamic, dynamic>);
       teachers.add(teacher);
@@ -69,12 +69,12 @@ mixin TeacherDatabaseMethods {
   Future<List<Teacher>> getTeachersByDates(List<KeyId> lessonDateIds) async {
     final teachers = <Teacher>[];
     for (final lessonDateId in lessonDateIds) {
-      final teacherId = await FirebaseRealTimeDatabaseAdapter.getForeignKey(
+      final response = await FirebaseRealTimeDatabaseAdapter.getForeignKey(
           DatabaseObjectName.lessonDates, lessonDateId, 'teacherId');
-      if (teacherId == DatabaseConsts.emptyKey) {
+      if (response.status == FirebaseResponseStatus.failure) {
         continue;
       }
-      final teacher = await getTeacher(teacherId);
+      final teacher = await getTeacher(response.data);
       if (teacher == null) {
         continue;
       }

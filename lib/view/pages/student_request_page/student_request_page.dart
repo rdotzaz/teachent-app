@@ -9,6 +9,7 @@ import 'package:teachent_app/model/db_objects/teacher.dart';
 import 'package:teachent_app/view/widgets/label.dart';
 import 'package:teachent_app/view/widgets/chip_list.dart';
 import 'package:teachent_app/view/widgets/messages.dart';
+import 'package:teachent_app/view/widgets/single_card.dart';
 
 import 'confirm_button.dart';
 
@@ -58,20 +59,34 @@ class StudentRequestPage extends StatelessWidget {
     return SingleChildScrollView(
         child: Column(children: [
       _checkStatus(),
-      Label(text: 'Name: ${_requestPageController!.teacherName}'),
-      Label(text: 'Date: ${_requestPageController!.date}'),
-      Label(
-          text: _requestPageController!.isCycled
-              ? 'Lesson is cycled'
-              : 'One-time lesson'),
-      Label(text: 'Price: ${_requestPageController!.price}'),
+      _infoCard(),
       _tools(),
       _places(),
-      _requestDay(),
+      if (_requestPageController!.isEnabled)
+        _requestDay(),
       _topicSelecting(),
       Messages(controller: _requestPageController!),
-      _sendRequestButton()
+      if (_requestPageController!.isEnabled)
+        _sendRequestButton()
     ]));
+  }
+
+  Widget _infoCard() {
+    return SingleCardWidget(
+      title: 'Request',
+      titleColor: Colors.black,
+      bodyWidget: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Label(text: 'Name: ${_requestPageController!.teacherName}', fontSize: 22),
+          Label(text: 'Date: ${_requestPageController!.date}', fontSize: 20),
+          Label(
+              text: _requestPageController!.isCycled
+                  ? 'Lesson is cycled'
+                  : 'One-time lesson'),
+          Label(text: 'Price: ${_requestPageController!.price}'),
+        ],
+      ));
   }
 
   Widget _checkStatus() {
@@ -148,9 +163,12 @@ class StudentRequestPage extends StatelessWidget {
                         fontSize: 14,
                         color: isMarked ? Colors.white : Colors.black)),
                 backgroundColor: isMarked ? Colors.blue : Colors.grey,
-                onPressed: () => context
+                onPressed: () {
+                  if (_requestPageController!.isEnabled) {
+                    context
                     .read<RequestTopicBloc>()
-                    .add(ToggleTopicEvent(index)));
+                    .add(ToggleTopicEvent(index));
+                  }});
           });
     });
   }
