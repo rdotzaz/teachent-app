@@ -34,11 +34,17 @@ class _SplashProgressIndicatorWidgetState
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-        padding: const EdgeInsets.all(15.0),
-        child: CircularProgressIndicator(
-          value: splashProgressController.value,
-          valueColor: const AlwaysStoppedAnimation(Colors.black),
-        ));
+    return AnimatedBuilder(
+      animation: splashProgressController.animation,
+      builder: (context, child) {
+        return Transform.rotate(
+          angle: splashProgressController.value! * 45 / 180.0,
+          child: Transform.scale(
+          scale: splashProgressController.value! * 0.5 + 1.0,
+          child: Image.asset(
+            'assets/app_logo.png',
+            scale: 4,
+        )));
+      });
   }
 }
