@@ -58,18 +58,18 @@ class TeacherRequestPage extends StatelessWidget {
     return SingleChildScrollView(
         physics: const BouncingScrollPhysics(),
         child: Column(children: [
-      _checkStatus(),
-      _infoCard(),
-      if (_requestPageController!.tools.isNotEmpty) _tools(),
-      if (_requestPageController!.places.isNotEmpty) _places(),
-      if (_requestPageController!.wasOtherDateRequested &&
-          _requestPageController!.isEnabled)
-        OtherDayWidget(controller: _requestPageController!),
-      if (_requestPageController!.isEnabled)
-        Buttons(controller: _requestPageController!),
-      const SizedBox(height: 50),
-      Messages(controller: _requestPageController!)
-    ]));
+          _checkStatus(),
+          _infoCard(),
+          if (_requestPageController!.tools.isNotEmpty) _tools(),
+          if (_requestPageController!.places.isNotEmpty) _places(),
+          if (_requestPageController!.wasOtherDateRequested &&
+              _requestPageController!.isEnabled)
+            OtherDayWidget(controller: _requestPageController!),
+          if (_requestPageController!.isEnabled)
+            Buttons(controller: _requestPageController!),
+          const SizedBox(height: 50),
+          Messages(controller: _requestPageController!)
+        ]));
   }
 
   Widget _checkStatus() {

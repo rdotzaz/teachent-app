@@ -74,9 +74,7 @@ class _StudentHomePageState extends State<StudentHomePage>
   }
 
   Widget _homeLoadingWidget(BuildContext context) {
-    return CustomScrollView(
-      physics: const BouncingScrollPhysics(),
-      slivers: [
+    return CustomScrollView(physics: const BouncingScrollPhysics(), slivers: [
       _appBar(context),
       SliverList(
           delegate: SliverChildListDelegate([
@@ -96,19 +94,20 @@ class _StudentHomePageState extends State<StudentHomePage>
   }
 
   Widget _homeWidget(BuildContext context) {
-    return CustomScrollView(
-      physics: const BouncingScrollPhysics(),
-      slivers: [
-      _appBar(context),
-      SliverList(
-          delegate: SliverChildListDelegate([
-        _searchBarWidget(),
-        _nextLessonsWidget(),
-        _lessonDatesWidget(),
-        _teachersWidget(),
-        _requestsWidget()
-      ]))
-    ]);
+    return RefreshIndicator(
+        onRefresh: () async => refresh(),
+        child:
+            CustomScrollView(physics: const BouncingScrollPhysics(), slivers: [
+          _appBar(context),
+          SliverList(
+              delegate: SliverChildListDelegate([
+            _searchBarWidget(),
+            _nextLessonsWidget(),
+            _lessonDatesWidget(),
+            _teachersWidget(),
+            _requestsWidget()
+          ]))
+        ]));
   }
 
   Widget _searchBarWidget() {

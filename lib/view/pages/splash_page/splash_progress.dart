@@ -35,16 +35,16 @@ class _SplashProgressIndicatorWidgetState
   @override
   Widget build(BuildContext context) {
     return AnimatedBuilder(
-      animation: splashProgressController.animation,
-      builder: (context, child) {
-        return Transform.rotate(
-          angle: splashProgressController.value! * 45 / 180.0,
-          child: Transform.scale(
-          scale: splashProgressController.value! * 0.5 + 1.0,
-          child: Image.asset(
-            'assets/app_logo.png',
-            scale: 4,
-        )));
-      });
+        animation: splashProgressController.animation,
+        builder: (context, child) {
+          return Transform.rotate(
+              angle: splashProgressController.value! * 45 / 180.0,
+              child: Transform.scale(
+                  scale: splashProgressController.value! * 0.5 + 1.0,
+                  child: Image.asset(
+                    'assets/app_logo.png',
+                    scale: 4,
+                  )));
+        });
   }
 }

@@ -26,10 +26,12 @@ class _SettingsPageState extends State<SettingsPage> {
 
   @override
   Widget build(BuildContext context) {
-    return CustomScrollView(slivers: [
-      appBar(context),
-      SliverList(delegate: SliverChildListDelegate([body()]))
-    ]);
+    return Scaffold(
+      body: CustomScrollView(slivers: [
+        appBar(context),
+        SliverList(delegate: SliverChildListDelegate([body()]))
+      ]),
+    );
   }
 
   Widget appBar(BuildContext context) {

@@ -6,8 +6,8 @@ import 'base_animation.dart';
 class SplashProgressIndicatorController extends BaseAnimationWithTween<double> {
   SplashProgressIndicatorController()
       : super(
-        duration: const Duration(milliseconds: 500),
-        animationTween: CurveTween(curve: Curves.easeInBack));
+            duration: const Duration(milliseconds: 500),
+            animationTween: CurveTween(curve: Curves.easeInBack));
 
   @override
   void actions() {

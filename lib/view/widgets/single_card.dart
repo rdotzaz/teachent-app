@@ -199,7 +199,9 @@ class SingleCardListWidget extends StatelessWidget {
         shrinkWrap: true,
         itemCount: min(listLength, maxElements),
         scrollDirection: scrollDirection,
-        physics: !isScrollable ? const NeverScrollableScrollPhysics() : const BouncingScrollPhysics(),
+        physics: !isScrollable
+            ? const NeverScrollableScrollPhysics()
+            : const BouncingScrollPhysics(),
         itemBuilder: ((context, index) {
           if (elementWidth == 0.0) {
             return Container(

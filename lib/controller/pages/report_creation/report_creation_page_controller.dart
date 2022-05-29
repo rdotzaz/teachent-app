@@ -85,16 +85,11 @@ class ReportCreationPageController extends BaseController {
 
       final lessonDate = lessonMap[selectedMapKey]!.lessonDate;
       final lesson = lessonMap[selectedMapKey]!.lesson;
-      await ReportManager.create(
-          dataManager, lesson, title, description);
-      await LessonManager.markLessonAsDone(
-          dataManager, lesson);
-      
+      await ReportManager.create(dataManager, lesson, title, description);
+      await LessonManager.markLessonAsDone(dataManager, lesson);
+
       if (lessonDate.cycleType != CycleType.single) {
-        await LessonManager.createNextLesson(
-          dataManager,
-          lessonDate,
-          lesson);
+        await LessonManager.createNextLesson(dataManager, lessonDate, lesson);
       }
       await showSuccessMessageAsync(context, 'Report created');
       Navigator.of(context).pop();

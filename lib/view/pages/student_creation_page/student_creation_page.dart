@@ -50,6 +50,7 @@ class _StudentCreationPageState extends State<StudentCreationPage> {
               create: (_) => _studentCreationPageController.loadLevelsBloc)
         ],
         child: Scaffold(
+          resizeToAvoidBottomInset: false,
           body: Column(
             children: [
               studentCreationHeader(windowSize.height),
@@ -65,10 +66,10 @@ class _StudentCreationPageState extends State<StudentCreationPage> {
       children: [
         ClipPath(
             clipper: CreationHeaderClipper(),
-            child: Container(height: height / 8, color: Colors.red)),
+            child: Container(height: height / 7, color: Colors.red)),
         BlocBuilder<StudentCreationBloc, int>(builder: (_, __) {
           return Padding(
-              padding: const EdgeInsets.all(25),
+              padding: const EdgeInsets.all(40),
               child: Text(_studentCreationPageController.headerName,
                   style: const TextStyle(fontSize: 23, color: Colors.white)));
         }),

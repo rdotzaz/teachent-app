@@ -41,7 +41,10 @@ class _AccountCreationPageState extends State<AccountCreationPage> {
   Widget build(BuildContext context) {
     final windowSize = MediaQuery.of(context).size;
     return Scaffold(
-        body: Column(children: [header(windowSize.height), body()]));
+        resizeToAvoidBottomInset: false,
+        body: SingleChildScrollView(
+          physics: const BouncingScrollPhysics(),
+          child: Column(children: [header(windowSize.height), body()])));
   }
 
   Widget header(double height) {
@@ -67,16 +70,14 @@ class _AccountCreationPageState extends State<AccountCreationPage> {
   }
 
   Widget body() {
-    return Expanded(
-        child: Padding(
-            padding: const EdgeInsets.all(15.0),
-            child: Column(children: [
-              profileLabel(),
-              nameLabel(),
-              accountForm(),
-              Expanded(child: Container()),
-              submitButton()
-            ])));
+    return Padding(
+        padding: const EdgeInsets.all(15.0),
+        child: Column(children: [
+          profileLabel(),
+          nameLabel(),
+          accountForm(),
+          submitButton()
+        ]));
   }
 
   Widget profileLabel() {

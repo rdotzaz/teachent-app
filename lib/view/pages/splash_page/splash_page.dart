@@ -33,9 +33,7 @@ class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     return Container(
       color: Colors.white,
-      child: const Center(
-        child: SplashProgressIndicatorWidget()
-      ),
+      child: const Center(child: SplashProgressIndicatorWidget()),
     );
   }
 }

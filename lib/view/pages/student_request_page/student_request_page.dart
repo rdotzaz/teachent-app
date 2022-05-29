@@ -58,17 +58,17 @@ class StudentRequestPage extends StatelessWidget {
 
   Widget _mainWidget() {
     return SingleChildScrollView(
-      physics: const BouncingScrollPhysics(),
+        physics: const BouncingScrollPhysics(),
         child: Column(children: [
-      _checkStatus(),
-      _infoCard(),
-      _tools(),
-      _places(),
-      if (_requestPageController!.isEnabled) _requestDay(),
-      _topicSelecting(),
-      Messages(controller: _requestPageController!),
-      if (_requestPageController!.isEnabled) _sendRequestButton()
-    ]));
+          _checkStatus(),
+          _infoCard(),
+          _tools(),
+          _places(),
+          if (_requestPageController!.isEnabled) _requestDay(),
+          _topicSelecting(),
+          Messages(controller: _requestPageController!),
+          if (_requestPageController!.isEnabled) _sendRequestButton()
+        ]));
   }
 
   Widget _infoCard() {

@@ -132,7 +132,7 @@ class FirebaseRealTimeDatabaseAdapter {
           data: {});
     }
     final isKeyExists = event.snapshot.exists;
-    final foundValues = event.snapshot.value as Map<String, dynamic>;
+    final foundValues = event.snapshot.value as Map<dynamic, dynamic>;
 
     if (!isKeyExists) {
       return FirebaseResponse(
@@ -152,7 +152,7 @@ class FirebaseRealTimeDatabaseAdapter {
         feedback: FirebaseFeedback.none,
         data: {
           for (var entry in foundValues.entries)
-            entry.key: (entry.value as bool)
+            entry.key.toString(): (entry.value as bool)
         });
   }
 
