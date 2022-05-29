@@ -156,5 +156,5 @@ class StudentConsts {
 
 /// Constans for teacher object
 class TeacherConsts {
-  static const emptyRate = 0.0;
+  static const emptyRate = 0;
 }

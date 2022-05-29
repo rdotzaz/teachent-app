@@ -82,14 +82,15 @@ class ReportCreationPageController extends BaseController {
   void saveReport(BuildContext context) async {
     if (_formKey.currentState?.validate() ?? false) {
       assert(lessonMap.containsKey(selectedMapKey));
-      await ReportManager.create(
-          dataManager, lessonMap[selectedMapKey]!.lesson, title, description);
-      await LessonManager.markLessonAsDone(
-          dataManager, lessonMap[selectedMapKey]!.lesson);
-      await LessonManager.createNextLesson(
-          dataManager,
-          lessonMap[selectedMapKey]!.lessonDate,
-          lessonMap[selectedMapKey]!.lesson);
+
+      final lessonDate = lessonMap[selectedMapKey]!.lessonDate;
+      final lesson = lessonMap[selectedMapKey]!.lesson;
+      await ReportManager.create(dataManager, lesson, title, description);
+      await LessonManager.markLessonAsDone(dataManager, lesson);
+
+      if (lessonDate.cycleType != CycleType.single) {
+        await LessonManager.createNextLesson(dataManager, lessonDate, lesson);
+      }
       await showSuccessMessageAsync(context, 'Report created');
       Navigator.of(context).pop();
       return;

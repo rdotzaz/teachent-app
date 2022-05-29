@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:teachent_app/common/enums.dart';
 import 'package:teachent_app/controller/pages/teacher_request_page/teacher_request_page_controller.dart';
 import 'package:teachent_app/controller/pages/teacher_request_page/bloc/refresh_bloc.dart';
 import 'package:teachent_app/view/widgets/custom_button.dart';
@@ -13,9 +14,12 @@ class Buttons extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<RefreshBloc, bool>(builder: (context, wasRejected) {
+    return BlocBuilder<RefreshBloc, RequestedDateStatus>(
+        builder: (context, status) {
+      final hasResponse = status == RequestedDateStatus.accepted ||
+          status == RequestedDateStatus.rejected;
       return Column(children: [
-        if (wasRejected)
+        if (hasResponse)
           CustomButton(
               text: 'Send response',
               fontSize: 18,

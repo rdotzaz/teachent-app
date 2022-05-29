@@ -23,7 +23,7 @@ class TeacherRequestPageController extends BaseRequestPageController {
 
   Request request;
 
-  bool isNewDateAccepted = true;
+  RequestedDateStatus newDateStatus = RequestedDateStatus.none;
   final List<MessageRecord> _newMessages = [];
 
   TeacherRequestPageController(
@@ -71,7 +71,9 @@ class TeacherRequestPageController extends BaseRequestPageController {
       request.dateStatus == RequestedDateStatus.requested;
   String get statusInfo => request.status.stringValue;
   String get additionalInfo => request.dateStatus.stringValue;
-  bool get isEnabled => request.status != RequestStatus.accepted && request.status != RequestStatus.rejected;
+  bool get isEnabled =>
+      request.status != RequestStatus.accepted &&
+      request.status != RequestStatus.rejected;
 
   @override
   bool get hasAnyMessages =>
@@ -118,14 +120,14 @@ class TeacherRequestPageController extends BaseRequestPageController {
     if (!isEnabled) {
       return;
     }
-    isNewDateAccepted = false;
+    newDateStatus = RequestedDateStatus.rejected;
   }
 
   void restoreNewDate() {
     if (!isEnabled) {
       return;
     }
-    isNewDateAccepted = true;
+    newDateStatus = RequestedDateStatus.accepted;
   }
 
   @override
@@ -142,12 +144,16 @@ class TeacherRequestPageController extends BaseRequestPageController {
       return;
     }
     await RequestManager.sendTeacherResponse(
-        dataManager, request, isNewDateAccepted);
+        dataManager, request, newDateStatus);
     Navigator.of(context).pop();
   }
 
   Future<void> acceptRequest(BuildContext context) async {
     if (!isEnabled) {
+      return;
+    }
+    if (newDateStatus == RequestedDateStatus.requested) {
+      showErrorMessage(context, 'You need to accept or reject new date first');
       return;
     }
     await RequestManager.acceptRequest(

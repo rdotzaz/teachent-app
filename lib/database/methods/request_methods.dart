@@ -82,6 +82,6 @@ mixin RequestDatabaseMethods {
   /// Update current topic from request with [requestId] with [topic]
   Future<void> changeTopic(KeyId requestId, Topic topic) async {
     await FirebaseRealTimeDatabaseAdapter.updateField(
-        DatabaseObjectName.requests, requestId, 'topic', {topic.name: true});
+        DatabaseObjectName.requests, requestId, 'topic', topic.name);
   }
 }

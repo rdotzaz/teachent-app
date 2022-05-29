@@ -30,56 +30,44 @@ class LessonPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
     return Scaffold(
+        appBar: AppBar(
+            title: Text('Lesson',
+                style: TextStyle(
+                    color: lessonPageController.isTeacher
+                        ? Colors.blue
+                        : Colors.red)),
+            leading: BackButton(
+                color:
+                    lessonPageController.isTeacher ? Colors.blue : Colors.red),
+            backgroundColor: Colors.transparent,
+            elevation: 0),
         body: Column(children: [
-      _appBar(size.height),
-      _userInformation(context),
-      _status(),
-      _cancelLessonButton(context),
-    ]));
-  }
-
-  Widget _appBar(double height) {
-    return Container(
-        height: height / 6,
-        decoration: const BoxDecoration(
-          color: Colors.blue,
-          borderRadius: BorderRadius.only(
-              bottomLeft: Radius.circular(15),
-              bottomRight: Radius.circular(15)),
-        ),
-        padding: const EdgeInsets.all(15),
-        child: Align(
-            alignment: Alignment.bottomLeft,
-            child: Column(children: [
-              const Label(text: 'Lesson', color: Colors.white, fontSize: 14),
-              Label(
-                  text: lessonPageController.date,
-                  color: Colors.white,
-                  fontSize: 18),
-            ])));
+          _userInformation(context),
+          _cancelLessonButton(context),
+        ]));
   }
 
   Widget _userInformation(BuildContext context) {
-    return Column(children: [
-      SingleCardWidget(
-          title: lessonPageController.userType,
-          rightButton: CustomButton(
-              text: 'More',
-              fontSize: 18,
-              onPressed: () => lessonPageController.goToProfilePage(context)),
-          bodyWidget: Label(text: lessonPageController.name))
-    ]);
-  }
-
-  Widget _status() {
-    return CustomButton(
-        text: lessonPageController.status,
-        fontSize: 18,
-        onPressed: () {},
-        isEnabled: false,
-        buttonColor: lessonPageController.getStatusColor());
+    return SingleCardWidget(
+        title: lessonPageController.userType,
+        titleColor: Colors.black,
+        rightButton: CustomButton(
+            text: 'More',
+            fontSize: 18,
+            onPressed: () => lessonPageController.goToProfilePage(context)),
+        bodyWidget: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Label(text: lessonPageController.name),
+            Chip(
+                label: Label(
+                    text: lessonPageController.status,
+                    color: Colors.white,
+                    padding: 8),
+                backgroundColor: lessonPageController.getStatusColor())
+          ],
+        ));
   }
 
   Widget _cancelLessonButton(BuildContext context) {

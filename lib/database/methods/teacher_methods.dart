@@ -67,7 +67,7 @@ mixin TeacherDatabaseMethods {
   }
 
   Future<List<Teacher>> getTeachersByDates(List<KeyId> lessonDateIds) async {
-    final teachers = <Teacher>[];
+    final teachers = <KeyId, Teacher>{};
     for (final lessonDateId in lessonDateIds) {
       final response = await FirebaseRealTimeDatabaseAdapter.getForeignKey(
           DatabaseObjectName.lessonDates, lessonDateId, 'teacherId');
@@ -78,9 +78,9 @@ mixin TeacherDatabaseMethods {
       if (teacher == null) {
         continue;
       }
-      teachers.add(teacher);
+      teachers[teacher.userId] = teacher;
     }
-    return teachers;
+    return teachers.entries.map((e) => e.value).toList();
   }
 
   Future<void> addRequestIdToTeacher(KeyId teacherId, KeyId requestId) async {
@@ -100,7 +100,7 @@ mixin TeacherDatabaseMethods {
   }
 
   /// Update current average rate from teacher with [teacherId] with [newAverageRate] value
-  Future<void> updateAverageRate(KeyId teacherId, double newAverageRate) async {
+  Future<void> updateAverageRate(KeyId teacherId, int newAverageRate) async {
     await FirebaseRealTimeDatabaseAdapter.updateField(
         DatabaseObjectName.teachers, teacherId, 'averageRate', newAverageRate);
   }

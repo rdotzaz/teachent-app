@@ -49,7 +49,7 @@ mixin StudentDatabaseMethods {
 
   Future<Iterable<Student>> getStudentsByDates(
       List<KeyId> lessonDateIds) async {
-    final students = <Student>[];
+    final students = <KeyId, Student>{};
     for (final lessonDateId in lessonDateIds) {
       final response = await FirebaseRealTimeDatabaseAdapter.getForeignKey(
           DatabaseObjectName.lessonDates, lessonDateId, 'studentId');
@@ -60,9 +60,9 @@ mixin StudentDatabaseMethods {
       if (student == null) {
         continue;
       }
-      students.add(student);
+      students[student.userId] = student;
     }
-    return students;
+    return students.entries.map((e) => e.value).toList();
   }
 
   Future<void> addRequestIdToStudent(KeyId studentId, KeyId requestId) async {

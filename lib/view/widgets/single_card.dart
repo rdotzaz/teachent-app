@@ -132,6 +132,7 @@ class SingleCardListWidget extends StatelessWidget {
   final double padding;
   final double margin;
   final int maxElements;
+  final bool isScrollable;
   final Widget? moreButton;
   final Widget? rightButton;
   const SingleCardListWidget(
@@ -156,7 +157,8 @@ class SingleCardListWidget extends StatelessWidget {
       this.margin = 12,
       this.elementPadding = 12,
       this.elementBottomMargin = 10,
-      this.maxElements = 5})
+      this.maxElements = 5,
+      this.isScrollable = true})
       : super(key: key);
 
   @override
@@ -197,6 +199,9 @@ class SingleCardListWidget extends StatelessWidget {
         shrinkWrap: true,
         itemCount: min(listLength, maxElements),
         scrollDirection: scrollDirection,
+        physics: !isScrollable
+            ? const NeverScrollableScrollPhysics()
+            : const BouncingScrollPhysics(),
         itemBuilder: ((context, index) {
           if (elementWidth == 0.0) {
             return Container(

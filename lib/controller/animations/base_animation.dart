@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 abstract class BaseAnimationWithTween<Value> {
   @protected
   late AnimationController animController;
-  @protected
   late Animation<Value?> animation;
 
   Value? get value => animation.value;

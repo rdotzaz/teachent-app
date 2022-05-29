@@ -4,6 +4,7 @@ import 'package:teachent_app/common/enum_functions.dart';
 import 'package:teachent_app/controller/pages/student_home_page/student_home_page_controller.dart';
 import 'package:teachent_app/model/db_objects/db_object.dart';
 import 'package:teachent_app/view/widgets/custom_button.dart';
+import 'package:teachent_app/view/widgets/label.dart';
 import 'package:teachent_app/view/widgets/single_card.dart';
 
 /// Home page from student perspective
@@ -73,7 +74,7 @@ class _StudentHomePageState extends State<StudentHomePage>
   }
 
   Widget _homeLoadingWidget(BuildContext context) {
-    return CustomScrollView(slivers: [
+    return CustomScrollView(physics: const BouncingScrollPhysics(), slivers: [
       _appBar(context),
       SliverList(
           delegate: SliverChildListDelegate([
@@ -93,17 +94,20 @@ class _StudentHomePageState extends State<StudentHomePage>
   }
 
   Widget _homeWidget(BuildContext context) {
-    return CustomScrollView(slivers: [
-      _appBar(context),
-      SliverList(
-          delegate: SliverChildListDelegate([
-        _searchBarWidget(),
-        _nextLessonsWidget(),
-        _lessonDatesWidget(),
-        _teachersWidget(),
-        _requestsWidget()
-      ]))
-    ]);
+    return RefreshIndicator(
+        onRefresh: () async => refresh(),
+        child:
+            CustomScrollView(physics: const BouncingScrollPhysics(), slivers: [
+          _appBar(context),
+          SliverList(
+              delegate: SliverChildListDelegate([
+            _searchBarWidget(),
+            _nextLessonsWidget(),
+            _lessonDatesWidget(),
+            _teachersWidget(),
+            _requestsWidget()
+          ]))
+        ]));
   }
 
   Widget _searchBarWidget() {
@@ -149,6 +153,7 @@ class _StudentHomePageState extends State<StudentHomePage>
         isNotEmptyCondition: _studentHomePageController.areLessons,
         listLength: _studentHomePageController.lessons.length,
         elementBackgroundColor: Colors.red,
+        isScrollable: false,
         emptyInfo: 'No lessons',
         emptyIcon: Icons.free_breakfast,
         moreButton: CustomButton(
@@ -185,6 +190,7 @@ class _StudentHomePageState extends State<StudentHomePage>
         listLength: _studentHomePageController.lessonDates.length,
         elementBackgroundColor: Colors.red,
         emptyInfo: 'No cooperations',
+        isScrollable: false,
         emptyIcon: Icons.free_breakfast,
         moreButton: CustomButton(
             text: 'More',
@@ -196,14 +202,23 @@ class _StudentHomePageState extends State<StudentHomePage>
   }
 
   Widget _lessonDateItemWidget(BuildContext context, int index) {
+    final lessonDate = _studentHomePageController.lessonDates[index];
     return GestureDetector(
         onTap: () =>
             _studentHomePageController.goToLessonDatePage(context, index),
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          Text(
-              _studentHomePageController.getTeacherName(
-                  _studentHomePageController.lessons[index].teacherId),
-              style: const TextStyle(fontSize: 12, color: Colors.white)),
+          if (!lessonDate.isFree)
+            Label(
+                text: _studentHomePageController
+                    .getTeacherName(lessonDate.teacherId),
+                fontSize: 12,
+                color: Colors.white,
+                padding: 8),
+          Label(
+              text: 'Start date: ${DateFormatter.getString(lessonDate.date)}',
+              fontSize: 12,
+              color: Colors.white,
+              padding: 8),
           Padding(
               padding: const EdgeInsets.all(8),
               child: Chip(
@@ -227,6 +242,7 @@ class _StudentHomePageState extends State<StudentHomePage>
         isNotEmptyCondition: _studentHomePageController.areTeachers,
         listLength: _studentHomePageController.teachers.length,
         elementBackgroundColor: Colors.red,
+        isScrollable: false,
         emptyInfo: 'No teachers',
         emptyIcon: Icons.person,
         scrollDirection: Axis.horizontal,
@@ -267,6 +283,7 @@ class _StudentHomePageState extends State<StudentHomePage>
         listLength: _studentHomePageController.requests.length,
         elementBackgroundColor: Colors.red,
         emptyInfo: 'No requests',
+        isScrollable: false,
         emptyIcon: Icons.free_breakfast,
         moreButton: CustomButton(
             text: 'More',

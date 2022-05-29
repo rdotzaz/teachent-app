@@ -62,5 +62,6 @@ class LessonPageController extends BaseController {
           dataManager, lessonDate, lesson);
     }
     await showSuccessMessageAsync(context, 'Lesson has been cancelled');
+    Navigator.of(context).pop();
   }
 }

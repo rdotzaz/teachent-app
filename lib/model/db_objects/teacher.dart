@@ -14,7 +14,7 @@ class Teacher extends DatabaseObject {
   final List<Topic> topics;
   final List<Tool> tools;
   final List<Place> places;
-  final double averageRate;
+  final int averageRate;
   final List<KeyId> requests;
   final List<KeyId> lessonDates;
   final List<KeyId> reviews;
@@ -46,7 +46,7 @@ class Teacher extends DatabaseObject {
   Teacher.onlyKeyName(
       this.userId, this.name, this.topics, this.tools, this.places)
       : description = '',
-        averageRate = 0.0,
+        averageRate = 0,
         requests = [],
         lessonDates = [],
         reviews = [];
@@ -66,7 +66,7 @@ class Teacher extends DatabaseObject {
             .entries
             .map((p) => Place(p.key, true))
             .toList(),
-        averageRate = (values['averageRate'] as int? ?? 0).toDouble(),
+        averageRate = values['averageRate'] as int? ?? 0,
         requests = DatabaseObject.getMapFromField(values, 'requests')
             .entries
             .map((id) => id.key)

@@ -76,7 +76,7 @@ class _LessonDateCreationPageState extends State<LessonDateCreationPage> {
               _weekDayField(context),
               _hourTimeLabel(),
               _hourTimeField(context),
-              _cycledSelecting(),
+              _cycledList(),
               _durationLabel(),
               _durationTextField(),
               _priceLabel(),
@@ -133,32 +133,6 @@ class _LessonDateCreationPageState extends State<LessonDateCreationPage> {
             style: const TextStyle(fontSize: 18, color: Colors.black),
           ),
         ));
-  }
-
-  Widget _cycledSelecting() {
-    return BlocBuilder<FrequencyBloc, int>(builder: (context, _) {
-      return Column(children: [
-        Row(children: [
-          Checkbox(
-            checkColor: Colors.white,
-            value: _lessonDateCreationController.isCycled,
-            fillColor: MaterialStateProperty.resolveWith(
-                _lessonDateCreationController.getCycledCheckBoxColor),
-            onChanged: (value) =>
-                context.read<FrequencyBloc>().add(ToggleCycleModeEvent()),
-          ),
-          Container(
-            alignment: Alignment.centerLeft,
-            padding: const EdgeInsets.all(5.0),
-            child: const Text(
-              'Lesson cycled',
-              style: TextStyle(fontSize: 16, color: Colors.black),
-            ),
-          )
-        ]),
-        if (_lessonDateCreationController.isCycled) _cycledList()
-      ]);
-    });
   }
 
   Widget _cycledList() {
