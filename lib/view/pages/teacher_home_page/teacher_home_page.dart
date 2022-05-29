@@ -87,7 +87,9 @@ class _TeacherHomePageState extends State<TeacherHomePage>
   }
 
   Widget _homeLoadingWidget(BuildContext context) {
-    return CustomScrollView(slivers: [
+    return CustomScrollView(
+      physics: const BouncingScrollPhysics(),
+      slivers: [
       _appBar(context),
       SliverList(
           delegate: SliverChildListDelegate([
@@ -107,7 +109,9 @@ class _TeacherHomePageState extends State<TeacherHomePage>
   }
 
   Widget _homeWidget(BuildContext context) {
-    return CustomScrollView(slivers: [
+    return CustomScrollView(
+      physics: const BouncingScrollPhysics(),
+      slivers: [
       _appBar(context),
       SliverList(
           delegate: SliverChildListDelegate([
@@ -165,6 +169,7 @@ class _TeacherHomePageState extends State<TeacherHomePage>
         elementBackgroundColor: Colors.blue,
         emptyInfo: 'No lessons',
         emptyIcon: Icons.free_breakfast,
+        isScrollable: false,
         moreButton: CustomButton(
           text: 'More',
           fontSize: 14,
@@ -203,6 +208,7 @@ class _TeacherHomePageState extends State<TeacherHomePage>
         listLength: _teacherHomePageController.students.length,
         elementBackgroundColor: Colors.blue,
         emptyInfo: 'No students',
+        isScrollable: false,
         emptyIcon: Icons.person,
         scrollDirection: Axis.horizontal,
         moreButton: CustomButton(
@@ -243,6 +249,7 @@ class _TeacherHomePageState extends State<TeacherHomePage>
         listLength: _teacherHomePageController.lessonDates.length,
         elementBackgroundColor: Colors.blue,
         emptyInfo: 'No cooperations',
+        isScrollable: false,
         emptyIcon: Icons.free_breakfast,
         moreButton: CustomButton(
           text: 'More',
@@ -307,6 +314,7 @@ class _TeacherHomePageState extends State<TeacherHomePage>
         listLength: _teacherHomePageController.requests.length,
         elementBackgroundColor: Colors.blue,
         emptyInfo: 'No requests',
+        isScrollable: false,
         emptyIcon: Icons.free_breakfast,
         moreButton: CustomButton(
           text: 'More',

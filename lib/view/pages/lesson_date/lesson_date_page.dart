@@ -42,6 +42,7 @@ class LessonDatePage extends StatelessWidget {
 
   Widget _homeWidget(BuildContext context) {
     return SingleChildScrollView(
+        physics: const BouncingScrollPhysics(),
         child: Column(children: [
       SingleCardWidget(
           title: 'Cooperation',

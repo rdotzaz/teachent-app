@@ -56,6 +56,7 @@ class TeacherRequestPage extends StatelessWidget {
 
   Widget _mainWidget(BuildContext context) {
     return SingleChildScrollView(
+        physics: const BouncingScrollPhysics(),
         child: Column(children: [
       _checkStatus(),
       _infoCard(),

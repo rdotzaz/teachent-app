@@ -74,7 +74,9 @@ class _StudentHomePageState extends State<StudentHomePage>
   }
 
   Widget _homeLoadingWidget(BuildContext context) {
-    return CustomScrollView(slivers: [
+    return CustomScrollView(
+      physics: const BouncingScrollPhysics(),
+      slivers: [
       _appBar(context),
       SliverList(
           delegate: SliverChildListDelegate([
@@ -94,7 +96,9 @@ class _StudentHomePageState extends State<StudentHomePage>
   }
 
   Widget _homeWidget(BuildContext context) {
-    return CustomScrollView(slivers: [
+    return CustomScrollView(
+      physics: const BouncingScrollPhysics(),
+      slivers: [
       _appBar(context),
       SliverList(
           delegate: SliverChildListDelegate([
@@ -150,6 +154,7 @@ class _StudentHomePageState extends State<StudentHomePage>
         isNotEmptyCondition: _studentHomePageController.areLessons,
         listLength: _studentHomePageController.lessons.length,
         elementBackgroundColor: Colors.red,
+        isScrollable: false,
         emptyInfo: 'No lessons',
         emptyIcon: Icons.free_breakfast,
         moreButton: CustomButton(
@@ -186,6 +191,7 @@ class _StudentHomePageState extends State<StudentHomePage>
         listLength: _studentHomePageController.lessonDates.length,
         elementBackgroundColor: Colors.red,
         emptyInfo: 'No cooperations',
+        isScrollable: false,
         emptyIcon: Icons.free_breakfast,
         moreButton: CustomButton(
             text: 'More',
@@ -237,6 +243,7 @@ class _StudentHomePageState extends State<StudentHomePage>
         isNotEmptyCondition: _studentHomePageController.areTeachers,
         listLength: _studentHomePageController.teachers.length,
         elementBackgroundColor: Colors.red,
+        isScrollable: false,
         emptyInfo: 'No teachers',
         emptyIcon: Icons.person,
         scrollDirection: Axis.horizontal,
@@ -277,6 +284,7 @@ class _StudentHomePageState extends State<StudentHomePage>
         listLength: _studentHomePageController.requests.length,
         elementBackgroundColor: Colors.red,
         emptyInfo: 'No requests',
+        isScrollable: false,
         emptyIcon: Icons.free_breakfast,
         moreButton: CustomButton(
             text: 'More',
