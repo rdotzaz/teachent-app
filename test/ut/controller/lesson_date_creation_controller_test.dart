@@ -14,7 +14,7 @@ Teacher createTeacher() {
       [Topic('Math', true), Topic('Computer Sciene', true)],
       [],
       [Place('Warsaw', true)],
-      0.0,
+      0,
       [],
       [],
       []);

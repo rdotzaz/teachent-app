@@ -4,6 +4,7 @@ import 'package:teachent_app/common/enum_functions.dart';
 import 'package:teachent_app/controller/pages/teacher_home_page/teacher_home_page_controller.dart';
 import 'package:teachent_app/model/db_objects/db_object.dart';
 import 'package:teachent_app/view/widgets/custom_button.dart';
+import 'package:teachent_app/view/widgets/label.dart';
 import 'package:teachent_app/view/widgets/single_card.dart';
 
 /// Home page from teacher perspective
@@ -260,16 +261,23 @@ class _TeacherHomePageState extends State<TeacherHomePage>
   }
 
   Widget _lessonDateItemWidget(BuildContext context, int index) {
-    final isFree = _teacherHomePageController.lessonDates[index].isFree;
+    final lessonDate = _teacherHomePageController.lessonDates[index];
     return GestureDetector(
         onTap: () =>
             _teacherHomePageController.goToLessonDatePage(context, index),
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          if (!isFree)
-            Text(
-                _teacherHomePageController.getStudentName(
-                    _teacherHomePageController.lessonDates[index].studentId),
-                style: const TextStyle(fontSize: 12, color: Colors.white)),
+          if (!lessonDate.isFree)
+            Label(
+                text: _teacherHomePageController
+                    .getStudentName(lessonDate.studentId),
+                fontSize: 12,
+                color: Colors.white,
+                padding: 8),
+          Label(
+              text: 'Start date: ${DateFormatter.getString(lessonDate.date)}',
+              fontSize: 12,
+              color: Colors.white,
+              padding: 8),
           Padding(
               padding: const EdgeInsets.all(8),
               child: Chip(
@@ -278,7 +286,7 @@ class _TeacherHomePageState extends State<TeacherHomePage>
                           .lessonDates[index].cycleType.stringValue,
                       style: const TextStyle(fontSize: 12, color: Colors.blue)),
                   backgroundColor: Colors.white)),
-          if (isFree)
+          if (lessonDate.isFree)
             const Padding(
                 padding: EdgeInsets.all(8),
                 child: Chip(

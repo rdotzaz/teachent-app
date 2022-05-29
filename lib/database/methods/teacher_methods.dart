@@ -100,7 +100,7 @@ mixin TeacherDatabaseMethods {
   }
 
   /// Update current average rate from teacher with [teacherId] with [newAverageRate] value
-  Future<void> updateAverageRate(KeyId teacherId, double newAverageRate) async {
+  Future<void> updateAverageRate(KeyId teacherId, int newAverageRate) async {
     await FirebaseRealTimeDatabaseAdapter.updateField(
         DatabaseObjectName.teachers, teacherId, 'averageRate', newAverageRate);
   }

@@ -82,7 +82,8 @@ class FirebaseRealTimeDatabaseAdapter {
     }
 
     String encryptedPassword =
-        (foundEventValue as Map<dynamic, dynamic>)['password'] ?? DatabaseConsts.emptyField;
+        (foundEventValue as Map<dynamic, dynamic>)['password'] ??
+            DatabaseConsts.emptyField;
 
     if (encryptedPassword == DatabaseConsts.emptyField) {
       return FirebaseResponse(
@@ -168,8 +169,9 @@ class FirebaseRealTimeDatabaseAdapter {
 
     late DatabaseEvent event;
     try {
-      event =
-          await possibleExistedKeyRef.once().timeout(const Duration(seconds: 5));
+      event = await possibleExistedKeyRef
+          .once()
+          .timeout(const Duration(seconds: 5));
     } on TimeoutException {
       return FirebaseResponse(
           status: FirebaseResponseStatus.failure,

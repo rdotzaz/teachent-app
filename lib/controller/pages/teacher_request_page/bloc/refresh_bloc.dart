@@ -1,4 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:teachent_app/common/enums.dart';
 import 'package:teachent_app/controller/pages/teacher_request_page/teacher_request_page_controller.dart';
 
 /// Base event for RefreshBloc
@@ -17,16 +18,17 @@ class RestoreDateEvent extends BaseRefreshEvent {}
 /// Such pattern improve widget rebuilding performance and better state management as well.
 ///
 /// For more details: https://bloclibrary.dev/#/
-class RefreshBloc extends Bloc<BaseRefreshEvent, bool> {
-  RefreshBloc(TeacherRequestPageController controller) : super(false) {
+class RefreshBloc extends Bloc<BaseRefreshEvent, RequestedDateStatus> {
+  RefreshBloc(TeacherRequestPageController controller)
+      : super(controller.request.dateStatus) {
     on<RejectDateEvent>(((event, emit) {
       controller.rejectNewDate();
-      emit(true);
+      emit(RequestedDateStatus.rejected);
     }));
 
     on<RestoreDateEvent>(((event, emit) {
       controller.restoreNewDate();
-      emit(false);
+      emit(RequestedDateStatus.accepted);
     }));
   }
 }

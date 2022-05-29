@@ -40,13 +40,10 @@ class RequestManager {
     }
   }
 
-  static Future<void> sendTeacherResponse(
-      DataManager dataManager, Request request, bool isNewDateAccepted) async {
-    await dataManager.database.changeRequestedDateStatus(
-        request.requestId,
-        isNewDateAccepted
-            ? RequestedDateStatus.accepted
-            : RequestedDateStatus.rejected);
+  static Future<void> sendTeacherResponse(DataManager dataManager,
+      Request request, RequestedDateStatus status) async {
+    await dataManager.database
+        .changeRequestedDateStatus(request.requestId, status);
 
     await dataManager.database
         .changeRequestStatus(request.requestId, RequestStatus.responded);
@@ -57,6 +54,7 @@ class RequestManager {
     if (request.requestedDate != null) {
       await dataManager.database.changeLessonDate(
           lessonDate?.lessonDateId ?? '', request.requestedDate!);
+      lessonDate?.date == request.requestedDate!;
       await dataManager.database
           .changeCurrentDate(request.requestId, request.requestedDate!);
     }

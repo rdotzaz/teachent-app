@@ -19,11 +19,12 @@ class ReviewManager {
     await dataManager.database.addReviewIdToTeacher(teacher.userId, reviewId);
   }
 
-  static double getUpdatedAverageRate(Teacher teacher, int rate) {
+  static int getUpdatedAverageRate(Teacher teacher, int rate) {
     final currentAverageRate = teacher.averageRate;
     final currentReviewsCount = teacher.reviews.length;
 
-    return ((currentAverageRate * currentReviewsCount) + rate) /
-        (currentReviewsCount + 1);
+    return (((currentAverageRate * currentReviewsCount) + rate) /
+            (currentReviewsCount + 1))
+        .ceil();
   }
 }

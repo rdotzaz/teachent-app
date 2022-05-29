@@ -4,6 +4,7 @@ import 'package:teachent_app/common/enum_functions.dart';
 import 'package:teachent_app/controller/pages/student_home_page/student_home_page_controller.dart';
 import 'package:teachent_app/model/db_objects/db_object.dart';
 import 'package:teachent_app/view/widgets/custom_button.dart';
+import 'package:teachent_app/view/widgets/label.dart';
 import 'package:teachent_app/view/widgets/single_card.dart';
 
 /// Home page from student perspective
@@ -196,14 +197,23 @@ class _StudentHomePageState extends State<StudentHomePage>
   }
 
   Widget _lessonDateItemWidget(BuildContext context, int index) {
+    final lessonDate = _studentHomePageController.lessonDates[index];
     return GestureDetector(
         onTap: () =>
             _studentHomePageController.goToLessonDatePage(context, index),
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          Text(
-              _studentHomePageController.getTeacherName(
-                  _studentHomePageController.lessons[index].teacherId),
-              style: const TextStyle(fontSize: 12, color: Colors.white)),
+          if (!lessonDate.isFree)
+            Label(
+                text: _studentHomePageController
+                    .getTeacherName(lessonDate.teacherId),
+                fontSize: 12,
+                color: Colors.white,
+                padding: 8),
+          Label(
+              text: 'Start date: ${DateFormatter.getString(lessonDate.date)}',
+              fontSize: 12,
+              color: Colors.white,
+              padding: 8),
           Padding(
               padding: const EdgeInsets.all(8),
               child: Chip(

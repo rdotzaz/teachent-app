@@ -99,7 +99,9 @@ class StudentRequestPageController extends BaseRequestPageController {
   List<Topic> get topics => teacher?.topics ?? [];
   bool get hasTeacherMessage => false;
   bool get canCheckStatus => request != null;
-  bool get isEnabled => request?.status != RequestStatus.accepted && request?.status != RequestStatus.rejected;
+  bool get isEnabled =>
+      request?.status != RequestStatus.accepted &&
+      request?.status != RequestStatus.rejected;
 
   Future<void> _enableDatePicker(BuildContext context) async {
     if (!isEnabled) {

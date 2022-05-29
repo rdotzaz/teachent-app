@@ -21,7 +21,13 @@ class LessonDatePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: const Text(''), backgroundColor: Colors.transparent, elevation: 0, leading: BackButton(color: lessonDateController.isTeacher ? Colors.blue : Colors.red),),
+        appBar: AppBar(
+          title: const Text(''),
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          leading: BackButton(
+              color: lessonDateController.isTeacher ? Colors.blue : Colors.red),
+        ),
         body: FutureBuilder(
             future: lessonDateController.init(),
             builder: (context, snapshot) {

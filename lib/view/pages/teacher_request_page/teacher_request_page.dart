@@ -61,7 +61,8 @@ class TeacherRequestPage extends StatelessWidget {
       _infoCard(),
       if (_requestPageController!.tools.isNotEmpty) _tools(),
       if (_requestPageController!.places.isNotEmpty) _places(),
-      if (_requestPageController!.wasOtherDateRequested && _requestPageController!.isEnabled)
+      if (_requestPageController!.wasOtherDateRequested &&
+          _requestPageController!.isEnabled)
         OtherDayWidget(controller: _requestPageController!),
       if (_requestPageController!.isEnabled)
         Buttons(controller: _requestPageController!),
@@ -88,20 +89,28 @@ class TeacherRequestPage extends StatelessWidget {
 
   Widget _infoCard() {
     return SingleCardWidget(
-      title: 'Request',
-      titleColor: Colors.black,
-      bodyWidget: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Label(text: 'Name: ${_requestPageController!.studentName}', fontSize: 22),
-          Label(text: 'Date: ${_requestPageController!.date}', fontSize: 20),
-          Label(text: _requestPageController!.isCycled
-              ? 'Lesson is cycled'
-              : 'One-time lesson'),
-          Label(text: 'Price: ${_requestPageController!.price}'),
-          Chip(label: Label(text: 'Topic: ${_requestPageController!.topic.name}', color: Colors.white, padding: 8), backgroundColor: Colors.blue)
-        ],
-      ));
+        title: 'Request',
+        titleColor: Colors.black,
+        bodyWidget: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Label(
+                text: 'Name: ${_requestPageController!.studentName}',
+                fontSize: 22),
+            Label(text: 'Date: ${_requestPageController!.date}', fontSize: 20),
+            Label(
+                text: _requestPageController!.isCycled
+                    ? 'Lesson is cycled'
+                    : 'One-time lesson'),
+            Label(text: 'Price: ${_requestPageController!.price}'),
+            Chip(
+                label: Label(
+                    text: 'Topic: ${_requestPageController!.topic.name}',
+                    color: Colors.white,
+                    padding: 8),
+                backgroundColor: Colors.blue)
+          ],
+        ));
   }
 
   Widget _tools() {

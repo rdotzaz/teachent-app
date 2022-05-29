@@ -62,31 +62,31 @@ class StudentRequestPage extends StatelessWidget {
       _infoCard(),
       _tools(),
       _places(),
-      if (_requestPageController!.isEnabled)
-        _requestDay(),
+      if (_requestPageController!.isEnabled) _requestDay(),
       _topicSelecting(),
       Messages(controller: _requestPageController!),
-      if (_requestPageController!.isEnabled)
-        _sendRequestButton()
+      if (_requestPageController!.isEnabled) _sendRequestButton()
     ]));
   }
 
   Widget _infoCard() {
     return SingleCardWidget(
-      title: 'Request',
-      titleColor: Colors.black,
-      bodyWidget: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Label(text: 'Name: ${_requestPageController!.teacherName}', fontSize: 22),
-          Label(text: 'Date: ${_requestPageController!.date}', fontSize: 20),
-          Label(
-              text: _requestPageController!.isCycled
-                  ? 'Lesson is cycled'
-                  : 'One-time lesson'),
-          Label(text: 'Price: ${_requestPageController!.price}'),
-        ],
-      ));
+        title: 'Request',
+        titleColor: Colors.black,
+        bodyWidget: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Label(
+                text: 'Name: ${_requestPageController!.teacherName}',
+                fontSize: 22),
+            Label(text: 'Date: ${_requestPageController!.date}', fontSize: 20),
+            Label(
+                text: _requestPageController!.isCycled
+                    ? 'Lesson is cycled'
+                    : 'One-time lesson'),
+            Label(text: 'Price: ${_requestPageController!.price}'),
+          ],
+        ));
   }
 
   Widget _checkStatus() {
@@ -166,9 +166,10 @@ class StudentRequestPage extends StatelessWidget {
                 onPressed: () {
                   if (_requestPageController!.isEnabled) {
                     context
-                    .read<RequestTopicBloc>()
-                    .add(ToggleTopicEvent(index));
-                  }});
+                        .read<RequestTopicBloc>()
+                        .add(ToggleTopicEvent(index));
+                  }
+                });
           });
     });
   }
