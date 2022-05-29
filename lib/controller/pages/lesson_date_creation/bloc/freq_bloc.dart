@@ -11,9 +11,6 @@ class ToggleFreqencyEvent extends BaseLessonFrequencyEvent {
   ToggleFreqencyEvent(this.index);
 }
 
-/// Event for toggle isCycled checkbox
-class ToggleCycleModeEvent extends BaseLessonFrequencyEvent {}
-
 /// The class inherits from Bloc<Event, State>
 ///
 /// Bloc object allows to manage state.
@@ -27,11 +24,5 @@ class FrequencyBloc extends Bloc<BaseLessonFrequencyEvent, int> {
       controller.toggleFreq(event.index);
       emit(event.index);
     }));
-
-    on<ToggleCycleModeEvent>((event, emit) {
-      controller.toggleCycleCheck();
-      final refreshedState = state;
-      emit(refreshedState);
-    });
   }
 }

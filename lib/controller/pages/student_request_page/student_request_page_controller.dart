@@ -26,6 +26,7 @@ class StudentRequestPageController extends BaseRequestPageController {
   LessonDate? lessonDate;
 
   DateTime? otherDate;
+  TimeOfDay? otherTime;
   int topicIndex = 0;
   bool hasChangesProvided = false;
   final List<MessageRecord> _newMessages = [];
@@ -89,7 +90,8 @@ class StudentRequestPageController extends BaseRequestPageController {
 
   String get teacherName => teacher?.name ?? '';
   String get date => DateFormatter.getString(lessonDate!.date);
-  String get requestedDate => DateFormatter.getString(otherDate);
+  String get requestedDate => DateFormatter.onlyDateString(otherDate);
+  String get requestedTime => DateFormatter.timeString(otherTime);
   String get statusInfo => request?.status.stringValue ?? '';
   String get additionalInfo => request?.dateStatus.stringValue ?? '';
   bool get isCycled => lessonDate?.isCycled ?? false;
@@ -127,6 +129,36 @@ class StudentRequestPageController extends BaseRequestPageController {
     }
   }
 
+  Future<void> _enableTimePicker(BuildContext context) async {
+    if (!isEnabled) {
+      return;
+    }
+    final pickedTime = await showTimePicker(
+        context: context,
+        initialTime: otherTime ??
+            TimeOfDay(
+                hour: lessonDate!.date.hour, minute: lessonDate!.date.minute),
+        builder: (context, child) {
+          return MediaQuery(
+              data:
+                  MediaQuery.of(context).copyWith(alwaysUse24HourFormat: true),
+              child: child!);
+        });
+
+    if (pickedTime == null) {
+      return;
+    }
+
+    if (otherTime == null) {
+      otherTime = pickedTime;
+      return;
+    }
+
+    if (pickedTime != otherTime) {
+      otherTime = pickedTime;
+    }
+  }
+
   void saveRequestedDate() {
     if (!isEnabled) {
       return;
@@ -140,6 +172,7 @@ class StudentRequestPageController extends BaseRequestPageController {
     }
     hasChangesProvided = false;
     otherDate = null;
+    otherTime = null;
   }
 
   void setTopicIndex(int index) {
@@ -241,6 +274,14 @@ class StudentRequestPageController extends BaseRequestPageController {
     context.read<RequestDayBloc>().add(ToggleRequestDayField());
   }
 
+  void toggleRequestTimePicker(BuildContext context) async {
+    if (!isEnabled) {
+      return;
+    }
+    await _enableTimePicker(context);
+    context.read<RequestDayBloc>().add(ToggleRequestDayField());
+  }
+
   Future<void> sendResponse(BuildContext context) async {
     if (!isEnabled) {
       return;
@@ -248,7 +289,7 @@ class StudentRequestPageController extends BaseRequestPageController {
     assert(hasChangesProvided && request != null);
 
     await RequestManager.sendStudentResponse(
-        dataManager, request!, otherDate!, topics[topicIndex]);
+        dataManager, request!, otherDate, otherTime, topics[topicIndex]);
 
     await showSuccessMessageAsync(context, 'Request has been updated');
     Navigator.of(context).pop();

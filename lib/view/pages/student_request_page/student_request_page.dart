@@ -6,6 +6,7 @@ import 'package:teachent_app/controller/pages/student_request_page/bloc/request_
 import 'package:teachent_app/model/db_objects/db_object.dart';
 import 'package:teachent_app/model/db_objects/lesson_date.dart';
 import 'package:teachent_app/model/db_objects/teacher.dart';
+import 'package:teachent_app/view/pages/student_request_page/request_day_field.dart';
 import 'package:teachent_app/view/widgets/label.dart';
 import 'package:teachent_app/view/widgets/chip_list.dart';
 import 'package:teachent_app/view/widgets/messages.dart';
@@ -139,7 +140,7 @@ class StudentRequestPage extends StatelessWidget {
   Widget _requestDay() {
     return BlocBuilder<RequestDayBloc, Widget>(builder: (_, widget) {
       return Container(
-          height: 80,
+          height: widget is RequestDayField ? 250 : 80,
           padding: const EdgeInsets.all(10),
           child: AnimatedSwitcher(
               duration: const Duration(milliseconds: 700), child: widget));

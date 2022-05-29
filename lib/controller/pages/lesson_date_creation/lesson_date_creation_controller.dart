@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:teachent_app/common/date.dart';
 import 'package:teachent_app/common/enum_functions.dart';
+import 'package:teachent_app/common/enums.dart';
 import 'package:teachent_app/controller/controller.dart';
 import 'package:teachent_app/controller/pages/lesson_date_creation/bloc/freq_bloc.dart';
 import 'package:teachent_app/controller/pages/lesson_date_creation/bloc/tool_bloc.dart';
@@ -36,7 +37,6 @@ class LessonDateCreationPageController extends BaseController {
   TimeOfDay _selectedTime = const TimeOfDay(hour: 12, minute: 0);
   int _duration = 60;
   int _price = 50;
-  bool _isCycled = false;
   int _selectedFreqIndex = 0;
 
   late FrequencyBloc freqBloc;
@@ -61,7 +61,6 @@ class LessonDateCreationPageController extends BaseController {
   List<Tool> get tools => _tools;
   List<Place> get places => _places;
   List<String> get lessonFrequencies => _freqs;
-  bool get isCycled => _isCycled;
 
   bool isFreqSelected(int index) => index == _selectedFreqIndex;
 
@@ -151,10 +150,6 @@ class LessonDateCreationPageController extends BaseController {
     _price = int.tryParse(priceToSet ?? '') ?? 50;
   }
 
-  void toggleCycleCheck() {
-    _isCycled = !_isCycled;
-  }
-
   /// Get color for selected checkbox based on checkbox state
   /// Return blue if chekcbox selected, white otherwise
   Color getCycledCheckBoxColor(Set<MaterialState> checkBoxStates) {
@@ -177,7 +172,7 @@ class LessonDateCreationPageController extends BaseController {
     final lessonDate = LessonDate.init(
         teacher.userId,
         DateFormatter.addTime(_selectedDate, _selectedTime),
-        isCycled,
+        freqBloc.state != CycleType.single.value,
         getCycleByValue(freqBloc.state),
         price,
         tools,

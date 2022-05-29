@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:teachent_app/common/data_manager.dart';
 import 'package:teachent_app/common/enums.dart';
 import 'package:teachent_app/model/db_objects/db_object.dart';
@@ -23,14 +24,43 @@ class RequestManager {
         .addRequestIdToStudent(studentId ?? '', requestKey);
   }
 
-  static Future<void> sendStudentResponse(DataManager dataManager,
-      Request request, DateTime otherDate, Topic selectedTopic) async {
+  static Future<void> sendStudentResponse(
+      DataManager dataManager,
+      Request request,
+      DateTime? otherDate,
+      TimeOfDay? time,
+      Topic selectedTopic) async {
     await dataManager.database
         .changeRequestStatus(request.requestId, RequestStatus.waiting);
 
-    if (otherDate != request.requestedDate) {
+    final dateChanged = otherDate != null && otherDate != request.requestedDate;
+    DateTime? newDate;
+    if (dateChanged) {
+      newDate = otherDate;
+    }
+
+    final timeChanged = time !=
+        TimeOfDay(
+            hour: request.requestedDate?.hour ?? 0,
+            minute: request.requestedDate?.minute ?? 0);
+    if (timeChanged && time != null) {
+      if (newDate == null) {
+        final newCurrentDate = DateTime(
+            request.currentDate.year,
+            request.currentDate.month,
+            request.currentDate.day,
+            time.hour,
+            time.minute);
+        newDate = newCurrentDate;
+      } else {
+        final newCurrentDate = DateTime(
+            newDate.year, newDate.month, newDate.day, time.hour, time.minute);
+        newDate = newCurrentDate;
+      }
+    }
+    if (newDate != null) {
       await dataManager.database
-          .changeRequestedDate(request.requestId, otherDate);
+          .changeRequestedDate(request.requestId, newDate);
       await dataManager.database.changeRequestedDateStatus(
           request.requestId, RequestedDateStatus.requested);
     }
