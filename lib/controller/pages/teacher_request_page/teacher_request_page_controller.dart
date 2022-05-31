@@ -59,7 +59,9 @@ class TeacherRequestPageController extends BaseRequestPageController {
   }
 
   String get studentName => student?.name ?? '';
-  String get date => DateFormatter.getString(lessonDate?.date);
+  String get date => request.dateStatus == RequestedDateStatus.accepted
+      ? DateFormatter.getString(request.requestedDate)
+      : DateFormatter.getString(lessonDate?.date);
   String get requestedDate =>
       DateFormatter.onlyDateString(request.requestedDate);
   bool get isCycled => lessonDate?.isCycled ?? false;

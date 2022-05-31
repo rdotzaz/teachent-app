@@ -42,7 +42,7 @@ mixin LessonDateDatabaseMethods {
     return response.data;
   }
 
-  /// Update current date with [newDate]t for lesson date by [lessonDateId]
+  /// Update current date with [newDate] for lesson date by [lessonDateId]
   Future<void> changeLessonDate(KeyId lessonDateId, DateTime newDate) async {
     await FirebaseRealTimeDatabaseAdapter.updateField(
         DatabaseObjectName.lessonDates,
