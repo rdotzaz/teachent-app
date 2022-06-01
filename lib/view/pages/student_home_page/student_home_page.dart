@@ -167,16 +167,14 @@ class _StudentHomePageState extends State<StudentHomePage>
   Widget _lessonItemWidget(BuildContext context, int index) {
     final date =
         DateFormatter.getString(_studentHomePageController.lessons[index].date);
-    return GestureDetector(
-        onTap: () => _studentHomePageController.goToLessonPage(context, index),
-        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          Text(date, style: const TextStyle(fontSize: 14, color: Colors.white)),
-          const SizedBox(height: 20),
-          Text(
+    return ListTile(
+      title: Text(date, style: const TextStyle(fontSize: 14, color: Colors.white)),
+      subtitle: Text(
               _studentHomePageController.getTeacherName(
                   _studentHomePageController.lessons[index].teacherId),
               style: const TextStyle(fontSize: 12, color: Colors.white)),
-        ]));
+      onTap: () => _studentHomePageController.goToLessonPage(context, index),
+    );
   }
 
   Widget _lessonDatesWidget() {
@@ -206,6 +204,7 @@ class _StudentHomePageState extends State<StudentHomePage>
     return GestureDetector(
         onTap: () =>
             _studentHomePageController.goToLessonDatePage(context, index),
+        behavior: HitTestBehavior.opaque,
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           if (!lessonDate.isFree)
             Label(
@@ -258,6 +257,7 @@ class _StudentHomePageState extends State<StudentHomePage>
     return GestureDetector(
         onTap: () =>
             _studentHomePageController.goToTeacherProfile(context, index),
+        behavior: HitTestBehavior.opaque,
         child: Column(children: [
           const Padding(
               padding: EdgeInsets.all(10),
