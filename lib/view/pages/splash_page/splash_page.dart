@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:teachent_app/controller/pages/splash_page/splash_page_controller.dart';
 import 'package:teachent_app/view/pages/splash_page/splash_progress.dart';
 
-import 'splash_name.dart';
-
 /// First page after launching app
 /// Display logo and load requiered componentes
 class SplashPage extends StatefulWidget {

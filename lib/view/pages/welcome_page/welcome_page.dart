@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:teachent_app/common/consts.dart';
-import 'package:teachent_app/controller/pages/welcome_page/welcome_page.dart';
+import 'package:teachent_app/controller/pages/welcome_page/welcome_page_controller.dart';
 import 'package:teachent_app/model/db_objects/db_object.dart';
 
 /// Page shows after successful account creation
@@ -27,7 +27,7 @@ class _WelcomePageState extends State<WelcomePage> {
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
-      backgroundColor: Colors.white,
-      body: Center(child: Text(WelcomePageConsts.welcome)));
+        backgroundColor: Colors.white,
+        body: Center(child: Text(WelcomePageConsts.welcome)));
   }
 }

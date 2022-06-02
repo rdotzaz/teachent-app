@@ -43,8 +43,8 @@ class _AccountCreationPageState extends State<AccountCreationPage> {
     return Scaffold(
         resizeToAvoidBottomInset: false,
         body: SingleChildScrollView(
-          physics: const BouncingScrollPhysics(),
-          child: Column(children: [header(windowSize.height), body()])));
+            physics: const BouncingScrollPhysics(),
+            child: Column(children: [header(windowSize.height), body()])));
   }
 
   Widget header(double height) {

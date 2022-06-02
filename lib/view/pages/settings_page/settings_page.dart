@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:teachent_app/controller/pages/settings_page/settings_page_controller.dart';
 import 'package:teachent_app/model/db_objects/db_object.dart';
 import 'package:teachent_app/view/widgets/custom_button.dart';
+import 'package:teachent_app/view/widgets/error_message_widget.dart';
 
 /// Page with available settings from user perspective
 /// Also page gets access to widget with all licence informations (see 'About app' button)
@@ -28,24 +29,24 @@ class _SettingsPageState extends State<SettingsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: CustomScrollView(slivers: [
-        appBar(context),
-        SliverList(delegate: SliverChildListDelegate([body()]))
+        _appBar(context),
+        SliverList(delegate: SliverChildListDelegate([_body()]))
       ]),
     );
   }
 
-  Widget appBar(BuildContext context) {
+  Widget _appBar(BuildContext context) {
     return SliverAppBar(
         expandedHeight: 150,
         backgroundColor: Colors.transparent,
-        leading: back(context),
+        leading: _back(context),
         flexibleSpace: FlexibleSpaceBar(
             title:
                 const Text('Settings', style: TextStyle(color: Colors.black)),
             background: Container(color: Colors.transparent)));
   }
 
-  Widget back(BuildContext context) {
+  Widget _back(BuildContext context) {
     return GestureDetector(
       onTap: () => _settingsPageController.backToHome(context),
       child: const Padding(
@@ -58,20 +59,23 @@ class _SettingsPageState extends State<SettingsPage> {
     );
   }
 
-  Widget body() {
+  Widget _body() {
     return FutureBuilder(
         future: _settingsPageController.init(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const CircularProgressIndicator();
           } else if (snapshot.connectionState == ConnectionState.done) {
-            return homeWidget(context);
+            return _homeWidget(context);
           }
-          return errorWidget(snapshot.error.toString());
+          return ErrorMessageWidget(
+              text: snapshot.error.toString(),
+              color: Colors.red,
+              backgroundColor: Colors.blue);
         });
   }
 
-  Widget homeWidget(BuildContext context) {
+  Widget _homeWidget(BuildContext context) {
     return SingleChildScrollView(
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
       const Padding(
@@ -99,17 +103,5 @@ class _SettingsPageState extends State<SettingsPage> {
                 _settingsPageController.aboutDialog(context);
               })),
     ]));
-  }
-
-  Widget errorWidget(String errorMessage) {
-    return Container(
-      color: Colors.red,
-      child: Column(children: [
-        const Padding(
-            padding: EdgeInsets.all(30),
-            child: Icon(Icons.error, color: Colors.white)),
-        Text(errorMessage),
-      ]),
-    );
   }
 }

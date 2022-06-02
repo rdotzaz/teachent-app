@@ -18,12 +18,12 @@ class WelcomePageController extends BaseController {
   }
 
   void moveToHomePage() {
-    Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (_) {
+    Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (_) {
       if (dbObject is Teacher) {
         return TeacherHomePage(userId: (dbObject as Teacher).userId);
       } else {
         return StudentHomePage(userId: (dbObject as Student).userId);
       }
-    }));
+    }), (_) => false);
   }
 }
