@@ -8,6 +8,7 @@ import 'package:teachent_app/model/db_objects/app_configuration.dart';
 class DataManagerCreator {
   static DataManager? _dataManager;
 
+  /// Creates new instances or returns existing one
   static DataManager create() {
     if (_dataManager == null) {
       var database = MainDatabase();

@@ -16,6 +16,8 @@ abstract class BaseAnimationWithTween<Value> {
   BaseAnimationWithTween(
       {required this.duration, required this.animationTween});
 
+  /// Start animation with given [tickerProvider] which allows to run animation.
+  /// [refresh] - listener function for animation controller.
   void startAnimation(TickerProvider tickerProvider, void Function() refresh) {
     animController =
         AnimationController(vsync: tickerProvider, duration: duration);
@@ -24,8 +26,10 @@ abstract class BaseAnimationWithTween<Value> {
     actions();
   }
 
+  /// Animation related action e.g. use repeat method of [animController].
   void actions();
 
+  /// Stop animation
   void stop() {
     animController.stop();
   }
@@ -48,6 +52,8 @@ abstract class BaseAnimation {
   final Duration duration;
   BaseAnimation({required this.duration});
 
+  /// Start animation with given [tickerProvider] which allows to run animation.
+  /// [refresh] - listener function for animation controller.
   void startAnimation(TickerProvider tickerProvider, void Function() refresh) {
     animController =
         AnimationController(vsync: tickerProvider, duration: duration);
@@ -55,8 +61,10 @@ abstract class BaseAnimation {
     actions();
   }
 
+  /// Animation related action e.g. use repeat method of [animController].
   void actions();
 
+  /// Stop animation
   void stop() {
     animController.stop();
   }

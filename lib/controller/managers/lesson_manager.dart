@@ -7,7 +7,9 @@ import 'package:teachent_app/model/db_objects/lesson_date.dart';
 
 import 'lesson_date_manager.dart';
 
+/// Class for lesson management
 class LessonManager {
+  /// Create first lesson within cooperation [lessonDate] and add student with [studentId] to cooperation.
   static Future<void> createFirst(
       DataManager dataManager, KeyId studentId, LessonDate lessonDate) async {
     final lesson = Lesson.noKey(lessonDate.lessonDateId, lessonDate.teacherId,
@@ -15,16 +17,19 @@ class LessonManager {
     await dataManager.database.addLesson(lesson);
   }
 
+  /// Cancel [lesson] by teacher
   static Future<void> cancelLessonByTeacher(
       DataManager dataManager, LessonDate lessonDate, Lesson lesson) async {
     await LessonManager._cancelLesson(dataManager, lessonDate, lesson, true);
   }
 
+  /// Cancel [lesson] by student
   static Future<void> cancelLessonByStudent(
       DataManager dataManager, LessonDate lessonDate, Lesson lesson) async {
     await LessonManager._cancelLesson(dataManager, lessonDate, lesson, false);
   }
 
+  /// Create next lesson based on [lessonDate] if cooperation is cycled.
   static Future<void> createNextLesson(
       DataManager dataManager, LessonDate lessonDate, Lesson lesson) async {
     if (lessonDate.isCycled) {
@@ -43,6 +48,7 @@ class LessonManager {
     }
   }
 
+  /// Mark [lesson] as done.
   static Future<void> markLessonAsDone(
       DataManager dataManager, Lesson lesson) async {
     await dataManager.database
