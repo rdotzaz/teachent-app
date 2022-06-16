@@ -1,6 +1,9 @@
+import 'package:flutter/material.dart';
 import 'package:teachent_app/common/date.dart';
 import 'package:teachent_app/common/enum_functions.dart';
+import 'package:teachent_app/common/enums.dart';
 import 'package:teachent_app/controller/controller.dart';
+import 'package:teachent_app/controller/managers/lesson_date_manager.dart';
 import 'package:teachent_app/model/db_objects/lesson_date.dart';
 import 'package:teachent_app/model/db_objects/lesson.dart';
 import 'package:teachent_app/model/db_objects/report.dart';
@@ -8,6 +11,7 @@ import 'package:teachent_app/model/db_objects/teacher.dart';
 import 'package:teachent_app/model/db_objects/student.dart';
 import 'package:teachent_app/model/objects/place.dart';
 import 'package:teachent_app/model/objects/tool.dart';
+import 'package:teachent_app/view/widgets/status_bottom_sheet.dart';
 
 class LessonEntity {
   final Lesson lesson;
@@ -25,6 +29,7 @@ class LessonDatePageController extends BaseController {
   final List<LessonEntity> lessonEntities = [];
 
   bool get isNotFree => !lessonDate.isFree;
+  bool get isFinished => lessonDate.status == LessonDateStatus.finished;
   String get studentName => student.name;
   String get teacherName => teacher.name;
   String get cycleType => lessonDate.cycleType.stringValue;
@@ -63,5 +68,12 @@ class LessonDatePageController extends BaseController {
       return;
     }
     teacher = foundTeacher;
+  }
+
+  void cancelCooperation(BuildContext context) async {
+    await LessonDateManager.cancelCooperation(
+        dataManager, lessonDate, isTeacher);
+    await showSuccessMessageAsync(context, 'Cooperation cancelled');
+    Navigator.of(context).pop();
   }
 }

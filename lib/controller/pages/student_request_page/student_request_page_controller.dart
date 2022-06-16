@@ -259,7 +259,14 @@ class StudentRequestPageController extends BaseRequestPageController {
   }
 
   @override
-  Future<void> sendMessageAndRefresh(Function refresh) async {
+  Future<void> sendMessageAndRefresh(
+      BuildContext context, Function refresh) async {
+    if (!await dataManager.database
+        .isLessonDateFree(lessonDate?.lessonDateId ?? '')) {
+      showErrorMessage(context, 'Lesson date was reserved by someone else');
+      return;
+    }
+
     _newMessages.add(MessageRecord(textController.text, DateTime.now()));
     if (request != null) {
       await RequestManager.sendStudentMessage(
@@ -289,6 +296,11 @@ class StudentRequestPageController extends BaseRequestPageController {
     if (!isEnabled) {
       return;
     }
+    if (!await dataManager.database
+        .isLessonDateFree(lessonDate?.lessonDateId ?? '')) {
+      showErrorMessage(context, 'Lesson date was reserved by someone else');
+      return;
+    }
     assert(hasChangesProvided && request != null);
 
     await RequestManager.sendStudentResponse(
@@ -304,6 +316,11 @@ class StudentRequestPageController extends BaseRequestPageController {
     }
     if (topicIndex == -1) {
       showErrorMessage(context, 'Topic must be selected');
+      return;
+    }
+    if (!await dataManager.database
+        .isLessonDateFree(lessonDate?.lessonDateId ?? '')) {
+      showErrorMessage(context, 'Lesson date was reserved by someone else');
       return;
     }
 

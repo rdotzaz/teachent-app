@@ -39,7 +39,7 @@ class _MessagesState extends State<Messages> {
               text: 'Send',
               fontSize: 14,
               onPressed: () {
-                widget.controller.sendMessageAndRefresh(refresh);
+                widget.controller.sendMessageAndRefresh(context, refresh);
               })
         ])
       ]),

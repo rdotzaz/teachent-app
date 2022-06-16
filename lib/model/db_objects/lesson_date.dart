@@ -15,7 +15,7 @@ class LessonDate extends DatabaseObject {
   final KeyId lessonDateId;
   final KeyId teacherId;
   final KeyId studentId;
-  final bool isFree;
+  final LessonDateStatus status;
   final DateTime date;
   final bool isCycled;
   final CycleType cycleType;
@@ -27,7 +27,7 @@ class LessonDate extends DatabaseObject {
       this.lessonDateId,
       this.teacherId,
       this.studentId,
-      this.isFree,
+      this.status,
       this.date,
       this.isCycled,
       this.cycleType,
@@ -39,16 +39,16 @@ class LessonDate extends DatabaseObject {
       this.price, this.tools, this.places)
       : lessonDateId = DatabaseConsts.emptyKey,
         studentId = DatabaseConsts.emptyKey,
-        isFree = true;
+        status = LessonDateStatus.free;
 
-  LessonDate.noKey(this.teacherId, this.studentId, this.isFree, this.date,
+  LessonDate.noKey(this.teacherId, this.studentId, this.status, this.date,
       this.isCycled, this.cycleType, this.price, this.tools, this.places)
       : lessonDateId = DatabaseConsts.emptyKey;
 
   LessonDate.fromMap(this.lessonDateId, Map<dynamic, dynamic> values)
       : teacherId = values['teacherId'] ?? '',
         studentId = values['studentId'] ?? '',
-        isFree = values['isFree'] ?? true,
+        status = getLessonDateStatus(values['status'] ?? 0),
         date = DateFormatter.parse(values['date']),
         isCycled = values['isCycled'] ?? false,
         cycleType = getCycleByValue(values['cycleType'] ?? -1),
@@ -62,6 +62,8 @@ class LessonDate extends DatabaseObject {
             .map((p) => Place(p.key, true))
             .toList();
 
+  bool get isFree => status == LessonDateStatus.free;
+
   @override
   String get collectionName => DatabaseObjectName.lessonDates;
 
@@ -73,7 +75,7 @@ class LessonDate extends DatabaseObject {
     return {
       'teacherId': teacherId,
       'studentId': studentId,
-      'isFree': isFree,
+      'status': status,
       'date': DateFormatter.getString(date),
       'isCycled': isCycled,
       'cycleType': cycleType.value,

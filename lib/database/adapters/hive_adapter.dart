@@ -1,5 +1,3 @@
-import 'dart:developer' as dev;
-
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:teachent_app/common/consts.dart';
 import 'package:teachent_app/database/database.dart';
@@ -13,13 +11,13 @@ class HiveDatabaseAdapter {
   }
 
   static void clear() {
-    var configBox = Hive.box(HiveConsts.hiveConfigBox);
+    final configBox = Hive.box(HiveConsts.hiveConfigBox);
     configBox.clear();
   }
 
   /// Returns true if configuration already exists in local database
   static bool hasConfiguration() {
-    var configBox = Hive.box(HiveConsts.hiveConfigBox);
+    final configBox = Hive.box(HiveConsts.hiveConfigBox);
     if (!configBox.isOpen) {
       return false;
     }
@@ -30,39 +28,41 @@ class HiveDatabaseAdapter {
 
   /// Add [values] to configuration box in Hive local database
   static void putConfiguration(DBValues values) {
-    var configBox = Hive.box(HiveConsts.hiveConfigBox);
+    final configBox = Hive.box(HiveConsts.hiveConfigBox);
     if (!configBox.isOpen) {
-      dev.log('[HiveAdapter] Trying to add configuration to closed box');
       return;
     }
 
-    if (!values['userId']) {
-      dev.log('[HiveAdapter] Put configuration with empty userId');
-    }
-    if (!values['themeMode']) {
-      dev.log('[HiveAdapter] Put configuration with empty themeMode');
-    }
-    if (!values['userMode']) {
-      dev.log('[HiveAdapter] Put configuration with empty userMode');
-    }
-
-    configBox.put(HiveConsts.userId, values['userId'] ?? '');
-    configBox.put(HiveConsts.themeMode, values['themeMode']);
-    configBox.put(HiveConsts.userMode, values['userMode']);
+    configBox.put(HiveConsts.userId, values[HiveConsts.userId] ?? '');
+    configBox.put(HiveConsts.themeMode, values[HiveConsts.themeMode] ?? false);
+    configBox.put(HiveConsts.userMode, values[HiveConsts.userMode] ?? true);
   }
 
   /// Returns map representation of AppConfiguration object of existing configuration
   static DBValues getConfiguration() {
-    var configBox = Hive.box(HiveConsts.hiveConfigBox);
+    final configBox = Hive.box(HiveConsts.hiveConfigBox);
     if (!configBox.isOpen) {
-      dev.log('[HiveAdapter] Trying to retrive configuration from closed box');
       return {};
     }
 
-    var userId = configBox.get(HiveConsts.userId);
-    var themeMode = configBox.get(HiveConsts.themeMode);
-    var userMode = configBox.get(HiveConsts.userMode);
+    final userId = configBox.get(HiveConsts.userId);
+    final themeMode = configBox.get(HiveConsts.themeMode);
+    final userMode = configBox.get(HiveConsts.userMode);
 
-    return {'userId': userId, 'themeMode': themeMode, 'userMode': userMode};
+    return {
+      HiveConsts.userId: userId,
+      HiveConsts.themeMode: themeMode,
+      HiveConsts.userMode: userMode
+    };
+  }
+
+  static void removeConfiguration() {
+    final configBox = Hive.box(HiveConsts.hiveConfigBox);
+    if (!configBox.isOpen) {
+      return;
+    }
+    configBox.put(HiveConsts.userId, null);
+    configBox.put(HiveConsts.themeMode, null);
+    configBox.put(HiveConsts.userMode, null);
   }
 }

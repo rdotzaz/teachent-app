@@ -186,11 +186,12 @@ class _TeacherHomePageState extends State<TeacherHomePage>
         DateFormatter.getString(_teacherHomePageController.lessons[index].date);
     return ListTile(
       onTap: () => _teacherHomePageController.goToLessonPage(context, index),
-      title: Text(date, style: const TextStyle(fontSize: 20, color: Colors.white)),
+      title:
+          Text(date, style: const TextStyle(fontSize: 20, color: Colors.white)),
       subtitle: Text(
-              _teacherHomePageController.getStudentName(
-                  _teacherHomePageController.lessons[index].studentId),
-              style: const TextStyle(fontSize: 14, color: Colors.white)),
+          _teacherHomePageController.getStudentName(
+              _teacherHomePageController.lessons[index].studentId),
+          style: const TextStyle(fontSize: 14, color: Colors.white)),
     );
   }
 

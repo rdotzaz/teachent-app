@@ -29,6 +29,12 @@ enum RequestStatus { newReq, waiting, responded, rejected, accepted, invalid }
 /// [invalid] - status when some unexpected error occured
 enum RequestedDateStatus { none, requested, accepted, rejected, invalid }
 
+/// Enum for cooperation status
+/// [free] - teacher published offer, but no student assigned
+/// [ongoing] - cooperation ongoing, teacher and student assigned
+/// [finished] - cooperation finihsed. No more lessons
+enum LessonDateStatus { free, ongoing, finished }
+
 /// Enum for lesson cycle mode
 /// [single] - single non-cycled lesson
 /// [daily] - daily lessons

@@ -72,4 +72,18 @@ mixin LessonDatabaseMethods {
     await FirebaseRealTimeDatabaseAdapter.updateField(
         DatabaseObjectName.lessons, lessonId, 'reportId', reportId);
   }
+
+  Future<bool> isLessonOpen(KeyId lessonId) async {
+    if (lessonId.isEmpty) {
+      return false;
+    }
+
+    final response = await FirebaseRealTimeDatabaseAdapter.getField(
+        DatabaseObjectName.lessons, lessonId, 'status');
+    if (response.status == FirebaseResponseStatus.failure) {
+      return false;
+    }
+    final statusNum = response.data as int? ?? -1;
+    return statusNum == LessonStatus.open.value;
+  }
 }

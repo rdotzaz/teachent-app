@@ -133,7 +133,14 @@ class TeacherRequestPageController extends BaseRequestPageController {
   }
 
   @override
-  Future<void> sendMessageAndRefresh(Function refresh) async {
+  Future<void> sendMessageAndRefresh(
+      BuildContext context, Function refresh) async {
+    if (!await dataManager.database
+        .isLessonDateFree(lessonDate?.lessonDateId ?? '')) {
+      showErrorMessage(context, 'Lesson date was reserved by someone else');
+      return;
+    }
+
     _newMessages.add(MessageRecord(textController.text, DateTime.now()));
     await RequestManager.sendTeacherMessage(
         dataManager, request, textController.text);
@@ -145,6 +152,12 @@ class TeacherRequestPageController extends BaseRequestPageController {
     if (!isEnabled) {
       return;
     }
+    if (!await dataManager.database
+        .isLessonDateFree(lessonDate?.lessonDateId ?? '')) {
+      showErrorMessage(context, 'Lesson date was reserved by someone else');
+      return;
+    }
+
     await RequestManager.sendTeacherResponse(
         dataManager, request, newDateStatus);
     Navigator.of(context).pop();
@@ -158,6 +171,12 @@ class TeacherRequestPageController extends BaseRequestPageController {
       showErrorMessage(context, 'You need to accept or reject new date first');
       return;
     }
+    if (!await dataManager.database
+        .isLessonDateFree(lessonDate?.lessonDateId ?? '')) {
+      showErrorMessage(context, 'Lesson date was reserved by someone else');
+      return;
+    }
+
     await RequestManager.acceptRequest(
         dataManager, request, student?.userId ?? '', lessonDate);
     await LessonManager.createFirst(
@@ -170,6 +189,12 @@ class TeacherRequestPageController extends BaseRequestPageController {
     if (!isEnabled) {
       return;
     }
+    if (!await dataManager.database
+        .isLessonDateFree(lessonDate?.lessonDateId ?? '')) {
+      showErrorMessage(context, 'Lesson date was reserved by someone else');
+      return;
+    }
+
     await RequestManager.rejectRequest(dataManager, request);
     await showSuccessMessageAsync(context, 'Request has been rejected');
     Navigator.of(context).pop();

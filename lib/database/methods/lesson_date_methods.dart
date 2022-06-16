@@ -1,5 +1,7 @@
 import 'package:teachent_app/common/consts.dart';
 import 'package:teachent_app/common/date.dart';
+import 'package:teachent_app/common/enum_functions.dart';
+import 'package:teachent_app/common/enums.dart';
 import 'package:teachent_app/common/firebase_enums.dart';
 import 'package:teachent_app/database/adapters/firebase_adapter.dart';
 import 'package:teachent_app/model/db_objects/db_object.dart';
@@ -36,9 +38,6 @@ mixin LessonDateDatabaseMethods {
     final response =
         await FirebaseRealTimeDatabaseAdapter.addDatabaseObjectWithNewKey(
             DatabaseObjectName.lessonDates, lessonDate.toMap());
-
-    //await FirebaseRealTimeDatabaseAdapter.addDatabaseObject(
-    //    DatabaseObjectName.dateToReports, lessonDate.lessonDateId, {});
     return response.data;
   }
 
@@ -57,8 +56,23 @@ mixin LessonDateDatabaseMethods {
         DatabaseObjectName.lessonDates, lessonDateId, 'studentId', studentId);
   }
 
-  Future<void> changeLessonDateIsFree(KeyId lessonDateId, bool isFree) async {
+  Future<void> changeLessonDateStatus(
+      KeyId lessonDateId, LessonDateStatus status) async {
     await FirebaseRealTimeDatabaseAdapter.updateField(
-        DatabaseObjectName.lessonDates, lessonDateId, 'isFree', isFree);
+        DatabaseObjectName.lessonDates, lessonDateId, 'status', status.value);
+  }
+
+  Future<bool> isLessonDateFree(KeyId lessonDateId) async {
+    if (lessonDateId.isEmpty) {
+      return false;
+    }
+
+    final response = await FirebaseRealTimeDatabaseAdapter.getField(
+        DatabaseObjectName.lessonDates, lessonDateId, 'status');
+    if (response.status == FirebaseResponseStatus.failure) {
+      return false;
+    }
+    final status = response.data as int? ?? -1;
+    return status == LessonDateStatus.free.value;
   }
 }

@@ -77,6 +77,29 @@ extension RequestedDateStatusExt on RequestedDateStatus {
 }
 
 /// Extend CycleType enum with useful getters
+extension LessonDateStatusExt on LessonDateStatus {
+  int get value {
+    if (this == LessonDateStatus.free) {
+      return 0;
+    }
+    if (this == LessonDateStatus.ongoing) {
+      return 1;
+    }
+    return 2;
+  }
+
+  String get stringValue {
+    if (this == LessonDateStatus.free) {
+      return 'No cooperator';
+    }
+    if (this == LessonDateStatus.ongoing) {
+      return 'Cooperation ongoing';
+    }
+    return 'Cooperation finished';
+  }
+}
+
+/// Extend CycleType enum with useful getters
 extension CycleTypeExt on CycleType {
   int get value {
     if (this == CycleType.single) {
@@ -156,6 +179,17 @@ extension ReviewRateExt on ReviewRate {
     }
     return 5;
   }
+}
+
+/// Returns LessonDateStatus enum based on value from database
+LessonDateStatus getLessonDateStatus(int value) {
+  if (value == 0) {
+    return LessonDateStatus.free;
+  }
+  if (value == 1) {
+    return LessonDateStatus.ongoing;
+  }
+  return LessonDateStatus.finished;
 }
 
 /// Returns CycleType enum based on value from database

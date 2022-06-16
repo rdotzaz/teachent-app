@@ -3,6 +3,7 @@ import 'package:teachent_app/common/date.dart';
 import 'package:teachent_app/common/enum_functions.dart';
 import 'package:teachent_app/controller/pages/lesson_date/lesson_date_page_controller.dart';
 import 'package:teachent_app/model/db_objects/lesson_date.dart';
+import 'package:teachent_app/view/widgets/custom_button.dart';
 import 'package:teachent_app/view/widgets/single_card.dart';
 import 'package:teachent_app/view/widgets/label.dart';
 
@@ -50,6 +51,18 @@ class LessonDatePage extends StatelessWidget {
                   lessonDateController.isTeacher ? Colors.blue : Colors.red,
               shadowColor:
                   lessonDateController.isTeacher ? Colors.blue : Colors.red,
+              rightButton: lessonDateController.isFinished
+                  ? const Label(
+                      text: 'Cooperation finished',
+                      color: Colors.white,
+                      fontSize: 14)
+                  : CustomButton(
+                      text: 'Cancel cooperation',
+                      fontSize: 12,
+                      onPressed: () =>
+                          lessonDateController.cancelCooperation(context),
+                      buttonColor: Colors.red[900]!,
+                    ),
               bodyWidget: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [

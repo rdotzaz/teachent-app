@@ -93,7 +93,9 @@ class _SettingsPageState extends State<SettingsPage> {
       Padding(
           padding: const EdgeInsets.all(15),
           child: CustomButton(
-              text: 'Edit profile', fontSize: 18, onPressed: () {})),
+              text: 'Log out',
+              fontSize: 18,
+              onPressed: () => _settingsPageController.logOut(context))),
       Padding(
           padding: const EdgeInsets.all(15),
           child: CustomButton(

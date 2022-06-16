@@ -54,6 +54,10 @@ class LessonPageController extends BaseController {
     if (lesson.status != LessonStatus.open) {
       return;
     }
+    if (!await dataManager.database.isLessonOpen(lesson.lessonId)) {
+      showErrorMessage(context, 'Lesson has already been cancelled');
+      return;
+    }
     if (isTeacher) {
       await LessonManager.cancelLessonByTeacher(
           dataManager, lessonDate, lesson);

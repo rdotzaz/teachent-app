@@ -17,14 +17,12 @@ class SplashPageController extends BaseController {
   void init() {
     if (!dataManager.database.isAppConfigurationAlreadyExists()) {
       // ignore: avoid_print
-      print('[SplashPageController] App configuration doesn\'t exists');
+      print('App configuration doesn\'t exists');
       isAppConfigAlreadyExists = false;
     }
   }
 
   Future<void> someLogic() async {
-    /// TODO - Lists only for testing purposes.
-    /// ------------------------------------------------------------------
     final allTopics = [
       Topic('Math', false),
       Topic('Computer Science', false),
@@ -50,7 +48,7 @@ class SplashPageController extends BaseController {
     ];
 
     // ignore: avoid_print
-    print('[Testing data] Adding data...');
+    print('Adding data...');
     await dataManager.database.addTopics(allTopics);
     await dataManager.database.addTools(allTools);
     await dataManager.database.addPlaces(allPlaces);
@@ -64,17 +62,18 @@ class SplashPageController extends BaseController {
     await someLogic();
 
     bool isTeacher = true;
+    String userId = '';
     if (isAppConfigAlreadyExists) {
       final appConfiguration = dataManager.database.getAppConfiguration();
       isTeacher = appConfiguration.isTeacher;
+      userId = appConfiguration.userId;
     }
 
-    // TODO - Remove dummy value
     Navigator.of(context).pushReplacement(MaterialPageRoute(
         builder: (context) => isAppConfigAlreadyExists
             ? (isTeacher
-                ? const TeacherHomePage(userId: 'dummy')
-                : const StudentHomePage(userId: 'dummy'))
+                ? TeacherHomePage(userId: userId)
+                : StudentHomePage(userId: userId))
             : const LoginPage()));
   }
 }

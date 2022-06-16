@@ -391,6 +391,29 @@ class FirebaseRealTimeDatabaseAdapter {
         data: true);
   }
 
+  /// Method adds or updates [value] key to [collectionName]/[id]/[path]
+  static Future<FirebaseResponse<Value?>> getField<Value>(
+      String collectionName, String id, String path) async {
+    DatabaseReference databaseReference =
+        FirebaseDatabase.instance.ref().child('$collectionName/$id/$path');
+
+    late DataSnapshot snapshot;
+    try {
+      snapshot =
+          await databaseReference.get().timeout(const Duration(seconds: 5));
+    } on TimeoutException {
+      return FirebaseResponse(
+          status: FirebaseResponseStatus.failure,
+          feedback: FirebaseFeedback.connectionError,
+          data: null);
+    }
+
+    return FirebaseResponse(
+        status: FirebaseResponseStatus.success,
+        feedback: FirebaseFeedback.none,
+        data: snapshot.value as Value?);
+  }
+
   /// Method adds or updates [value] key to [collectionName]/[id]
   static Future<FirebaseResponse<bool>> updateMapField(
       String collectionName, String id, Map<String, Object?> value) async {

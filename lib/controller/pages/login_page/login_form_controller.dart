@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:teachent_app/common/consts.dart';
 import 'package:teachent_app/common/enums.dart';
 import 'package:teachent_app/controller/controller.dart';
+import 'package:teachent_app/model/db_objects/app_configuration.dart';
+import 'package:teachent_app/model/db_objects/user.dart';
 import 'package:teachent_app/view/widgets/status_bottom_sheet.dart';
 import 'package:teachent_app/view/pages/student_home_page/student_home_page.dart';
 import 'package:teachent_app/view/pages/teacher_home_page/teacher_home_page.dart';
@@ -56,6 +58,7 @@ class LoginFormController extends BaseController {
           showErrorMessage(context, LoginPageConsts.invalidPassword);
         } else {
           final user = result.user!;
+          _addAppConfiguration(user);
           Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (_) {
             return user.isTeacher
                 ? TeacherHomePage(userId: user.key)
@@ -72,5 +75,13 @@ class LoginFormController extends BaseController {
   void goToSignUpPage(BuildContext context) {
     Navigator.of(context)
         .push(MaterialPageRoute(builder: (_) => ProfileSelectPage()));
+  }
+
+  void _addAppConfiguration(User user) {
+    if (dataManager.database.isAppConfigurationAlreadyExists()) {
+      return;
+    }
+    dataManager.database.addAppConfiguration(
+        AppConfiguration(user.login, false, user.isTeacher));
   }
 }
