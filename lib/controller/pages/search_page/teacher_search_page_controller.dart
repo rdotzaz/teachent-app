@@ -11,7 +11,9 @@ class TeacherSearchPageController extends BaseSearchController {
   final List<Teacher> _foundTeachers = [];
   final List<Student> _foundStudents = [];
 
+  /// Get found teachers
   List<Teacher> get teachers => _foundTeachers;
+  /// Get found students
   List<Student> get students => _foundStudents;
 
   @override
@@ -37,6 +39,7 @@ class TeacherSearchPageController extends BaseSearchController {
     _foundStudents.addAll(students);
   }
 
+  /// Methods triggers [StudentProfilePage] for student from foundStudents array at [studentIndex]
   Future<void> goToStudentProfile(
       BuildContext context, int studentIndex) async {
     final student = _foundStudents[studentIndex];
@@ -45,6 +48,7 @@ class TeacherSearchPageController extends BaseSearchController {
         .push(MaterialPageRoute(builder: (_) => StudentProfilePage(student)));
   }
 
+  /// Methods triggers [TeacherProfilePage] for teacher from foundTeachers array at [teacherIndex]
   Future<void> goToTeacherProfile(
       BuildContext context, int teacherIndex) async {
     final teacher = _foundTeachers[teacherIndex];

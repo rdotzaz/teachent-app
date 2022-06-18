@@ -9,7 +9,12 @@ abstract class BaseController {
   @protected
   final DataManager dataManager = DataManagerCreator.create();
 
+  /// Method which creates all necessary objects for controller.
+  /// Send requests to database to collect all required data for page.
   void init() {}
+
+  /// Method which should be called in overridden dispose method in State class for StatefulWidget.
+  /// If StatefulWidget is not used, then there is no need to override this method  
   void dispose() {}
 }
 

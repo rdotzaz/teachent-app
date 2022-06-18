@@ -21,8 +21,6 @@ class LessonDateCreationPageController extends BaseController {
   final List<Tool> _tools = [];
   final List<Place> _places = [];
 
-  /// Available lesson frequences.
-  /// TODO - Move [_freqs] list to database
   final List<String> _freqs = [
     'Single',
     'Daily',
@@ -39,8 +37,11 @@ class LessonDateCreationPageController extends BaseController {
   int _price = 50;
   int _selectedFreqIndex = 0;
 
+  /// [FrequencyBloc] to manage state of frequency chips on page
   late FrequencyBloc freqBloc;
+  /// [ToolBloc] to manage state of tool chips on page
   late ToolBloc toolBloc;
+  /// [PlaceBloc] to manage state of place chips on page
   late PlaceBloc placeBloc;
 
   @override
@@ -55,11 +56,17 @@ class LessonDateCreationPageController extends BaseController {
 
   /// Lesson date established by teacher
   String get date => DateFormatter.onlyDateString(_selectedDate);
+  /// Time of day established by teacher
   String get time => DateFormatter.timeString(_selectedTime);
+  /// Lesson duration in minutes
   int get lessonDuration => _duration;
+  /// Price for single lesson unit
   int get price => _price;
+  /// List of available tools
   List<Tool> get tools => _tools;
+  /// List of available places
   List<Place> get places => _places;
+  /// List of available lesson frequencies
   List<String> get lessonFrequencies => _freqs;
 
   bool isFreqSelected(int index) => index == _selectedFreqIndex;
@@ -80,6 +87,7 @@ class LessonDateCreationPageController extends BaseController {
     setPossibleNewDate(pickedDate);
   }
 
+  /// Method sets new date if [pickedDate] is not the same as previously selected date
   void setPossibleNewDate(DateTime? pickedDate) {
     if (pickedDate == null) {
       return;
@@ -92,7 +100,7 @@ class LessonDateCreationPageController extends BaseController {
     }
   }
 
-  /// Time picker
+  /// Enable time picker for user
   Future<void> enableTimePicker(BuildContext context) async {
     final pickedTime = await showTimePicker(
         context: context,
@@ -106,6 +114,7 @@ class LessonDateCreationPageController extends BaseController {
     setPossibleNewTime(pickedTime);
   }
 
+  /// Method sets new time of day if [pickedTime] is not the same as previously selected time
   void setPossibleNewTime(TimeOfDay? pickedTime) {
     if (pickedTime == null) {
       return;
@@ -118,6 +127,7 @@ class LessonDateCreationPageController extends BaseController {
     }
   }
 
+  /// Validate lesson duration
   String? validateDuration(String? duration) {
     final durationInt = int.tryParse(duration ?? '');
     if (durationInt == null) {
@@ -131,10 +141,13 @@ class LessonDateCreationPageController extends BaseController {
     return null;
   }
 
+  /// Set [durationToSet] as new lesson duration.
+  /// If duration setting fails, then default value (60 minutes) will be set
   void setDuration(String? durationToSet) {
     _duration = int.tryParse(durationToSet ?? '') ?? 60;
   }
 
+  /// Validate given [price]
   String? validatePrice(String? price) {
     final priceInt = int.tryParse(price ?? '');
     if (priceInt == null) {
@@ -146,6 +159,8 @@ class LessonDateCreationPageController extends BaseController {
     return null;
   }
 
+  /// Set [priceToSet] as new price.
+  /// If price setting fails, then default value (50) will be set
   void setPrice(String? priceToSet) {
     _price = int.tryParse(priceToSet ?? '') ?? 50;
   }
@@ -159,6 +174,7 @@ class LessonDateCreationPageController extends BaseController {
     return Colors.blue;
   }
 
+  /// Validate lesson date creation form.
   Future<void> validateForm(BuildContext context) async {
     final toolIndexes = toolBloc.state;
     final placeIndexes = placeBloc.state;

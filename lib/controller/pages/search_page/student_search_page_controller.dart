@@ -18,21 +18,28 @@ class StudentSearchPageController extends BaseSearchController {
 
   final List<Teacher> _foundTeachers = [];
 
+  /// Get all available topics
   List<Topic> get topics => _allTopics;
+  /// Get all available places
   List<Place> get places => _allPlaces;
+  /// Get all available tools
   List<Tool> get tools => _allTools;
+  /// Get found teachers
   List<Teacher> get teachers => _foundTeachers;
 
+  /// Methods retreives all available topics from database
   Future<void> initAllTopics() async {
     final topics = await dataManager.database.getAvailableTopics();
     _allTopics.addAll(topics);
   }
 
+  /// Methods retreives all available tools from database
   Future<void> initAllTools() async {
     final tools = await dataManager.database.getAvailableTools();
     _allTools.addAll(tools);
   }
 
+  /// Methods retreives all available places from database
   Future<void> initAllPlaces() async {
     final places = await dataManager.database.getAvailablePlaces();
     _allPlaces.addAll(places);
@@ -47,6 +54,7 @@ class StudentSearchPageController extends BaseSearchController {
     _foundTeachers.addAll(teachers);
   }
 
+  /// Methods triggers TeacherProfilePage for teacher from foundTeachers array at [teacherIndex]
   void goToProfilePage(BuildContext context, int teacherIndex) {
     final teacher = _foundTeachers[teacherIndex];
 

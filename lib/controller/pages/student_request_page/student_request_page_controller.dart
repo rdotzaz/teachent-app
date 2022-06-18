@@ -19,15 +19,27 @@ import 'package:teachent_app/view/widgets/status_bottom_sheet.dart';
 
 /// Controller for Student Ruquest Page
 class StudentRequestPageController extends BaseRequestPageController {
+  /// Request Id
   KeyId? requestId;
+  /// Student Id which is assigned to [requestId]
   KeyId? studentId;
+  /// Teacher object which contains [requestId]
   Teacher? teacher;
+  /// Request object with [requestId]
   Request? request;
+  /// Lesson date (cooperation) object based on lesson date id from [request]
   LessonDate? lessonDate;
 
+  /// Date selected by user in date picker.
+  /// This date can be requested by student to change starting date of cooperation
   DateTime? otherDate;
+  /// Time selected by user in time picker
+  /// This time can be requested by student to change starting time of cooperation
   TimeOfDay? otherTime;
+  /// Index in topic list
   int topicIndex = 0;
+  /// Property is true if some changes were provided by student
+  /// E.g. saved new requested date
   bool hasChangesProvided = false;
   final List<MessageRecord> _newMessages = [];
 
@@ -57,6 +69,7 @@ class StudentRequestPageController extends BaseRequestPageController {
     }
   }
 
+  /// Method retreives teacher object based on teacher id from [request]
   Future<void> initTeacher() async {
     final foundTeacher =
         await dataManager.database.getTeacher(request?.teacherId ?? '');
@@ -72,6 +85,7 @@ class StudentRequestPageController extends BaseRequestPageController {
     }
   }
 
+  /// Method retreives lesson date (cooperation) object based on lesson date id from [request]
   Future<void> initLessonDate() async {
     final foundDate =
         await dataManager.database.getLessonDate(request?.lessonDateId ?? '');
@@ -81,6 +95,8 @@ class StudentRequestPageController extends BaseRequestPageController {
     lessonDate = foundDate;
   }
 
+  /// Return date if request has not raised yet.
+  /// Otherwise [requestedDate] from request object 
   String get exactDay {
     if (request == null) {
       return date;

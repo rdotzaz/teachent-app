@@ -13,12 +13,14 @@ import 'package:teachent_app/model/objects/place.dart';
 import 'package:teachent_app/model/objects/tool.dart';
 import 'package:teachent_app/view/widgets/status_bottom_sheet.dart';
 
+/// Helper class for [LessonDatePageController]
 class LessonEntity {
   final Lesson lesson;
   final Report? report;
   const LessonEntity(this.lesson, this.report);
 }
 
+/// Controller for lesson date page
 class LessonDatePageController extends BaseController {
   final LessonDate lessonDate;
   final bool isTeacher;
@@ -70,6 +72,8 @@ class LessonDatePageController extends BaseController {
     teacher = foundTeacher;
   }
 
+  /// Method trigger [LessonDateManager] to cancel cooperation.
+  /// [context] is required to show bottom sheet.
   void cancelCooperation(BuildContext context) async {
     await LessonDateManager.cancelCooperation(
         dataManager, lessonDate, isTeacher);

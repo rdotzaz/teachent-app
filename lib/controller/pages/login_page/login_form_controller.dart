@@ -19,24 +19,33 @@ class LoginFormController extends BaseController {
   /// Key object for form widget to validate fields under form widget
   GlobalKey<FormState> get key => _loginFormKey;
 
+  /// Validates [login] passed by user in text field
+  /// If [login] validated properly, then method returns null
+  /// Otherwise returns error message
   String? validateLogin(String? login) {
     var isEmpty = login?.isEmpty ?? true;
     return isEmpty ? LoginPageConsts.loginError : null;
   }
 
+  /// Validates [password] passed by user in text field
+  /// If [password] validated properly, then method returns null
+  /// Otherwise returns error message
   String? validatePassword(String? password) {
     var isEmpty = password?.isEmpty ?? true;
     return isEmpty ? LoginPageConsts.passwordError : null;
   }
 
+  /// Set [loginToSet] as new login
   void setLogin(String? loginToSet) {
     login = loginToSet ?? '';
   }
 
+  /// Set [passwordToSet] as new password
   void setPassword(String? passwordToSet) {
     password = passwordToSet ?? '';
   }
 
+  /// Method triggers login form validation
   Future<void> buttonValidator(BuildContext context) async {
     final validationResult = _loginFormKey.currentState?.validate() ?? false;
 
@@ -72,6 +81,7 @@ class LoginFormController extends BaseController {
     showErrorMessage(context, LoginPageConsts.validationFailed);
   }
 
+  /// Method triggers new page -> ProfileSelectPage to start sign up process.
   void goToSignUpPage(BuildContext context) {
     Navigator.of(context)
         .push(MaterialPageRoute(builder: (_) => ProfileSelectPage()));

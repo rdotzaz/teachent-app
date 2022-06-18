@@ -10,6 +10,7 @@ import 'package:teachent_app/model/db_objects/lesson_date.dart';
 import 'package:teachent_app/model/db_objects/student.dart';
 import 'package:teachent_app/view/widgets/status_bottom_sheet.dart';
 
+/// Helper class for [ReportCreationPageController]
 class LessonEntity {
   final Lesson lesson;
   final LessonDate lessonDate;
@@ -18,6 +19,7 @@ class LessonEntity {
   const LessonEntity(this.lesson, this.lessonDate, this.student);
 }
 
+/// Controller for report creation page
 class ReportCreationPageController extends BaseController {
   final void Function() refresh;
   final List<KeyId> lessonDateIds;
@@ -45,8 +47,12 @@ class ReportCreationPageController extends BaseController {
     }
   }
 
+  /// Returns true if there are any lessons for which report can be created
   bool get hasLessons => lessonMap.isNotEmpty;
+  /// Returns true if lesson has been selected by user
   bool get isLessonSelected => selectedMapKey != null;
+  /// Returns default value in lesson dropdown menu if no lessons were selected.
+  /// Otherwise returns selected lesson string representation
   String get initialLessonValue =>
       selectedMapKey == null ? '-- Select lesson --' : selectedMapKey!;
   List<String> get lessonItems {
@@ -57,28 +63,37 @@ class ReportCreationPageController extends BaseController {
     return items;
   }
 
+  /// Key for report creation form
   GlobalKey<FormState> get formKey => _formKey;
 
   String _lessonString(LessonEntity entity) =>
       '${DateFormatter.getString(entity.lesson.date)}, ${entity.student.name}';
 
+  /// Set new [value] in [selectedMapKey]
   void selectLessonValue(String? value) {
     selectedMapKey = value ?? '';
     refresh();
   }
 
+  /// Set new [value] for description property
   void setDescription(String? value) {
     description = value ?? '';
   }
 
+  /// Set new [value] for title property
   void setTitle(String? value) {
     title = value ?? '';
   }
 
+  /// Validates [value] as new title.
+  /// If validation fails, then null returned
+  /// Otherwise error message returns
   String? validateTitle(String? value) {
     return value?.isEmpty ?? true ? 'Title cannot be null' : null;
   }
 
+  /// Methods triggers ReportManager and LessonManager to save report based on user data.
+  /// Checks if validation passes. If not shows bottom sheet with error message
   void saveReport(BuildContext context) async {
     if (_formKey.currentState?.validate() ?? false) {
       assert(lessonMap.containsKey(selectedMapKey));

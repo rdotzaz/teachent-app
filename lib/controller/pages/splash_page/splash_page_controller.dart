@@ -22,7 +22,7 @@ class SplashPageController extends BaseController {
     }
   }
 
-  Future<void> someLogic() async {
+  Future<void> _someLogic() async {
     final allTopics = [
       Topic('Math', false),
       Topic('Computer Science', false),
@@ -58,8 +58,9 @@ class SplashPageController extends BaseController {
     await Future.delayed(const Duration(seconds: 1));
   }
 
+  /// Methods executes logic which can be required for first application launch
   void nextPage(BuildContext context) async {
-    await someLogic();
+    await _someLogic();
 
     bool isTeacher = true;
     String userId = '';

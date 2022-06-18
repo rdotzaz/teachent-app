@@ -43,18 +43,24 @@ class StudentCreationPageController extends BaseController {
 
   final _headerNames = StudentCreationPageConsts.headers;
 
+  /// Return header name which is visible on top of the page
   String get headerName => _headerNames[_pageNumber];
 
+  /// Method switches to page from [PageView] with index [pageNumber]
   void moveToPage(int pageNumber) {
     _pageNumber = pageNumber;
     _pageViewController.animateToPage(pageNumber,
         duration: const Duration(milliseconds: 700), curve: Curves.ease);
   }
 
+  /// Validate all form fields
   bool validateFields() {
     return _formKey.currentState?.validate() ?? false;
   }
 
+  /// Validate [name].
+  /// If validation passed, then return null
+  /// Otherwise return error message
   String? validateName(String? name) {
     var isEmpty = name?.isEmpty ?? true;
     if (isEmpty) {
@@ -67,6 +73,7 @@ class StudentCreationPageController extends BaseController {
     return null;
   }
 
+  /// Set [nameToSet] as new name
   void setName(String? nameToSet) {
     name = nameToSet ?? '';
   }
