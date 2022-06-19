@@ -46,8 +46,11 @@ abstract class BaseSearchController extends BaseController {
 /// Base class for TeacherRequestPageController and StudentRequestPageController
 /// Contains dataManager object with most important references
 abstract class BaseRequestPageController extends BaseController {
+  /// Return true if there are any messages for the request
   bool get hasAnyMessages => false;
+  /// Return number of messages for the request
   int get messagesCount => 0;
+  /// Return list of messages
   List<MessageField> get messages => [];
 
   /// Send message to cooperator. Refresh page state using [refresh] function

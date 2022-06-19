@@ -1,3 +1,4 @@
+/// Class representing message record on request page with information who is sender
 class MessageField {
   final MessageRecord messageRecord;
   final bool isSender;
@@ -5,6 +6,7 @@ class MessageField {
   MessageField(this.messageRecord, this.isSender);
 }
 
+/// Class representing single message with date of sending
 class MessageRecord {
   final String message;
   final DateTime date;

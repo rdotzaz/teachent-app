@@ -42,6 +42,8 @@ mixin ReportDatabaseMethods {
     return Report.fromMap(reportId, response.data);
   }
 
+  /// Method adds [report] to database
+  /// Rrturn report id of added object
   Future<KeyId> addReport(Report report) async {
     final response =
         await FirebaseRealTimeDatabaseAdapter.addDatabaseObjectWithNewKey(

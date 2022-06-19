@@ -73,8 +73,11 @@ class TeacherCreationPageController extends BaseController {
     _allPlaces.sort((p1, p2) => p1.name.compareTo(p2.name));
   }
 
+  /// Get list of topics
   List<Topic> get topicList => _allTopics;
+  /// Get list of tools
   List<Tool> get toolList => _allTools;
+  /// Get list of places
   List<Place> get placeList => _allPlaces;
 
   final _pageViewController = PageController();
@@ -84,22 +87,30 @@ class TeacherCreationPageController extends BaseController {
   /// Controler for PageView in TeacherCreationPage
   PageController get pageController => _pageViewController;
 
+  /// [TextEditingController] for topic field
   TextEditingController get topicTextFieldController =>
       _topicTextFieldController;
+  /// [TextEditingController] for field where user can add new place or tool
   TextEditingController get objectTextFieldController =>
       _objectTextFieldController;
+  /// Name of header on top of the page
   String get headerName => _headerNames[_pageNumber];
 
   final _nameSubPageKey = GlobalKey<FormState>();
 
+  /// Key for name sub page form
   GlobalKey<FormState> get nameSubPageKey => _nameSubPageKey;
 
+  /// Move to page with [pageNumber] in [PageView]
   void moveToPage(int pageNumber) {
     _pageNumber = pageNumber;
     _pageViewController.animateToPage(pageNumber,
         duration: const Duration(milliseconds: 700), curve: Curves.ease);
   }
 
+  /// Validate given [name]
+  /// If validation passed, then return null
+  /// Otherwise return error message
   String? validateName(String? name) {
     var isEmpty = name?.isEmpty ?? true;
     if (isEmpty) {
@@ -112,14 +123,17 @@ class TeacherCreationPageController extends BaseController {
     return null;
   }
 
+  /// Set [nameToSet] as new [name]
   void setName(String? nameToSet) {
     name = nameToSet ?? '';
   }
 
+  /// Set [descriptionToSet] as new [description]
   void setDescription(String? descriptionToSet) {
     description = descriptionToSet ?? '';
   }
 
+  /// Validate all fields in name sub page form
   bool validateFields() {
     return _nameSubPageKey.currentState?.validate() ?? false;
   }
@@ -138,6 +152,7 @@ class TeacherCreationPageController extends BaseController {
     return text;
   }
 
+  /// Wrapper for showErrorMessage function
   void showErrorMessage(BuildContext context, String info) {
     showErrorMessage(context, info);
   }

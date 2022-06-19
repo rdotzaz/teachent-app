@@ -4,6 +4,7 @@ import 'custom_button.dart';
 
 enum BottomSheetStatus { error, success, info, loading }
 
+/// Display bottom sheet with success status and [info]
 Future<void> showSuccessMessageAsync(BuildContext context, String info) async {
   await showModalBottomSheet(
       context: context,
@@ -12,6 +13,7 @@ Future<void> showSuccessMessageAsync(BuildContext context, String info) async {
           StatusBottomSheet(info: info, status: BottomSheetStatus.success));
 }
 
+/// Display bottom sheet with error status and [info]
 void showErrorMessage(BuildContext context, String info) {
   showModalBottomSheet(
       context: context,
@@ -20,6 +22,7 @@ void showErrorMessage(BuildContext context, String info) {
           StatusBottomSheet(info: info, status: BottomSheetStatus.error));
 }
 
+/// Display bottom sheet with loading status and [info]
 Future<void> showLoadingDialog(BuildContext context, String info) async {
   await showModalBottomSheet(
       context: context,
