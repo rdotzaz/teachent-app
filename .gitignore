@@ -57,6 +57,8 @@ firebase.json
 firebase-debug.json
 database.rules.json
 database-debug.log
+/android/app/google_services.json
+/lib/common/firebase_options.dart
 .firebaserc
 google_services_to_fill.json
 options_to_fill.json
