@@ -10,7 +10,9 @@ import 'package:teachent_app/model/objects/message.dart';
 
 import 'lesson_date_manager.dart';
 
+/// Class for request management
 class RequestManager {
+  /// Send [request] to [teacher]. Request will be sent by student with [studentId]
   static Future<void> sendNew(DataManager dataManager, Request request,
       Teacher? teacher, KeyId? studentId) async {
     final requestKey = await dataManager.database.addRequest(request);
@@ -24,6 +26,7 @@ class RequestManager {
         .addRequestIdToStudent(studentId ?? '', requestKey);
   }
 
+  /// Send response to teacher with [otherDate], [time] and [selectedTopic]
   static Future<void> sendStudentResponse(
       DataManager dataManager,
       Request request,
@@ -70,6 +73,7 @@ class RequestManager {
     }
   }
 
+  /// Send response to student with updated request [status]
   static Future<void> sendTeacherResponse(DataManager dataManager,
       Request request, RequestedDateStatus status) async {
     await dataManager.database
@@ -79,6 +83,7 @@ class RequestManager {
         .changeRequestStatus(request.requestId, RequestStatus.responded);
   }
 
+  /// Accept [request] by teacher for [lessonDate].
   static Future<void> acceptRequest(DataManager dataManager, Request request,
       KeyId studentId, LessonDate? lessonDate) async {
     if (request.requestedDate != null) {
@@ -98,18 +103,21 @@ class RequestManager {
     await LessonDateManager.setDateAsNotFree(dataManager, lessonDate);
   }
 
+  /// Reject [request] by teacher
   static Future<void> rejectRequest(
       DataManager dataManager, Request request) async {
     await dataManager.database
         .changeRequestStatus(request.requestId, RequestStatus.rejected);
   }
 
+  /// Send message by teacher to student
   static Future<void> sendTeacherMessage(
       DataManager dataManager, Request request, String message) async {
     await dataManager.database.addTeacherMessage(
         request.requestId, MessageRecord(message, DateTime.now()));
   }
 
+  /// Send message by student to teacher
   static Future<void> sendStudentMessage(
       DataManager dataManager, Request request, String message) async {
     await dataManager.database.addStudentMessage(

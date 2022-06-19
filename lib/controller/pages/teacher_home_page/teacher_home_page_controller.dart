@@ -30,6 +30,7 @@ class TeacherHomePageController extends BaseController {
   final void Function() refresh;
   TeacherHomePageController(this.userId, this.refresh);
 
+  /// Returns true if [ListPage] is currently displayed page
   bool isMoreView = false;
 
   @override
@@ -44,6 +45,8 @@ class TeacherHomePageController extends BaseController {
     await _initRequests();
   }
 
+  /// Method retreives all assigned to [teacher] lesson objects from database
+  /// Add to [lessons] list only open lessons
   Future<void> _initLessons() async {
     lessons.clear();
     final foundLessons = await dataManager.database
@@ -51,6 +54,7 @@ class TeacherHomePageController extends BaseController {
     lessons.addAll(foundLessons);
   }
 
+  /// Method retreives all students with [teacher]'s lesson date object assigned
   Future<void> _initStudents() async {
     students.clear();
     final foundStudents = await dataManager.database
@@ -58,6 +62,7 @@ class TeacherHomePageController extends BaseController {
     students.addAll(foundStudents);
   }
 
+  /// Method retrives all lesson date (cooperation) objects based on lesson date ids from [teacher] object
   Future<void> _initDates() async {
     lessonDates.clear();
     final foundLessonDates =
@@ -65,6 +70,7 @@ class TeacherHomePageController extends BaseController {
     lessonDates.addAll(foundLessonDates);
   }
 
+  /// Method retreives all requests based on request ids from [teacher] object
   Future<void> _initRequests() async {
     requests.clear();
     final foundRequests =
@@ -72,30 +78,45 @@ class TeacherHomePageController extends BaseController {
     requests.addAll(foundRequests);
   }
 
+  /// Get search bar title
   String get searchName => 'Search students';
+
+  /// Get teacher name
   String get teacherName => teacher?.name ?? '';
+
+  /// Return true if lessons found in database
   bool get areLessons => lessons.isNotEmpty;
+
+  /// Return true if students found in database
   bool get areStudents => students.isNotEmpty;
+
+  /// Return true if requests found in database
   bool get areRequests => requests.isNotEmpty;
+
+  /// Return true if lesson dates found in database
   bool get areDates => lessonDates.isNotEmpty;
 
+  /// Return student name based on given [studentId]
   String getStudentName(String studentId) {
     final student =
         students.firstWhere((student) => student.userId == studentId);
     return student.name;
   }
 
+  /// Method triggers TeacherSearchPage
   void goToSearchPage(BuildContext context) {
     Navigator.of(context)
         .push(MaterialPageRoute(builder: (_) => TeacherSearchPage()));
   }
 
+  /// Method triggers SettingsPage
   void goToSettingsPage(BuildContext context) {
     Navigator.of(context)
         .push(MaterialPageRoute(builder: (_) => SettingsPage(userId: userId)));
   }
 
-  Future<void> goToLessonPageCreationPage(BuildContext context) async {
+  /// Method triggers LessonDateCreationPage
+  Future<void> goToLessonDateCreationPage(BuildContext context) async {
     final wasRequestAdded = await Navigator.of(context).push(
         MaterialPageRoute(builder: (_) => LessonDateCreationPage(teacher!)));
     if (wasRequestAdded != null && !isMoreView) {
@@ -103,6 +124,7 @@ class TeacherHomePageController extends BaseController {
     }
   }
 
+  /// Method triggers TeacherRequestPage for request with [requestIndex] from [requests] list
   Future<void> goToRequestPage(BuildContext context, int requestIndex) async {
     final request = requests[requestIndex];
 
@@ -114,6 +136,7 @@ class TeacherHomePageController extends BaseController {
     }
   }
 
+  /// Method triggers StudentProfilePage for student with [studentIndex] from [students] list
   Future<void> goToStudentProfile(
       BuildContext context, int studentIndex) async {
     final student = students[studentIndex];
@@ -125,6 +148,7 @@ class TeacherHomePageController extends BaseController {
     }
   }
 
+  /// Method triggers LessonPage for lesson with [lessonIndex] from [lessons] list
   Future<void> goToLessonPage(BuildContext context, int lessonIndex) async {
     final lesson = lessons[lessonIndex];
     final student = students.firstWhere((s) => s.userId == lesson.studentId);
@@ -140,6 +164,7 @@ class TeacherHomePageController extends BaseController {
     }
   }
 
+  /// Method triggers ReportCreationPage
   Future<void> goToReportPage(BuildContext context) async {
     await Navigator.of(context).push(MaterialPageRoute(
         builder: (_) => ReportCreationPage(
@@ -150,6 +175,7 @@ class TeacherHomePageController extends BaseController {
     }
   }
 
+  /// Method triggers LessonDatePage for lesson date with [dateIndex] from [lessonDates] list
   Future<void> goToLessonDatePage(BuildContext context, int dateIndex) async {
     await Navigator.of(context).push(MaterialPageRoute(
         builder: (_) => LessonDatePage(lessonDates[dateIndex], true)));
@@ -158,6 +184,8 @@ class TeacherHomePageController extends BaseController {
     }
   }
 
+  /// Method triggers ListPage for [lessons]
+  /// Also [itemBuilder] allows to build and display item which represent single lesson object
   Future<void> showMoreLessons(BuildContext context,
       Widget Function(BuildContext context, int index) itemBuilder) async {
     isMoreView = true;
@@ -171,6 +199,8 @@ class TeacherHomePageController extends BaseController {
     isMoreView = false;
   }
 
+  /// Method triggers ListPage for [students]
+  /// Also [itemBuilder] allows to build and display item which represent single student object
   Future<void> showMoreStudents(BuildContext context,
       Widget Function(BuildContext context, int index) itemBuilder) async {
     isMoreView = true;
@@ -184,6 +214,8 @@ class TeacherHomePageController extends BaseController {
     isMoreView = false;
   }
 
+  /// Method triggers ListPage for [lessonDates]
+  /// Also [itemBuilder] allows to build and display item which represent single lesson date object
   Future<void> showMoreLessonDates(BuildContext context,
       Widget Function(BuildContext context, int index) itemBuilder) async {
     isMoreView = true;
@@ -197,6 +229,8 @@ class TeacherHomePageController extends BaseController {
     isMoreView = false;
   }
 
+  /// Method triggers ListPage for [requests]
+  /// Also [itemBuilder] allows to build and display item which represent single request object
   Future<void> showMoreRequests(BuildContext context,
       Widget Function(BuildContext context, int index) itemBuilder) async {
     isMoreView = true;

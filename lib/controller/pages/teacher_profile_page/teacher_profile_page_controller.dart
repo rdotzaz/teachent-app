@@ -21,6 +21,8 @@ class TeacherProfilePageController extends BaseController {
 
   TeacherProfilePageController(this.refresh, this.teacher, this.studentId);
 
+  /// Method retreives lesson date objects from database based on lesson date ids from [teacher] object
+  /// Adds to [lessonDates] only free lessons
   Future<void> initDates() async {
     lessonDates.clear();
     final dates =
@@ -28,6 +30,7 @@ class TeacherProfilePageController extends BaseController {
     lessonDates.addAll(dates.where((d) => d.isFree));
   }
 
+  // Method retreives review objects from database based on user id
   Future<void> initReviews() async {
     reviews.clear();
     final foundReviews =
@@ -35,18 +38,32 @@ class TeacherProfilePageController extends BaseController {
     reviews.addAll(foundReviews);
   }
 
+  /// Return if [studentId] property is not null
+  /// If [studentId] is null, it means that the page is displayed by user with teacher profile
   bool get hasStudentId => studentId != null;
 
+  /// Get teacher name
   String get teacherName => teacher.name;
+
+  /// Get description provided by teacher
   String get description => teacher.description;
 
+  /// Return true if teacher has already average rate
   bool get hasRate => teacher.averageRate != -1;
+
+  /// Get teacher rate
   int get rate => teacher.averageRate.ceil();
 
+  /// Get teacher's topics
   List<Topic> get topics => teacher.topics;
+
+  /// Get teacher's tools
   List<Tool> get tools => teacher.tools;
+
+  /// Get teacher's places
   List<Place> get places => teacher.places;
 
+  /// Method triggers StudentRequestPage
   void goToRequestPage(BuildContext context, int dateIndex) {
     Navigator.of(context).push(MaterialPageRoute(
         builder: (_) => StudentRequestPage(
@@ -55,6 +72,7 @@ class TeacherProfilePageController extends BaseController {
             lessonDate: lessonDates[dateIndex])));
   }
 
+  /// Method triggers ReviewCreationPage
   void goToReviewPage(BuildContext context) async {
     await Navigator.of(context).push(MaterialPageRoute(
         builder: (context) => ReviewCreationPage(

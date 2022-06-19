@@ -262,7 +262,7 @@ class _TeacherHomePageState extends State<TeacherHomePage>
             text: 'Add',
             fontSize: 18,
             onPressed: () =>
-                _teacherHomePageController.goToLessonPageCreationPage(context),
+                _teacherHomePageController.goToLessonDateCreationPage(context),
             buttonColor: Colors.blue),
         elementBuilder: (context, index) =>
             _lessonDateItemWidget(context, index));

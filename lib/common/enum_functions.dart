@@ -2,6 +2,7 @@ import 'enums.dart';
 
 /// Extend RequestStatus enum with useful getters
 extension RequestStatusExt on RequestStatus {
+  /// Returns database representation of enum
   int get value {
     if (this == RequestStatus.newReq) {
       return 0;
@@ -21,6 +22,7 @@ extension RequestStatusExt on RequestStatus {
     return -1;
   }
 
+  /// Returns string representation of enum
   String get stringValue {
     if (this == RequestStatus.newReq) {
       return 'New request has been sent';
@@ -43,6 +45,7 @@ extension RequestStatusExt on RequestStatus {
 
 /// Extend RequestedDateStatus enum with useful getters
 extension RequestedDateStatusExt on RequestedDateStatus {
+  /// Returns database representation of enum
   int get value {
     if (this == RequestedDateStatus.none) {
       return 0;
@@ -59,6 +62,7 @@ extension RequestedDateStatusExt on RequestedDateStatus {
     return -1;
   }
 
+  /// Returns string representation of enum
   String get stringValue {
     if (this == RequestedDateStatus.none) {
       return 'No new date requested';
@@ -78,6 +82,7 @@ extension RequestedDateStatusExt on RequestedDateStatus {
 
 /// Extend CycleType enum with useful getters
 extension LessonDateStatusExt on LessonDateStatus {
+  /// Returns database representation of enum
   int get value {
     if (this == LessonDateStatus.free) {
       return 0;
@@ -88,6 +93,7 @@ extension LessonDateStatusExt on LessonDateStatus {
     return 2;
   }
 
+  /// Returns string representation of enum
   String get stringValue {
     if (this == LessonDateStatus.free) {
       return 'No cooperator';
@@ -101,6 +107,7 @@ extension LessonDateStatusExt on LessonDateStatus {
 
 /// Extend CycleType enum with useful getters
 extension CycleTypeExt on CycleType {
+  /// Returns database representation of enum
   int get value {
     if (this == CycleType.single) {
       return 0;
@@ -117,6 +124,7 @@ extension CycleTypeExt on CycleType {
     return 4;
   }
 
+  /// Returns string representation of enum
   String get stringValue {
     if (this == CycleType.single) {
       return 'Single lesson';
@@ -136,6 +144,7 @@ extension CycleTypeExt on CycleType {
 
 /// Extend LessonStatus enum with useful getters
 extension LessonStatusExt on LessonStatus {
+  /// Returns database representation of enum
   int get value {
     if (this == LessonStatus.open) {
       return 0;
@@ -149,6 +158,7 @@ extension LessonStatusExt on LessonStatus {
     return 3;
   }
 
+  /// Returns string representation of enum
   String get stringValue {
     if (this == LessonStatus.open) {
       return 'Open';
@@ -164,6 +174,7 @@ extension LessonStatusExt on LessonStatus {
 }
 
 extension ReviewRateExt on ReviewRate {
+  /// Returns database representation of enum
   int get value {
     if (this == ReviewRate.one) {
       return 1;

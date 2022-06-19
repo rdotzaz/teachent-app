@@ -17,12 +17,20 @@ import 'package:teachent_app/view/widgets/status_bottom_sheet.dart';
 
 /// Controller for Teacher Request Page
 class TeacherRequestPageController extends BaseRequestPageController {
+  /// Teacher id which is assigned to [request]
   KeyId? teacherId;
+
+  /// Student object which contains request id from [request]
   Student? student;
+
+  /// Lesson date (cooperation) object based on lesson date id from [request]
   LessonDate? lessonDate;
 
+  /// Request object
   Request request;
 
+  /// Status of new requested date by student
+  /// If student did not request new date, then default value is [RequestedDateStatus.none]
   RequestedDateStatus newDateStatus = RequestedDateStatus.none;
   final List<MessageRecord> _newMessages = [];
 
@@ -40,6 +48,7 @@ class TeacherRequestPageController extends BaseRequestPageController {
     }
   }
 
+  /// Method retreives student object based on student id from [request]
   Future<void> initStudent() async {
     final foundStudent =
         await dataManager.database.getStudent(request.studentId);
@@ -49,6 +58,7 @@ class TeacherRequestPageController extends BaseRequestPageController {
     student = foundStudent;
   }
 
+  /// Method retreives lesson date (cooperation) object based on lesson date id from [request]
   Future<void> initLessonDate() async {
     final foundDate =
         await dataManager.database.getLessonDate(request.lessonDateId);
@@ -58,21 +68,46 @@ class TeacherRequestPageController extends BaseRequestPageController {
     lessonDate = foundDate;
   }
 
+  /// Student name
   String get studentName => student?.name ?? '';
+
+  /// Get date from lesson date (cooperation) object
+  /// It is start date of cooperation
+  /// If new date requested by student was accepted, then requested date os returned
   String get date => request.dateStatus == RequestedDateStatus.accepted
       ? DateFormatter.getString(request.requestedDate)
       : DateFormatter.getString(lessonDate?.date);
+
+  /// Get string representation of requested date
   String get requestedDate =>
       DateFormatter.onlyDateString(request.requestedDate);
+
+  /// Return true if cooperation is cycled
   bool get isCycled => lessonDate?.isCycled ?? false;
+
+  /// Get price provided by teacher
   int get price => lessonDate?.price ?? 0;
+
+  /// Get list of tools provided by teacher
   List<Tool> get tools => lessonDate?.tools ?? [];
+
+  /// Get list of places provided by teacher
   List<Place> get places => lessonDate?.places ?? [];
+
+  /// Get topic selected by student
   Topic get topic => request.topic;
+
+  /// Return true if student requested new date
   bool get wasOtherDateRequested =>
       request.dateStatus == RequestedDateStatus.requested;
+
+  /// Get string representation of coopearion status
   String get statusInfo => request.status.stringValue;
+
+  /// Get string representation of new requested date status
   String get additionalInfo => request.dateStatus.stringValue;
+
+  /// Return true if request was not accepted neither rejected
   bool get isEnabled =>
       request.status != RequestStatus.accepted &&
       request.status != RequestStatus.rejected;
@@ -101,6 +136,7 @@ class TeacherRequestPageController extends BaseRequestPageController {
     return mergedList + newMessages;
   }
 
+  /// Get color of status bar on the page
   Color getStatusColor() {
     if (request.status == RequestStatus.newReq ||
         request.status == RequestStatus.waiting) {
@@ -118,6 +154,7 @@ class TeacherRequestPageController extends BaseRequestPageController {
     return Colors.black;
   }
 
+  /// Reject date proposed by student
   void rejectNewDate() {
     if (!isEnabled) {
       return;
@@ -125,6 +162,7 @@ class TeacherRequestPageController extends BaseRequestPageController {
     newDateStatus = RequestedDateStatus.rejected;
   }
 
+  /// Resotre date proposed by student
   void restoreNewDate() {
     if (!isEnabled) {
       return;
@@ -163,6 +201,7 @@ class TeacherRequestPageController extends BaseRequestPageController {
     Navigator.of(context).pop();
   }
 
+  /// Method triggers RequestManager and LessonManager to accept request sent by student
   Future<void> acceptRequest(BuildContext context) async {
     if (!isEnabled) {
       return;
@@ -185,6 +224,7 @@ class TeacherRequestPageController extends BaseRequestPageController {
     Navigator.of(context).pop();
   }
 
+  /// Method triggers RequestManager to reject request sent by student
   Future<void> rejectRequest(BuildContext context) async {
     if (!isEnabled) {
       return;

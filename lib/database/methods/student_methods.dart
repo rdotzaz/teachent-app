@@ -38,6 +38,7 @@ mixin StudentDatabaseMethods {
     return students;
   }
 
+  /// Method adds [lessonDateId] to student object with [studentId]
   Future<void> addLessonDateKeyToStudent(
       KeyId studentId, KeyId lessonDateId) async {
     await FirebaseRealTimeDatabaseAdapter.updateField(
@@ -47,6 +48,7 @@ mixin StudentDatabaseMethods {
         {lessonDateId: true});
   }
 
+  /// Return iterable of student objects based on given [lessonDateIds]
   Future<Iterable<Student>> getStudentsByDates(
       List<KeyId> lessonDateIds) async {
     final students = <KeyId, Student>{};
@@ -65,6 +67,7 @@ mixin StudentDatabaseMethods {
     return students.entries.map((e) => e.value).toList();
   }
 
+  /// Method adds [requestId] to student object with [studentId]
   Future<void> addRequestIdToStudent(KeyId studentId, KeyId requestId) async {
     await FirebaseRealTimeDatabaseAdapter.updateField(
         DatabaseObjectName.students,
@@ -73,6 +76,7 @@ mixin StudentDatabaseMethods {
         {requestId: true});
   }
 
+  /// Method adds [lessonDateId] to student object with [studentId]
   Future<void> addLessonDateIdToStudent(
       KeyId studentId, KeyId lessonDateId) async {
     await FirebaseRealTimeDatabaseAdapter.updateField(
@@ -82,6 +86,7 @@ mixin StudentDatabaseMethods {
         {lessonDateId: true});
   }
 
+  /// Method adds [reviewId] to student object with [studentId]
   Future<void> addReviewIdToStudent(KeyId studentId, KeyId reviewId) async {
     await FirebaseRealTimeDatabaseAdapter.updateField(
         DatabaseObjectName.students,

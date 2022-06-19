@@ -7,11 +7,14 @@ import '../../model/db_objects/teacher.dart';
 
 /// Methods to maintain Teacher object in database
 mixin TeacherDatabaseMethods {
+  /// Add [teacher] object to database
   Future<void> addTeacher(Teacher teacher) async {
     await FirebaseRealTimeDatabaseAdapter.addDatabaseObject(
         DatabaseObjectName.teachers, teacher.key, teacher.toMap());
   }
 
+  /// Return teacher object with [userId]
+  /// If object with [userId] does not exist in database, return null
   Future<Teacher?> getTeacher(KeyId userId) async {
     final response = await FirebaseRealTimeDatabaseAdapter.getObject(
         DatabaseObjectName.teachers, userId);
@@ -21,6 +24,7 @@ mixin TeacherDatabaseMethods {
     return Teacher.fromMap(userId, response.data);
   }
 
+  /// Return list of teachers whose name starts with [name]
   Future<List<Teacher>> getTeachersByNamePart(String name) async {
     final response = await FirebaseRealTimeDatabaseAdapter.getObjectsByName(
         DatabaseObjectName.teachers, 'name', name);
@@ -33,6 +37,10 @@ mixin TeacherDatabaseMethods {
     return teachers;
   }
 
+  /// Return list of teachers which has at least one
+  /// - topic from [topics] or
+  /// - tool from [tools] or
+  /// - place from [places]
   Future<List<Teacher>> getTeachersByParams(String name, List<String> topics,
       List<String> tools, List<String> places) async {
     final teachers = await getTeachersByNamePart(name);
@@ -57,6 +65,7 @@ mixin TeacherDatabaseMethods {
     return filteredTeachers;
   }
 
+  /// Add [lessonDateId] to teacher object with [teacherId]
   Future<void> addLessonDateKeyToTeacher(
       KeyId teacherId, KeyId lessonDateId) async {
     await FirebaseRealTimeDatabaseAdapter.updateField(
@@ -66,6 +75,7 @@ mixin TeacherDatabaseMethods {
         {lessonDateId: true});
   }
 
+  /// Return list of teachers based on [lessonDateIds]
   Future<List<Teacher>> getTeachersByDates(List<KeyId> lessonDateIds) async {
     final teachers = <KeyId, Teacher>{};
     for (final lessonDateId in lessonDateIds) {
@@ -83,6 +93,7 @@ mixin TeacherDatabaseMethods {
     return teachers.entries.map((e) => e.value).toList();
   }
 
+  /// Add [requestId] to teacher object with [teacherId]
   Future<void> addRequestIdToTeacher(KeyId teacherId, KeyId requestId) async {
     await FirebaseRealTimeDatabaseAdapter.updateField(
         DatabaseObjectName.teachers,
@@ -91,6 +102,7 @@ mixin TeacherDatabaseMethods {
         {requestId: true});
   }
 
+  /// Add [reviewId] to teacher object with [teacherId]
   Future<void> addReviewIdToTeacher(KeyId teacherId, KeyId reviewId) async {
     await FirebaseRealTimeDatabaseAdapter.updateField(
         DatabaseObjectName.teachers,

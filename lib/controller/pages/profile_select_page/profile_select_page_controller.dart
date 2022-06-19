@@ -5,11 +5,13 @@ import 'package:teachent_app/view/pages/teacher_creation_page/teacher_creation_p
 
 /// Controller for Profile Select Page
 class ProfileSelectPageController extends BaseController {
+  /// Method triggers [TeacherCreationPage] to create account with teacher profile
   void goToAcocuntTeacherCreationPage(BuildContext context) {
     Navigator.of(context)
         .push(MaterialPageRoute(builder: (_) => const TeacherCreationPage()));
   }
 
+  /// Method triggers [StudentCreationPage] to create account with student profile
   void goToAcocuntStudentCreationPage(BuildContext context) {
     Navigator.of(context)
         .push(MaterialPageRoute(builder: (_) => const StudentCreationPage()));

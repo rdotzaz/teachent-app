@@ -6,6 +6,7 @@ import 'package:teachent_app/model/db_objects/student.dart';
 import 'package:teachent_app/model/db_objects/teacher.dart';
 import 'package:teachent_app/view/widgets/status_bottom_sheet.dart';
 
+/// Controller for review creation page
 class ReviewCreationPageController extends BaseController {
   final KeyId teacherId;
   final KeyId studentId;
@@ -32,27 +33,42 @@ class ReviewCreationPageController extends BaseController {
     _student = student;
   }
 
+  /// Key for review creation form
   GlobalKey<FormState> get formKey => _formKey;
+
+  /// Teacher name
   String get teacherName => _teacher?.name ?? '';
+
+  /// Student name
   String get studentName => _student?.name ?? '';
 
+  /// Set [value] as new [description]
   void setDescription(String? value) {
     description = value ?? '';
   }
 
+  /// Set [value] as new [title]
   void setTitle(String? value) {
     title = value ?? '';
   }
 
+  /// Validate [value].
+  /// If validation passes, then return null
+  /// Otherwise return error message
   String? validateTitle(String? value) {
     return value?.isEmpty ?? true ? 'Title cannot be null' : null;
   }
 
+  /// Set [index] as new index for rate row
+  /// [index] numbers indicates number of stars
+  /// Also use [refresh] to display new state of rate row
   void setRateNumber(int index, void Function() refresh) {
     rate = index + 1;
     refresh();
   }
 
+  /// Methods triggers [ReviewManager] to save review.
+  /// Also [context] is required to show bottom sheet with success or error message
   void saveReview(BuildContext context) async {
     if (_formKey.currentState?.validate() ?? false) {
       await ReviewManager.create(

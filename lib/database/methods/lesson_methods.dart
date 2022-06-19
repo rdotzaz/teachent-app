@@ -9,7 +9,6 @@ import 'package:teachent_app/model/db_objects/lesson.dart';
 /// Methods to maintain Lesson object in database
 mixin LessonDatabaseMethods {
   /// Get all lessons objects by [lessonDateIds]
-  /// Note: Poor performance due to "double" searching in database
   /// First retrieved all lessons with [lessonDateIds], afterwards
   /// filter lessons with specific status
   Future<Iterable<Lesson>> getLessonsByDates(
@@ -31,6 +30,7 @@ mixin LessonDatabaseMethods {
     return lessons;
   }
 
+  /// Get available lessons from database based on [lessonDateId]
   Future<List<Lesson>> getLessonsByDate(KeyId lessonDateId) async {
     final lessons = <Lesson>[];
     final response = await FirebaseRealTimeDatabaseAdapter.getObjectsByProperty(
@@ -62,17 +62,20 @@ mixin LessonDatabaseMethods {
     return response.data;
   }
 
+  /// Update lesson status with [lessonStatus]
   Future<void> updateLessonStatus(
       KeyId lessonId, LessonStatus lessonStatus) async {
     await FirebaseRealTimeDatabaseAdapter.updateField(
         DatabaseObjectName.lessons, lessonId, 'status', lessonStatus.value);
   }
 
+  /// Update lesson property -> reportId
   Future<void> updateReportId(KeyId lessonId, KeyId reportId) async {
     await FirebaseRealTimeDatabaseAdapter.updateField(
         DatabaseObjectName.lessons, lessonId, 'reportId', reportId);
   }
 
+  /// Return true if lesson with [lessonId] is open
   Future<bool> isLessonOpen(KeyId lessonId) async {
     if (lessonId.isEmpty) {
       return false;

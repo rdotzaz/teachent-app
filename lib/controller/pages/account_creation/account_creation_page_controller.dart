@@ -39,21 +39,30 @@ class AccountCreationPageController extends BaseController {
   @override
   void dispose() {}
 
+  /// Name of account profile
   String get profileName => teacher != null ? 'Teacher' : 'Student';
+
+  /// User name
   String get name {
     return teacher?.name ?? student?.name ?? '';
   }
 
+  /// Validate [login] passed by application user in text field
+  /// Returns null if [login] properly validated. Otherwise error message
   String? validateLogin(String? login) {
     var isEmpty = login?.isEmpty ?? true;
     return isEmpty ? 'Login cannot be empty' : null;
   }
 
+  /// Validate [password] passed by application user in text field
+  /// Returns null if [password] properly validated. Otherwise error message
   String? validatePassword(String? password) {
     var isEmpty = password?.isEmpty ?? true;
     return isEmpty ? 'Password cannot be empty' : null;
   }
 
+  /// Validate [repeatedPassword] passed by application user in text field
+  /// Returns null if [repeatedPassword] properly validated. Otherwise error message
   String? validateRepeatedPassword(String? repeatedPassword) {
     var isEmpty = repeatedPassword?.isEmpty ?? true;
     if (isEmpty) {
@@ -66,18 +75,23 @@ class AccountCreationPageController extends BaseController {
     return null;
   }
 
+  /// Set login as [loginToSet]
   void setLogin(String? loginToSet) {
     login = loginToSet ?? '';
   }
 
+  /// Set password as [passwordToSet]
   void setPassword(String? passwordToSet) {
     password = passwordToSet ?? '';
   }
 
+  /// Set repeated password as [repeatedPasswordToSet]
   void setRepeatedPassword(String? repeatedPasswordToSet) {
     repeatedPassword = repeatedPasswordToSet ?? '';
   }
 
+  /// Main button onPressed action. Validates form data.
+  /// If data are valid, then Welcome page is opened.
   Future<void> buttonValidator(BuildContext context) async {
     if (_creationKey.currentState?.validate() ?? false) {
       showLoadingDialog(context, 'Loading...');

@@ -10,6 +10,7 @@ class HiveDatabaseAdapter {
     await Hive.openBox(HiveConsts.hiveConfigBox);
   }
 
+  /// Clear hive boxes
   static void clear() {
     final configBox = Hive.box(HiveConsts.hiveConfigBox);
     configBox.clear();
@@ -56,6 +57,8 @@ class HiveDatabaseAdapter {
     };
   }
 
+  /// Remove app configuration from local database
+  /// User has to log in next time to access thier account
   static void removeConfiguration() {
     final configBox = Hive.box(HiveConsts.hiveConfigBox);
     if (!configBox.isOpen) {

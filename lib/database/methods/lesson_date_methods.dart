@@ -50,18 +50,21 @@ mixin LessonDateDatabaseMethods {
         DateFormatter.getString(newDate));
   }
 
+  /// Assing [studentId] to lesson date (cooperation) with [lessonDateId]
   Future<void> assignStudentToLessonDate(
       KeyId lessonDateId, KeyId studentId) async {
     await FirebaseRealTimeDatabaseAdapter.updateField(
         DatabaseObjectName.lessonDates, lessonDateId, 'studentId', studentId);
   }
 
+  /// Change lesson date (cooperation) status to [status]
   Future<void> changeLessonDateStatus(
       KeyId lessonDateId, LessonDateStatus status) async {
     await FirebaseRealTimeDatabaseAdapter.updateField(
         DatabaseObjectName.lessonDates, lessonDateId, 'status', status.value);
   }
 
+  /// Return true if cooperation is free
   Future<bool> isLessonDateFree(KeyId lessonDateId) async {
     if (lessonDateId.isEmpty) {
       return false;

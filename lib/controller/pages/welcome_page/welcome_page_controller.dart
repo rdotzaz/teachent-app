@@ -17,6 +17,9 @@ class WelcomePageController extends BaseController {
     Future.delayed(const Duration(seconds: 2), moveToHomePage);
   }
 
+  /// Method moves user to home page
+  /// If user has teacher profile then trigger TeacherHomePage.
+  /// Otherwise StudentHomePage
   void moveToHomePage() {
     Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (_) {
       if (dbObject is Teacher) {

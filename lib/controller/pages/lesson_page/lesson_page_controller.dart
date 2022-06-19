@@ -11,6 +11,7 @@ import 'package:teachent_app/view/pages/student_profile_page/student_profile_pag
 import 'package:teachent_app/view/pages/teacher_profile_page/teacher_profile_page.dart';
 import 'package:teachent_app/view/widgets/status_bottom_sheet.dart';
 
+/// Controller for lesson page
 class LessonPageController extends BaseController {
   final Lesson lesson;
   final Teacher teacher;
@@ -22,10 +23,13 @@ class LessonPageController extends BaseController {
   String get userType => isTeacher ? 'Teacher' : 'Student';
   String get name => isTeacher ? teacher.name : student.name;
   String get status => lesson.status.stringValue;
+
+  /// Returns true if lesson has not been cancelled yet
   bool get isNotCancelled =>
       lesson.status == LessonStatus.open ||
       lesson.status == LessonStatus.finished;
 
+  /// Returns color for status bar
   Color getStatusColor() {
     final currentStatus = lesson.status;
     if (currentStatus == LessonStatus.open) {
@@ -38,6 +42,9 @@ class LessonPageController extends BaseController {
     return Colors.green;
   }
 
+  /// Methods trigger new page.
+  /// If user has teacher profile, then TeacherProfilePage will be displayed.
+  /// Otherwise StudentProfilePage.
   Future<void> goToProfilePage(BuildContext context) async {
     await Navigator.of(context).push(MaterialPageRoute(
         builder: (_) => isTeacher
@@ -45,6 +52,7 @@ class LessonPageController extends BaseController {
             : StudentProfilePage(student)));
   }
 
+  /// Methods trigger LessonManager to cancel selected lesson.
   Future<void> cancelLesson(BuildContext context) async {
     final lessonDate =
         await dataManager.database.getLessonDate(lesson.lessonDateId);

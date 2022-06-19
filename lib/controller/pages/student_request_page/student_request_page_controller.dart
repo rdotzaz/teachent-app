@@ -19,15 +19,34 @@ import 'package:teachent_app/view/widgets/status_bottom_sheet.dart';
 
 /// Controller for Student Ruquest Page
 class StudentRequestPageController extends BaseRequestPageController {
+  /// Request Id
   KeyId? requestId;
+
+  /// Student Id which is assigned to [requestId]
   KeyId? studentId;
+
+  /// Teacher object which contains [requestId]
   Teacher? teacher;
+
+  /// Request object with [requestId]
   Request? request;
+
+  /// Lesson date (cooperation) object based on lesson date id from [request]
   LessonDate? lessonDate;
 
+  /// Date selected by user in date picker.
+  /// This date can be requested by student to change starting date of cooperation
   DateTime? otherDate;
+
+  /// Time selected by user in time picker
+  /// This time can be requested by student to change starting time of cooperation
   TimeOfDay? otherTime;
+
+  /// Index in topic list
   int topicIndex = 0;
+
+  /// Property is true if some changes were provided by student
+  /// E.g. saved new requested date
   bool hasChangesProvided = false;
   final List<MessageRecord> _newMessages = [];
 
@@ -57,6 +76,7 @@ class StudentRequestPageController extends BaseRequestPageController {
     }
   }
 
+  /// Method retreives teacher object based on teacher id from [request]
   Future<void> initTeacher() async {
     final foundTeacher =
         await dataManager.database.getTeacher(request?.teacherId ?? '');
@@ -72,6 +92,7 @@ class StudentRequestPageController extends BaseRequestPageController {
     }
   }
 
+  /// Method retreives lesson date (cooperation) object based on lesson date id from [request]
   Future<void> initLessonDate() async {
     final foundDate =
         await dataManager.database.getLessonDate(request?.lessonDateId ?? '');
@@ -81,6 +102,8 @@ class StudentRequestPageController extends BaseRequestPageController {
     lessonDate = foundDate;
   }
 
+  /// Return date if request has not raised yet.
+  /// Otherwise [requestedDate] from request object
   String get exactDay {
     if (request == null) {
       return date;
@@ -88,22 +111,51 @@ class StudentRequestPageController extends BaseRequestPageController {
     return requestedDate;
   }
 
+  /// Teacher name
   String get teacherName => teacher?.name ?? '';
+
+  /// Get date from lesson date (cooperation) object
+  /// It is start date of cooperation
+  /// If date requested by student was accepted, then requested date is returned
   String get date => (request?.dateStatus ?? RequestedDateStatus.none) ==
           RequestedDateStatus.accepted
       ? DateFormatter.getString(request!.requestedDate)
       : DateFormatter.getString(lessonDate!.date);
+
+  /// Get string representation of [otherDate]
   String get requestedDate => DateFormatter.onlyDateString(otherDate);
+
+  /// Get string representation of [otherTime]
   String get requestedTime => DateFormatter.timeString(otherTime);
+
+  /// Get string representation of request status
   String get statusInfo => request?.status.stringValue ?? '';
+
+  /// Get string representation of requested date status
   String get additionalInfo => request?.dateStatus.stringValue ?? '';
+
+  /// Returns true if cooperation is cycled
   bool get isCycled => lessonDate?.isCycled ?? false;
+
+  /// Get price given by teacher
   int get price => lessonDate?.price ?? 0;
+
+  /// Get list of available tools in cooperation
   List<Tool> get tools => lessonDate?.tools ?? [];
+
+  /// Get list of available places in cooperation
   List<Place> get places => lessonDate?.places ?? [];
+
+  /// Get list of available topics in cooperation
   List<Topic> get topics => teacher?.topics ?? [];
+
+  /// Return true if there is message from teacher
   bool get hasTeacherMessage => false;
+
+  /// Return true if request status can be checked
   bool get canCheckStatus => request != null;
+
+  /// Return true if request was not accepted neither rejected
   bool get isEnabled =>
       request?.status != RequestStatus.accepted &&
       request?.status != RequestStatus.rejected;
@@ -162,6 +214,7 @@ class StudentRequestPageController extends BaseRequestPageController {
     }
   }
 
+  /// Save requested date by student
   void saveRequestedDate() {
     if (!isEnabled) {
       return;
@@ -169,6 +222,7 @@ class StudentRequestPageController extends BaseRequestPageController {
     hasChangesProvided = true;
   }
 
+  /// Remove requested date by student
   void cancelRequestedDate() {
     if (!isEnabled) {
       return;
@@ -178,6 +232,7 @@ class StudentRequestPageController extends BaseRequestPageController {
     otherTime = null;
   }
 
+  /// Set topic index of [topics] list
   void setTopicIndex(int index) {
     if (!isEnabled) {
       return;
@@ -189,6 +244,7 @@ class StudentRequestPageController extends BaseRequestPageController {
     }
   }
 
+  /// Get color of status bar on the page
   Color getStatusColor() {
     if (request == null) {
       return Colors.transparent;
@@ -209,6 +265,7 @@ class StudentRequestPageController extends BaseRequestPageController {
     return Colors.black;
   }
 
+  /// Get status bar additonal info regarding request
   String getStatusAdditionalInfo() {
     if (request!.dateStatus == RequestedDateStatus.requested) {
       return 'Request date: ${request!.requestedDate}';
@@ -276,6 +333,7 @@ class StudentRequestPageController extends BaseRequestPageController {
     refresh();
   }
 
+  /// Show request day field to request new date by student
   void toggleRequestDatePicker(BuildContext context) async {
     if (!isEnabled) {
       return;
@@ -284,6 +342,7 @@ class StudentRequestPageController extends BaseRequestPageController {
     context.read<RequestDayBloc>().add(ToggleRequestDayField());
   }
 
+  /// Show request day field to request new time by student
   void toggleRequestTimePicker(BuildContext context) async {
     if (!isEnabled) {
       return;
@@ -292,6 +351,8 @@ class StudentRequestPageController extends BaseRequestPageController {
     context.read<RequestDayBloc>().add(ToggleRequestDayField());
   }
 
+  /// Method triggers [RequestManager] to send response with new requested date by student
+  /// Shows bottom sheet with success or error message
   Future<void> sendResponse(BuildContext context) async {
     if (!isEnabled) {
       return;
@@ -310,6 +371,7 @@ class StudentRequestPageController extends BaseRequestPageController {
     Navigator.of(context).pop();
   }
 
+  /// Method triggers [RequestManager] to send new request to teacher
   Future<void> sendRequest(BuildContext context) async {
     if (!isEnabled) {
       return;

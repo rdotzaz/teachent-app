@@ -9,7 +9,7 @@ import '../../model/db_objects/user.dart';
 /// Methods to manage User object in database
 mixin UserDatabaseMethods {
   /// Method returns user when login and password are correct
-  /// Otherwise returns null
+  /// Otherwise result with error status
   Future<LoginResult> checkLoginAndPassword(
       String login, String password) async {
     final response =
@@ -30,11 +30,13 @@ mixin UserDatabaseMethods {
             response.data['isTeacher'] ?? true, password));
   }
 
+  /// Add [user] to database
   Future<void> addUser(User user) async {
     await FirebaseRealTimeDatabaseAdapter.addDatabaseObject(
         DatabaseObjectName.users, user.key, user.toMap());
   }
 
+  /// Get user with [userId] from database
   Future<User?> getUser(KeyId userId) async {
     final response = await FirebaseRealTimeDatabaseAdapter.getObject(
         DatabaseObjectName.users, userId);
