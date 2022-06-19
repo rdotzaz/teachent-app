@@ -44,18 +44,22 @@ class TeacherProfilePageController extends BaseController {
 
   /// Get teacher name
   String get teacherName => teacher.name;
+
   /// Get description provided by teacher
   String get description => teacher.description;
 
-  /// Return true if teacher has already average rate 
+  /// Return true if teacher has already average rate
   bool get hasRate => teacher.averageRate != -1;
+
   /// Get teacher rate
   int get rate => teacher.averageRate.ceil();
 
   /// Get teacher's topics
   List<Topic> get topics => teacher.topics;
+
   /// Get teacher's tools
   List<Tool> get tools => teacher.tools;
+
   /// Get teacher's places
   List<Place> get places => teacher.places;
 

@@ -13,6 +13,7 @@ class TeacherSearchPageController extends BaseSearchController {
 
   /// Get found teachers
   List<Teacher> get teachers => _foundTeachers;
+
   /// Get found students
   List<Student> get students => _foundStudents;
 

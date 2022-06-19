@@ -49,8 +49,10 @@ class ReportCreationPageController extends BaseController {
 
   /// Returns true if there are any lessons for which report can be created
   bool get hasLessons => lessonMap.isNotEmpty;
+
   /// Returns true if lesson has been selected by user
   bool get isLessonSelected => selectedMapKey != null;
+
   /// Returns default value in lesson dropdown menu if no lessons were selected.
   /// Otherwise returns selected lesson string representation
   String get initialLessonValue =>

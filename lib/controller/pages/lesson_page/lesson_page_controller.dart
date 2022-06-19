@@ -23,7 +23,7 @@ class LessonPageController extends BaseController {
   String get userType => isTeacher ? 'Teacher' : 'Student';
   String get name => isTeacher ? teacher.name : student.name;
   String get status => lesson.status.stringValue;
-  
+
   /// Returns true if lesson has not been cancelled yet
   bool get isNotCancelled =>
       lesson.status == LessonStatus.open ||

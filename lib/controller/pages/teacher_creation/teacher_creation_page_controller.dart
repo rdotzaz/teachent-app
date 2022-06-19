@@ -75,8 +75,10 @@ class TeacherCreationPageController extends BaseController {
 
   /// Get list of topics
   List<Topic> get topicList => _allTopics;
+
   /// Get list of tools
   List<Tool> get toolList => _allTools;
+
   /// Get list of places
   List<Place> get placeList => _allPlaces;
 
@@ -90,9 +92,11 @@ class TeacherCreationPageController extends BaseController {
   /// [TextEditingController] for topic field
   TextEditingController get topicTextFieldController =>
       _topicTextFieldController;
+
   /// [TextEditingController] for field where user can add new place or tool
   TextEditingController get objectTextFieldController =>
       _objectTextFieldController;
+
   /// Name of header on top of the page
   String get headerName => _headerNames[_pageNumber];
 

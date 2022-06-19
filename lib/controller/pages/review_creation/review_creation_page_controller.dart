@@ -35,8 +35,10 @@ class ReviewCreationPageController extends BaseController {
 
   /// Key for review creation form
   GlobalKey<FormState> get formKey => _formKey;
+
   /// Teacher name
   String get teacherName => _teacher?.name ?? '';
+
   /// Student name
   String get studentName => _student?.name ?? '';
 
@@ -59,7 +61,7 @@ class ReviewCreationPageController extends BaseController {
 
   /// Set [index] as new index for rate row
   /// [index] numbers indicates number of stars
-  /// Also use [refresh] to display new state of rate row 
+  /// Also use [refresh] to display new state of rate row
   void setRateNumber(int index, void Function() refresh) {
     rate = index + 1;
     refresh();

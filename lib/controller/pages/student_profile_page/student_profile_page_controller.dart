@@ -8,6 +8,7 @@ class StudentProfilePageController extends BaseController {
 
   /// Return name of the student
   String get name => student.name;
+
   /// Return education level string representation
   String get educationLevel => student.educationLevel.name;
 }

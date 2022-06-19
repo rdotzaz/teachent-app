@@ -39,8 +39,10 @@ class LessonDateCreationPageController extends BaseController {
 
   /// [FrequencyBloc] to manage state of frequency chips on page
   late FrequencyBloc freqBloc;
+
   /// [ToolBloc] to manage state of tool chips on page
   late ToolBloc toolBloc;
+
   /// [PlaceBloc] to manage state of place chips on page
   late PlaceBloc placeBloc;
 
@@ -56,16 +58,22 @@ class LessonDateCreationPageController extends BaseController {
 
   /// Lesson date established by teacher
   String get date => DateFormatter.onlyDateString(_selectedDate);
+
   /// Time of day established by teacher
   String get time => DateFormatter.timeString(_selectedTime);
+
   /// Lesson duration in minutes
   int get lessonDuration => _duration;
+
   /// Price for single lesson unit
   int get price => _price;
+
   /// List of available tools
   List<Tool> get tools => _tools;
+
   /// List of available places
   List<Place> get places => _places;
+
   /// List of available lesson frequencies
   List<String> get lessonFrequencies => _freqs;
 

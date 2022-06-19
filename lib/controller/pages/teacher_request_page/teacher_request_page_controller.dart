@@ -19,8 +19,10 @@ import 'package:teachent_app/view/widgets/status_bottom_sheet.dart';
 class TeacherRequestPageController extends BaseRequestPageController {
   /// Teacher id which is assigned to [request]
   KeyId? teacherId;
+
   /// Student object which contains request id from [request]
   Student? student;
+
   /// Lesson date (cooperation) object based on lesson date id from [request]
   LessonDate? lessonDate;
 
@@ -68,32 +70,43 @@ class TeacherRequestPageController extends BaseRequestPageController {
 
   /// Student name
   String get studentName => student?.name ?? '';
+
   /// Get date from lesson date (cooperation) object
   /// It is start date of cooperation
   /// If new date requested by student was accepted, then requested date os returned
   String get date => request.dateStatus == RequestedDateStatus.accepted
       ? DateFormatter.getString(request.requestedDate)
       : DateFormatter.getString(lessonDate?.date);
+
   /// Get string representation of requested date
   String get requestedDate =>
       DateFormatter.onlyDateString(request.requestedDate);
+
   /// Return true if cooperation is cycled
   bool get isCycled => lessonDate?.isCycled ?? false;
+
   /// Get price provided by teacher
   int get price => lessonDate?.price ?? 0;
+
   /// Get list of tools provided by teacher
   List<Tool> get tools => lessonDate?.tools ?? [];
+
   /// Get list of places provided by teacher
   List<Place> get places => lessonDate?.places ?? [];
+
   /// Get topic selected by student
   Topic get topic => request.topic;
+
   /// Return true if student requested new date
   bool get wasOtherDateRequested =>
       request.dateStatus == RequestedDateStatus.requested;
+
   /// Get string representation of coopearion status
   String get statusInfo => request.status.stringValue;
+
   /// Get string representation of new requested date status
   String get additionalInfo => request.dateStatus.stringValue;
+
   /// Return true if request was not accepted neither rejected
   bool get isEnabled =>
       request.status != RequestStatus.accepted &&

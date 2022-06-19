@@ -20,10 +20,13 @@ class StudentSearchPageController extends BaseSearchController {
 
   /// Get all available topics
   List<Topic> get topics => _allTopics;
+
   /// Get all available places
   List<Place> get places => _allPlaces;
+
   /// Get all available tools
   List<Tool> get tools => _allTools;
+
   /// Get found teachers
   List<Teacher> get teachers => _foundTeachers;
 

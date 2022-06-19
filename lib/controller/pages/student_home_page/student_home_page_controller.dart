@@ -78,12 +78,16 @@ class StudentHomePageController extends BaseController {
 
   /// Return name of student
   String get studentName => student?.name ?? '';
+
   /// Retrun true if lessons found in database
   bool get areLessons => lessons.isNotEmpty;
+
   /// Retrun true if teachers found in database
   bool get areTeachers => teachers.isNotEmpty;
+
   /// Retrun true if requests found in database
   bool get areRequests => requests.isNotEmpty;
+
   /// Retrun true if lesson dates found in database
   bool get areDates => lessonDates.isNotEmpty;
 

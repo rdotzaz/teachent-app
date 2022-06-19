@@ -41,7 +41,7 @@ class AccountCreationPageController extends BaseController {
 
   /// Name of account profile
   String get profileName => teacher != null ? 'Teacher' : 'Student';
-  
+
   /// User name
   String get name {
     return teacher?.name ?? student?.name ?? '';

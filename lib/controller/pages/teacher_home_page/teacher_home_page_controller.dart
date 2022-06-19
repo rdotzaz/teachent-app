@@ -80,14 +80,19 @@ class TeacherHomePageController extends BaseController {
 
   /// Get search bar title
   String get searchName => 'Search students';
+
   /// Get teacher name
   String get teacherName => teacher?.name ?? '';
+
   /// Return true if lessons found in database
   bool get areLessons => lessons.isNotEmpty;
+
   /// Return true if students found in database
   bool get areStudents => students.isNotEmpty;
+
   /// Return true if requests found in database
   bool get areRequests => requests.isNotEmpty;
+
   /// Return true if lesson dates found in database
   bool get areDates => lessonDates.isNotEmpty;
 

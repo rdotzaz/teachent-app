@@ -21,23 +21,30 @@ import 'package:teachent_app/view/widgets/status_bottom_sheet.dart';
 class StudentRequestPageController extends BaseRequestPageController {
   /// Request Id
   KeyId? requestId;
+
   /// Student Id which is assigned to [requestId]
   KeyId? studentId;
+
   /// Teacher object which contains [requestId]
   Teacher? teacher;
+
   /// Request object with [requestId]
   Request? request;
+
   /// Lesson date (cooperation) object based on lesson date id from [request]
   LessonDate? lessonDate;
 
   /// Date selected by user in date picker.
   /// This date can be requested by student to change starting date of cooperation
   DateTime? otherDate;
+
   /// Time selected by user in time picker
   /// This time can be requested by student to change starting time of cooperation
   TimeOfDay? otherTime;
+
   /// Index in topic list
   int topicIndex = 0;
+
   /// Property is true if some changes were provided by student
   /// E.g. saved new requested date
   bool hasChangesProvided = false;
@@ -96,7 +103,7 @@ class StudentRequestPageController extends BaseRequestPageController {
   }
 
   /// Return date if request has not raised yet.
-  /// Otherwise [requestedDate] from request object 
+  /// Otherwise [requestedDate] from request object
   String get exactDay {
     if (request == null) {
       return date;
@@ -106,35 +113,48 @@ class StudentRequestPageController extends BaseRequestPageController {
 
   /// Teacher name
   String get teacherName => teacher?.name ?? '';
-  /// Get date from lesson date (cooperation) object 
+
+  /// Get date from lesson date (cooperation) object
   /// It is start date of cooperation
   /// If date requested by student was accepted, then requested date is returned
   String get date => (request?.dateStatus ?? RequestedDateStatus.none) ==
           RequestedDateStatus.accepted
       ? DateFormatter.getString(request!.requestedDate)
       : DateFormatter.getString(lessonDate!.date);
+
   /// Get string representation of [otherDate]
   String get requestedDate => DateFormatter.onlyDateString(otherDate);
+
   /// Get string representation of [otherTime]
   String get requestedTime => DateFormatter.timeString(otherTime);
+
   /// Get string representation of request status
   String get statusInfo => request?.status.stringValue ?? '';
+
   /// Get string representation of requested date status
   String get additionalInfo => request?.dateStatus.stringValue ?? '';
+
   /// Returns true if cooperation is cycled
   bool get isCycled => lessonDate?.isCycled ?? false;
+
   /// Get price given by teacher
   int get price => lessonDate?.price ?? 0;
+
   /// Get list of available tools in cooperation
   List<Tool> get tools => lessonDate?.tools ?? [];
+
   /// Get list of available places in cooperation
   List<Place> get places => lessonDate?.places ?? [];
+
   /// Get list of available topics in cooperation
   List<Topic> get topics => teacher?.topics ?? [];
+
   /// Return true if there is message from teacher
   bool get hasTeacherMessage => false;
+
   /// Return true if request status can be checked
   bool get canCheckStatus => request != null;
+
   /// Return true if request was not accepted neither rejected
   bool get isEnabled =>
       request?.status != RequestStatus.accepted &&

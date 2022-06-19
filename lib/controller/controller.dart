@@ -14,7 +14,7 @@ abstract class BaseController {
   void init() {}
 
   /// Method which should be called in overridden dispose method in State class for StatefulWidget.
-  /// If StatefulWidget is not used, then there is no need to override this method  
+  /// If StatefulWidget is not used, then there is no need to override this method
   void dispose() {}
 }
 
@@ -33,6 +33,7 @@ abstract class BaseSearchController extends BaseController {
 
   /// Updates list of found people in database
   Future<void> updateFoundList(PersonType type) async {}
+
   /// Updates list of found teachers in database
   Future<void> updateFoundTeacherList(List<String> topicNames,
       List<String> toolNames, List<String> placeNames) async {}
@@ -48,8 +49,10 @@ abstract class BaseSearchController extends BaseController {
 abstract class BaseRequestPageController extends BaseController {
   /// Return true if there are any messages for the request
   bool get hasAnyMessages => false;
+
   /// Return number of messages for the request
   int get messagesCount => 0;
+
   /// Return list of messages
   List<MessageField> get messages => [];
 
