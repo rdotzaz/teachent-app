@@ -63,6 +63,8 @@ class LessonDate extends DatabaseObject {
             .toList();
 
   bool get isFree => status == LessonDateStatus.free;
+  bool get isOngoing => status == LessonDateStatus.ongoing;
+  bool get isFinished => status == LessonDateStatus.finished;
 
   @override
   String get collectionName => DatabaseObjectName.lessonDates;
@@ -75,7 +77,7 @@ class LessonDate extends DatabaseObject {
     return {
       'teacherId': teacherId,
       'studentId': studentId,
-      'status': status,
+      'status': status.value,
       'date': DateFormatter.getString(date),
       'isCycled': isCycled,
       'cycleType': cycleType.value,

@@ -103,6 +103,14 @@ class TeacherHomePageController extends BaseController {
     return student.name;
   }
 
+  /// Return status information visible on the lesson date item
+  String getLessonDateStatus(LessonDate lessonDate) {
+    if (lessonDate.isFree) {
+      return 'Waiting for cooperator';
+    }
+    return lessonDate.studentId.isEmpty ? 'Cooperation cancelled' : 'Cooperation finished';
+  }
+
   /// Method triggers TeacherSearchPage
   void goToSearchPage(BuildContext context) {
     Navigator.of(context)

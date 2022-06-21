@@ -27,12 +27,12 @@ class LessonDatePageController extends BaseController {
   LessonDatePageController(this.lessonDate, this.isTeacher);
 
   late Teacher teacher;
-  late Student student;
+  Student? student;
   final List<LessonEntity> lessonEntities = [];
 
   bool get isNotFree => !lessonDate.isFree;
   bool get isFinished => lessonDate.status == LessonDateStatus.finished;
-  String get studentName => student.name;
+  String get studentName => student?.name ?? '-';
   String get teacherName => teacher.name;
   String get cycleType => lessonDate.cycleType.stringValue;
   String get price => lessonDate.price.toString();
@@ -58,10 +58,9 @@ class LessonDatePageController extends BaseController {
     final foundStudent =
         await dataManager.database.getStudent(lessonDate.studentId);
 
-    if (foundStudent == null) {
-      return;
+    if (foundStudent != null) {
+      student = foundStudent;
     }
-    student = foundStudent;
 
     final foundTeacher =
         await dataManager.database.getTeacher(lessonDate.teacherId);

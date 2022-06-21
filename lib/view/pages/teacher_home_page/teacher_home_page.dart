@@ -275,7 +275,7 @@ class _TeacherHomePageState extends State<TeacherHomePage>
             _teacherHomePageController.goToLessonDatePage(context, index),
         behavior: HitTestBehavior.opaque,
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          if (!lessonDate.isFree)
+          if (lessonDate.isOngoing)
             Label(
                 text: _teacherHomePageController
                     .getStudentName(lessonDate.studentId),
@@ -295,12 +295,12 @@ class _TeacherHomePageState extends State<TeacherHomePage>
                           .lessonDates[index].cycleType.stringValue,
                       style: const TextStyle(fontSize: 12, color: Colors.blue)),
                   backgroundColor: Colors.white)),
-          if (lessonDate.isFree)
-            const Padding(
-                padding: EdgeInsets.all(8),
+          if (lessonDate.isFree || lessonDate.isFinished)
+            Padding(
+                padding: const EdgeInsets.all(8),
                 child: Chip(
-                    label: Text('Waiting for cooperator',
-                        style: TextStyle(fontSize: 12, color: Colors.blue)),
+                    label: Text(_teacherHomePageController.getLessonDateStatus(lessonDate),
+                        style: const TextStyle(fontSize: 12, color: Colors.blue)),
                     backgroundColor: Colors.white))
         ]));
   }
