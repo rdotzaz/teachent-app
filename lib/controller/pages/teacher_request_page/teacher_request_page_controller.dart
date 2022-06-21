@@ -80,7 +80,7 @@ class TeacherRequestPageController extends BaseRequestPageController {
 
   /// Get string representation of requested date
   String get requestedDate =>
-      DateFormatter.onlyDateString(request.requestedDate);
+      DateFormatter.getString(request.requestedDate);
 
   /// Return true if cooperation is cycled
   bool get isCycled => lessonDate?.isCycled ?? false;
@@ -156,14 +156,17 @@ class TeacherRequestPageController extends BaseRequestPageController {
 
   /// Reject date proposed by student
   void rejectNewDate() {
+    print(isEnabled);
     if (!isEnabled) {
       return;
     }
     newDateStatus = RequestedDateStatus.rejected;
+    print(newDateStatus);
   }
 
-  /// Resotre date proposed by student
+  /// Restore date proposed by student
   void restoreNewDate() {
+    print(isEnabled);
     if (!isEnabled) {
       return;
     }
@@ -174,7 +177,7 @@ class TeacherRequestPageController extends BaseRequestPageController {
   Future<void> sendMessageAndRefresh(
       BuildContext context, Function refresh) async {
     if (!await dataManager.database
-        .isLessonDateFree(lessonDate?.lessonDateId ?? '')) {
+        .isLessonDateFree(lessonDate?.lessonDateId ?? '') && lessonDate?.teacherId != teacherId) {
       showErrorMessage(context, 'Lesson date was reserved by someone else');
       return;
     }
@@ -217,9 +220,7 @@ class TeacherRequestPageController extends BaseRequestPageController {
     }
 
     await RequestManager.acceptRequest(
-        dataManager, request, student?.userId ?? '', lessonDate);
-    await LessonManager.createFirst(
-        dataManager, student?.userId ?? '', lessonDate!);
+        dataManager, request, student, lessonDate);
     await showSuccessMessageAsync(context, 'Request has been accepted');
     Navigator.of(context).pop();
   }

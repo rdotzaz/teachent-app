@@ -16,10 +16,10 @@ class RequestDayField extends StatelessWidget {
   Widget build(BuildContext context) {
     final requestedDate = requestPageController.requestedDate.isNotEmpty
         ? requestPageController.requestedDate
-        : requestPageController.date;
+        : requestPageController.currentDate;
     final requestedTime = requestPageController.requestedTime.isNotEmpty
         ? requestPageController.requestedTime
-        : DateFormatter.onlyTimeString(requestPageController.otherDate);
+        : requestPageController.currentTime;
     return SingleCardWidget(
       title: 'Request new date',
       titleColor: Colors.black,

@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:teachent_app/common/data_manager.dart';
+import 'package:teachent_app/common/date.dart';
 import 'package:teachent_app/common/enums.dart';
 import 'package:teachent_app/model/db_objects/db_object.dart';
 import 'package:teachent_app/model/db_objects/lesson_date.dart';
 import 'package:teachent_app/model/db_objects/request.dart';
+import 'package:teachent_app/model/db_objects/student.dart';
 import 'package:teachent_app/model/db_objects/teacher.dart';
 import 'package:teachent_app/model/objects/topic.dart';
 import 'package:teachent_app/model/objects/message.dart';
 
 import 'lesson_date_manager.dart';
+import 'lesson_manager.dart';
 
 /// Class for request management
 class RequestManager {
@@ -30,43 +33,18 @@ class RequestManager {
   static Future<void> sendStudentResponse(
       DataManager dataManager,
       Request request,
-      DateTime? otherDate,
-      TimeOfDay? time,
+      DateTime otherDate,
+      TimeOfDay time,
       Topic selectedTopic) async {
     await dataManager.database
         .changeRequestStatus(request.requestId, RequestStatus.waiting);
 
-    final dateChanged = otherDate != null && otherDate != request.requestedDate;
-    DateTime? newDate;
-    if (dateChanged) {
-      newDate = otherDate;
-    }
+    final newDate = DateFormatter.addTime(otherDate, time);
 
-    final timeChanged = time !=
-        TimeOfDay(
-            hour: request.requestedDate?.hour ?? 0,
-            minute: request.requestedDate?.minute ?? 0);
-    if (timeChanged && time != null) {
-      if (newDate == null) {
-        final newCurrentDate = DateTime(
-            request.currentDate.year,
-            request.currentDate.month,
-            request.currentDate.day,
-            time.hour,
-            time.minute);
-        newDate = newCurrentDate;
-      } else {
-        final newCurrentDate = DateTime(
-            newDate.year, newDate.month, newDate.day, time.hour, time.minute);
-        newDate = newCurrentDate;
-      }
-    }
-    if (newDate != null) {
-      await dataManager.database
+    await dataManager.database
           .changeRequestedDate(request.requestId, newDate);
       await dataManager.database.changeRequestedDateStatus(
           request.requestId, RequestedDateStatus.requested);
-    }
 
     if (selectedTopic.name != request.topic.name) {
       await dataManager.database.changeTopic(request.requestId, selectedTopic);
@@ -85,7 +63,7 @@ class RequestManager {
 
   /// Accept [request] by teacher for [lessonDate].
   static Future<void> acceptRequest(DataManager dataManager, Request request,
-      KeyId studentId, LessonDate? lessonDate) async {
+      Student? student, LessonDate? lessonDate) async {
     if (request.requestedDate != null) {
       await dataManager.database.changeLessonDate(
           lessonDate?.lessonDateId ?? '', request.requestedDate!);
@@ -94,13 +72,28 @@ class RequestManager {
           .changeCurrentDate(request.requestId, request.requestedDate!);
     }
     await dataManager.database
-        .assignStudentToLessonDate(lessonDate?.lessonDateId ?? '', studentId);
+        .assignStudentToLessonDate(lessonDate?.lessonDateId ?? '', student?.userId ?? '');
     await dataManager.database
-        .addLessonDateIdToStudent(studentId, lessonDate?.lessonDateId ?? '');
+        .addLessonDateIdToStudent(student?.userId ?? '', lessonDate?.lessonDateId ?? '');
     await dataManager.database
         .changeRequestStatus(request.requestId, RequestStatus.accepted);
 
     await LessonDateManager.setDateAsNotFree(dataManager, lessonDate);
+
+    final dateToAssign = request.requestedDate != null ? request.requestedDate! : lessonDate!.date;
+    final newLessonDate = LessonDate(
+      lessonDate!.lessonDateId,
+      lessonDate.teacherId,
+      lessonDate.studentId,
+      lessonDate.status,
+      dateToAssign,
+      lessonDate.isCycled,
+      lessonDate.cycleType,
+      lessonDate.price,
+      lessonDate.tools,
+      lessonDate.places);
+    await LessonManager.createFirst(
+        dataManager, student?.userId ?? '', newLessonDate);
   }
 
   /// Reject [request] by teacher

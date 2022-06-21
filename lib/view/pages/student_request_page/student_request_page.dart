@@ -81,7 +81,7 @@ class StudentRequestPage extends StatelessWidget {
             Label(
                 text: 'Name: ${_requestPageController!.teacherName}',
                 fontSize: 22),
-            Label(text: 'Date: ${_requestPageController!.date}', fontSize: 20),
+            Label(text: 'Date: ${_requestPageController!.infoDate}', fontSize: 20),
             Label(
                 text: _requestPageController!.isCycled
                     ? 'Lesson is cycled'

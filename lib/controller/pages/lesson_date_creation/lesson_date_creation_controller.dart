@@ -193,6 +193,7 @@ class LessonDateCreationPageController extends BaseController {
     final tools = _tools.where((t) => t.marked).toList();
     final places = _places.where((p) => p.marked).toList();
 
+    print(DateFormatter.addTime(_selectedDate, _selectedTime));
     final lessonDate = LessonDate.init(
         teacher.userId,
         DateFormatter.addTime(_selectedDate, _selectedTime),

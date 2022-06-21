@@ -102,31 +102,28 @@ class StudentRequestPageController extends BaseRequestPageController {
     lessonDate = foundDate;
   }
 
-  /// Return date if request has not raised yet.
-  /// Otherwise [requestedDate] from request object
-  String get exactDay {
-    if (request == null) {
-      return date;
-    }
-    return requestedDate;
-  }
-
   /// Teacher name
   String get teacherName => teacher?.name ?? '';
 
   /// Get date from lesson date (cooperation) object
   /// It is start date of cooperation
   /// If date requested by student was accepted, then requested date is returned
-  String get date => (request?.dateStatus ?? RequestedDateStatus.none) ==
+  String get infoDate => (request?.dateStatus ?? RequestedDateStatus.none) ==
           RequestedDateStatus.accepted
       ? DateFormatter.getString(request!.requestedDate)
       : DateFormatter.getString(lessonDate!.date);
 
+  /// Get string representation of [date] choosed by teacher
+  String get currentDate => DateFormatter.onlyDateString(lessonDate!.date);
+
+  /// Get string representation of time choosed by teacher
+  String get currentTime => DateFormatter.onlyTimeString(lessonDate!.date);
+
   /// Get string representation of [otherDate]
-  String get requestedDate => DateFormatter.onlyDateString(otherDate);
+  String get requestedDate => otherDate != null ? DateFormatter.onlyDateString(otherDate) : currentDate;
 
   /// Get string representation of [otherTime]
-  String get requestedTime => DateFormatter.timeString(otherTime);
+  String get requestedTime => otherTime != null ? DateFormatter.timeString(otherTime) : currentTime;
 
   /// Get string representation of request status
   String get statusInfo => request?.status.stringValue ?? '';
@@ -319,7 +316,7 @@ class StudentRequestPageController extends BaseRequestPageController {
   Future<void> sendMessageAndRefresh(
       BuildContext context, Function refresh) async {
     if (!await dataManager.database
-        .isLessonDateFree(lessonDate?.lessonDateId ?? '')) {
+        .isLessonDateFree(lessonDate?.lessonDateId ?? '') && lessonDate?.studentId != studentId) {
       showErrorMessage(context, 'Lesson date was reserved by someone else');
       return;
     }
@@ -362,10 +359,10 @@ class StudentRequestPageController extends BaseRequestPageController {
       showErrorMessage(context, 'Lesson date was reserved by someone else');
       return;
     }
-    assert(hasChangesProvided && request != null);
+    assert(hasChangesProvided && request != null && otherDate != null, otherTime != null);
 
     await RequestManager.sendStudentResponse(
-        dataManager, request!, otherDate, otherTime, topics[topicIndex]);
+        dataManager, request!, otherDate!, otherTime!, topics[topicIndex]);
 
     await showSuccessMessageAsync(context, 'Request has been updated');
     Navigator.of(context).pop();
@@ -385,6 +382,7 @@ class StudentRequestPageController extends BaseRequestPageController {
       showErrorMessage(context, 'Lesson date was reserved by someone else');
       return;
     }
+    
 
     request = Request.noKey(
         lessonDate?.lessonDateId ?? '',
@@ -392,11 +390,11 @@ class StudentRequestPageController extends BaseRequestPageController {
         studentId ?? '',
         RequestStatus.waiting,
         topics[topicIndex],
-        DateFormatter.parse(date),
+        lessonDate!.date,
         otherDate == null
             ? RequestedDateStatus.none
             : RequestedDateStatus.requested,
-        DateFormatter.tryParse(requestedDate),
+        _getRequestedDate(),
         [],
         _newMessages);
 
@@ -404,5 +402,15 @@ class StudentRequestPageController extends BaseRequestPageController {
 
     await showSuccessMessageAsync(context, 'Request has successfully sent');
     Navigator.of(context).pop();
+  }
+
+  DateTime? _getRequestedDate() {
+    if (otherDate == null && otherTime == null) {
+      return null;
+    }
+    final newWholeDate = otherDate ?? lessonDate!.date;
+    final newOnlyDate = DateTime(newWholeDate.year, newWholeDate.month, newWholeDate.day);
+    final oldTime = TimeOfDay(hour: newWholeDate.hour, minute: newWholeDate.minute);
+    return DateFormatter.addTime(newOnlyDate, otherTime ?? oldTime);
   }
 }

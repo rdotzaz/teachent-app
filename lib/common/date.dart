@@ -5,12 +5,10 @@ import 'package:intl/intl.dart';
 class DateFormatter {
   /// Returns date in proper format: yyyy-MM-dd hh:mm
   static String getString(DateTime? dateTime) {
-    return dateTime != null
-        ? DateFormat('yyyy-MM-dd hh:mm').format(dateTime)
-        : '';
+    return dateTime != null ? dateTime.toString().substring(0, 16) : '';
   }
 
-  /// Wrapper method for DateTime.parse
+  /// Method parses [date] as [DateTime] object
   static DateTime parse(String date) {
     return DateTime.parse(date);
   }
@@ -34,16 +32,29 @@ class DateFormatter {
   /// Method returns string representation of [timeofDay]
   static String timeString(TimeOfDay? timeOfDay) {
     final minute = timeOfDay?.minute ?? 0;
-    return '${timeOfDay?.hour ?? ''}:${minute > 10 ? minute : '0' + minute.toString()}';
+    var hour = timeOfDay?.hour ?? 0;
+    final isPM = hour >= 12;
+    if (isPM) {
+      hour -= 12;
+    }
+    return '${hour >= 10 ? hour : '0' + hour.toString()}:${minute >= 10 ? minute : '0' + minute.toString()}';
   }
 
   /// Method returns string representation of [dateTime], but only hour and minute
   static String onlyTimeString(DateTime? dateTime) {
-    return dateTime != null ? DateFormat('hh:mm').format(dateTime) : '';
+    if (dateTime == null) {
+      return '';
+    }
+    final stringRepr = dateTime.toString();
+    return stringRepr.substring(11, 16);
   }
 
   /// Method returns string representation of [dateTime], but only year, month and day
   static String onlyDateString(DateTime? dateTime) {
-    return dateTime != null ? DateFormat('yyyy-MM-dd').format(dateTime) : '';
+    if (dateTime == null) {
+      return '';
+    }
+    final stringRepr = dateTime.toString();
+    return stringRepr.substring(0, 10);
   }
 }

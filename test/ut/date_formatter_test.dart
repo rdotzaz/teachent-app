@@ -33,22 +33,31 @@ void main() {
 
     test('timeString method', () {
       expect(DateFormatter.timeString(const TimeOfDay(hour: 11, minute: 5)),
-          '11:05');
+          '11:05AM');
       expect(DateFormatter.timeString(const TimeOfDay(hour: 10, minute: 0)),
-          '10:00');
-      expect(DateFormatter.timeString(null), ':00');
+          '10:00AM');
+      expect(DateFormatter.timeString(const TimeOfDay(hour: 16, minute: 11)),
+          '04:11PM');
+      expect(DateFormatter.timeString(const TimeOfDay(hour: 22, minute: 50)),
+          '10:50PM');
+      expect(DateFormatter.timeString(null), '00:00AM');
     });
 
     test('onlyTimeString method', () {
       expect(
-          DateFormatter.onlyTimeString(DateTime(2022, 04, 04, 11, 8)), '11:08');
-      expect(DateFormatter.onlyTimeString(DateTime(2022, 04, 04)), '12:00');
+          DateFormatter.onlyTimeString(DateTime(2022, 04, 04, 11, 8)), '11:08AM');
+      expect(DateFormatter.onlyTimeString(DateTime(2022, 04, 04)), '12:00AM');
     });
 
     test('onlyDateString method', () {
       expect(
           DateFormatter.onlyDateString(DateTime(2022, 05, 11)), '2022-05-11');
       expect(DateFormatter.onlyDateString(DateTime(2022, 12, 1)), '2022-12-01');
+    });
+
+    test('timeString with 0 minutes', () {
+      expect(DateFormatter.timeString(const TimeOfDay(hour: 15, minute: 0)), '03:00PM');
+      expect(DateFormatter.onlyTimeString(DateTime(2022, 05, 05, 14, 0)), '02:00PM');
     });
   });
 }

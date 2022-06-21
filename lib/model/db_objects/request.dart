@@ -56,7 +56,7 @@ class Request extends DatabaseObject {
         topic = Topic(values['topic'] ?? '', true),
         currentDate = DateFormatter.parse(values['currentDate']),
         dateStatus = getRequestedDateStatusByValue(values['dateStatus'] ?? -1),
-        requestedDate = DateFormatter.tryParse(values['requestedDate']),
+        requestedDate = DateFormatter.parse(values['requestedDate']),
         teacherMessages =
             DatabaseObject.getMapFromField(values, 'teacherMessages')
                 .entries
