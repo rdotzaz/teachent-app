@@ -1,8 +1,8 @@
 {
-	"WEB_API_KEY": "AIzaSyAyvmjGrtncW2bZhyUica92d8dMy4pxzAI",
-	"AUTH_DOMAIN": "teachent-26d49.firebaseapp.com",
-	"DATABASE_URL": "https://teachent-26d49-default-rtdb.europe-west1.firebasedatabase.app",
-	"PROJECT_ID": "teachent-26d49",
+    "WEB_API_KEY": "AIzaSyAyvmjGrtncW2bZhyUica92d8dMy4pxzAI",
+    "AUTH_DOMAIN": "teachent-26d49.firebaseapp.com",
+    "DATABASE_URL": "https://teachent-26d49-default-rtdb.europe-west1.firebasedatabase.app",
+    "PROJECT_ID": "teachent-26d49",
     "STORAGE_BUCKET": "teachent-26d49.appspot.com",
     "MESSAGING_ID": "262200098933",
     "WEB_APP_ID": "1:262200098933:web:2758a9d1591e86a943b83c",
