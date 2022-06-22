@@ -299,8 +299,11 @@ class _TeacherHomePageState extends State<TeacherHomePage>
             Padding(
                 padding: const EdgeInsets.all(8),
                 child: Chip(
-                    label: Text(_teacherHomePageController.getLessonDateStatus(lessonDate),
-                        style: const TextStyle(fontSize: 12, color: Colors.blue)),
+                    label: Text(
+                        _teacherHomePageController
+                            .getLessonDateStatus(lessonDate),
+                        style:
+                            const TextStyle(fontSize: 12, color: Colors.blue)),
                     backgroundColor: Colors.white))
         ]));
   }

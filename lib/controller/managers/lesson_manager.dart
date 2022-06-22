@@ -10,10 +10,10 @@ import 'lesson_date_manager.dart';
 /// Class for lesson management
 class LessonManager {
   /// Create first lesson within cooperation [lessonDate] and add student with [studentId] to cooperation.
-  static Future<void> createFirst(
-      DataManager dataManager, KeyId studentId, LessonDate lessonDate) async {
+  static Future<void> createFirst(DataManager dataManager, KeyId studentId,
+      LessonDate lessonDate, DateTime firstLessonDate) async {
     final lesson = Lesson.noKey(lessonDate.lessonDateId, lessonDate.teacherId,
-        studentId, lessonDate.date, LessonStatus.open, DatabaseConsts.emptyKey);
+        studentId, firstLessonDate, LessonStatus.open, DatabaseConsts.emptyKey);
     await dataManager.database.addLesson(lesson);
   }
 

@@ -16,15 +16,7 @@ class Buttons extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<RefreshBloc, RequestedDateStatus>(
         builder: (context, status) {
-      final hasResponse = status == RequestedDateStatus.accepted ||
-          status == RequestedDateStatus.rejected;
       return Column(children: [
-        if (hasResponse)
-          CustomButton(
-              text: 'Send response',
-              fontSize: 18,
-              onPressed: () => controller.sendResponse(context),
-              buttonColor: Colors.blue),
         CustomButton(
             text: 'Accept request',
             fontSize: 18,

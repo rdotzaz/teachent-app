@@ -33,20 +33,20 @@ void main() {
 
     test('timeString method', () {
       expect(DateFormatter.timeString(const TimeOfDay(hour: 11, minute: 5)),
-          '11:05AM');
+          '11:05');
       expect(DateFormatter.timeString(const TimeOfDay(hour: 10, minute: 0)),
-          '10:00AM');
+          '10:00');
       expect(DateFormatter.timeString(const TimeOfDay(hour: 16, minute: 11)),
-          '04:11PM');
+          '04:11');
       expect(DateFormatter.timeString(const TimeOfDay(hour: 22, minute: 50)),
-          '10:50PM');
-      expect(DateFormatter.timeString(null), '00:00AM');
+          '10:50');
+      expect(DateFormatter.timeString(null), '00:00');
     });
 
     test('onlyTimeString method', () {
       expect(
-          DateFormatter.onlyTimeString(DateTime(2022, 04, 04, 11, 8)), '11:08AM');
-      expect(DateFormatter.onlyTimeString(DateTime(2022, 04, 04)), '12:00AM');
+          DateFormatter.onlyTimeString(DateTime(2022, 04, 04, 11, 8)), '11:08');
+      expect(DateFormatter.onlyTimeString(DateTime(2022, 04, 04)), '00:00');
     });
 
     test('onlyDateString method', () {
@@ -56,8 +56,10 @@ void main() {
     });
 
     test('timeString with 0 minutes', () {
-      expect(DateFormatter.timeString(const TimeOfDay(hour: 15, minute: 0)), '03:00PM');
-      expect(DateFormatter.onlyTimeString(DateTime(2022, 05, 05, 14, 0)), '02:00PM');
+      expect(DateFormatter.timeString(const TimeOfDay(hour: 15, minute: 0)),
+          '03:00');
+      expect(
+          DateFormatter.onlyTimeString(DateTime(2022, 05, 05, 14, 0)), '14:00');
     });
   });
 }

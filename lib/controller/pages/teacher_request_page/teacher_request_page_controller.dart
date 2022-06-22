@@ -3,7 +3,6 @@ import 'package:teachent_app/common/date.dart';
 import 'package:teachent_app/common/enums.dart';
 import 'package:teachent_app/common/enum_functions.dart';
 import 'package:teachent_app/controller/controller.dart';
-import 'package:teachent_app/controller/managers/lesson_manager.dart';
 import 'package:teachent_app/controller/managers/request_manager.dart';
 import 'package:teachent_app/model/db_objects/db_object.dart';
 import 'package:teachent_app/model/db_objects/lesson_date.dart';
@@ -79,8 +78,7 @@ class TeacherRequestPageController extends BaseRequestPageController {
       : DateFormatter.getString(lessonDate?.date);
 
   /// Get string representation of requested date
-  String get requestedDate =>
-      DateFormatter.getString(request.requestedDate);
+  String get requestedDate => DateFormatter.getString(request.requestedDate);
 
   /// Return true if cooperation is cycled
   bool get isCycled => lessonDate?.isCycled ?? false;
@@ -155,29 +153,29 @@ class TeacherRequestPageController extends BaseRequestPageController {
   }
 
   /// Reject date proposed by student
-  void rejectNewDate() {
-    print(isEnabled);
+  void rejectNewDate(BuildContext context) {
     if (!isEnabled) {
       return;
     }
     newDateStatus = RequestedDateStatus.rejected;
-    print(newDateStatus);
+    _sendResponse(context);
   }
 
   /// Restore date proposed by student
-  void restoreNewDate() {
-    print(isEnabled);
+  void restoreNewDate(BuildContext context) {
     if (!isEnabled) {
       return;
     }
     newDateStatus = RequestedDateStatus.accepted;
+    _sendResponse(context);
   }
 
   @override
   Future<void> sendMessageAndRefresh(
       BuildContext context, Function refresh) async {
     if (!await dataManager.database
-        .isLessonDateFree(lessonDate?.lessonDateId ?? '') && lessonDate?.teacherId != teacherId) {
+            .isLessonDateFree(lessonDate?.lessonDateId ?? '') &&
+        lessonDate?.teacherId != teacherId) {
       showErrorMessage(context, 'Lesson date was reserved by someone else');
       return;
     }
@@ -189,7 +187,7 @@ class TeacherRequestPageController extends BaseRequestPageController {
     refresh();
   }
 
-  Future<void> sendResponse(BuildContext context) async {
+  Future<void> _sendResponse(BuildContext context) async {
     if (!isEnabled) {
       return;
     }

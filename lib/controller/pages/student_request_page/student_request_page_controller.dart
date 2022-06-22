@@ -120,10 +120,12 @@ class StudentRequestPageController extends BaseRequestPageController {
   String get currentTime => DateFormatter.onlyTimeString(lessonDate!.date);
 
   /// Get string representation of [otherDate]
-  String get requestedDate => otherDate != null ? DateFormatter.onlyDateString(otherDate) : currentDate;
+  String get requestedDate =>
+      otherDate != null ? DateFormatter.onlyDateString(otherDate) : currentDate;
 
   /// Get string representation of [otherTime]
-  String get requestedTime => otherTime != null ? DateFormatter.timeString(otherTime) : currentTime;
+  String get requestedTime =>
+      otherTime != null ? DateFormatter.timeString(otherTime) : currentTime;
 
   /// Get string representation of request status
   String get statusInfo => request?.status.stringValue ?? '';
@@ -316,7 +318,8 @@ class StudentRequestPageController extends BaseRequestPageController {
   Future<void> sendMessageAndRefresh(
       BuildContext context, Function refresh) async {
     if (!await dataManager.database
-        .isLessonDateFree(lessonDate?.lessonDateId ?? '') && lessonDate?.studentId != studentId) {
+            .isLessonDateFree(lessonDate?.lessonDateId ?? '') &&
+        lessonDate?.studentId != studentId) {
       showErrorMessage(context, 'Lesson date was reserved by someone else');
       return;
     }
@@ -359,7 +362,8 @@ class StudentRequestPageController extends BaseRequestPageController {
       showErrorMessage(context, 'Lesson date was reserved by someone else');
       return;
     }
-    assert(hasChangesProvided && request != null && otherDate != null, otherTime != null);
+    assert(hasChangesProvided && request != null && otherDate != null,
+        otherTime != null);
 
     await RequestManager.sendStudentResponse(
         dataManager, request!, otherDate!, otherTime!, topics[topicIndex]);
@@ -382,7 +386,6 @@ class StudentRequestPageController extends BaseRequestPageController {
       showErrorMessage(context, 'Lesson date was reserved by someone else');
       return;
     }
-    
 
     request = Request.noKey(
         lessonDate?.lessonDateId ?? '',
@@ -409,8 +412,10 @@ class StudentRequestPageController extends BaseRequestPageController {
       return null;
     }
     final newWholeDate = otherDate ?? lessonDate!.date;
-    final newOnlyDate = DateTime(newWholeDate.year, newWholeDate.month, newWholeDate.day);
-    final oldTime = TimeOfDay(hour: newWholeDate.hour, minute: newWholeDate.minute);
+    final newOnlyDate =
+        DateTime(newWholeDate.year, newWholeDate.month, newWholeDate.day);
+    final oldTime =
+        TimeOfDay(hour: newWholeDate.hour, minute: newWholeDate.minute);
     return DateFormatter.addTime(newOnlyDate, otherTime ?? oldTime);
   }
 }

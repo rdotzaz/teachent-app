@@ -42,6 +42,12 @@ class TeacherRequestPage extends StatelessWidget {
           BlocProvider(create: (_) => RefreshBloc(_requestPageController!))
         ],
         child: Scaffold(
+            appBar: AppBar(
+              title: const Text('Request'),
+              elevation: 0,
+              leading: const BackButton(color: Colors.white),
+              backgroundColor: _requestPageController!.getStatusColor(),
+            ),
             body: FutureBuilder(
                 future: _requestPageController!.init(),
                 builder: (_, snapshot) {

@@ -31,15 +31,16 @@ class OtherDayWidget extends StatelessWidget {
               children: [
                 CustomButton(
                   text: 'Accept date',
-                  onPressed: () =>
-                      context.read<RefreshBloc>().add(RestoreDateEvent()),
+                  onPressed: () => context
+                      .read<RefreshBloc>()
+                      .add(RestoreDateEvent(context)),
                   fontSize: 18,
                   buttonColor: Colors.green,
                 ),
                 CustomButton(
                   text: 'Reject date',
                   onPressed: () =>
-                      context.read<RefreshBloc>().add(RejectDateEvent()),
+                      context.read<RefreshBloc>().add(RejectDateEvent(context)),
                   fontSize: 18,
                   buttonColor: Colors.red,
                 ),

@@ -41,10 +41,9 @@ class RequestManager {
 
     final newDate = DateFormatter.addTime(otherDate, time);
 
-    await dataManager.database
-          .changeRequestedDate(request.requestId, newDate);
-      await dataManager.database.changeRequestedDateStatus(
-          request.requestId, RequestedDateStatus.requested);
+    await dataManager.database.changeRequestedDate(request.requestId, newDate);
+    await dataManager.database.changeRequestedDateStatus(
+        request.requestId, RequestedDateStatus.requested);
 
     if (selectedTopic.name != request.topic.name) {
       await dataManager.database.changeTopic(request.requestId, selectedTopic);
@@ -71,29 +70,20 @@ class RequestManager {
       await dataManager.database
           .changeCurrentDate(request.requestId, request.requestedDate!);
     }
-    await dataManager.database
-        .assignStudentToLessonDate(lessonDate?.lessonDateId ?? '', student?.userId ?? '');
-    await dataManager.database
-        .addLessonDateIdToStudent(student?.userId ?? '', lessonDate?.lessonDateId ?? '');
+    await dataManager.database.assignStudentToLessonDate(
+        lessonDate?.lessonDateId ?? '', student?.userId ?? '');
+    await dataManager.database.addLessonDateIdToStudent(
+        student?.userId ?? '', lessonDate?.lessonDateId ?? '');
     await dataManager.database
         .changeRequestStatus(request.requestId, RequestStatus.accepted);
 
     await LessonDateManager.setDateAsNotFree(dataManager, lessonDate);
 
-    final dateToAssign = request.requestedDate != null ? request.requestedDate! : lessonDate!.date;
-    final newLessonDate = LessonDate(
-      lessonDate!.lessonDateId,
-      lessonDate.teacherId,
-      lessonDate.studentId,
-      lessonDate.status,
-      dateToAssign,
-      lessonDate.isCycled,
-      lessonDate.cycleType,
-      lessonDate.price,
-      lessonDate.tools,
-      lessonDate.places);
+    final dateToAssign = request.requestedDate != null
+        ? request.requestedDate!
+        : lessonDate!.date;
     await LessonManager.createFirst(
-        dataManager, student?.userId ?? '', newLessonDate);
+        dataManager, student?.userId ?? '', lessonDate!, dateToAssign);
   }
 
   /// Reject [request] by teacher

@@ -44,6 +44,12 @@ class StudentRequestPage extends StatelessWidget {
           BlocProvider(create: (_) => _requestPageController!.requestTopicBloc)
         ],
         child: Scaffold(
+            appBar: AppBar(
+              title: const Text('Request'),
+              elevation: 0,
+              leading: const BackButton(color: Colors.black),
+              backgroundColor: Colors.white,
+            ),
             body: FutureBuilder(
                 future: _requestPageController!.init(),
                 builder: (_, snapshot) {
@@ -81,7 +87,9 @@ class StudentRequestPage extends StatelessWidget {
             Label(
                 text: 'Name: ${_requestPageController!.teacherName}',
                 fontSize: 22),
-            Label(text: 'Date: ${_requestPageController!.infoDate}', fontSize: 20),
+            Label(
+                text: 'Date: ${_requestPageController!.infoDate}',
+                fontSize: 20),
             Label(
                 text: _requestPageController!.isCycled
                     ? 'Lesson is cycled'

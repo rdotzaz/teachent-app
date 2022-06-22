@@ -108,7 +108,9 @@ class TeacherHomePageController extends BaseController {
     if (lessonDate.isFree) {
       return 'Waiting for cooperator';
     }
-    return lessonDate.studentId.isEmpty ? 'Cooperation cancelled' : 'Cooperation finished';
+    return lessonDate.studentId.isEmpty
+        ? 'Cooperation cancelled'
+        : 'Cooperation finished';
   }
 
   /// Method triggers TeacherSearchPage
