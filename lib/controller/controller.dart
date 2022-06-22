@@ -56,8 +56,8 @@ abstract class BaseRequestPageController extends BaseController {
   /// Return list of messages
   List<MessageField> get messages => [];
 
-  /// Send message to cooperator. Refresh page state using [refresh] function
-  void sendMessageAndRefresh(BuildContext context, Function refresh);
+  /// Send message to cooperator.
+  void sendMessageAndRefresh(BuildContext context);
 
   /// Returns true if message was created by sender for given message [index]
   bool isSender(int index) {

@@ -47,12 +47,14 @@ class _ReportCreationPageState extends State<ReportCreationPage> {
           } else if (snapshot.connectionState == ConnectionState.done) {
             return Scaffold(
                 appBar: AppBar(title: const Text('Create report')),
-                body: Column(children: [
-                  reportController.hasLessons
-                      ? _selectLessonField()
-                      : _emptyLesson(),
-                  if (reportController.isLessonSelected) _reportForm(context)
-                ]));
+                body: SingleChildScrollView(
+                  child: Column(children: [
+                    reportController.hasLessons
+                        ? _selectLessonField()
+                        : _emptyLesson(),
+                    if (reportController.isLessonSelected) _reportForm(context)
+                  ]),
+                ));
           }
           return _errorWidget(snapshot.error.toString());
         });

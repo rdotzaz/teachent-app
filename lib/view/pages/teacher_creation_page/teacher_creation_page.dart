@@ -55,13 +55,14 @@ class _TeacherCreationPageState extends State<TeacherCreationPage> {
           BlocProvider(create: (_) => _teacherCreationPageController.placeBloc)
         ],
         child: Scaffold(
-          resizeToAvoidBottomInset: false,
-          body: Column(
-            children: [
-              teacherCreationHeader(windowSize.height),
-              teacherFormView(),
-              buttons(windowSize.height)
-            ],
+          body: SingleChildScrollView(
+            child: Column(
+              children: [
+                teacherCreationHeader(windowSize.height),
+                teacherFormView(windowSize.height, windowSize.width),
+                buttons(windowSize.height)
+              ],
+            ),
           ),
         ));
   }
@@ -82,8 +83,10 @@ class _TeacherCreationPageState extends State<TeacherCreationPage> {
     );
   }
 
-  Widget teacherFormView() {
-    return Expanded(
+  Widget teacherFormView(double height, double width) {
+    return SizedBox(
+      height: height * 0.7,
+      width: width,
       child: PageView(
         physics: const NeverScrollableScrollPhysics(),
         controller: _teacherCreationPageController.pageController,

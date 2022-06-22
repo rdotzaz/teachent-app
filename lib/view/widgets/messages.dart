@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:teachent_app/controller/controller.dart';
 
-import 'custom_button.dart';
 import 'error_message_widget.dart';
 import 'label.dart';
 import 'single_card.dart';
@@ -18,31 +17,13 @@ class Messages extends StatefulWidget {
 }
 
 class _MessagesState extends State<Messages> {
-  void refresh() {
-    setState(() {});
-  }
-
   @override
   Widget build(BuildContext context) {
     return SingleCardWidget(
       title: 'Messages',
       titleColor: Colors.black,
       startAlignment: false,
-      bodyWidget: Column(children: [
-        _messagesBody(),
-        const SizedBox(height: 30),
-        Row(children: [
-          Expanded(
-            child: TextField(controller: widget.controller.textController),
-          ),
-          CustomButton(
-              text: 'Send',
-              fontSize: 14,
-              onPressed: () {
-                widget.controller.sendMessageAndRefresh(context, refresh);
-              })
-        ])
-      ]),
+      bodyWidget: _messagesBody(),
     );
   }
 

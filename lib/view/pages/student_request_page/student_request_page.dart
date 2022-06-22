@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:teachent_app/controller/pages/student_request_page/bloc/message_refresh_bloc.dart';
 import 'package:teachent_app/controller/pages/student_request_page/student_request_page_controller.dart';
 import 'package:teachent_app/controller/pages/student_request_page/bloc/request_day_bloc.dart';
 import 'package:teachent_app/controller/pages/student_request_page/bloc/request_topic_bloc.dart';
@@ -7,6 +8,7 @@ import 'package:teachent_app/model/db_objects/db_object.dart';
 import 'package:teachent_app/model/db_objects/lesson_date.dart';
 import 'package:teachent_app/model/db_objects/teacher.dart';
 import 'package:teachent_app/view/pages/student_request_page/request_day_field.dart';
+import 'package:teachent_app/view/widgets/custom_button.dart';
 import 'package:teachent_app/view/widgets/label.dart';
 import 'package:teachent_app/view/widgets/chip_list.dart';
 import 'package:teachent_app/view/widgets/messages.dart';
@@ -20,7 +22,7 @@ import 'confirm_button.dart';
 /// - write private message to teacher
 /// - select lesson topic
 // ignore: must_be_immutable
-class StudentRequestPage extends StatelessWidget {
+class StudentRequestPage extends StatefulWidget {
   StudentRequestPage(
       {KeyId? requestId,
       KeyId? studentId,
@@ -33,15 +35,32 @@ class StudentRequestPage extends StatelessWidget {
   }
 
   StudentRequestPageController? _requestPageController;
+
+  @override
+  State<StudentRequestPage> createState() => _StudentRequestPageState();
+}
+
+class _StudentRequestPageState extends State<StudentRequestPage> {
   double width = 0;
+  late dynamic futureFunction;
+
+  @override
+  void initState() {
+    super.initState();
+    futureFunction = widget._requestPageController!.init();
+  }
 
   @override
   Widget build(BuildContext context) {
     width = MediaQuery.of(context).size.width;
     return MultiBlocProvider(
         providers: [
-          BlocProvider(create: (_) => RequestDayBloc(_requestPageController!)),
-          BlocProvider(create: (_) => _requestPageController!.requestTopicBloc)
+          BlocProvider(
+              create: (_) => RequestDayBloc(widget._requestPageController!)),
+          BlocProvider(
+              create: (_) => widget._requestPageController!.requestTopicBloc),
+          BlocProvider(
+              create: (_) => widget._requestPageController!.messageBloc)
         ],
         child: Scaffold(
             appBar: AppBar(
@@ -50,19 +69,28 @@ class StudentRequestPage extends StatelessWidget {
               leading: const BackButton(color: Colors.black),
               backgroundColor: Colors.white,
             ),
-            body: FutureBuilder(
-                future: _requestPageController!.init(),
-                builder: (_, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const CircularProgressIndicator();
-                  } else if (snapshot.connectionState == ConnectionState.done) {
-                    return _mainWidget();
-                  }
-                  return _errorWidget(snapshot.error.toString());
-                })));
+            body: SingleChildScrollView(
+              child: Column(
+                children: [
+                  FutureBuilder(
+                      future: futureFunction,
+                      builder: (_, snapshot) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return const CircularProgressIndicator();
+                        } else if (snapshot.connectionState ==
+                            ConnectionState.done) {
+                          return _mainWidget(context);
+                        }
+                        return _errorWidget(snapshot.error.toString());
+                      }),
+                  _messageSendField(context)
+                ],
+              ),
+            )));
   }
 
-  Widget _mainWidget() {
+  Widget _mainWidget(BuildContext context) {
     return SingleChildScrollView(
         physics: const BouncingScrollPhysics(),
         child: Column(children: [
@@ -70,10 +98,10 @@ class StudentRequestPage extends StatelessWidget {
           _infoCard(),
           _tools(),
           _places(),
-          if (_requestPageController!.isEnabled) _requestDay(),
+          if (widget._requestPageController!.isEnabled) _requestDay(),
           _topicSelecting(),
-          Messages(controller: _requestPageController!),
-          if (_requestPageController!.isEnabled) _sendRequestButton()
+          _messeges(),
+          if (widget._requestPageController!.isEnabled) _sendRequestButton()
         ]));
   }
 
@@ -85,16 +113,16 @@ class StudentRequestPage extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Label(
-                text: 'Name: ${_requestPageController!.teacherName}',
+                text: 'Name: ${widget._requestPageController!.teacherName}',
                 fontSize: 22),
             Label(
-                text: 'Date: ${_requestPageController!.infoDate}',
+                text: 'Date: ${widget._requestPageController!.infoDate}',
                 fontSize: 20),
             Label(
-                text: _requestPageController!.isCycled
+                text: widget._requestPageController!.isCycled
                     ? 'Lesson is cycled'
                     : 'One-time lesson'),
-            Label(text: 'Price: ${_requestPageController!.price}'),
+            Label(text: 'Price: ${widget._requestPageController!.price}'),
           ],
         ));
   }
@@ -102,16 +130,16 @@ class StudentRequestPage extends StatelessWidget {
   Widget _checkStatus() {
     return Container(
         width: width,
-        color: _requestPageController!.getStatusColor(),
+        color: widget._requestPageController!.getStatusColor(),
         child: Column(children: [
           Padding(
               padding: const EdgeInsets.fromLTRB(0, 80, 0, 8),
-              child: Text(_requestPageController!.statusInfo,
+              child: Text(widget._requestPageController!.statusInfo,
                   style: const TextStyle(fontSize: 18, color: Colors.white))),
-          if (_requestPageController!.canCheckStatus)
+          if (widget._requestPageController!.canCheckStatus)
             Padding(
                 padding: const EdgeInsets.fromLTRB(0, 5, 0, 8),
-                child: Text(_requestPageController!.additionalInfo,
+                child: Text(widget._requestPageController!.additionalInfo,
                     style: const TextStyle(fontSize: 18, color: Colors.white))),
         ]));
   }
@@ -119,13 +147,13 @@ class StudentRequestPage extends StatelessWidget {
   Widget _tools() {
     return ChipHorizontalList(
         title: 'Tools',
-        isNotEmptyCondition: _requestPageController!.tools.isNotEmpty,
-        listLength: _requestPageController!.tools.length,
+        isNotEmptyCondition: widget._requestPageController!.tools.isNotEmpty,
+        listLength: widget._requestPageController!.tools.length,
         emptyInfo: 'Teacher did not provide any tools',
         elementBuilder: (_, index) {
           return Chip(
               padding: const EdgeInsets.all(12.0),
-              label: Text(_requestPageController!.tools[index].name,
+              label: Text(widget._requestPageController!.tools[index].name,
                   style: const TextStyle(fontSize: 18, color: Colors.white)),
               backgroundColor: Colors.blue);
         });
@@ -134,13 +162,13 @@ class StudentRequestPage extends StatelessWidget {
   Widget _places() {
     return ChipHorizontalList(
         title: 'Places',
-        isNotEmptyCondition: _requestPageController!.places.isNotEmpty,
-        listLength: _requestPageController!.places.length,
+        isNotEmptyCondition: widget._requestPageController!.places.isNotEmpty,
+        listLength: widget._requestPageController!.places.length,
         emptyInfo: 'Teacher did not provide any places',
         elementBuilder: (_, index) {
           return Chip(
               padding: const EdgeInsets.all(12.0),
-              label: Text(_requestPageController!.places[index].name,
+              label: Text(widget._requestPageController!.places[index].name,
                   style: const TextStyle(fontSize: 18, color: Colors.white)),
               backgroundColor: Colors.blue);
         });
@@ -160,12 +188,12 @@ class StudentRequestPage extends StatelessWidget {
     return BlocBuilder<RequestTopicBloc, int>(builder: (_, selectedIndex) {
       return ChipHorizontalList(
           title: 'Topic',
-          isNotEmptyCondition: _requestPageController!.topics.isNotEmpty,
-          listLength: _requestPageController!.topics.length,
+          isNotEmptyCondition: widget._requestPageController!.topics.isNotEmpty,
+          listLength: widget._requestPageController!.topics.length,
           emptyInfo: 'Teacher did not provide any topics',
           elementBuilder: (context, index) {
             final isMarked = selectedIndex == index;
-            final topic = _requestPageController!.topics[index];
+            final topic = widget._requestPageController!.topics[index];
             return ActionChip(
                 padding: const EdgeInsets.all(10.0),
                 label: Text(topic.name,
@@ -174,7 +202,7 @@ class StudentRequestPage extends StatelessWidget {
                         color: isMarked ? Colors.white : Colors.black)),
                 backgroundColor: isMarked ? Colors.blue : Colors.grey,
                 onPressed: () {
-                  if (_requestPageController!.isEnabled) {
+                  if (widget._requestPageController!.isEnabled) {
                     context
                         .read<RequestTopicBloc>()
                         .add(ToggleTopicEvent(index));
@@ -184,9 +212,36 @@ class StudentRequestPage extends StatelessWidget {
     });
   }
 
+  Widget _messeges() {
+    return BlocBuilder<MessageRefreshBloc, bool>(builder: ((_, __) {
+      return Messages(controller: widget._requestPageController!);
+    }));
+  }
+
+  Widget _messageSendField(BuildContext context) {
+    return Container(
+      color: Colors.white,
+      padding: const EdgeInsets.all(15),
+      child: Row(children: [
+        Expanded(
+          child: TextField(
+              controller: widget._requestPageController?.textController),
+        ),
+        CustomButton(
+            text: 'Send',
+            fontSize: 14,
+            onPressed: () {
+              if (widget._requestPageController != null) {
+                widget._requestPageController!.sendMessageAndRefresh(context);
+              }
+            })
+      ]),
+    );
+  }
+
   Widget _sendRequestButton() {
     return BlocBuilder<RequestDayBloc, Widget>(builder: (_, __) {
-      return ConfirmButton(controller: _requestPageController!);
+      return ConfirmButton(controller: widget._requestPageController!);
     });
   }
 

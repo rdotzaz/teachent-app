@@ -67,43 +67,45 @@ class _ReviewCreationPageState extends State<ReviewCreationPage> {
   }
 
   Widget _body() {
-    return Form(
-        key: _reviewCreationPageController.formKey,
-        child: Column(
-          children: [
-            SingleCardWidget(
-              title: 'Teacher',
-              bodyWidget:
-                  Label(text: _reviewCreationPageController.teacherName),
-              titleColor: Colors.black,
-            ),
-            Padding(
-              padding: const EdgeInsets.all(15),
-              child: TextFormField(
-                  keyboardType: TextInputType.text,
-                  validator: (title) =>
-                      _reviewCreationPageController.validateTitle(title),
-                  onChanged: (title) =>
-                      _reviewCreationPageController.setTitle(title),
-                  decoration: blackInputDecorator('Review title')),
-            ),
-            ReviewRateWidget(controller: _reviewCreationPageController),
-            Padding(
-              padding: const EdgeInsets.all(15),
-              child: TextFormField(
-                keyboardType: TextInputType.text,
-                onChanged: (description) =>
-                    _reviewCreationPageController.setDescription(description),
-                decoration: blackInputDecorator('Something about teacher'),
+    return SingleChildScrollView(
+      child: Form(
+          key: _reviewCreationPageController.formKey,
+          child: Column(
+            children: [
+              SingleCardWidget(
+                title: 'Teacher',
+                bodyWidget:
+                    Label(text: _reviewCreationPageController.teacherName),
+                titleColor: Colors.black,
               ),
-            ),
-            CustomButton(
-                text: 'Save',
-                fontSize: 18,
-                onPressed: () =>
-                    _reviewCreationPageController.saveReview(context),
-                buttonColor: Colors.blue)
-          ],
-        ));
+              Padding(
+                padding: const EdgeInsets.all(15),
+                child: TextFormField(
+                    keyboardType: TextInputType.text,
+                    validator: (title) =>
+                        _reviewCreationPageController.validateTitle(title),
+                    onChanged: (title) =>
+                        _reviewCreationPageController.setTitle(title),
+                    decoration: blackInputDecorator('Review title')),
+              ),
+              ReviewRateWidget(controller: _reviewCreationPageController),
+              Padding(
+                padding: const EdgeInsets.all(15),
+                child: TextFormField(
+                  keyboardType: TextInputType.text,
+                  onChanged: (description) =>
+                      _reviewCreationPageController.setDescription(description),
+                  decoration: blackInputDecorator('Something about teacher'),
+                ),
+              ),
+              CustomButton(
+                  text: 'Save',
+                  fontSize: 18,
+                  onPressed: () =>
+                      _reviewCreationPageController.saveReview(context),
+                  buttonColor: Colors.blue)
+            ],
+          )),
+    );
   }
 }

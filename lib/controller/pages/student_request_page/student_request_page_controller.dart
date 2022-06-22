@@ -5,6 +5,7 @@ import 'package:teachent_app/common/enums.dart';
 import 'package:teachent_app/common/enum_functions.dart';
 import 'package:teachent_app/controller/controller.dart';
 import 'package:teachent_app/controller/managers/request_manager.dart';
+import 'package:teachent_app/controller/pages/student_request_page/bloc/message_refresh_bloc.dart';
 import 'package:teachent_app/controller/pages/student_request_page/bloc/request_topic_bloc.dart';
 import 'package:teachent_app/controller/pages/student_request_page/bloc/request_day_bloc.dart';
 import 'package:teachent_app/model/db_objects/db_object.dart';
@@ -51,10 +52,12 @@ class StudentRequestPageController extends BaseRequestPageController {
   final List<MessageRecord> _newMessages = [];
 
   late RequestTopicBloc requestTopicBloc;
+  late MessageRefreshBloc messageBloc;
 
   StudentRequestPageController(
       this.requestId, this.studentId, this.teacher, this.lessonDate) {
     requestTopicBloc = RequestTopicBloc(this);
+    messageBloc = MessageRefreshBloc();
   }
 
   @override
@@ -315,8 +318,7 @@ class StudentRequestPageController extends BaseRequestPageController {
   }
 
   @override
-  Future<void> sendMessageAndRefresh(
-      BuildContext context, Function refresh) async {
+  Future<void> sendMessageAndRefresh(BuildContext context) async {
     if (!await dataManager.database
             .isLessonDateFree(lessonDate?.lessonDateId ?? '') &&
         lessonDate?.studentId != studentId) {
@@ -330,7 +332,7 @@ class StudentRequestPageController extends BaseRequestPageController {
           dataManager, request!, textController.text);
     }
     textController.clear();
-    refresh();
+    messageBloc.add(RefreshMessageWidget());
   }
 
   /// Show request day field to request new date by student

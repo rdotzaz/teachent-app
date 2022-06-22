@@ -32,30 +32,34 @@ class _LoginFormState extends State<LoginForm> {
   Widget build(BuildContext context) {
     final windowSize = MediaQuery.of(context).size;
 
-    return Form(
-        key: _loginFormController.key,
-        child: Column(
-          children: [
-            loginHeader(windowSize.height),
-            Padding(
-              padding: const EdgeInsets.all(12.0),
-              child: Column(
-                children: [
-                  loginLabel(),
-                  loginTextField(),
-                  passwordLabel(),
-                  passwordTextField(),
-                  submitButton()
-                ],
-              ),
-            ),
-            Expanded(
-                child: Column(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [signUpLabel(), signUpButton()],
-            ))
-          ],
-        ));
+    return Scaffold(
+      body: SingleChildScrollView(
+        child: Form(
+            key: _loginFormController.key,
+            child: Column(
+              children: [
+                loginHeader(windowSize.height),
+                Padding(
+                  padding: const EdgeInsets.all(12.0),
+                  child: Column(
+                    children: [
+                      loginLabel(),
+                      loginTextField(),
+                      passwordLabel(),
+                      passwordTextField(),
+                      submitButton()
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 50),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [signUpLabel(), signUpButton()],
+                )
+              ],
+            )),
+      ),
+    );
   }
 
   Stack loginHeader(double height) {

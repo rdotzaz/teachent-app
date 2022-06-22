@@ -4,6 +4,7 @@ import 'package:teachent_app/common/enums.dart';
 import 'package:teachent_app/common/enum_functions.dart';
 import 'package:teachent_app/controller/controller.dart';
 import 'package:teachent_app/controller/managers/request_manager.dart';
+import 'package:teachent_app/controller/pages/student_request_page/bloc/message_refresh_bloc.dart';
 import 'package:teachent_app/model/db_objects/db_object.dart';
 import 'package:teachent_app/model/db_objects/lesson_date.dart';
 import 'package:teachent_app/model/db_objects/request.dart';
@@ -32,9 +33,12 @@ class TeacherRequestPageController extends BaseRequestPageController {
   /// If student did not request new date, then default value is [RequestedDateStatus.none]
   RequestedDateStatus newDateStatus = RequestedDateStatus.none;
   final List<MessageRecord> _newMessages = [];
+  late MessageRefreshBloc messageBloc;
 
   TeacherRequestPageController(
-      this.request, this.teacherId, this.student, this.lessonDate);
+      this.request, this.teacherId, this.student, this.lessonDate) {
+    messageBloc = MessageRefreshBloc();
+  }
 
   @override
   Future<void> init() async {
@@ -171,8 +175,7 @@ class TeacherRequestPageController extends BaseRequestPageController {
   }
 
   @override
-  Future<void> sendMessageAndRefresh(
-      BuildContext context, Function refresh) async {
+  Future<void> sendMessageAndRefresh(BuildContext context) async {
     if (!await dataManager.database
             .isLessonDateFree(lessonDate?.lessonDateId ?? '') &&
         lessonDate?.teacherId != teacherId) {
@@ -184,7 +187,7 @@ class TeacherRequestPageController extends BaseRequestPageController {
     await RequestManager.sendTeacherMessage(
         dataManager, request, textController.text);
     textController.clear();
-    refresh();
+    messageBloc.add(RefreshMessageWidget());
   }
 
   Future<void> _sendResponse(BuildContext context) async {

@@ -50,13 +50,14 @@ class _StudentCreationPageState extends State<StudentCreationPage> {
               create: (_) => _studentCreationPageController.loadLevelsBloc)
         ],
         child: Scaffold(
-          resizeToAvoidBottomInset: false,
-          body: Column(
-            children: [
-              studentCreationHeader(windowSize.height),
-              studentFormView(),
-              buttons(windowSize.height)
-            ],
+          body: SingleChildScrollView(
+            child: Column(
+              children: [
+                studentCreationHeader(windowSize.height),
+                studentFormView(windowSize.height, windowSize.width),
+                buttons(windowSize.height)
+              ],
+            ),
           ),
         ));
   }
@@ -77,8 +78,10 @@ class _StudentCreationPageState extends State<StudentCreationPage> {
     );
   }
 
-  Widget studentFormView() {
-    return Expanded(
+  Widget studentFormView(double height, double width) {
+    return SizedBox(
+      height: height * 0.7,
+      width: width,
       child: PageView(
         physics: const NeverScrollableScrollPhysics(),
         controller: _studentCreationPageController.pageController,
